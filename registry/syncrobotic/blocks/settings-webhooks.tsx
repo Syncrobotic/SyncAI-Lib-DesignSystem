@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.49.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.51.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"
@@ -338,11 +338,9 @@ function DeleteEndpoint({ endpoint, onDelete }: { endpoint: WebhookEndpoint; onD
 }
 
 /**
- * Webhooks: endpoints that receive fleet events, each with its events and its state (failing says since when and the last
- * error, in danger text with an icon; active and disabled stay grey). Adding one shows its signing secret once, in a
- * secret code block with a copy button, and never again; rotating shows the new one the same way. One endpoint at a time
- * shows its recent deliveries, a failed one opening to what the endpoint answered, and can send a test event. Deleting
- * asks for the host to be typed.
+ * Webhooks: endpoints that receive fleet events, with their state (only failing is coloured). A signing secret shows once,
+ * on adding or rotating. One endpoint at a time shows its recent deliveries and can send a test event; deleting asks for
+ * the host to be typed.
  */
 export function SettingsWebhooks({
   endpoints: initial = sampleEndpoints,

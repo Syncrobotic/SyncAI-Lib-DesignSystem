@@ -1,12 +1,8 @@
-// @syncrobotic/format-number v0.40.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
+// @syncrobotic/format-number v0.51.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
 /**
- * The kit's one number path. Every number a component writes goes through here, so the server and the browser write the
- * same digits and a product changes the locale in one place:
- *
- * - `formatCount(n)`: a count (whole things: rows, items, robots, matches).
- * - `formatNumber(n, options)`: any other number (a reading, a share, a coordinate), with Intl.NumberFormat's options.
- * - `resolveLocale(locale)`: the tag both use. Never `toLocaleString()` without a locale: it follows the runtime, so a
- *   server in English and a browser in German write "1,234.5" and "1.234,5" and React finds the two renders differ.
+ * The kit's one number path, so the server and the browser write the same digits and the locale changes in one place:
+ * `formatCount` for a count, `formatNumber` for any other number, `resolveLocale` for the tag both use. Never
+ * `toLocaleString()` without a locale: it follows the runtime, so the server and browser renders can differ.
  */
 
 const checkedLocales = new Map<string, string>()
@@ -54,14 +50,9 @@ export function formatNumber(n: number, { locale, ...options }: Intl.NumberForma
 }
 
 /**
- * A count as the kit writes it, through Intl.NumberFormat in `locale` (English when none is given, so the server and the
- * browser write the same).
- *
- * Full, with grouping, by default: 135,287 (135,287 in zh-TW too). This is the form for tables, headers, detail pages,
- * figures and anywhere the number is read or compared. `compact` abbreviates it in the locale's own words: 135K and 1.2M
- * in English, 14萬 and 123萬 in zh-TW, 1,2 Mio. in German. Use it only where space is the constraint: a count on a tab, a
- * chart's axis ticks, a compact chip. A compact count drops digits, so put the full number where the reader can reach it
- * (a tooltip, the table view). Either way, write it in `tabular-nums`.
+ * A count through Intl.NumberFormat in `locale` (English when none is given). Full with grouping by default (135,287),
+ * for anywhere it is read or compared. `compact` (135K, 14萬) only where space is the constraint (a tab, axis ticks, a
+ * chip), with the full number reachable in a tooltip or the table. Either way, write it in `tabular-nums`.
  */
 export function formatCount(n: number, { compact = false, locale }: { compact?: boolean; locale?: string } = {}) {
   // A count is whole: round anything after the point in the full form; the compact form keeps Intl's one or two

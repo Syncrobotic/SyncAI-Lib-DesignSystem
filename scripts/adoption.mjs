@@ -1,15 +1,10 @@
-// Adoption scanner: which @syncrobotic items, at which versions, a codebase has installed, and how far behind it is.
-// Every installed file starts with a header naming its item and version (written by scripts/versions.mjs):
-//   // @syncrobotic/<name> vX.Y.Z · update: npx shadcn add @syncrobotic/<name> --overwrite
-// (or the same inside /* … */ in CSS). The scanner reads that line and compares it with this repo's registry.json.
+// Adoption scanner: which @syncrobotic items, at which versions, a codebase has installed, and how far behind it is. It
+// reads each file's header (written by scripts/versions.mjs; `/* … */` in CSS) and lists the CHANGELOG.md lines that
+// name a behind item in between (its registry changelog when CHANGELOG.md does not).
 //
-//   node scripts/adoption.mjs                      the current directory
-//   node scripts/adoption.mjs ../app-a ../app-b    one table per directory
-//   node scripts/adoption.mjs --github <org>       every repo of a GitHub org, through the gh CLI (skipped without it)
-//   node scripts/adoption.mjs --json               the same, as JSON for other tools
-//
-// An item is "behind" when its installed version is older than the registry's; the CHANGELOG.md lines that mention it
-// in between are listed under it (the item's own registry changelog when CHANGELOG.md does not name it).
+//   node scripts/adoption.mjs [dirs…]        one table per directory (default: the current one)
+//   node scripts/adoption.mjs --github <org> every repo of a GitHub org, through the gh CLI (skipped without it)
+//   node scripts/adoption.mjs --json         the same, as JSON
 import { closeSync, openSync, readdirSync, readFileSync, readSync, statSync } from "node:fs"
 import { basename, join, relative, resolve } from "node:path"
 import { spawnSync } from "node:child_process"
@@ -126,7 +121,7 @@ export function changesBetween({ sections, item, name, from, to }) {
 
 /**
  * Items that left the registry under one name for another. A header with the old name is not "not in the registry": it
- * names the item to install instead. The old name itself no longer installs (its /r/<name>.json is a 404, on purpose).
+ * names the item to install instead. The old name does not install (its /r/<name>.json is a 404, on purpose).
  * @type {Record<string, { to: string; in: string; how: string }>}
  */
 export const RENAMED = {

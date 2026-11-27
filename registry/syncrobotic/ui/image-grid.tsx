@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.33.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.51.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -121,13 +121,9 @@ type ImageGridProps = {
 }
 
 /**
- * Many pictures at once: a dataset's images, the frames of a run, what was just uploaded. Tiles hold their shape
- * (`aspect`) and load lazily. A tile opens a lightbox (← → to move, Esc to close, focus returns to the tile), or, with
- * `selection`, is picked: ringed in the focus ink with a check. Many: each tile is a toggle (`aria-pressed`, a box). One: the
- * tiles are a radio group (`role="radio"`, a round mark, one Tab stop; the arrow keys, Home and End move and pick). Hidden pictures stay unloaded behind
- * RestrictedPreview until someone asks; one that fails shows its file name. Neutral throughout: colour is for faults.
- * `onOpen` hands the opening to the app (its own Sheet with the picture's details) in place of the lightbox, and the ref's
- * `restoreFocus()` puts focus back on the tile when it closes. `renderTile` draws the picture area your way (the boxes on it).
+ * Many pictures at once (a dataset, a run's frames, uploads); tiles keep their `aspect` and load lazily. A tile opens a
+ * lightbox, or with `selection` is picked: many as toggles, one as a radio group (one Tab stop, arrows, Home, End).
+ * Hidden pictures wait behind RestrictedPreview. `onOpen` replaces the lightbox; `renderTile` draws the picture area.
  */
 export function ImageGrid({
   items,

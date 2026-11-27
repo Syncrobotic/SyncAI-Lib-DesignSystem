@@ -1,4 +1,4 @@
-// @syncrobotic/citations v0.50.0 · update: npx shadcn add @syncrobotic/citations --overwrite
+// @syncrobotic/citations v0.51.0 · update: npx shadcn add @syncrobotic/citations --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,19 +9,11 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 /*
-  The sources a model's answer cites, as a retrieval-augmented answer writes them: numbered markers in the text ([1])
-  and the numbered list of what they point at (title, where it is, a snippet).
-
-  Linked both ways, as grounded-text links its words to the marks on a picture: hover or keyboard focus on a marker
-  highlights its source, and on a source highlights every marker that cites it; the highlight is the kit's inverted
-  number and the hover fill, never a colour. Activating a marker (a click, Enter) moves focus to its source and shows
-  "Back to citation N" there; that button, or Esc, brings focus back to the marker it came from.
-
-  A marker is a link to its entry (#id), so it still goes there without JavaScript, named "Source 1: <title>" for
-  screen readers (the visible "1" starts its name). A number with no source is the text "[N]".
-
-  `Citations` holds the sources and the linking; put the answer and `CitationSources` inside it. In Markdown, pass
-  `cite={citationMarker}`: [1], [^1] and [1, 2] in the model's text become markers.
+  The sources a model's answer cites: numbered markers in the text ([1]) and the list they point at. Linked both ways:
+  hover or focus on a marker highlights its source and vice versa (inverted number, never a colour). Activating a marker
+  moves focus to its source, where "Back to citation N" or Esc returns. A marker is a link to #id, so it works without
+  JavaScript, named "Source 1: <title>" (the visible "1" starts its name, WCAG 2.5.3). In Markdown pass
+  `cite={citationMarker}`.
 */
 
 export type CitationSource = {

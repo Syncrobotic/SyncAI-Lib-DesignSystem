@@ -2,8 +2,7 @@ import { blockListOfType } from "./block-list"
 import { blockGroups, blockTypes } from "./block-types"
 import { groups, items } from "./catalog"
 
-// README.md's counts and its two catalog tables, from the same data as the site, so they cannot drift (the 0.40 audit
-// found the README at 87 and 95 components when the site had 122, and its groups were the 0.2x ones).
+// README.md's counts and its two catalog tables, from the same data as the site, so they cannot drift.
 // tests/unit/readme.test.ts fails when README.md differs; `npm run readme` writes it.
 
 const code = (names: string[]) => names.map((n) => `\`${n}\``).join(", ")

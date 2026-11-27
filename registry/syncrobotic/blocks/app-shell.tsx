@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.49.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.51.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -252,9 +252,8 @@ type AppShellProps = {
   /** Content fills the area edge to edge, for maps and video. */
   bleed?: boolean
   /**
-   * inset (default): see below. flush: sidebar, top bar and content share one surface, split by hairlines.
-   * inset: raised panels on the page, 8 px apart and 8 px from its edge, each with 16 px inside (the same as the gap between the cards in it): the sidebar, the top bar, and the content with its footer.
-   * The top bar is as tall as the sidebar's brand row, so their edges line up across the gap.
+   * inset (default): the sidebar, top bar and content are raised panels, 8 px apart and from the page's edge, 16 px inside.
+   * flush: they share one surface, split by hairlines.
    */
   layout?: "flush" | "inset"
   /** End of the content: version, copyright, links. Scrolls with the page, never overlaps it. */
@@ -262,11 +261,9 @@ type AppShellProps = {
   /** The sidebar's words (its trigger, landmarks and phone sheet), e.g. sidebarProviderLabels from labels-zh-tw. */
   sidebarLabels?: Partial<SidebarLabels>
   /**
-   * The sidebar as the person left it, read on the server from its cookies, so the first paint is already right instead
-   * of the default (open on wide screens, 240 px) followed by a jump: `sidebarOpen` from the "sidebar_state" cookie
-   * ("true" or "false"), `sidebarWidth` from "sidebar_state_width" (px). In Next.js, in the server component around it:
+   * The sidebar as the person left it, read on the server from its cookies so the first paint does not jump. In Next.js:
    * `const c = await cookies()`, then `sidebarOpen={c.get("sidebar_state") ? c.get("sidebar_state")?.value === "true" : undefined}`
-   * and `sidebarWidth={Number(c.get("sidebar_state_width")?.value) || undefined}`.
+   * and `sidebarWidth={Number(c.get("sidebar_state_width")?.value) || undefined}` (px).
    */
   sidebarOpen?: boolean
   sidebarWidth?: number
@@ -424,7 +421,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   const widest = scopes[0]?.value ?? "all"
   const [scope, setScope] = React.useState(widest)
   const scopeLabel = scopes.find((s) => s.value === scope)?.label
-  // The platform is read on the client only; the server, and the hydrating render, say "Ctrl K" as before.
+  // The platform is read on the client only; the server and the hydrating render say "Ctrl K".
   const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -557,14 +554,9 @@ const subscribeWide = (onChange: () => void) => {
 const wideNow = () => window.matchMedia(WIDE).matches
 
 /**
- * The frame of an internal tool, in three zones: the sidebar (navigation, with the user menu at its foot), the top bar
- * (sidebar trigger, page title, environment, search, actions), and the content with its footer.
- *
- * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 68 px rail of icons with tooltips below
- * that, until the person toggles it; the choice is kept in a cookie. Collapse is on the sidebar itself: a quiet button at
- * the end of its brand row and, for a mouse, its edge (hover shows a hairline). While it is a rail, the expand button sits
- * at the start of the top bar, and the edge expands it too. ⌘B / Ctrl+B toggles it anywhere. Phones get it as a sheet
- * from the left, opened by the top bar's menu button. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
+ * The frame of an internal tool: the sidebar (navigation, user menu at its foot), the top bar (title, environment, search,
+ * actions) and the content. The sidebar is open from 1280 px and a 68 px icon rail below until the person toggles it
+ * (kept in a cookie; ⌘B / Ctrl+B anywhere); phones get it as a sheet from the top bar's menu button.
  */
 export function AppShell({
   product,
@@ -606,10 +598,8 @@ export function AppShell({
       )}
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
-        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits 20 px
-            in, so its centre is the rail's centre line (34 px), open or closed; the name follows 8 px after it, as the
-            account's name after the avatar. Only the name fades. Flush: lined, level
-            with the top bar's line. */}
+        {/* As tall as the top bar, so their edges line up. The 28 px logo sits 20 px in, so its centre is the rail's
+            centre line (34 px) open or closed; only the name fades. */}
         {/* The mark stays centred in the row in both states (14 px from the top), level with the page's title across the
             gap: raising it on the rail to mirror the avatar's 12 px broke that line, and the line reads first. */}
         <SidebarHeader

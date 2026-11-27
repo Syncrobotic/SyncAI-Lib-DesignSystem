@@ -67,7 +67,7 @@ export default function UpgradingPage() {
 
       <H2 id="status">Beta and stable</H2>
       <p className="max-w-3xl text-base">
-        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. Every item starts in beta and becomes stable once a product has used it and its API has settled. Unmarked items are stable. Blocks and patterns have no status: you copy them and make them yours." />
+        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. A stable item changes its API only in a major release. Every item starts in beta. It becomes stable when a product has used it, or its API is a standard one the kit only styles (a Radix primitive, a native element, a small hook or function), and in both cases when its API has not changed for ten releases and it has unit tests and measured accessibility data. Unmarked items are stable. Blocks and patterns have no status: you copy them and make them yours." />
       </p>
 
       <H2 id="upgrade">Upgrade</H2>

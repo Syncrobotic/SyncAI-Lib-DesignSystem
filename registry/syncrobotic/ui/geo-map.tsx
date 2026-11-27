@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.50.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.51.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,9 +19,8 @@ import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-m
 export type GeoPoint = { lat: number; lon: number }
 
 /**
- * How good a robot's satellite position is, best first: an RTK fixed solution (centimetres), RTK float (decimetres), a
- * differential or SBAS fix (about a metre), a plain GPS fix (metres), or none. `navSatFixToGeo` in `ros` reads it from a
- * `sensor_msgs/NavSatFix`.
+ * Satellite position quality, best first: RTK fixed (cm), RTK float (dm), DGPS or SBAS (~1 m), GPS (metres), none.
+ * `navSatFixToGeo` in `ros` reads it from a `sensor_msgs/NavSatFix`.
  */
 export type GeoFix = "rtk-fixed" | "rtk-float" | "dgps" | "gps" | "none"
 
@@ -374,12 +373,9 @@ const proportions = (fill?: boolean): React.CSSProperties | undefined => (fill ?
 type Draft = { at: [number, number]; heading?: number; placed?: boolean; byKeys?: boolean }
 
 /**
- * An outdoor map in latitude and longitude for robots that work outside (patrol, agriculture, delivery), drawn in SVG
- * with no map library: Web Mercator raster tiles from the product's own tile server, or a coordinate grid that needs no
- * network. Robots are their status shape with a heading tick, an accuracy circle and their fix in words; geofences are
- * outlines (keep-outs hatched), a route has numbered waypoints, and each robot can leave a trail. Drag, the wheel, two
- * fingers, the buttons and the keys pan and zoom; `mode="goal"` places a goal and sends it on confirm. The map is one Tab
- * stop: offer GeoMapList beside it, the same robots as text.
+ * An outdoor map in latitude and longitude, in SVG with no map library: raster tiles from your tile server, or a grid
+ * that needs no network. Robots, geofences, routes and trails; `mode="goal"` places a goal. One Tab stop: offer
+ * GeoMapList beside it as the text view.
  */
 export function GeoMap({
   label: name,
@@ -816,7 +812,6 @@ export function GeoMap({
     e.preventDefault()
   }
 
-  // Projection for drawing.
   const s = 256 * 2 ** view.z
   const at = anchor(size)
   const toScreen = (x: number, y: number): [number, number] => [at.x + (x - view.x) * s, at.y + (y - view.y) * s]
@@ -1325,9 +1320,8 @@ export function GeoMap({
 export type GeoMapListProps = Pick<GeoMapProps, "label" | "robots" | "fences" | "selectedId" | "onSelect" | "loading" | "error" | "onRetry" | "locale" | "labels" | "className">
 
 /**
- * The map's robots as text: name, state, fix and accuracy, coordinates, fence and heading, one row each, in the order
- * given. Offer it beside every GeoMap (a Map / List switch, or side by side), as charts offer a table: for screen
- * readers, for exact coordinates, and on a phone. A row selects its robot on the map.
+ * The map's robots as text, one row each. Offer it beside every GeoMap (a Map / List switch), as charts offer a table:
+ * for screen readers, exact coordinates and phones. A row selects its robot.
  */
 export function GeoMapList({ label: name, robots = [], fences = [], selectedId, onSelect, loading, error, onRetry, locale, labels: given, className }: GeoMapListProps) {
   const labels = merge(given)

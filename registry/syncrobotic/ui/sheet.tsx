@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.47.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.51.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,10 +30,8 @@ const sides = {
 } as const
 
 /**
- * Bottom sheet on phones (radius 24, xl, with a grab handle); right panel on wide screens; left for navigation drawers.
- * `end` is both: bottom under 640 px, right from 640 px, for a detail or a form that opens beside the page.
- * Each floats 8 px in from the screen's edges. A side sheet fills the space between those edges up to `max-w-sm`;
- * set `w-*` or `sm:max-w-*` to change it, and auto margins keep it on its side.
+ * A bottom sheet on phones, a right panel on wide screens, left for navigation drawers; `end` is bottom under 640 px and
+ * right from it. It floats 8 px from the edges, up to `max-w-sm` (change with `w-*` or `sm:max-w-*`).
  */
 export function SheetContent({
   className,

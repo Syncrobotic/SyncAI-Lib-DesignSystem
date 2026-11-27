@@ -23,18 +23,11 @@ export function AppearItem({ children, className }: { children: React.ReactNode;
 }
 
 /**
- * A section further down arrives once, with the theme's appear movement (8 px, --motion-base), when it scrolls into view.
- * Only a section that starts below the screen waits, so nothing is hidden without JavaScript and nothing already on screen
- * flashes. A showcase section is the exception: hidden before the first paint when scripts run, it also arrives when it
- * is already on screen at load, so a reload (which keeps the scroll position) plays the sections in view, not the hero
- * alone. It never runs back when scrolled away: nothing moves to decorate.
- *
- * `showcase` is the home page's exception to the motion rule (Motion foundation, "The docs home"): a longer entrance, a
- * 24 px rise over --motion-sheet, items 60 ms apart. Nowhere else.
- *
- * A section is never left waiting where it cannot be seen arriving: one already scrolled past (a fast scroll, or a
- * screenshot tool stepping down the page, jumps over it between two frames) shows at once, and so does every section in an
- * automated browser (a full-page capture never scrolls). In print the stylesheet shows them all.
+ * A section below the screen arrives once (8 px, --motion-base) as it scrolls into view, never runs back, and is never
+ * hidden without JavaScript. `showcase` is the home page's exception (Motion foundation, "The docs home"): hidden before
+ * the first paint, it also plays when already on screen at load (a reload keeps the scroll position), with a 24 px rise
+ * over --motion-sheet, items 60 ms apart. A section already scrolled past (a fast scroll, a screenshot tool stepping down)
+ * shows at once, as does every section in an automated browser and in print.
  */
 export function Reveal({
   children,

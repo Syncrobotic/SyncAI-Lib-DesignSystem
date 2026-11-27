@@ -202,7 +202,7 @@ function Account() {
  *
  * Collapse is on the sidebar (the default, as the app shell does it): a quiet trigger at the end of the header
  * (show="expanded"), the edge as a SidebarRail, and the expand trigger in the top bar only while it is a rail
- * (show="collapsed", the menu button on a phone). `single` is the older single trigger in the top bar, which still works.
+ * (show="collapsed", the menu button on a phone). `single` is one trigger in the top bar instead.
  */
 function Console({
   open = true,

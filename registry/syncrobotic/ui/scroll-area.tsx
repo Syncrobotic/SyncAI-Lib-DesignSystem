@@ -1,4 +1,4 @@
-// @syncrobotic/scroll-area v0.28.0 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
+// @syncrobotic/scroll-area v0.51.0 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,9 +6,8 @@ import { ScrollArea as ScrollAreaPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * A bounded region that scrolls with a thin themed scrollbar, the same on every platform: a long log inside a card, a
- * row of thumbnails, a wide table in a panel. `fade` softens the edges where content is hidden past them. The viewport
- * takes focus, so keyboard users can scroll it with the arrow keys.
+ * A bounded region that scrolls with a thin themed scrollbar on every platform. `fade` softens edges that hide content.
+ * The viewport takes focus, so the arrow keys scroll it.
  */
 export function ScrollArea({
   className,

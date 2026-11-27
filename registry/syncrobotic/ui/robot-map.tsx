@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.50.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.51.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,8 +15,7 @@ import { clamp } from "@/registry/syncrobotic/lib/math"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /**
- * A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn).
- * From a ROS map frame (y up, yaw counter-clockwise from +x in radians) whose plan has its bottom-left at
+ * A point in metres from the plan's top-left: x right, y down. From a ROS map frame with the plan's bottom-left at
  * (originX, originY): x = xRos − originX, y = height − (yRos − originY), heading = 90 − yaw × 180 / π.
  */
 export type RobotMapPoint = [x: number, y: number]
@@ -103,14 +102,9 @@ const gridRect = (grid: RobotMapGrid, frame: RobotMapFrame) => {
 }
 
 /**
- * The grid as an RGBA image, top row first (the plan's y grows down, the grid's up), in one pass over the cells. The map
- * paints it in its own tokens through two masks of this one image, so it follows dark, light and high contrast without
- * drawing it again:
- *  - occupied (1–100): white at alpha value / 100; read as luminance it lays the obstacle grey on at that strength;
- *  - unknown (−1): opaque black, which is no luminance (no ink) but full alpha, where the no-data hatch shows;
- *  - free (0): transparent, the map's own surface.
- * A cell between 1 and 99 keeps a trace of the hatch under its grey, as a cell the robot is not sure about.
- * For a costmap (`kind: "cost"`) only costs above 0 are drawn, at alpha cost / 100; unknown is left clear.
+ * The grid as an RGBA image, top row first, painted through two masks so it follows the theme without redrawing.
+ * Occupied (1–100): white at alpha value / 100 (the obstacle grey); unknown (−1): opaque black (the no-data hatch);
+ * free (0): transparent. For a costmap (`kind: "cost"`) only costs above 0 are drawn; unknown is left clear.
  */
 export function rasteriseGrid(grid: Pick<RobotMapGrid, "width" | "height" | "data">, kind: "occupancy" | "cost" = "occupancy") {
   const { width: w, height: h, data } = grid
@@ -183,9 +177,8 @@ const scanStroke: Record<RobotMapScanColor, string> = {
 }
 
 /**
- * Each valid reading of a scan as a point on the plan, from the robot's pose. The beam's angle turns from the robot's
- * heading the ROS way (counter-clockwise), which on a plan drawn y down is a turn to the left of where it faces. A robot
- * with no heading has no frame for its scan, so nothing is returned. The laser is taken to sit at the robot's centre.
+ * Each valid reading of a scan as a point on the plan, from the robot's pose, the beam turning counter-clockwise (ROS)
+ * from the heading; the laser is taken to sit at the robot's centre. A robot with no heading returns nothing.
  */
 export function scanToPoints(scan: RobotMapScan, robot: RobotMapPose): RobotMapPoint[] {
   if (robot.heading === undefined) return []
@@ -204,11 +197,9 @@ export function scanToPoints(scan: RobotMapScan, robot: RobotMapPose): RobotMapP
 }
 
 /**
- * A grid's image, made again only when its cells or size change (a new `data` array), not on every pan or every new
- * object around the same cells. The previous image stays until the next one is ready, so a live costmap does not blink.
- * One image is made at a time, and a newer grid waits for it rather than cancel it: a costmap that updates faster than its
- * image can be encoded would otherwise cancel every encode and never show. Of the grids that arrive meanwhile only the
- * latest is kept, so the map skips frames instead of falling behind.
+ * A grid's image, remade only for a new `data` array or size; the previous one stays until the next is ready, so a live
+ * costmap does not blink. One encode at a time and newer grids wait rather than cancel it (a fast costmap would otherwise
+ * never show); only the latest waiting grid is kept, so the map skips frames instead of falling behind.
  */
 function useGridImage(grid: RobotMapGrid | undefined, kind: "occupancy" | "cost") {
   const [image, setImage] = React.useState<{ url: string; grid: RobotMapGrid } | null>(null)
@@ -468,10 +459,9 @@ export type RobotMapMode = "view" | "goal" | "waypoints" | "zone"
 type Picked = { index: number; at: RobotMapPoint; was: RobotMapPoint }
 const samePoint = (a: RobotMapPoint | undefined, b: RobotMapPoint) => a !== undefined && a[0] === b[0] && a[1] === b[1]
 /**
- * Where a picked point is in the list now. The app owns the list and may change it at any time (it drops waypoint 1 as the
- * robot reaches it), so an index alone could name another point, and Delete or Esc would then act on the wrong one. The
- * index counts while the point there is the one picked; else the one point in the list with its value, if the list moved
- * under it; else none, and the map lets go rather than act on a point nobody picked.
+ * Where a picked point is in the list now. The app may change the list at any time (dropping waypoint 1 as it is reached),
+ * so an index alone could name another point and Delete or Esc would act on it. The index counts while it holds the picked
+ * point; else the one point with its value; else none, and the map lets go.
  */
 function findPick(pick: Picked | null, list: RobotMapPoint[]): number | null {
   if (!pick) return null
@@ -612,11 +602,9 @@ const proportions = (width: number, height: number, fill?: boolean): React.CSSPr
   fill ? undefined : { aspectRatio: `${width} / ${height}`, maxHeight: "75svh", minHeight: "min(18rem, 75svh)" }
 
 /**
- * A site's floor plan with its zones, routes and robots, in metres. Robots are their status shape (colour only when one
- * needs attention), a heading tick and their name; names move aside rather than cover each other. Drag, the wheel (once
- * the map has focus, or with Ctrl) and two fingers pan and zoom; so do the buttons and the keys. The map is one Tab stop;
- * offer RobotMapList beside it, the same robots as text, as a chart offers its table. Under the robots it can draw a ROS
- * occupancy grid, a costmap and laser scans; with `mode` it places a goal, waypoints or a zone, by pointer or by keys.
+ * A site's floor plan in metres with zones, routes and robots (status shape, heading tick, name). Pan and zoom by pointer,
+ * wheel, touch, buttons or keys. It can draw a ROS occupancy grid, a costmap and scans, and with `mode` place a goal,
+ * waypoints or a zone. One Tab stop: offer RobotMapList beside it as the text view.
  */
 export function RobotMap({
   label: name,
@@ -922,7 +910,7 @@ export function RobotMap({
   }
   /**
    * Moves the picked waypoint to `p`, wherever it is in the list now, and returns the pick that finds it afterwards
-   * (whether or not the app takes the move); null, and nothing changed, when it is no longer in the list.
+   * (whether or not the app takes the move); null, and nothing changed, when it has left the list.
    */
   const moveWaypoint = (pick: Picked, p: RobotMapPoint): Picked | null => {
     const i = findPick(pick, waypoints)
@@ -1847,9 +1835,8 @@ export function RobotMap({
 export type RobotMapListProps = Pick<RobotMapProps, "label" | "robots" | "zones" | "selectedId" | "onSelect" | "loading" | "error" | "onRetry" | "labels" | "className">
 
 /**
- * The map's robots as text: name, state, position, zone and heading, one row each, in the order given. Offer it beside
- * every RobotMap (a Map / List switch, or a Robots sheet over a full-screen map), as charts offer a table: for screen
- * readers, for exact positions, and on a phone. A row selects its robot on the map.
+ * The map's robots as text, one row each. Offer it beside every RobotMap (a Map / List switch, or a sheet over a
+ * full-screen map), as charts offer a table. A row selects its robot.
  */
 export function RobotMapList({ label: name, robots = [], zones = [], selectedId, onSelect, loading, error, onRetry, labels: given, className }: RobotMapListProps) {
   const labels = merge(given)

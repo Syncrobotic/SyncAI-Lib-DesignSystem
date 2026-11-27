@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils"
  * name. Rendered once: the layout is CSS (.token-table in app/globals.css), and the rows carry no classes, since a long
  * table paid for each class string twice per cell (the markup and the React payload). The phone's column names are the
  * table's --c1… variables, drawn by CSS and silent to screen readers, which hear the table's own headers. On the phone a
- * cell after the first is a box beside its name, so an element in it is wrapped: inline in a text-sm box, as it was in the
- * phone list's <dd>, not a box of its own at its own line height.
+ * cell after the first is a box beside its name, so an element in it is wrapped inline in a text-sm box.
  */
 export function TokenTable({ head, rows, className }: { head: string[]; rows: React.ReactNode[][]; /** Styles for the cells, set once (`[&_td:nth-child(2)]:font-mono`) instead of on every row. */ className?: string }) {
   const names = Object.fromEntries(head.slice(1).map((h, j) => [`--c${j + 1}`, JSON.stringify(h)])) as React.CSSProperties

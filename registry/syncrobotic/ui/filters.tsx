@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.50.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.51.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -203,9 +203,8 @@ export function filterRows<T extends object>(rows: T[], rules: FilterRule[], fie
 }
 
 /**
- * The rules as URL parameters, one per rule: `field=operator:value`. Lists and ranges are comma-separated, each part
- * URI-encoded: `?status=any_of:offline,stopped&battery=between:20,80&charging=is_true`. Incomplete rules are left out.
- * `prefix` keeps them apart from the page's own parameters (`f.status=…`).
+ * The rules as URL parameters, `field=operator:value`, lists comma-separated and URI-encoded:
+ * `?status=any_of:offline,stopped&battery=between:20,80`. Incomplete rules are left out; `prefix` namespaces them.
  */
 export function toSearchParams(rules: FilterRule[], { prefix = "" }: { prefix?: string } = {}) {
   const params = new URLSearchParams()
@@ -272,9 +271,8 @@ function parseValue(field: FilterField, operator: FilterOperator, text: string):
 }
 
 /**
- * Rules back from URL parameters (a URLSearchParams, a query string, or Next.js `searchParams`), in the order they
- * appear. Parameters that are not a field, operators the field does not offer and values it cannot take are skipped,
- * so a hand-edited or stale link never breaks the page. Ids are stable: the field and its count, `status-0`.
+ * Rules back from URL parameters, in order. Unknown fields, operators and values are skipped, so a hand-edited or stale
+ * link never breaks the page. Ids are the field and its count: `status-0`.
  */
 export function fromSearchParams(params: ParamsLike, fields: FilterField[], { prefix = "" }: { prefix?: string } = {}): FilterRule[] {
   const rules: FilterRule[] = []
@@ -416,11 +414,9 @@ const segment = cn("press inline-flex h-full min-w-(--h-sm) items-center justify
 )
 
 /**
- * A row of filter rules the user builds: "+ Filter" opens a picker (field, then operator, then value) and each rule
- * becomes a chip, "Status | is | Offline", whose parts reopen that step to amend it. Rules combine with AND, said
- * between the chips. The value is a plain array of rules: keep it in the URL with `toSearchParams` /
- * `fromSearchParams`, and filter rows in the browser with `filterRows` (or `matchRule` per rule).
- * Every step works from the keyboard: Enter opens, arrows and Enter choose, Escape backs out one step.
+ * A row of filter rules: "+ Filter" picks field, operator and value, and each rule becomes a chip whose parts reopen that
+ * step. Rules combine with AND. Keep them in the URL with `toSearchParams` / `fromSearchParams`; filter rows with
+ * `filterRows`. Enter opens, arrows and Enter choose, Escape backs out one step.
  */
 export function Filters({
   fields,
@@ -976,7 +972,7 @@ export function rulesEqual(a: FilterRule[], b: FilterRule[]) {
 export type FilterViewsLabels = {
   /** Names the row of views. */
   label: string
-  /** Said when the rules no longer equal the view last chosen. */
+  /** Said when the rules differ from the view last chosen. */
   modified: string
   /** The action that puts the view's rules back. */
   reset: string
@@ -1001,9 +997,8 @@ export const defaultFilterViewsLabels: FilterViewsLabels = {
 }
 
 /**
- * Saved views above a Filters bar: one chip per view, and the view whose rules equal the current rules is chosen.
- * Change a rule and the chip lets go, "Modified" shows beside the row with Reset, which puts that view's rules back.
- * With `onSave`, "Save view" asks for a name and hands you the name and the rules; storing views is the app's job.
+ * Saved views above a Filters bar; the view whose rules equal the current ones is chosen. A changed rule shows "Modified"
+ * with Reset. With `onSave`, "Save view" hands you a name and the rules to store.
  */
 export function FilterViews({
   views,

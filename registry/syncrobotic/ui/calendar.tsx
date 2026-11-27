@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.32.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.51.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,12 +7,11 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * A month grid for picking a day, several days or a range (react-day-picker). Days are 36 px with a mouse and 44 px on
- * touch, like every compact control. The picked day is inverted, today is bold with a ring, a range fills between its
- * ends with the muted surface. Weeks start on Monday unless `weekStartsOn` says otherwise.
+ * A month grid for picking a day, several days or a range (react-day-picker). Days are 36 px with a mouse, 44 px on touch.
+ * Weeks start on Monday unless `weekStartsOn` says otherwise.
  */
-// Spoken name of a day button. It starts with the day number shown on the button ("26 October 2026, Monday"), so speech
-// input users can say what they see (WCAG 2.5.3); the library's default ("Monday, October 26th") does not contain it.
+// The day button's spoken name starts with the number shown ("26 October 2026, Monday"), so speech input users can say
+// what they see (WCAG 2.5.3); the library's default ("Monday, October 26th") does not contain it.
 const labelDayButton = (date: Date, modifiers: Modifiers, options?: ConstructorParameters<typeof DateLib>[0], dateLib?: DateLib) => {
   let label = (dateLib ?? new DateLib(options)).format(date, "d MMMM yyyy, EEEE")
   if (modifiers.today) label = `${label}, today`

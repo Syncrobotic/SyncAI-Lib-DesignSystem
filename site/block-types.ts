@@ -1,8 +1,8 @@
 // Blocks are compositions: several components put together for one job, as a section of a page or a whole screen.
 // Application: the screens and sections any app is built from. Solutions: whole working screens for one job in robot
 // operations. A set of variants of ONE component (a line chart, a timeline, a dialog) is not a block: it is that
-// component's patterns, shown on the component's page (`home`), as ReUI shows charts on its Chart page. Those sets keep
-// their install names and previews; only where they are documented changes.
+// component's patterns, shown on the component's page (`home`), as ReUI shows charts on its Chart page. They keep
+// their own install names and previews.
 
 export const blockGroups = ["Application", "Solutions"] as const
 export type BlockGroup = (typeof blockGroups)[number] | "Patterns"

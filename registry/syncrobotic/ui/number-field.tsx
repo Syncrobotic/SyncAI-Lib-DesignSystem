@@ -1,4 +1,4 @@
-// @syncrobotic/number-field v0.50.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.51.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,10 +27,8 @@ const tight = (unit?: string) => unit === "°" || unit === "′" || unit === "�
 const decimalsOf = (n: number) => (String(n).split(".")[1] ?? "").length
 
 /**
- * A number with a range and a unit: speed limits, battery thresholds, intervals.
- * Type freely; the value is kept in range when you leave the field, never blocked while you type.
- * 44 px buttons for touch; ↑↓ step, Shift+↑↓ and PageUp/PageDown step by largeStep, Home/End go to the limits.
- * The value and its unit are one reading ("20 %"), centred between − and +, however wide the field.
+ * A number with a range and a unit (a speed limit, a threshold). Typing is never blocked; the value is clamped on leaving
+ * the field. 44 px buttons; ↑↓ step, Shift or PageUp/PageDown by largeStep, Home/End to the limits.
  */
 export function NumberField({
   value: controlled,

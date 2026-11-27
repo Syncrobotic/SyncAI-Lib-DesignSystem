@@ -1,20 +1,10 @@
-// @syncrobotic/ros v0.45.1 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.51.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
-  ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
-  and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
-  components take. No React here: `use-ros` is the React layer on top.
-
-  What the connection does, so an app does not write it again:
-  - one wire subscription per topic, however many listeners (ref-counted), resent after every reconnect;
-  - one advertisement per topic, ref-counted the same way, also resent after a reconnect;
-  - reconnects with capped, jittered exponential backoff, and says which state it is in (connecting, open, closed, error);
-  - holds publishes and service calls made while it is not open, and sends them once it is;
-  - service calls with a timeout;
-  - for velocity topics, a stop (a zero Twist) when the publisher goes away, when the link drops, and when the app asks.
-
-  What it cannot do: rosbridge has no watchdog. If the browser freezes or the network drops mid-drive, the last command the
-  robot received may be a non-zero one, and nothing this file does can reach the robot until the link is back. The robot
-  must stop by itself when commands stop arriving (a command timeout in its base controller or twist_mux).
+  ROS and ROS 2 in the browser without a ROS library: rosbridge v2 over a WebSocket, plus pure converters from messages
+  to the kit's props (`use-ros` is the React layer). Subscriptions and advertisements are ref-counted per topic and
+  resent on reconnect (capped, jittered backoff); publishes and service calls wait until open; velocity topics get a
+  zero Twist when the publisher goes away or the link drops. rosbridge has no watchdog: the robot must stop by itself
+  when commands stop arriving (a command timeout in its base controller or twist_mux).
 */
 
 // --- Transport ----------------------------------------------------------------------------------------------------
@@ -475,7 +465,7 @@ export function createRosConnection(options: RosConnectionOptions): RosConnectio
         if (!id || !p) return
         clearTimeout(p.timer)
         pending.delete(id)
-        // rosbridge for ROS 1 before 0.11 sent no `result`; a response without one is a success.
+        // history-ok: rosbridge for ROS 1 before 0.11 sent no `result`; a response without one is a success.
         if (m.result === false) p.reject(new RosServiceError(p.service, m.values))
         else p.resolve(m.values)
         return
@@ -944,12 +934,10 @@ export function quaternionToEuler(q: RosQuaternion): { roll: number; pitch: numb
 export type RosAttitude = { roll?: number; pitch?: number; heading?: number }
 
 /**
- * A `sensor_msgs/Imu` as attitude's AttitudeIndicator takes it: roll and pitch in degrees with REP 103's signs (positive
- * roll is the right side down, positive pitch the nose down) and, by default, a compass heading in degrees clockwise from
- * north. The heading assumes the orientation is in an east-north-up frame, as REP 103 and REP 145 have it for an IMU
- * fused with a magnetometer: heading = 90 − yaw. An IMU without one drifts in yaw from where it started; pass
- * `{ heading: false }` and the indicator shows no compass. An IMU that gives no orientation (`orientation_covariance[0]`
- * is −1) or a quaternion that is not finite gives `{}`, which changes nothing when pushed.
+ * A `sensor_msgs/Imu` as AttitudeIndicator takes it: roll and pitch in degrees (REP 103: positive roll is the right side
+ * down, positive pitch the nose down) and a compass heading, 90 − yaw, which assumes an ENU orientation (REP 145, an IMU
+ * fused with a magnetometer). Without a magnetometer yaw drifts: pass `{ heading: false }`. No orientation
+ * (`orientation_covariance[0]` −1) or a non-finite quaternion gives `{}`, which changes nothing when pushed.
  */
 export function imuToAttitude(message: RosImu, options: { heading?: boolean } = {}): RosAttitude {
   const q = message.orientation
@@ -1488,12 +1476,10 @@ export const webVideoQuality = {
 } as const
 
 /**
- * The URL a `<video>` plays for a `sensor_msgs/Image` topic, through web_video_server on the robot
- * (`ros2 run web_video_server web_video_server`, port 8080): a camera-feed `src`, or what camera-wall's source function
- * returns for a camera and its `quality` ("low" for a tile, "high" for the focused camera). Images never go over rosbridge:
- * a JSON frame per image is far too slow. `type` is the encoding: "vp8" (WebM, plays everywhere but Safari) by default,
- * "h264" (MP4) for Safari. MJPEG is not a video a `<video>` plays. For WebRTC (webrtc_ros, a media gateway) the app owns
- * the connection and passes the MediaStream instead.
+ * The URL a `<video>` plays for a `sensor_msgs/Image` topic through web_video_server on the robot (port 8080): a
+ * camera-feed `src`, or camera-wall's source for a `quality` ("low" tile, "high" focused). Not over rosbridge: a JSON
+ * frame per image is far too slow. `type`: "vp8" (WebM, all but Safari, default) or "h264" (MP4, Safari); MJPEG does not
+ * play in `<video>`. For WebRTC (webrtc_ros) the app owns the connection and passes the MediaStream.
  */
 export function webVideoServerSrc(
   server: string,

@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.49.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.51.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,10 +27,8 @@ export const defaultDropdownMenuMoreLabels: DropdownMenuMoreLabels = {
 }
 
 /**
- * The ⋯ button that opens a menu of more actions, one look everywhere: a ghost icon button. In a row, give it the row's
- * `name` ("More actions for Patrol dog 7F3A"); in a toolbar or a card header, leave it out ("More actions"). A menu of
- * view settings (wrap lines, relative time) is not more actions: give it `aria-label="View options"`, same button.
- * `size="icon-sm"` (36, 44 on touch) in a row or a toolbar with no field; the default 44 beside a field.
+ * The ⋯ button for a menu of more actions, a ghost icon button. In a row give `name` ("More actions for Patrol dog 7F3A");
+ * a view-settings menu takes `aria-label="View options"`. `size="icon-sm"` in a row or toolbar; the default 44 by a field.
  */
 export function DropdownMenuMoreTrigger({
   name,

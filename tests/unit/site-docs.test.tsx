@@ -6,8 +6,8 @@ import { KeyCell, parseKeys } from "@/site/key-cell"
 import { AlarmLifecycle } from "@/site/alarm-lifecycle"
 
 // The Accessibility tab keeps a measured role only when the component's source can produce it. Sources that use a
-// primitive without renaming it (import { ToggleGroup } from "radix-ui"), an npm widget or a wrapper's slot used to
-// drop real roles, and the tab said "No role of its own" for a radio group.
+// primitive without renaming it (import { ToggleGroup } from "radix-ui"), an npm widget or a wrapper's slot must keep
+// their real roles (not "No role of its own" for a radio group).
 describe("Accessibility tab roles", () => {
   const roles = (name: string) => a11yOf(name)!.roles
   it.each([

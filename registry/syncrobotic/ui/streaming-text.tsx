@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-text v0.41.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
+// @syncrobotic/streaming-text v0.51.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,23 +10,11 @@ import { Markdown, markdownToText, type MarkdownProps } from "@/registry/syncrob
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
 /*
-  One answer from a model that arrives a few tokens at a time (server-sent events from a VLM or an LLM): the text grows
-  in place under a status row that says where it is (in the queue, reasoning, generating, done, stopped, failed).
-
-  The product owns the stream: it appends each chunk to a string and passes it as `text`, with the `phase`. React batches
-  the renders, so even 100 tokens a second is a few dozen cheap renders: only the last paragraph changes.
-
-  Calm while it waits: no blinking caret and no colour, only the kit's Spinner (it appears after 300 ms and stands still
-  under reduced motion) and a word. The status row sits above the text and keeps its height in every phase, so Stop
-  never moves under a finger while the answer grows below it, and the final words replace the status in the same place.
-
-  Accessibility: the status word is a polite live region, so each phase is said once ("Generating", "Done in 2.4 s").
-  The answer is read in whole sentences, at most every `announceEveryMs` (5 s), never token by token; what is left is
-  read when the answer ends. An answer that was already finished when it mounted is not read aloud.
-
-  `format="markdown"` renders the answer with the kit's Markdown (headings, lists, tables, code) while it streams. The
-  reading stays here, on the words without their syntax (`markdownToText`): a screen reader hears "The plate is clear",
-  never "asterisk asterisk", and a code block as "Code in bash." Markdown itself never speaks, so there is one voice.
+  The product appends each chunk to `text` and passes the `phase`; React batches, so 100 tokens a second is a few dozen
+  renders. Calm while it waits: the Spinner after 300 ms, no caret, no colour. The status row keeps its height, so Stop
+  never moves under a finger. The status word is a polite live region; the answer is read in whole sentences at most every
+  `announceEveryMs` (5 s), never per token, and not at all if finished at mount. With `format="markdown"` it reads the
+  words without syntax (`markdownToText`), so there is one voice.
 */
 
 export const streamingTextPhases = ["queued", "streaming", "done", "stopped", "error"] as const
@@ -172,9 +160,8 @@ type Props = {
 const live = (phase: StreamingTextPhase) => phase === "queued" || phase === "streaming"
 
 /**
- * A model's answer as it streams in: the text grows in place under a calm status row (queue position, Thinking,
- * Generating with Stop), which turns into the final state in the same place ("Done in 2.4 s · first token 0.3 s",
- * Stopped, Failed with Try again). An optional reasoning part is kept apart and closed.
+ * A model's answer as it streams in, under a calm status row (queued, Thinking, Generating with Stop) that becomes the
+ * final state in place ("Done in 2.4 s", Stopped, Failed with Try again). Reasoning is kept apart and closed.
  */
 export function StreamingText({
   text,

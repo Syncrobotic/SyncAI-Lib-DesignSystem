@@ -1,4 +1,4 @@
-// @syncrobotic/slide-to-release v0.28.0 · update: npx shadcn add @syncrobotic/slide-to-release --overwrite
+// @syncrobotic/slide-to-release v0.51.0 · update: npx shadcn add @syncrobotic/slide-to-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,12 +35,9 @@ type Props = {
 }
 
 /**
- * Releases a stopped dog. A slide has direction and distance, so it is harder to trigger by accident
- * in a panic than a long press, and it reads like unlocking a phone.
- * Past 85% letting go releases; otherwise the thumb springs back in 200 ms.
- * Keyboard and switch control: hold Enter or Space for 2 s; the thumb travels while the key is held, and letting go,
- * moving focus away or the page being hidden cancels it. The slider role is there so a screen reader passes the held key
- * through to the track; the arrow keys do nothing (a release is never a step).
+ * Releases a stopped dog. A slide has direction and distance, so it is harder to trigger in a panic than a long press.
+ * Past 85% letting go releases; otherwise the thumb springs back in 200 ms. Keyboard and switch control: hold Enter or
+ * Space for 2 s. The slider role makes a screen reader pass the held key through; arrow keys do nothing.
  */
 export function SlideToRelease({
   onRelease,

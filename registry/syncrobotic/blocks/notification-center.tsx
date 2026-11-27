@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.50.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.51.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
@@ -348,12 +348,9 @@ type NotificationCenterProps = Omit<PanelProps, "notifications" | "onMarkRead" |
 }
 
 /**
- * The bell in the app's top bar (AppShell `actions`), with the unread count, opening the notifications: a popover on wide
- * screens, a bottom sheet on phones. Grouped by day, newest first; unread rows carry a dot and weight. Mark one or all as
- * read, filter All / Unread. Arrow keys move through the list; Esc closes and puts focus back on the bell.
- *
- * Notifications are things worth knowing later. Alarms, which need someone to act, belong to Alarm / AlarmList and the
- * island, and must never arrive only as a notification.
+ * The bell for the app's top bar (AppShell `actions`) with the unread count: the notifications in a popover, or a bottom
+ * sheet on phones, grouped by day, newest first. Alarms, which need someone to act, belong to AlarmList and the island,
+ * never only here.
  */
 export function NotificationCenter({
   notifications: given,

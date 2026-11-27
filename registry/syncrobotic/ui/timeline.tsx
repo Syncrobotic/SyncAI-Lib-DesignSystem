@@ -1,4 +1,4 @@
-// @syncrobotic/timeline v0.40.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.51.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,9 +6,8 @@ import { type Status, StatusGlyph, statusText } from "@/registry/syncrobotic/she
 import { cn } from "@/lib/utils"
 
 /**
- * Events in time order: what a robot did on a shift, how an incident unfolded, a release history.
- * Markers are neutral dots; a status adds its shape (and colour only for warning and danger, on the glyph or the icon,
- * never the title), so a calm history stays calm and the one abnormal event stands out.
+ * Events in time order (a robot's shift, an incident, a release history). Markers are neutral dots; a status adds its
+ * shape, coloured only for warning and danger, so the one abnormal event stands out.
  */
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })

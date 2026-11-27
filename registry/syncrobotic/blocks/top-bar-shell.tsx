@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.38.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.51.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -60,11 +60,9 @@ type TopBarShellProps = {
   /** Where the logo and name link to. Defaults to the first link's href. */
   home?: string
   /**
-   * The bar's two ends, from 768 px up, so they balance: how far the logo (`start`) and the mark of the last button
-   * (`end`) stand in from the bar's padding, as CSS lengths. By default both are as far as that last mark stands inside its
-   * 44 px button (the avatar's 6 px with a user, an icon's 12 px without), so the floating panel's two ends are equally far
-   * from its edges, and at the top the logo and the last mark sit on the content's edges. Set them when the logo carries
-   * space of its own, or the bar ends in something else.
+   * How far the logo (`start`) and the last button's mark (`end`) stand in from the bar's padding from 768 px, as CSS
+   * lengths. By default both match the last mark's inset in its 44 px button (6 px for an avatar, 12 px for an icon), so the
+   * two ends balance. Set them when the logo carries its own space or the bar ends in something else.
    */
   insets?: { start?: string; end?: string }
   /** The id on `<main>`, for a skip link (`<a href="#main">`). */
@@ -77,10 +75,8 @@ type TopBarShellProps = {
 }
 
 /**
- * The frame for a tool or site without a sidebar: a top bar and the content. At the top of the page the bar is part of it,
- * full width with no line; once the page scrolls it gathers into a floating panel whose edges line up with the content below,
- * 8 px down, in the card surface with a hairline, the same panel as the app shell's top bar. Only colour, edge and a
- * transform change (--motion-base), so nothing below moves. Phones put the links in a drawer.
+ * The frame for a tool or site without a sidebar: a top bar and the content. Once the page scrolls the bar gathers into a
+ * floating panel lined up with the content, without moving anything below. Phones put the links in a drawer.
  */
 export function TopBarShell({
   product,

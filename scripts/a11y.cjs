@@ -1,12 +1,9 @@
-// What each component is to assistive technology, measured in a browser rather than guessed from the source: the ARIA
-// roles its examples expose, how many Tab stops one example has, and whether it announces changes. The Accessibility tab
-// of every component page is built from it (site/a11y.ts).
+// What each component is to assistive technology, measured in a browser rather than guessed: the ARIA roles its examples
+// expose, one example's Tab stops, and whether it announces changes. Feeds every Accessibility tab (site/a11y.ts).
+// Regenerate when a component's markup changes; `lint:a11y` (scripts/a11y-check.mjs) fails on a missing entry.
 //
 //   npm run build && npx next start -p 3100 &
 //   SITE=http://localhost:3100 node scripts/a11y.cjs        writes site/a11y.json
-//
-// A static file, like site/props.json: regenerate it when a component's markup changes. `lint:a11y` (scripts/a11y-check.mjs)
-// fails when a component has no entry.
 const { chromium } = require("playwright")
 const { writeFileSync, readFileSync } = require("node:fs")
 

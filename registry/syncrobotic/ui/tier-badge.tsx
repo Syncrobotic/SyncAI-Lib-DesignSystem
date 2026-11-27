@@ -1,4 +1,4 @@
-// @syncrobotic/tier-badge v0.40.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
+// @syncrobotic/tier-badge v0.51.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 
 /** A dataset's licence tier: T0 may enter product releases, T1–T3 restrict what you may do with it. */
@@ -35,9 +35,8 @@ type TierBadgeProps = {
 }
 
 /**
- * A dataset's licence tier as a tag: its code in mono and what it means ("T1 · Non-commercial"). `compact` shows the code
- * alone on screen (a screen reader still hears the words), for a table column whose header says Tier. T0 is a grey tag,
- * the restricted tiers outlined: a tier is a category, never a status colour.
+ * A dataset's licence tier as a tag: its code and its meaning ("T1 · Non-commercial"); `compact` shows only the code (a
+ * screen reader still hears the words). A tier is a category, never a status colour.
  */
 export function TierBadge({ tier, compact, labels }: TierBadgeProps) {
   const label = labels?.[tier] ?? tierBadgeLabels[tier]

@@ -1,4 +1,4 @@
-// @syncrobotic/facets v0.40.0 · update: npx shadcn add @syncrobotic/facets --overwrite
+// @syncrobotic/facets v0.51.0 · update: npx shadcn add @syncrobotic/facets --overwrite
 "use client"
 
 import * as React from "react"
@@ -226,9 +226,8 @@ function scrollParent(el: HTMLElement): HTMLElement | null {
 }
 
 /**
- * The facet column beside a list or a table, from 1024 px: it pins under the shell's bar (`--shell-top`) while the page
- * scrolls, and scrolls on its own when it is taller than the space under the bar. Below 1024 px it is not shown; put
- * `FacetsDrawer` in the toolbar instead, with the same value.
+ * The facet column beside a list, from 1024 px: it sticks under the shell's bar and scrolls on its own when taller. Below
+ * 1024 px use `FacetsDrawer` in the toolbar with the same value.
  */
 export function Facets({ className, labels, ...props }: FacetsBase & { className?: string }) {
   const l = { ...defaultFacetsLabels, ...labels }
@@ -277,9 +276,8 @@ export function Facets({ className, labels, ...props }: FacetsBase & { className
 }
 
 /**
- * The facets on phones and tablets: a button that says how many options are on, opening a bottom sheet with the same
- * list. Picks apply at once, as in the column; Done closes the sheet and Clear all empties it. Hidden from 1024 px,
- * where `Facets` shows the column.
+ * The facets on phones and tablets: a button with the count of options on, opening a bottom sheet with the same list.
+ * Hidden from 1024 px, where `Facets` shows the column.
  */
 export function FacetsDrawer({
   className,

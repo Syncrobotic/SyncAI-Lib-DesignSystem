@@ -1,4 +1,4 @@
-// @syncrobotic/viewport-overlay v0.35.0 · update: npx shadcn add @syncrobotic/viewport-overlay --overwrite
+// @syncrobotic/viewport-overlay v0.51.0 · update: npx shadcn add @syncrobotic/viewport-overlay --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -18,9 +18,8 @@ const placement: Record<ViewportOverlayPosition, string> = {
 }
 
 /**
- * The place for chrome over a viewport (a map, a point cloud, a 3D model, a camera): one corner or edge, 16 px in, pieces 8 px
- * apart. It lets the pointer through to the canvas under it, so a banner never blocks a drag; give anything pressed inside
- * it (a zoom group, a confirm panel) `pointer-events-auto`. Keep the bottom right clear: products put the stop there.
+ * The place for chrome over a viewport (a map, a camera): a corner or edge, 16 px in, pieces 8 px apart. Pointer events
+ * pass through to the canvas; give pressable pieces `pointer-events-auto`. Keep the bottom right clear for the stop.
  */
 export function ViewportOverlay({
   position = "top-left",
@@ -41,11 +40,8 @@ export function ViewportOverlay({
 }
 
 /**
- * One piece of chrome over a viewport: a mode banner, a legend, a notice, a message, a small panel. `float` (the default) is
- * the kit's Float (`bg-float shadow-float ring-1 ring-edge backdrop-blur-xl`; opaque in high contrast), for anything over a
- * map or a canvas. `scrim` is words straight over a picture (a video's Paused): the scrim with the dark theme's ink, in any
- * theme. Never `bg-background`, which is the page, nor a card's ring with a shadow. One radius (rounded-sm, the buttons'),
- * padding 12 by 8 and 14 px text unless you say otherwise.
+ * One piece of chrome over a viewport: a banner, a legend, a small panel. `float` (default) is the kit's Float, opaque in
+ * high contrast; `scrim` is words straight over a picture, in the dark theme's ink. Never `bg-background` (the page).
  */
 export function ViewportPanel({
   as = "div",

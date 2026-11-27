@@ -1,4 +1,4 @@
-// @syncrobotic/input-otp v0.15.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
+// @syncrobotic/input-otp v0.51.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
 "use client"
 
 import * as React from "react"

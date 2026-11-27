@@ -1,16 +1,11 @@
-// The pictures on /docs/components: each component's first story (the one its page opens with), cropped to what it draws
-// and framed 16:10, light and dark, at two widths. Taken from the built Storybook in a browser and encoded to WebP by the
-// browser's own canvas, so there is no image library to install.
+// The pictures on /docs/components: each component's first story, cropped to what it draws and framed 16:10, light and
+// dark, at two widths, encoded to WebP by the browser's canvas (no image library). The visual-baseline workflow runs it
+// and commits the result with the baselines; a laptop's pictures differ from CI's only in font rendering.
 //
-//   npm run build-storybook && npm run thumbs          writes public/thumbs/components/<name>-<theme>-<width>.webp
+//   npm run build-storybook && npm run thumbs          public/thumbs/components/<name>-<theme>-<width>.webp
 //   npm run thumbs -- button dialog                     only these
-//   npm run lint:thumbs                                 fails when a component with examples has no pictures, or one is left over
-//                                                       (and, by tests/unit/block-thumbs.test.ts, a /blocks card)
-//   npm run build && npm run thumbs -- --blocks         the /blocks cards: public/thumbs/blocks/<block>-<theme>-<width>.webp
-//                                                       (see blockThumbs below)
-//
-// The visual-baseline workflow runs it after the baselines, in the same Playwright image, and commits the result with
-// them, so the pictures change when the stories do. Taken on a laptop they differ from CI's only in font rendering.
+//   npm run lint:thumbs                                fails on a missing or left-over picture (and a /blocks card)
+//   npm run build && npm run thumbs -- --blocks        the /blocks cards (see blockThumbs below)
 import { spawn } from "node:child_process"
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 
@@ -19,10 +14,7 @@ const THEMES = ["light", "dark"]
 /** Output widths in pixels (16:10). A card is 17 to 24 rem wide: 1x screens take the first, 2x the second. */
 const WIDTHS = [400, 800]
 const RATIO = 16 / 10
-/**
- * The crop of the story in CSS pixels: always its 422 px page, so every picture on /docs/components is at one scale (a
- * lone checkbox used to be shown 1.3 times larger than a form beside it, its text 16 px against 11).
- */
+/** The crop in CSS pixels: always the story's 422 px page, so every picture on /docs/components is at one scale. */
 const MAX_W = 422
 const PAD = 20
 /** The browser is wider than the story's page, so a small component can sit in the middle of its frame. */
@@ -187,16 +179,12 @@ server.kill()
 console.log(`${list.length} components, ${list.length * THEMES.length * WIDTHS.length} files, ${Math.round(total / 1024)} KB`)
 
 /**
- * The pictures on /blocks: each card's block, from its preview page on the built site, framed as the card used to frame
- * the live preview (site/blocks.tsx, blockCards): a desktop screen shows one region of itself at the card's width; a
- * section or a phone sits whole and centred at nine tenths of the card. Written to public/thumbs/blocks/<block>-<theme>-<width>.webp.
+ * The pictures on /blocks (site/blocks.tsx, blockCards), from each block's preview page on the built site: a desktop
+ * screen shows one region at the card's width; a section or a phone sits whole at 0.9 of the card. Deterministic as
+ * tests/story.ts (reduced motion, a frozen clock, the kit's fonts), framed in a same-origin iframe as the docs frame it.
  *
- *   npm run build && npm run thumbs -- --blocks             starts next start on THUMBS_PORT (6009)
- *   THUMBS_SITE=http://localhost:3000 npm run thumbs -- --blocks    a site already running
- *
- * Deterministic: reduced motion, the clock installed at one instant and run a fixed second (as tests/story.ts), the kit's
- * fonts loaded. The preview is framed in an iframe of the site's own origin, as the docs frame it, so it renders as it does
- * there (no "Back to the docs" strip, the theme set on its root).
+ *   npm run build && npm run thumbs -- --blocks                    starts next start on THUMBS_PORT (6009)
+ *   THUMBS_SITE=http://localhost:3000 npm run thumbs -- --blocks   a site already running
  */
 async function blockThumbs() {
   const OUT_BLOCKS = "public/thumbs/blocks"

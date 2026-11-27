@@ -5022,7 +5022,7 @@
        "name": "modified",
        "type": "string",
        "default": "\"Modified\"",
-       "description": "Said when the rules no longer equal the view last chosen."
+       "description": "Said when the rules differ from the view last chosen."
       },
       {
        "name": "reset",
@@ -13380,7 +13380,7 @@
      "name": "timeoutMs",
      "type": "number | false",
      "default": "2000",
-     "description": "Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable. A mouse held perfectly still sends no events, so it trips this too (\"input lost\": press again). `false` turns it off: only when the robot runs its own watchdog on the command stream (it stops when commands stop arriving), which `rateHz` keeps fed while the stick is held."
+     "description": "Stop when no pointer event arrives for this long, in ms; default 2000 (a held key is not timed). A mouse held still trips it too (\"input lost\": press again). `false` only when the robot runs its own watchdog on the command stream."
     },
     {
      "name": "speed",

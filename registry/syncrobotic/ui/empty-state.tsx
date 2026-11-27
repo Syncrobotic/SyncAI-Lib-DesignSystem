@@ -1,14 +1,11 @@
-// @syncrobotic/empty-state v0.35.0 · update: npx shadcn add @syncrobotic/empty-state --overwrite
+// @syncrobotic/empty-state v0.51.0 · update: npx shadcn add @syncrobotic/empty-state --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
- * Say what is missing, why, and the one action that fixes it. One part for every empty place, in three sizes:
- * - `size="panel"` (default): a card, a page section or a dialog body. The icon on a muted tile, the title at 16 px.
- * - `size="inline"`: inside a table, a list, a toolbar region or a small panel. The icon bare, everything at 14 px.
- * - `variant="overlay"`: over a canvas or a picture (a map, a point cloud, a 3D model, a camera). Inline words, no
- *   padding of its own and at most 24 rem wide: the viewport's overlay layer places it and gives it a backing.
+ * Say what is missing, why, and the one action that fixes it. `size="panel"` (default) for a card or dialog body;
+ * `size="inline"` inside a table or list; `variant="overlay"` over a canvas or picture, where the viewport overlay places it.
  */
 export function EmptyState({
   icon: Icon,

@@ -1,4 +1,4 @@
-// @syncrobotic/settings-billing v0.40.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
+// @syncrobotic/settings-billing v0.51.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
 "use client"
 
 import * as React from "react"
@@ -153,12 +153,9 @@ type SettingsBillingProps = {
 }
 
 /**
- * Plan and billing for a fleet: the plan and when it renews, robots and seats used against what it includes, this
- * period's usage, the card on file (brand and last four only) and the invoices, each with its PDF. Meters stay grey
- * until a limit is near. Overdue is the only thing in colour. Cancelling asks first and says what stops.
- *
- * No checkout and no card form: changing the card or the plan hands over to your payment provider's own pages
- * (`onUpdatePayment`, `onChangePlan`). Card numbers never pass through the console.
+ * Plan and billing for a fleet: plan and renewal, usage against the plan, the card on file (brand and last four) and the
+ * invoices. Overdue is the only colour. No card form: changing the card or plan hands over to your payment provider's
+ * pages (`onUpdatePayment`, `onChangePlan`), so card numbers never pass through the console.
  */
 export function SettingsBilling({
   account = sampleBilling,

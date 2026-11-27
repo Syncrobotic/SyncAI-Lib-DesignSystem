@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.50.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.51.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -85,9 +85,8 @@ export function cameraFeedStateWord(state: CameraFeedState, labels?: Partial<Cam
 }
 
 /**
- * A feed's state as its header writes it: a shape and a word, with the latency after Live. Only Stalled has colour (on
- * the glyph and the word); blue only spins while connecting. Exported for views that show many feeds, such as
- * `camera-wall`, so every tile says its state the same way.
+ * A feed's state as a shape and a word, with the latency after Live. Only Stalled is coloured; blue only spins while
+ * connecting. Exported so views of many feeds (`camera-wall`) say state the same way.
  */
 export function CameraFeedStateLine({
   state,
@@ -176,9 +175,8 @@ export type CameraFeedProps = {
 }
 
 /**
- * A robot's live camera, over a native `<video>` the app feeds (a WebRTC `stream` or a `src`). It always says whether
- * what you see is live: "Live" with the latency, "Stalled · last frame 14:02:31" over a dimmed picture when frames stop,
- * "Paused" while the view is frozen here, and connecting, offline and no-camera states. No timeline: it is live.
+ * A robot's live camera over a native `<video>` (a WebRTC `stream` or a `src`). It always says whether what you see is
+ * live: "Live" with latency, "Stalled · last frame 14:02:31" over a dimmed picture, "Paused", connecting, offline.
  */
 export function CameraFeed({
   label,

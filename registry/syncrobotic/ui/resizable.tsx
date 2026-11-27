@@ -1,4 +1,4 @@
-// @syncrobotic/resizable v0.42.0 · update: npx shadcn add @syncrobotic/resizable --overwrite
+// @syncrobotic/resizable v0.51.0 · update: npx shadcn add @syncrobotic/resizable --overwrite
 "use client"
 
 import * as React from "react"
@@ -68,8 +68,7 @@ export type ResizablePanelGroupProps = Omit<GroupProps, "orientation"> & {
 }
 
 /**
- * Panels the user resizes by dragging the line between them, or with the keyboard: focus the handle and use the arrow
- * keys (react-resizable-panels 4). For a map beside a list, a camera above a log, an editor beside its preview.
+ * Panels resized by dragging the line between them or with the arrow keys on the handle (react-resizable-panels 4).
  * `autoSaveId` remembers the sizes per browser.
  */
 export function ResizablePanelGroup({
@@ -158,10 +157,9 @@ export function ResizablePanel({ defaultSize, minSize, maxSize, collapsedSize, c
 }
 
 /**
- * The line between two panels. The hit area is wider than the line (the group sets it: 16 px, the control height on a touch
- * screen); `withHandle` shows a grip pill in the middle, which tells touch users it can be dragged. The grip is --input
- * (3:1, like any control edge) ringed in the card colour, and keeps its 6 px however thin the line it sits on.
- * A vertical group's handle is a horizontal separator (aria-orientation), which the vertical styles hang off.
+ * The line between two panels; its hit area is wider (16 px, the control height on touch). `withHandle` adds a grip that
+ * tells touch users it drags: --input (3:1, like a control edge), 6 px however thin the line. A vertical group's handle is
+ * a horizontal separator.
  */
 export function ResizableHandle({ withHandle, className, ...props }: SeparatorProps & { withHandle?: boolean }) {
   return (

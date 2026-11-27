@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.49.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.51.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,13 +9,10 @@ import { cn } from "@/lib/utils"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /**
- * A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk.
- * It remembers whether the keyboard or the mouse moved last (data-nav), so the highlighted row shows its ring only in
- * keyboard use; under the pointer it keeps the calm fill. Until someone uses it (data-nav="rest") no row is ringed: a
- * list on a page that nobody has touched shows no focus.
+ * A filterable list driven from the keyboard (cmdk): type to narrow, ↑↓ to move, Enter to run. The highlighted row is
+ * ringed only when the keyboard moved last (data-nav), and no row is ringed before anyone uses it.
  */
-// The last way anyone moved on the page: keys or a pointer. A palette opened with ⌘K takes focus from the keyboard and
-// rings its row at once; one opened with a click, or a list nobody has touched, does not.
+// The last input modality on the page: a palette opened with ⌘K rings its row at once; one opened with a click does not.
 trackInputModality()
 
 /** Scroll an item into view inside its own list only, never the page around it. */
@@ -178,9 +175,8 @@ export function CommandList({ className, ...props }: React.ComponentProps<typeof
 }
 
 /**
- * Say what was searched and what to try instead, not just "No results". Also the place for a loading line.
- * Pass a function to say the words that were typed: `{(query) => `No robot matches “${query}”.`}`.
- * It is a disabled option, so the list is never an empty listbox and screen readers read the message.
+ * Say what was searched and what to try instead; also the place for a loading line. Takes a function of the query. It is
+ * a disabled option, so the listbox is never empty and screen readers read it.
  */
 export function CommandEmpty({
   className,
@@ -212,9 +208,8 @@ export function CommandGroup({ className, ...props }: React.ComponentProps<typeo
 }
 
 /**
- * A line between groups. Inside a listbox only options and groups are allowed, so it is decorative (the groups already
- * have headings for screen readers) rather than cmdk's role="separator". While a query filters the list it is hidden,
- * as cmdk's own is: the groups it stood between may be gone, and a line under nothing is noise.
+ * A line between groups. Decorative, not cmdk's role="separator": a listbox allows only options and groups. Hidden while a
+ * query filters the list, as cmdk's own is.
  */
 export function CommandSeparator({ className, ...props }: React.ComponentProps<"div">) {
   const filtering = useCommandState((state) => state.search !== "")

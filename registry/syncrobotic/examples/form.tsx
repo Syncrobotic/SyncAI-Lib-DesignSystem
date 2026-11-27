@@ -1,19 +1,13 @@
-// @syncrobotic/form v0.49.0 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.51.0 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
-// A form with React Hook Form and zod, drawn with the kit's Field: an example to copy and change, not a component.
-// The kit has no form wrapper. Each control sits in a Controller and a Field (or a FieldSet for a group); Field shows
-// the label, the hint and the error and wires aria-invalid and aria-describedby onto the control.
-//
-// What it does, and the line that does it:
-// - Errors wait for the first submit, then follow each change: React Hook Form's defaults (mode "onSubmit").
-// - The browser's own bubbles are off: noValidate on the form. Errors are the kit's, in words with an icon.
-// - A failed submit focuses the first field in error, in page order: React Hook Form's shouldFocusError, which needs
-//   field.ref on something focusable. An Input takes it through {...field}; a Select takes it on its trigger, a group on
-//   its first choice.
-// - A refusal from the server goes where it belongs: form.setError("name", …) on a field, form.setError("root.server",
-//   …) for the whole save, shown above the fields as an Alert.
-// - The submit button shows its spinner while onSubmit is awaited: loading={formState.isSubmitting}.
+// An example to copy, not a component: React Hook Form and zod drawn with the kit's Field, which shows the label, hint
+// and error and wires aria-invalid and aria-describedby. Each control sits in a Controller and a Field (or FieldSet).
+// - Errors wait for the first submit, then follow each change (mode "onSubmit"); noValidate turns off browser bubbles.
+// - A failed submit focuses the first field in error (shouldFocusError needs field.ref on something focusable: an
+//   Input through {...field}, a Select on its trigger, a group on its first choice).
+// - Server refusals: form.setError("name", …) on a field, form.setError("root.server", …) as an Alert above the fields.
+// - The submit button spins while onSubmit is awaited: loading={formState.isSubmitting}.
 import { Controller, useForm } from "react-hook-form"
 // @hookform/resolvers 7 takes a zod 3 schema (zod 3.25 or later) and a zod 4 one through the same zodResolver, so this
 // file works unchanged on either: a project already on zod 4 keeps its zod and needs no other import.

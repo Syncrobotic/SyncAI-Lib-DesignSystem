@@ -102,8 +102,8 @@ const subscribeNothing = () => () => {}
 
 /**
  * A tab's content arrives (the Appear pattern: 8 px rise and fade, --motion-base); keyed by path, so each switch plays it.
- * Not on the page's first load: the server's HTML is shown as it is, not held at opacity 0 until the scripts have run
- * (which made the description under the title the page's last paint on a phone).
+ * Not on the page's first load: the server's HTML shows as it is, not held at opacity 0 until the scripts run (that
+ * would make the description the page's last paint on a phone).
  */
 export function ComponentPanel({ children }: { children: React.ReactNode }) {
   const path = usePathname()

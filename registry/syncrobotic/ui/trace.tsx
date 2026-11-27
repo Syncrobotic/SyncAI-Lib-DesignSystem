@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.50.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.51.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,9 +8,8 @@ import { cn } from "@/lib/utils"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
 /**
- * The steps of a run, in order, each with its status and how long it took: a mission the robot executed, an agent's
- * tool calls, a firmware rollout, an audit trail. Steps open to show their input, output or sub-steps.
- * A run that went well is calm: done steps are a neutral check; only warnings and failures are coloured.
+ * The steps of a run in order, each with status and duration (a mission, an agent's tool calls, a rollout). Steps open to
+ * their input, output or sub-steps. Done is a neutral check; only warnings and failures are coloured.
  */
 export type TraceStatus = "pending" | "running" | "done" | "warning" | "error" | "skipped"
 

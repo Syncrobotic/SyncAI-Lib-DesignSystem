@@ -1,4 +1,4 @@
-// @syncrobotic/pagination v0.40.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.51.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,12 +41,9 @@ function pageList(page: number, count: number): (number | null)[] {
 }
 
 /**
- * Where you are in a long list and how to move through it: "1–5 of 8" and previous / next, or numbered pages
- * (`pages`). Pages are zero-based in code and one-based on screen. Previous and next disable at the ends. In a narrow
- * container (under 36rem) numbered pages fold to previous / current / next; the range stays on one line.
- *
- * With `href` every page is a link (`?page=3`), so a page can be shared, Back works and it needs no JavaScript; pass
- * `onNavigate` to route through the app's router instead of a full load.
+ * "1–5 of 8" with previous / next, or numbered `pages` (zero-based in code, one-based on screen). Under 36rem of container
+ * numbered pages fold to previous / current / next. With `href` each page is a link (shareable, no JavaScript needed);
+ * `onNavigate` routes through the app's router instead.
  */
 export function Pagination({
   page,

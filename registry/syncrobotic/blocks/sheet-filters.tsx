@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-filters v0.40.0 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
+// @syncrobotic/sheet-filters v0.51.0 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -45,10 +45,8 @@ function facetsOf(value: FacetValue): Facet[] {
 }
 
 /**
- * Filters on a phone: the Filters button in the list's toolbar says how many are on and opens the facets in a bottom sheet
- * (FacetsDrawer), each option with how many robots it leaves. Picks apply at once, as in the facet column on a wide screen,
- * so the list and its count behind the sheet are always the result; Done closes it, Clear all empties it. On a wide screen
- * put `Facets` beside the list with the same value.
+ * Filters on a phone: a Filters button with the count opens the facets in a bottom sheet (FacetsDrawer). Picks apply at
+ * once, so the list behind the sheet is always the result. On a wide screen put `Facets` beside the list with the same value.
  */
 export function SheetFilters({
   defaultOpen,

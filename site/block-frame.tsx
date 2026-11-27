@@ -37,16 +37,12 @@ const captionClass = "hidden pt-2 text-center font-mono text-xs text-muted-foreg
 const narrow = 640
 
 /**
- * A block in one card: Preview / Code tabs. The preview is an iframe rendered at the real device width
- * (1280, 768 or 390) and scaled down to fit, so breakpoints behave as they would on that device. A phone view on a
- * phone takes the width there is instead, so its text is read at full size.
- *
- * The card goes live once it comes within a screen of the viewport, as the examples do (site/when-near.tsx): a chart's
- * Patterns hold some twenty cards, and hydrating them all at once was seconds of main-thread work on a phone. Until then,
- * and on the server, it is a still card of the same size, drawn by CSS alone (the frame's box from its aspect ratio and a
- * container query, as the live card computes it), so nothing moves when it swaps. Its controls are real: they are in the
- * tab order and say what they are, and using one (focus, a click, a screen reader's activation) brings the card live with
- * that choice made and the focus on the same control.
+ * A block in one card: Preview / Code tabs. The preview is an iframe at the real device width (1280, 768 or 390) scaled
+ * to fit, so breakpoints behave as on that device; a phone view on a phone takes the width there is.
+ * The card goes live within a screen of the viewport (site/when-near.tsx): hydrating a chart's twenty Patterns cards at
+ * once costs seconds on a phone. Until then it is a still card of the same size, drawn by CSS alone, so nothing moves
+ * when it swaps. Its controls are real (in the tab order, named): using one brings the card live with that choice made
+ * and the focus kept.
  */
 export function BlockFrame(props: FrameProps) {
   const root = React.useRef<HTMLDivElement>(null)

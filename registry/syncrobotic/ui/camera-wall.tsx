@@ -1,4 +1,4 @@
-// @syncrobotic/camera-wall v0.50.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.51.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
@@ -186,10 +186,8 @@ export type CameraWallProps = {
 }
 
 /**
- * Many robot cameras at once, each a `camera-feed`: an auto grid (1, 2×2, 3×3, 4×4 by count and width), a page control
- * when there are more, and one camera focused large with a strip of the rest. Tiles off screen or behind the focused one
- * pause, only the focused camera asks for high quality, and at most `maxLive` stream at once; the rest keep their last
- * still, "Paused to save bandwidth". Sorted attention first (alarms, offline, stalled) or by name.
+ * Many robot cameras at once: an auto grid, pages when there are more, and one focused large with a strip of the rest.
+ * Off-screen or hidden tiles pause, only the focused one asks for high quality, and at most `maxLive` stream at once.
  */
 export function CameraWall({
   cameras,
