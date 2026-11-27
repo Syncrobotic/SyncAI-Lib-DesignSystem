@@ -302,6 +302,29 @@
       }
     },
     {
+      "name": "list-query",
+      "type": "registry:lib",
+      "title": "List query",
+      "description": "The query a server-paged list sends (page, limit, sortBy, order, search) and the page it gets back (items, total), read from and written to URLSearchParams.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/list-query.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `ListQuery`, `ListPage<T>`, `parseListQuery` (malformed values fall back to the defaults; `sortable` and `maxLimit` bound a hand-edited URL), `serializeListQuery` (keeps other keys, leaves defaults out), `pageCount`, `pageRange` and `clampPage`."
+          }
+        ]
+      }
+    },
+    {
       "name": "format-number",
       "type": "registry:lib",
       "title": "Format number",
@@ -417,8 +440,13 @@
         }
       ],
       "meta": {
-        "version": "0.54.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "`dataStateLabels`, `permissionGateLabels` and `stepUpDialogLabels` for the new data-state, permission-gate and step-up-dialog (載入中…, 沒有權限, 確認是你本人)."
+          },
           {
             "version": "0.54.0",
             "date": "2026-11-27",
@@ -776,6 +804,56 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "use-list-query",
+      "type": "registry:hook",
+      "title": "useListQuery",
+      "description": "A server-paged list's query kept in the URL, so a filtered view is a link: page, limit, sortBy, order and search, read through list-query's grammar.",
+      "registryDependencies": [
+        "@syncrobotic/list-query",
+        "@syncrobotic/use-debounce"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-list-query.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: the query from the URL through an adapter (`historyAdapter` by default, `memoryAdapter`, or your router's), the search text ahead of the URL with a debounce, and a new search, sort, limit or filter back on page 1."
+          }
+        ]
+      }
+    },
+    {
+      "name": "use-step-up",
+      "type": "registry:hook",
+      "title": "useStepUp",
+      "description": "Runs a sensitive action and, when the server answers with a step-up code, holds it, opens the step-up dialog, and replays it once the person is verified.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-step-up.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `run(action)`, triggered by `ELEVATED_SESSION_REQUIRED` and `TWO_FACTOR_SETUP_REQUIRED` (configurable), replays once after `verify`; cancel rejects with `StepUpCancelledError`. `errorCodeOf` reads `code` or the envelope's `error.code`, never the message."
+          }
+        ]
       }
     },
     {
@@ -1529,8 +1607,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "`aria-disabled=\"true\"` looks disabled as `disabled` does, in every variant, and stays focusable: for a control whose reason shows in a tooltip (permission-gate)."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3659,6 +3742,69 @@
       }
     },
     {
+      "name": "data-state",
+      "type": "registry:ui",
+      "title": "Data state",
+      "description": "One contract for what a data region shows while it loads, when it is empty, failed, forbidden, out of date or ready.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/data-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `state` loading, empty, error, forbidden, stale or ready; an error's copy from its `code` through `labels.errors` (the message is never shown or parsed), Try again, stale content kept under a notice, one live region. `dataStateOf` picks the state from a fetch."
+          }
+        ]
+      }
+    },
+    {
+      "name": "permission-gate",
+      "type": "registry:ui",
+      "title": "Permission gate",
+      "description": "Shows, disables with a reason, makes read-only or replaces what a permission string guards.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/permission-gate.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `can` and `permission` (all, or any) or `allowed`, never a role's name; modes `hidden`, `disabled` (aria-disabled, focusable, the reason in a tooltip, on a tap and to screen readers), `read-only` and `forbidden`. `permissionsFrom` and `isAllowed`."
+          }
+        ]
+      }
+    },
+    {
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
@@ -4847,6 +4993,40 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "step-up-dialog",
+      "type": "registry:ui",
+      "title": "Step-up dialog",
+      "description": "Asks for a fresh check (an authenticator code or the password) before a sensitive action, then hands back to the action.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/input-otp"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/step-up-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: a 6-digit code (sent on the sixth digit, once) or the password, through your `verify()`; a failure's message from its code, announced, the field cleared and focused. With `setup`, offers `onSetup` instead. Opened by useStepUp."
+          }
+        ]
       }
     },
     {
@@ -10696,8 +10876,13 @@
         }
       ],
       "meta": {
-        "version": "0.51.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Permissions and data states in the design language (permission strings, hidden, disabled with a reason, read-only, forbidden, 404 across tenants; one DataState, counts from `total`, the list query in the URL, step-up); checklist line 10 says it."
+          },
           {
             "version": "0.51.0",
             "date": "2026-11-27",

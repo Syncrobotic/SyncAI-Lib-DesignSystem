@@ -229,6 +229,32 @@ export function NavLink({ children, ...props }: React.ComponentProps<typeof Link
   )
 }`
 
+const listAdapter = `"use client"
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { type ListQueryAdapter, useListQuery } from "@/hooks/use-list-query"
+
+// The URL goes through the router, so a list's query takes part in navigation and server rendering.
+export function useRouterListQuery(options?: Parameters<typeof useListQuery>[0]) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const adapter: ListQueryAdapter = {
+    read: () => searchParams.toString(),
+    write: (search, mode) => router[mode](search ? \`\${pathname}?\${search}\` : pathname, { scroll: false }),
+  }
+  return useListQuery({ ...options, adapter })
+}`
+
+const listPage = `import { parseListQuery } from "@/lib/list-query"
+
+// The server reads the same query the browser will, so the first HTML is the right page.
+export default async function DevicesPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const query = parseListQuery(await searchParams, { sortable: ["name", "lastSeenAt"] })
+  const page = await getDevices(query) // { items, total }: count with total, never items.length
+  return <DevicesTable initial={page} />
+}`
+
 const actions = `"use server"
 
 import type { MissionValues } from "@/components/form"
@@ -417,6 +443,13 @@ export default function NextjsPage() {
         </Link>{" "}
         <Inline text="covers the rest: errors after the first submit, focus on the first field in error, and a button that waits." />
       </p>
+
+      <H2 id="list-query">A list's query in the URL</H2>
+      <P text="`useListQuery` keeps page, limit, sort and search in the URL through an adapter. Its default writes `window.history`; in the App Router, pass one on the router so the query takes part in navigation. `useSearchParams` re-renders the component when the URL changes, so the adapter needs no `subscribe`. Wrap the list in `<Suspense>`, as `useSearchParams` asks." />
+      <Stack>
+        <CodeBlock code={listAdapter} lang="tsx" title="hooks/use-router-list-query.ts" />
+        <CodeBlock code={listPage} lang="tsx" title="app/(app)/devices/page.tsx" />
+      </Stack>
 
       <H2 id="images">Images</H2>
       <Rules

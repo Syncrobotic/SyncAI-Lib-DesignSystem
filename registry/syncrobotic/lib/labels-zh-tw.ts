@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.54.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.55.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese (Taiwan): one typed labels object per component that takes `labels`, with
 // numbers and units formatted as in the English defaults. Pass each to its component
 // (`<DataGrid labels={dataGridLabels} />`), with `locale="zh-TW"` where it formats numbers, days or times. It imports no
@@ -1259,4 +1259,51 @@ export const themeToggleLabels = {
   light: "淺色",
   system: "跟隨系統",
   dark: "深色",
+}
+
+// ---------- Permissions and data states ----------
+
+export const dataStateLabels = {
+  loading: "載入中…",
+  empty: "這裡還沒有資料",
+  error: "無法載入",
+  errorBody: "伺服器或連線出了問題。請再試一次，沒有任何資料被變更。",
+  errors: {
+    NETWORK_ERROR: "無法連線到伺服器。請檢查連線後再試一次。",
+    RATE_LIMITED: "短時間內的請求太多。請等一分鐘後再試一次。",
+    SERVICE_UNAVAILABLE: "服務正在維護或負載過高。請過幾分鐘再試一次。",
+  } as Record<string, string>,
+  code: (code: string) => `錯誤代碼：${code}`,
+  forbidden: "你沒有權限查看",
+  forbiddenBody: "你的權限不包含這項內容。這個專案的管理員可以變更權限。",
+  stale: (updatedAt?: string) => (updatedAt ? `顯示的是 ${updatedAt} 的資料，可能已經過時。` : "可能已經過時：最近一次更新沒有送達。"),
+  retry: "再試一次",
+}
+
+export const permissionGateLabels = {
+  readOnly: "僅供檢視：你可以查看，但無法變更。",
+  forbidden: "你沒有權限查看",
+  forbiddenBody: "你的權限不包含這項內容。這個專案的管理員可以變更權限。",
+}
+
+export const stepUpDialogLabels = {
+  title: "確認是你本人",
+  totpBody: "這個操作需要重新驗證。請輸入驗證器 App 上的 6 位數驗證碼。",
+  passwordBody: "這個操作需要重新驗證。請輸入你的密碼。",
+  code: "6 位數驗證碼",
+  password: "密碼",
+  usePassword: "改用密碼",
+  useCode: "改用驗證器驗證碼",
+  verify: "驗證",
+  cancel: "取消",
+  close: "關閉",
+  setupTitle: "開啟兩步驟驗證",
+  setupBody: "這個操作需要第二道驗證，但你的帳號還沒有設定第二驗證因素。請先完成設定，再試一次。",
+  setup: "設定兩步驟驗證",
+  errors: {
+    INVALID_CODE: "驗證碼不正確。驗證碼每 30 秒更換一次，請輸入目前顯示的驗證碼。",
+    INVALID_PASSWORD: "密碼不正確。",
+    RATE_LIMITED: "嘗試次數太多。請等一分鐘後再試一次。",
+  } as Record<string, string>,
+  failed: "驗證失敗，請再試一次。",
 }

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, Bell, Bot, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
+import { ArrowRight, Bell, Bot, CircleAlert, Lock, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
 import { AppearItem, Reveal } from "./appear"
 import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
@@ -93,6 +93,19 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
       <polyline points="0,58 20,54 40,56 60,48 80,50 100,42 120,44" fill="none" stroke="var(--chart-2)" strokeWidth="2.5" strokeDasharray="6 4" />
     </svg>
   ),
+  "permissions-and-data-states": (
+    <div className="flex flex-col gap-1 text-sm">
+      <span className="flex items-center gap-2 text-muted-foreground">
+        <Lock aria-hidden className="size-4" /> View only
+      </span>
+      <span className="flex items-center gap-2 text-warning">
+        <TriangleAlert aria-hidden className="size-4" /> May be out of date
+      </span>
+      <span className="flex items-center gap-2 text-muted-foreground">
+        <CircleAlert aria-hidden className="size-4" /> Code: RATE_LIMITED
+      </span>
+    </div>
+  ),
   accessibility: (
     <div className="flex flex-col items-start gap-2">
       <span className="font-mono text-2xl font-bold">
@@ -108,7 +121,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   ),
 }
 
-// Bento: principles lead (two rows), the rest in threes, so the grid reads as one composition, not eleven equal cards.
+// Bento: principles lead (two rows), the rest in threes, so the grid reads as one composition, not twelve equal cards.
 const span: Record<FoundationSlug, string> = {
   principles: "lg:col-span-2 lg:row-span-2",
   color: "lg:col-span-2",
@@ -121,6 +134,8 @@ const span: Record<FoundationSlug, string> = {
   accessibility: "lg:col-span-2",
   alarms: "lg:col-span-2",
   "data-visualisation": "lg:col-span-2",
+  // The twelfth cell closes the sheet: a full row, so the bento ends square.
+  "permissions-and-data-states": "lg:col-span-6",
 }
 
 // Hover is a state change, so it moves the way the Motion foundation says: --motion-fast, standard easing, a 2 px lift
