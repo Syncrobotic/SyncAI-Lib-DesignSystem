@@ -138,7 +138,7 @@ describe("names without stray punctuation", () => {
         </DropdownMenu>
       </SidebarProvider>,
     )
-    expect(screen.getByRole("button", { name: "Mei Lin mei.lin@example.com, account menu" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Mei Lin mei.lin@example.com account menu" })).toBeTruthy()
   })
 })
 

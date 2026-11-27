@@ -384,8 +384,6 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
         <SidebarMenuButton
           size="lg"
           tooltip={user.name}
-          // One string, without the avatar's initials: a positioned sr-only ", account menu" is read as "… , account menu".
-          aria-label={`${[user.name, user.email].filter(Boolean).join(" ")}, account menu`}
           className={cn(
             "h-10 gap-2 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
             "transition-[height,border-radius,background-color,color] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
@@ -398,8 +396,11 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
           </Avatar>
           <span className="flex flex-col">
             <span className="truncate text-sm font-medium">{user.name}</span>
+            {user.email && " "}
             {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
           </span>
+          {/* Named by its own words (WCAG 2.5.3), the initials hidden; no comma, which a positioned sr-only reads as " ,". */}
+          <span className="sr-only"> account menu</span>
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>

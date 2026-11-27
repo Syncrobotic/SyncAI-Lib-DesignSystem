@@ -53,6 +53,7 @@
       "columnheader",
       "list",
       "listitem",
+      "region",
       "row",
       "rowgroup",
       "table"
@@ -1065,6 +1066,7 @@
       "columnheader",
       "list",
       "listitem",
+      "region",
       "row",
       "rowgroup",
       "status",
