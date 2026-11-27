@@ -15,8 +15,8 @@ export const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 // Below md (768 px) the sidebar is a sheet from the screen's edge; the classes below use the same breakpoint (md:).
 const MOBILE_QUERY = "(max-width: 767px)"
-// The open column's width, in px: 240 at first, 200 to 320 by dragging its edge. Dragged under 140 it folds to the 72 px rail.
-const WIDTH = { min: 200, start: 240, max: 320, fold: 140, rail: 72, step: 16 }
+// The open column's width, in px: 240 at first, 200 to 320 by dragging its edge. Dragged under 140 it folds to the 68 px rail.
+const WIDTH = { min: 200, start: 240, max: 320, fold: 140, rail: 68, step: 16 }
 const clampWidth = (w: number) => Math.round(Math.min(WIDTH.max, Math.max(WIDTH.min, w)))
 
 export type SidebarLabels = {
@@ -268,12 +268,12 @@ type SidebarProps = React.ComponentProps<"aside"> & {
   side?: "left" | "right"
   /** sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`; SidebarRail sits in the 8 px gap). */
   variant?: "sidebar" | "floating"
-  /** icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
+  /** icon (default): collapses to a 68 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
   collapsible?: "icon" | "offcanvas" | "none"
 }
 
 /**
- * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 72 px rail of icons, and a sheet from the screen's
+ * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 68 px rail of icons, and a sheet from the screen's
  * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
@@ -320,7 +320,7 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         // While the handle is dragged the width follows the pointer as it is, without easing (SidebarRail sets
         // data-resizing on this element); folding, opening and springing back keep the easing.
         "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none data-resizing:transition-none",
-        collapsed ? (hidden ? "w-0" : "w-18") : "w-(--sidebar-width)",
+        collapsed ? (hidden ? "w-0" : "w-17") : "w-(--sidebar-width)",
         variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
         hidden && "border-0 ring-0",
         className,
@@ -730,7 +730,7 @@ const buttonSizes = {
   sm: "h-(--h-sm)",
   /** 44 px: the main links. */
   md: "h-(--h-md)",
-  /** 56 px: a switcher in the header, the account in the footer. Leads with a 32 px mark or avatar, on the rail's centre line. */
+  /** 56 px: a switcher in the header, the account in the footer. Leads with a 28 px mark or avatar, on the rail's centre line. */
   lg: "h-(--h-row) px-2",
 } as const
 
@@ -767,8 +767,9 @@ export function SidebarMenuButton({ asChild = false, isActive = false, size = "m
         "data-[active=true]:bg-muted data-[active=true]:font-medium data-[active=true]:text-foreground data-[active=true]:hover:bg-muted",
         // Focus rings sit inside the item (-outline-offset-2), so they never stick out of the column or get clipped by it.
         "focus-visible:-outline-offset-2 disabled:pointer-events-none disabled:text-disabled aria-disabled:pointer-events-none aria-disabled:text-disabled",
-        // The icon is a 24 px box 12 px in: its centre is the rail's centre line (36 px). Other icons are 16 px.
-        "[&>svg]:shrink-0 [&>svg:first-child]:mx-0.5 [&>svg:first-child]:size-5 [&>svg:not(:first-child)]:size-4",
+        // The icon is 20 px, 12 px in: its centre is the rail's centre line (34 px), so a link on the 68 px rail is a 44 px
+        // square with the same 12 px either side as the open column. Other icons are 16 px.
+        "[&>svg]:shrink-0 [&>svg:first-child]:size-5 [&>svg:not(:first-child)]:size-4",
         "[&>span:nth-child(2)]:min-w-0 [&>span:nth-child(2)]:flex-1 [&>span:nth-child(2)]:truncate",
         // Everything after the icon fades on the rail, except what is marked to stay (a count's dot).
         "[&>:not(:first-child)]:whitespace-nowrap [&>:not(:first-child)]:transition-opacity [&>:not(:first-child)]:duration-(--motion-base) [&>:not(:first-child)]:ease-(--ease-standard)",

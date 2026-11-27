@@ -319,15 +319,13 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
       <DropdownMenuTrigger asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
-        {/* 40 px (44 on touch), 8 px corners: the avatar keeps the rail's centre line and the mark's left edge (pl-2), and
-            the chevron lines up with the counts on the links above (pr-3). As a rail it is a 40 px square on the centre
-            line, the avatar 4 px in on every side. */}
-        <SidebarMenuButton
-          size="lg"
-          tooltip={user.name}
-          className="h-10 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md) group-data-[collapsible=icon]/sidebar:size-10 group-data-[collapsible=icon]/sidebar:self-center group-data-[collapsible=icon]/sidebar:px-1"
-        >
-          <Avatar>
+        {/* 44 px, as the links' buttons, open or as a rail: its width follows the column, so on the 68 px rail it is a 44 px
+            square like theirs, and the 28 px avatar stays 20 px in (pl-2), on the 34 px centre line, all through the fold:
+            nothing switches, nothing jumps. 8 px corners, concentric with the sidebar's 16 at 8 px in; the chevron lines up
+            with the counts on the links above (pr-3), and fades with the name. */}
+        <SidebarMenuButton size="lg" tooltip={user.name} className="h-11 rounded-xs pr-3 pl-2 text-foreground">
+          {/* 28 px, as the mark at the top: both sit 14 px from their edges, on the 34 px centre line. */}
+          <Avatar className="size-7">
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
           <span className="flex flex-col">
@@ -519,7 +517,7 @@ const wideNow = () => window.matchMedia(WIDE).matches
  * The frame of an internal tool, in three zones: the sidebar (navigation, with the user menu at its foot), the top bar
  * (sidebar trigger, page title, environment, search, actions), and the content with its footer.
  *
- * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 72 px rail of icons with tooltips below
+ * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 68 px rail of icons with tooltips below
  * that, until the person toggles it; the choice is kept in a cookie. Collapse is on the sidebar itself: a quiet button at
  * the end of its brand row and, for a mouse, its edge (hover shows a hairline). While it is a rail, the expand button sits
  * at the start of the top bar, and the edge expands it too. ⌘B / Ctrl+B toggles it anywhere. Phones get it as a sheet
@@ -562,14 +560,14 @@ export function AppShell({
       )}
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
-        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The logo sits in a 48 px box
-            12 px in, so its centre is the rail's centre line, open or closed; only the name fades. Flush: lined, level
+        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits in a
+            44 px box 12 px in, so its centre is the rail's centre line (34 px), open or closed; only the name fades. Flush: lined, level
             with the top bar's line. */}
         <SidebarHeader className={cn("h-(--h-row) justify-center border-b py-0", inset ? "border-transparent" : "border-border")}>
           <span className="flex min-w-0 items-center gap-1">
-            <span className="flex w-12 shrink-0 items-center justify-center">
+            <span className="flex w-11 shrink-0 items-center justify-center">
               {logo ?? (
-                <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
+                <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
                   {product.slice(0, 1)}
                 </span>
               )}
@@ -583,8 +581,7 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          // The foot mirrors the head: 56 px, 8 px above and below a 40 px account button, so the avatar sits 12 px from the
-          // bottom as the mark does from the top, and the button's fill (hover, open) never touches the frame: 8 px in, its
+          // 8 px above and below the 44 px account button, so its fill (hover, open) never touches the frame: 8 px in, its
           // 8 px corner concentric with the sidebar's 16.
           <SidebarFooter className={cn("border-t py-2", inset ? "border-transparent" : "border-border")}>
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />

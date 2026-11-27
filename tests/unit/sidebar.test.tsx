@@ -97,7 +97,7 @@ describe("sidebar", () => {
     fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }))
     expect(aside().dataset.state).toBe("collapsed")
     expect(aside().dataset.collapsible).toBe("icon")
-    expect(aside().className).toContain("w-18")
+    expect(aside().className).toContain("w-17")
     fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }))
     expect(aside().dataset.state).toBe("expanded")
   })
@@ -260,7 +260,7 @@ describe("app shell on the sidebar", () => {
     expect(rail.getAttribute("aria-orientation")).toBe("vertical")
     // A rail (the test screen is under 1280 px).
     expect(rail.getAttribute("aria-expanded")).toBeNull()
-    expect(rail.getAttribute("aria-valuenow")).toBe("72")
+    expect(rail.getAttribute("aria-valuenow")).toBe("68")
     fireEvent.pointerDown(rail, { button: 0, clientX: 72, pointerId: 1 })
     fireEvent.pointerUp(rail, { button: 0, clientX: 72, pointerId: 1 })
     expect(aside().dataset.state).toBe("expanded")
