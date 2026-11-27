@@ -18,7 +18,7 @@ const config: NextConfig = {
       { source: "/docs/foundations", destination: "/docs", permanent: true },
       // The icons, now an area of their own.
       { source: "/docs/icons", destination: "/icons", permanent: true },
-      // Patterns drawn without the Chart component have an Applications type of their own (Small charts); /blocks/<name> already follows.
+      // Patterns drawn without the Chart component have a block type of their own (Small charts); /blocks/<name> already follows.
       ...["sparkline", "status-tracker", "radial-chart", "heatmap"].map((slug) => ({
         source: `/blocks/${slug}`,
         destination: "/blocks/data-visualisation",

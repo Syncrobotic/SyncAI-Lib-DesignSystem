@@ -57,7 +57,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **128 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **63 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **63 blocks, 18 patterns** | Blocks are whole screens and sections grouped by product area: shell and navigation (shells, including an action-rail page, the notification bell), identity and account (sign-in, 2FA, passkeys, settings), tenancy and access (members, roles, audit log), fleet operations (overview, map, incidents, maintenance, firmware rollout), data and AI (data operations with a keyboard-first review queue, AI agents), and patterns every area reuses (stats, tables, small charts, cards, forms, wizards, page states). Each says whether it is beta or stable, and whether it renders demo data or only its props. Patterns also include ready-made uses of one component (charts, timelines, dialogs, sheets), which live on that component's page. All install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -93,25 +93,25 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 <!-- catalog:blocks -->
 | Group | Type | Blocks |
 | --- | --- | --- |
-| Applications | App shell | `app-shell`, `top-bar-shell`, `action-rail-shell`, `app-shell-mobile-tabs`, `app-shell-control` |
-| Applications | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
-| Applications | Data table | `fleet-table` |
-| Applications | Small charts | `sparkline-robot-list`, `sparkline-table`, `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout`, `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity`, `heatmap-week-hours`, `heatmap-zones` |
-| Applications | Card | `robot-status-card`, `card-site`, `card-mission` |
-| Applications | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
-| Applications | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
-| Applications | Notifications | `notification-center` |
-| Applications | Form | `record-form` |
-| Applications | Wizard | `wizard-commission`, `wizard-import` |
-| Applications | Empty, loading and error states | `status-pages` |
-| Applications | Landing | `marketing-hero` |
-| Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
-| Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
-| Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
-| Solutions | Incidents | `incident-queue`, `incident-detail` |
-| Solutions | Maintenance | `maintenance-due`, `maintenance-work-order` |
-| Solutions | Firmware rollout | `rollout-overview`, `rollout-plan` |
-| Solutions | AI agents | `agent-runs`, `agent-trace`, `agent-approval`, `agent-chat`, `agent-run-gate`, `agent-run-outcome`, `agent-tool-permissions` |
+| Shell and navigation | App shell | `app-shell`, `top-bar-shell`, `action-rail-shell`, `app-shell-mobile-tabs`, `app-shell-control` |
+| Shell and navigation | Notifications | `notification-center` |
+| Shell and navigation | Landing | `marketing-hero` |
+| Identity and account | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
+| Identity and account | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
+| Tenancy and access | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
+| Fleet operations | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
+| Fleet operations | Incidents | `incident-queue`, `incident-detail` |
+| Fleet operations | Maintenance | `maintenance-due`, `maintenance-work-order` |
+| Fleet operations | Firmware rollout | `rollout-overview`, `rollout-plan` |
+| Data and AI | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
+| Data and AI | AI agents | `agent-runs`, `agent-trace`, `agent-approval`, `agent-chat`, `agent-run-gate`, `agent-run-outcome`, `agent-tool-permissions` |
+| Patterns | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
+| Patterns | Data table | `fleet-table` |
+| Patterns | Small charts | `sparkline-robot-list`, `sparkline-table`, `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout`, `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity`, `heatmap-week-hours`, `heatmap-zones` |
+| Patterns | Card | `robot-status-card`, `card-site`, `card-mission` |
+| Patterns | Form | `record-form` |
+| Patterns | Wizard | `wizard-commission`, `wizard-import` |
+| Patterns | Empty, loading and error states | `status-pages` |
 | Patterns: Alert dialog | Confirm a destructive action | `dialog-confirm-destructive` |
 | Patterns: Dialog | Form and share dialogs | `dialog-form`, `dialog-share` |
 | Patterns: Sheet | Detail sheet | `sheet-robot-detail` |
