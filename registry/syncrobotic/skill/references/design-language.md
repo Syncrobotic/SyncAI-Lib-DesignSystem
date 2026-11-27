@@ -44,7 +44,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 
 ## Radius
 - 2xs 4 (controls 24 px and smaller), xs 8, sm 12, md 16, lg 20, xl 24. Nested corners are concentric: outer = inner + padding when the inner part is within 8 px of the corner.
-- `rounded-full` only for what is round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers.
+- `rounded-full` only for what is round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers, bars inside a rounded row (an alarm's priority bar, a selected row's ink bar).
 - `rounded-[inherit]` is allowed, and only on a child that fills its parent edge to edge so it clips to the same corner: a scroll viewport, an avatar's picture, a link's hit area stretched over a card. It is the parent's step, not a new one; a product lint that enforces the scale should allow it by rule.
 
 ## Elevation

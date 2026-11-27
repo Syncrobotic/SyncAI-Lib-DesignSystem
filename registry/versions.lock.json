@@ -613,7 +613,7 @@
   },
   "list-detail": {
     "version": "0.48.0",
-    "hash": "657e94cca92d2490"
+    "hash": "1d75581877d1bc52"
   },
   "event-log": {
     "version": "0.47.0",
@@ -661,7 +661,7 @@
   },
   "agent-skill": {
     "version": "0.48.0",
-    "hash": "32801451c8a7eef6"
+    "hash": "62e86cd64c1ddf66"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

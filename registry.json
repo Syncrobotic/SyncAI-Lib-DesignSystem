@@ -7984,7 +7984,7 @@
           {
             "version": "0.48.0",
             "date": "2026-11-26",
-            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14. The selected row's ink bar is an inset pill with round ends, as an alarm's priority bar: as an edge it bent round the row's corners."
           },
           {
             "version": "0.47.0",

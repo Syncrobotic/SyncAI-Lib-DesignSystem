@@ -17,6 +17,8 @@ A calmer page: three title sizes in an app shell, a sidebar that says when there
   - **Size and spacing:** the mark above (32 px, was 28) and the avatar below (32 px) sit 12 px from their edges, on the same centre line and the same left edge. The avatar was 20 px from the bottom.
   - **Right edge:** the chevron lines up with the counts on the links (4 px out before).
 
+- **`list-detail` 0.48.0:** the selected row's 2 px ink bar is an inset pill with round ends, as an alarm's priority bar. As an edge (0.47.0) it bent round the rounded row's corners like a bracket; a flat row (a table's, a log's) keeps its straight edge. The Radius foundation lists bars inside a rounded row among what is round.
+
 ### Added
 - **`sidebar` 0.48.0:** when its links are taller than the column, the end that still hides some fades out (a mask, so the surface shows through), and a chevron at the foot says there is more below; a tap on it scrolls a page. A pointer's cue: out of the Tab order, as the keyboard scrolls by moving through the links.
 - **Site checks:** `npm run check:a11y` runs axe (WCAG 2.2 AA) on every docs page and block preview, dark and light, in CI's site checks. The examples are left out, as their stories run axe already. Its first run found one problem in 460 pages: the ROS guide's two wide tables scrolled but could not be reached by keyboard. They are Tab stops now.

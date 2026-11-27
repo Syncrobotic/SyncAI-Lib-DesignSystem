@@ -13,6 +13,7 @@ const SPACING_OK = new Set(["0", "px", "0.5", "1", "2", "3", "4", "6", "8"])
 // Files allowed to use rounded-full, and for what. The Radius page lists the same uses.
 const ROUND = {
   "registry/syncrobotic/ui/alarm.tsx": "the priority bar is a pill with round ends in its own gutter",
+  "registry/syncrobotic/blocks/list-detail.tsx": "a selected row's ink bar is an inset pill with round ends, as the alarm's priority bar",
   "site/site-footer.tsx": "the dot beside the version",
   "registry/syncrobotic/ui/share-bar.tsx": "the bar is a track, and its legend keys are dots",
   "site/icon-gallery.tsx": "the dot that marks the icons the kit has given a meaning",

@@ -88,9 +88,10 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   aria-current={r.id === selected ? "true" : undefined}
                   onClick={() => setSelected(r.id)}
                   className={cn(
-                    "press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-xs px-3 text-left hover:bg-accent",
-                    // Selected is a row's state: the accent fill with its ink bar, as a selected table row; muted is the current page.
-                    r.id === selected && "bg-accent shadow-selected",
+                    "press relative flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-xs px-3 text-left hover:bg-accent",
+                    // Selected is a row's state: the accent fill with its 2 px ink bar; muted is the current page. On a rounded row the
+                    // bar is an inset pill, as an alarm's priority bar, not an edge that would bend round the corners.
+                    r.id === selected && "bg-accent before:absolute before:inset-y-3 before:left-1 before:w-0.5 before:rounded-full before:bg-foreground",
                   )}
                 >
                   <span className="text-sm font-medium">{r.name}</span>
