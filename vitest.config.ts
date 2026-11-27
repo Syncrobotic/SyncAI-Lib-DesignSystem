@@ -47,6 +47,7 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: ["tests/unit/**/*.test.{ts,tsx}"],
-    fakeTimers: { toFake: ["setTimeout", "clearTimeout", "requestAnimationFrame", "cancelAnimationFrame", "performance"] },
+    // Date and intervals too: a component that reads Date.now() beside a setTimeout sees one clock, not two that drift.
+    fakeTimers: { toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval", "Date", "requestAnimationFrame", "cancelAnimationFrame", "performance"] },
   },
 })
