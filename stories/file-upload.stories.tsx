@@ -75,7 +75,7 @@ export const FileUploadSingleImage: S = {
     return (
       <FileUpload multiple={false} accept="image/*" onFiles={([f]) => setUrl(URL.createObjectURL(f))} className="size-40 p-0">
         {url ? (
-          <img src={url} alt="Site photo" className="size-full rounded-md object-cover" />
+          <img src={url} alt="The chosen site" className="size-full rounded-md object-cover" />
         ) : (
           <span className="flex flex-col items-center gap-2 text-muted-foreground">
             <ImagePlus aria-hidden="true" className="size-6" />

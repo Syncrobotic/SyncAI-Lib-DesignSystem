@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.32.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.50.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,7 +14,7 @@ export type { DateRange }
 export type DatePreset<T> = { label: string; value: () => T }
 
 const trigger =
-  "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) aria-invalid:ring-2 aria-invalid:ring-danger disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border data-[empty=true]:text-muted-foreground"
+  "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) data-invalid:ring-2 data-invalid:ring-danger disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border data-[empty=true]:text-muted-foreground"
 
 export type DatePickerLabels = {
   /** DatePicker's trigger when no day is picked. */
@@ -106,6 +106,7 @@ export function DatePicker({
       {presets && (
         <Presets presets={presets} label={l.presets} active={(p) => !!value && isSameDay(p.value(), value)} onPick={(p) => pick(p.value())} />
       )}
+      {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the calendar opens on a press of the trigger; focus goes to the picked day */}
       <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} today={today} locale={calendarLocale} autoFocus />
     </Picker>
   )
@@ -176,6 +177,7 @@ export function DateRangePicker({
         disabled={disabledDays}
         today={today}
         locale={calendarLocale}
+        // eslint-disable-next-line jsx-a11y/no-autofocus -- the calendar opens on a press of the trigger; focus goes to the picked day
         autoFocus
       />
     </Picker>
@@ -249,7 +251,7 @@ function Picker({
             // The name is the label followed by the shown value, so it contains what is on screen (WCAG 2.5.3).
             aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
             aria-describedby={field?.describedBy}
-            aria-invalid={field?.invalid || undefined}
+            data-invalid={field?.invalid || undefined} // A button takes no aria-invalid (ARIA 1.2); the error is in aria-describedby.
             data-empty={empty}
             disabled={disabled}
             className={cn(trigger, onClear && "pr-(--h-md)")}

@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.42.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.50.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -620,6 +620,7 @@ export function Graph({
   const marker = (k: "rest" | "on" | "off") => `${uid}-arrow-${k}`.replace(/:/g, "")
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- arrow keys bubbled from the focused node move between nodes; the nodes are the Tab stop
     <div
       ref={root}
       data-slot="graph"
@@ -640,6 +641,7 @@ export function Graph({
           view by the keys scrolls it too, so the graph stays one Tab stop. */}
       <Viewport>
         <div className="w-max p-4">
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- a pointer shortcut: Esc on the graph clears the selection from the keyboard */}
           <div
             className="relative"
             style={{ width: layout.width, height: layout.height }}

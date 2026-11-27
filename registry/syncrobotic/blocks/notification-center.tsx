@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.48.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.50.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
@@ -259,6 +259,7 @@ export function NotificationPanel({
           }
         />
       ) : (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- arrow keys bubbled from the notification links move between them; the links are the Tab stops
         <div ref={list} onKeyDown={onKeyDown} className="-mx-3 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain px-1">
           {groups.map((g) => (
             <section key={g.key} aria-labelledby={`notif-day-${g.key}`} className="flex flex-col gap-1">

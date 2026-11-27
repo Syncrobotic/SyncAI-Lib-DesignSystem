@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-uptime v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
+// @syncrobotic/status-tracker-uptime v0.50.0 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
 "use client"
 
 import * as React from "react"
@@ -33,6 +33,7 @@ function Strip({ label, days }: { label: string; days: Day[] }) {
     cells.current[to]?.focus()
   }
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- arrow keys bubbled from the roving-tabindex day cells move between them
     <span
       role="group"
       aria-label={label}

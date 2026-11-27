@@ -1,4 +1,4 @@
-// @syncrobotic/message-scroller v0.41.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
+// @syncrobotic/message-scroller v0.50.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
 "use client"
 
 import * as React from "react"
@@ -241,6 +241,7 @@ export function MessageScroller({
         role="log"
         aria-live="off"
         aria-label={l.name}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
         tabIndex={0}
         onScroll={onScroll}
         // Anchoring is done above, the same in every browser; the browser's own would move the view twice.

@@ -954,8 +954,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -1329,8 +1334,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -1589,9 +1599,14 @@
         }
       ],
       "meta": {
-        "version": "0.19.0",
+        "version": "0.50.0",
         "status": "beta",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.19.0",
             "date": "2026-11-20",
@@ -1666,8 +1681,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -1722,8 +1742,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3067,8 +3092,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -3248,8 +3278,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3481,8 +3516,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "BreadcrumbLink renders its children inside the link (it was a self-closing anchor fed children through props); output unchanged."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -3623,8 +3663,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Rows show the pointer cursor, as everything clickable in the kit."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3682,8 +3727,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.49.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -3739,8 +3789,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.42.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.42.0",
             "date": "2026-11-26",
@@ -3807,8 +3862,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5260,8 +5320,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.37.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -5335,8 +5400,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.47.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -5398,8 +5468,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5550,8 +5625,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.45.1",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -5743,8 +5823,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.49.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -6010,8 +6095,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -6260,8 +6350,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "An invalid trigger is marked data-invalid instead of aria-invalid (not allowed on a button); the error is still read through aria-describedby and the ring is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6331,8 +6426,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "An invalid trigger is marked data-invalid instead of aria-invalid (not allowed on a button); the error is still read through aria-describedby and the ring is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6408,8 +6508,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -6690,8 +6795,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.42.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.42.0",
             "date": "2026-11-26",
@@ -6728,8 +6838,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -6983,8 +7098,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "A disabled step is marked data-disabled instead of aria-disabled on its list item (not allowed there); its screen-reader text already says it is unavailable."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7283,8 +7403,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -9718,8 +9843,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -10628,8 +10758,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -10732,8 +10867,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10952,8 +11092,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -12304,8 +12449,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -12431,8 +12581,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.50.0",
         "changelog": [
+          {
+            "version": "0.50.0",
+            "date": "2026-11-27",
+            "note": "Linted for accessibility in the markup; its deliberate focus and keyboard patterns carry their reasons. No change to what it renders."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",

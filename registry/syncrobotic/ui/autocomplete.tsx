@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.49.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.50.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -236,6 +236,7 @@ export function Autocomplete({
                 .map((o) => {
                   const isActive = enabled[active]?.value === o.value
                   return (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus -- focus stays in the combobox input (aria-activedescendant); its arrow keys and Enter pick the option
                     <div
                       key={o.value}
                       id={optionId(o)}

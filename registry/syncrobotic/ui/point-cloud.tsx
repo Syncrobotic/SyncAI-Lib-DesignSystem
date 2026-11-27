@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.45.1 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.50.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -1282,12 +1282,14 @@ export function PointCloud({
         style={{ "--point-cloud-ratio": aspectRatio } as React.CSSProperties}
         className="relative isolate aspect-(--point-cloud-ratio) w-full overflow-hidden rounded-md bg-map ring-1 ring-border"
       >
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- an interactive view: the keys move the camera (0 resets it), as the pointer does */}
         <div
           ref={surfaceRef}
           role="img"
           // The name stays the same while scans arrive; what changes (the count, the extent) is in the description.
           aria-label={`${label}, ${l.viewName}`}
           aria-describedby={interactive ? `${summaryId} ${keysId}` : summaryId}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- an interactive view (the keys move the camera) must take focus
           tabIndex={interactive ? 0 : undefined}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}

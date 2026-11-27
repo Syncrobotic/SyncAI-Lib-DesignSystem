@@ -1,4 +1,4 @@
-// @syncrobotic/code-block v0.19.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
+// @syncrobotic/code-block v0.50.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
 "use client"
 
 import * as React from "react"
@@ -176,6 +176,7 @@ export function CodeBlock({
           data-slot="code-block-scroll"
           role="group"
           aria-label={title ?? labels.code}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={focusable ? 0 : undefined}
           style={words ? undefined : scrollFadeMask(edges)}
           // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.

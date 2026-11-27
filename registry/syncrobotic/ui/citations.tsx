@@ -1,4 +1,4 @@
-// @syncrobotic/citations v0.41.0 · update: npx shadcn add @syncrobotic/citations --overwrite
+// @syncrobotic/citations v0.50.0 · update: npx shadcn add @syncrobotic/citations --overwrite
 "use client"
 
 import * as React from "react"
@@ -243,6 +243,7 @@ function SourceEntry({ n, source, ctx }: { n: number; source: CitationSource; ct
   const where = citationLocation(source)
   const lit = ctx.active === n
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- a jump target (tabIndex -1) for its citation; Esc here returns to the citation, hover mirrors focus
     <li
       id={`${ctx.id}-source-${n}`}
       tabIndex={-1}

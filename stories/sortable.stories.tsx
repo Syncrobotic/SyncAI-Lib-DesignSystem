@@ -253,7 +253,8 @@ export const SortableLongList: S = {
   render: function L() {
     const [items, setItems] = React.useState(Array.from({ length: 14 }, (_, i) => ({ id: String(i), name: `Waypoint ${i + 1}` })))
     return (
-      <div className="h-56 overflow-y-auto rounded-md p-2 ring-1 ring-border" tabIndex={0} aria-label="Waypoints">
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
+      <div role="region" className="h-56 overflow-y-auto rounded-md p-2 ring-1 ring-border" tabIndex={0} aria-label="Waypoints">
         <Sortable value={items} onValueChange={setItems} getId={(x) => x.id} getLabel={(x) => x.name} className="gap-1">
           {items.map((x) => (
             <SortableItem key={x.id} id={x.id}>
