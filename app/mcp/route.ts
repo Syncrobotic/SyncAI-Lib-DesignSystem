@@ -1,6 +1,7 @@
 import pkg from "../../package.json"
 import registry from "../../registry.json"
-import { blockMarkdown, componentMarkdown, designLanguage } from "@/site/ai"
+import { blockMarkdown, componentMarkdown, designLanguage, robotIconsMarkdown } from "@/site/ai"
+import { getBlockType, placement } from "@/site/block-types"
 import { getItem, items, readSource } from "@/site/catalog"
 import { site } from "@/site/config"
 import { overviews } from "@/site/overview"
@@ -11,6 +12,10 @@ import { overviews } from "@/site/overview"
 
 const PROTOCOL = "2025-06-18"
 const blocks = registry.items.filter((i) => i.type === "registry:block")
+// Installable names that are neither a component page nor a block.
+const extras = ["syncrobotic-theme", "agent-skill", "robot-icons"]
+/** A block, or a pattern: a ready-made use of one component, as blockMarkdown calls it. */
+const blockKind = (name: string) => (getBlockType(placement[name]?.type ?? "")?.home ? "pattern" : "block")
 const install = (names: string[]) => `npx shadcn add ${names.map((n) => `@syncrobotic/${n}`).join(" ")}`
 
 type Tool = {
@@ -38,11 +43,12 @@ const tools: Tool[] = [
           text: i.description ?? "",
           use: overviews[i.name]?.use.join(" ") ?? "",
         })),
-        ...blocks.map((b) => ({ name: b.name, kind: "block", text: b.description ?? "", use: "" })),
+        ...blocks.map((b) => ({ name: b.name, kind: blockKind(b.name), text: b.description ?? "", use: "" })),
+        { name: "robot-icons", kind: "icons", text: registry.items.find((i) => i.name === "robot-icons")?.description ?? "", use: "" },
       ]
-      // Rank by how many of the query's words an item matches; at a tie, components before blocks (blocks are built from
-      // components, so the component is the answer to a need and the block an example of it); then by weight (a word in
-      // the name counts more). "battery level" finds Meter before the chart blocks that show a battery.
+      // Rank by how many of the query's words an item matches; at a tie, components before blocks and patterns (built
+      // from components, so the component is the answer to a need and the block an example of it); then by weight (a word
+      // in the name counts more). "battery level" finds Meter before the chart blocks that show a battery.
       const score = (r: (typeof rows)[number]) => {
         const hay = `${r.name} ${r.text} ${r.use}`.toLowerCase()
         const matched = words.filter((w) => hay.includes(w)).length
@@ -52,7 +58,7 @@ const tools: Tool[] = [
       const hits = rows
         .map((r) => ({ r, s: score(r) }))
         .filter((x) => x.s.matched > 0)
-        .sort((a, b) => b.s.matched - a.s.matched || Number(a.r.kind === "block") - Number(b.r.kind === "block") || b.s.weight - a.s.weight)
+        .sort((a, b) => b.s.matched - a.s.matched || Number(!a.r.kind.startsWith("component")) - Number(!b.r.kind.startsWith("component")) || b.s.weight - a.s.weight)
         .slice(0, 10)
       if (!hits.length) return `Nothing matches "${query}". Read ${site.url}/llms.txt for the full index.`
       return hits.map(({ r }) => `- ${r.name} (${r.kind}): ${r.text}${r.use ? `\n  Use for: ${r.use}` : ""}`).join("\n")
@@ -61,11 +67,11 @@ const tools: Tool[] = [
   {
     name: "get_item",
     description:
-      "Everything about one component or block: what it is, when to use it and what to use instead, rules, keyboard, agent notes, install command, version. Call this before using an item.",
+      "Everything about one component, block, pattern or robot-icons: what it is, when to use it and what to use instead, rules, keyboard, agent notes, install command, version. Call this before using an item.",
     inputSchema: { type: "object", properties: { name: { type: "string", description: "e.g. meter, app-shell" } }, required: ["name"] },
     run: ({ name }) => {
       const n = String(name ?? "")
-      return componentMarkdown(n) ?? blockMarkdown(n) ?? `No item "${n}". Use search, or read ${site.url}/llms.txt.`
+      return componentMarkdown(n) ?? blockMarkdown(n) ?? robotIconsMarkdown(n) ?? `No item "${n}". Use search, or read ${site.url}/llms.txt.`
     },
   },
   {
@@ -74,7 +80,7 @@ const tools: Tool[] = [
     inputSchema: { type: "object", properties: { names: { type: "array", items: { type: "string" } } }, required: ["names"] },
     run: ({ names }) => {
       const list = (Array.isArray(names) ? names : []).map(String)
-      const unknown = list.filter((n) => !getItem(n) && !blocks.some((b) => b.name === n) && n !== "syncrobotic-theme" && n !== "agent-skill")
+      const unknown = list.filter((n) => !getItem(n) && !blocks.some((b) => b.name === n) && !extras.includes(n))
       if (unknown.length) return `Unknown: ${unknown.join(", ")}. Use search to find the right names.`
       return `${install(list)}\n\nFirst time in a project: ${install(["syncrobotic-theme"])}`
     },

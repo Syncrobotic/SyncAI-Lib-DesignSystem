@@ -3,7 +3,7 @@ import Link from "next/link"
 import { pageMeta } from "@/site/config"
 import { DocHeader } from "@/site/doc"
 import { IconGallery } from "@/site/icon-gallery"
-import { categorySlug, iconCount, iconGroups } from "@/site/icons"
+import { categorySlug, iconCategoryAliases, iconCount, iconGroups } from "@/site/icons"
 
 export const metadata: Metadata = pageMeta({
   title: "Icons",
@@ -16,16 +16,11 @@ export default function IconsPage() {
   const groups = iconGroups.map((g) => ({
     title: g.title,
     slug: categorySlug(g.title),
-    note: g.from ? (
-      <>
-        Not in Lucide. Install <code className="font-mono text-xs">npx shadcn add @syncrobotic/robot-icons</code>; they take Lucide&apos;s props.
-      </>
-    ) : undefined,
-    icons: g.icons.map(({ name, Icon, means }) => ({
+    icons: g.icons.map(({ name, Icon, means, from }) => ({
       name,
       means,
       glyph: <Icon />,
-      from: g.from ? ("@/components/ui/robot-icons" as const) : ("lucide-react" as const),
+      from: from ? ("@/components/ui/robot-icons" as const) : ("lucide-react" as const),
     })),
   }))
   return (
@@ -39,9 +34,10 @@ export default function IconsPage() {
         <Link href="/docs/foundations/iconography" className="text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
           Iconography
         </Link>
-        . Lint rejects a Lucide import that is not in this set.
+        . Lint rejects a Lucide import that is not in this set. Icons marked Kit are not in Lucide: install{" "}
+        <code className="font-mono text-xs">npx shadcn add @syncrobotic/robot-icons</code>; they take Lucide&apos;s props.
       </p>
-      <IconGallery groups={groups} total={iconCount} placeholder="Search by name or meaning" />
+      <IconGallery groups={groups} total={iconCount} placeholder="Search by name or meaning" aliases={iconCategoryAliases} />
     </article>
   )
 }

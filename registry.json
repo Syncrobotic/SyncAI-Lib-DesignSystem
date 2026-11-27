@@ -187,7 +187,7 @@
     {
       "name": "feedback",
       "type": "registry:lib",
-      "title": "Feedback",
+      "title": "Feedback cues",
       "description": "Vibration patterns per safety moment (stop sent, confirmed, unconfirmed, release, drive start and stop, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
       "files": [
         {

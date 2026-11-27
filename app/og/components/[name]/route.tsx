@@ -1,4 +1,4 @@
-import { getItem, items } from "@/site/catalog"
+import { getItem, itemKind, items } from "@/site/catalog"
 import { snippet } from "@/site/config"
 import { ogCard } from "@/site/og-card"
 
@@ -8,6 +8,6 @@ export const generateStaticParams = () => items.map((i) => ({ name: i.name }))
 
 export async function GET(_: Request, { params }: { params: Promise<{ name: string }> }) {
   const item = getItem((await params).name)!
-  const kind = item.group === "Hooks & libraries" ? "React hook" : `React component · ${item.group}`
+  const kind = item.group === "Hooks and libraries" ? itemKind(item) : `${itemKind(item)} · ${item.group}`
   return ogCard({ kind, title: item.title, line: snippet(item.description ?? "") })
 }

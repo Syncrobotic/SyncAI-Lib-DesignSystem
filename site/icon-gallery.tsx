@@ -24,8 +24,16 @@ export type GalleryIcon = {
   from: "lucide-react" | "@/components/ui/robot-icons"
 }
 /** A group of icons; with a `slug` it is a category the grid can be filtered to (?category=slug). */
-export type GalleryGroup = { title: string; slug?: string; icons: GalleryIcon[]; note?: React.ReactNode }
-type GalleryProps = { groups: GalleryGroup[]; total: number; placeholder: string; /** Dot the icons the kit has given a meaning (the full Lucide list). */ markKit?: boolean }
+export type GalleryGroup = { title: string; slug?: string; icons: GalleryIcon[] }
+type GalleryProps = {
+  groups: GalleryGroup[]
+  total: number
+  placeholder: string
+  /** Dot the icons the kit has given a meaning (the full Lucide list). */
+  markKit?: boolean
+  /** Old category addresses and the category each now reads as. */
+  aliases?: Record<string, string>
+}
 
 // The kit's three icon sizes (Iconography), each tied to the controls it sits in.
 const sizes = [
@@ -78,7 +86,8 @@ function GalleryInAddress(props: GalleryProps) {
  * details in the site's side panel, the one the Code button opens: the drawing at the kit's sizes, what it means, and
  * what to copy. The address names the open icon, so it can be linked; closing the panel puts focus back on the tile.
  */
-function Gallery({ groups, total, placeholder, markKit = false, category }: GalleryProps & { category: string | null }) {
+function Gallery({ groups, total, placeholder, markKit = false, aliases, category: asked }: GalleryProps & { category: string | null }) {
+  const category = (asked && aliases?.[asked]) ?? asked
   const [query, setQuery] = React.useState("")
   const [size, setSize] = React.useState<Size>("24")
   // The icon stays picked while the panel animates shut, so its content does not blank mid-exit.
@@ -218,7 +227,6 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
               <h2 className="text-sm font-bold">
                 {g.title} <span className="font-normal text-muted-foreground tabular-nums">{g.icons.length}</span>
               </h2>
-              {g.note && <p className="text-sm text-muted-foreground">{g.note}</p>}
             </div>
           )}
           {/* Square tiles, the drawing alone at rest; the name shows on hover and keyboard focus, and in the details. A touch screen
@@ -232,7 +240,7 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
                   aria-haspopup="dialog"
                   aria-pressed={open && picked?.name === i.name}
                   data-icon={i.name}
-                  aria-label={i.means ? `${i.name}: ${i.means}` : i.name}
+                  aria-label={`${i.means ? `${i.name}: ${i.means}` : i.name}${i.from === "lucide-react" ? "" : " (drawn for the kit, not in Lucide)"}`}
                   onClick={() => pick(i)}
                   className="press group icon-tile"
                 >
@@ -253,6 +261,12 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
                       </React.Fragment>
                     ))}
                   </span>
+                  {/* An icon the kit draws itself says so on its tile: it installs from robot-icons, not lucide-react. */}
+                  {i.from !== "lucide-react" && (
+                    <span aria-hidden className="absolute top-1.5 left-1.5 rounded-xs px-1 text-xs leading-4 text-muted-foreground ring-1 ring-border">
+                      Kit
+                    </span>
+                  )}
                   {/* In the full Lucide list, a dot marks the icons the kit has given a meaning. */}
                   {markKit && i.means && <span aria-hidden className="absolute top-2 right-2 size-1.5 rounded-full bg-foreground" />}
                 </button>

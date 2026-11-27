@@ -3,7 +3,7 @@ import * as React from "react"
 import { notFound } from "next/navigation"
 import { pageMeta } from "@/site/config"
 import { ChangelogList } from "@/site/changelog-list"
-import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catalog"
+import { getItem, itemKind, items, readSource, storyNames, storyTitle } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
@@ -15,17 +15,24 @@ import { LazyCode } from "@/site/lazy-code"
 import { overviews } from "@/site/overview"
 import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
-import { patternsOf } from "@/site/block-types"
+import { getBlockType, patternsOf } from "@/site/block-types"
 import { blocksOfType } from "@/site/blocks"
 import { apiOf } from "@/site/source-api"
 
-/** `name` becomes a link to that component's page; other backticked words stay code. */
+/** `name` becomes a link to that component's page, `/blocks/type` to that block type's; other backticked words stay code. */
 function Linked({ text }: { text: string }) {
   return (
     <>
       {text.split(/(`[^`]+`)/).map((part, i) => {
         if (!part.startsWith("`")) return part
         const word = part.slice(1, -1)
+        const type = word.startsWith("/blocks/") ? getBlockType(word.slice("/blocks/".length)) : undefined
+        if (type)
+          return (
+            <a key={i} href={word} className={`font-medium ${textLink}`}>
+              {type.title}
+            </a>
+          )
         const target = findItem(word)
         return target ? (
           <a key={i} href={`/docs/components/${word}`} className={`font-medium ${textLink}`}>
@@ -49,7 +56,7 @@ type Props = { params: Promise<{ name: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getItem((await params).name)
   if (!item) return {}
-  const title = `${item.title} — React ${item.group === "Hooks & libraries" ? "hook" : "component"}`
+  const title = `${item.title} — ${itemKind(item)}`
   return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}`, image: `/og/components/${item.name}` })
 }
 
