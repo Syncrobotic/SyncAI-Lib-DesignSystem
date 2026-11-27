@@ -9,5 +9,5 @@ export const generateStaticParams = () => blockTypes.filter((t) => blocksOfType(
 
 export async function GET(_: Request, { params }: { params: Promise<{ name: string }> }) {
   const t = getBlockType((await params).name)!
-  return ogCard({ kind: "Blocks", title: `${t.title} blocks`, line: snippet(t.description) })
+  return ogCard({ kind: `Blocks · ${t.group}`, title: `${t.title} blocks`, line: snippet(t.description) })
 }

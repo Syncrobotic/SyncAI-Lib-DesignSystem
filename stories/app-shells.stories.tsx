@@ -57,8 +57,8 @@ export const RecordFormScreen: S = { render: () => <RecordForm /> }
 export const UsersRolesScreen: S = { render: () => <UsersRoles /> }
 export const SignInScreen: S = { render: () => <SignIn /> }
 export const NotFoundScreen: S = { render: () => <NotFoundPage /> }
-export const NoAccessScreen: S = { render: () => <NoAccessPage /> }
-export const ErrorScreen: S = { render: () => <ErrorPage /> }
+export const NoAccessScreen: S = { render: () => <NoAccessPage permission="audit-logs:read" /> }
+export const ErrorScreen: S = { render: () => <ErrorPage reference="a7f3-22c1" /> }
 export const OfflineScreen: S = { render: () => <OfflinePage /> }
 export const LoadingScreen: S = { render: () => <LoadingPage /> }
 // A 404 inside a product's frame: the shell's <main> holds it (no second main), the top bar has no page title so the page

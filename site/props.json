@@ -3631,6 +3631,134 @@
    "inherits": []
   }
  ],
+ "data-state": [
+  {
+   "name": "DataState",
+   "props": [
+    {
+     "name": "state",
+     "type": "\"loading\" | \"empty\" | \"error\" | \"forbidden\" | \"stale\" | \"ready\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "{ code: string; message?: string } | null",
+     "description": "For `error`: the code picks the copy."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows Try again on `error` and `stale`."
+    },
+    {
+     "name": "retrying",
+     "type": "boolean",
+     "default": "false",
+     "description": "While the retry runs: the button keeps its place and shows it is busy."
+    },
+    {
+     "name": "updatedAt",
+     "type": "string",
+     "description": "When the shown data was fetched, already formatted (a clock time, \"2 min ago\"), for the stale notice."
+    },
+    {
+     "name": "empty",
+     "type": "Message",
+     "description": "The empty state's icon, words and the one action that fills it (\"Add device\")."
+    },
+    {
+     "name": "forbidden",
+     "type": "Message",
+     "description": "The forbidden state's words, e.g. which permission is missing and who grants it."
+    },
+    {
+     "name": "skeleton",
+     "type": "ReactNode",
+     "description": "The shape of the content while loading; default three lines of bones."
+    },
+    {
+     "name": "size",
+     "type": "\"panel\" | \"inline\"",
+     "default": "\"panel\"",
+     "description": "`panel` (default) in a card or a section; `inline` in a table, a list or a small panel."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DataStateLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading…\"",
+       "description": "What is loading, beside the spinner."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing here yet\"",
+       "description": "The empty title when `empty` gives none."
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"This did not load\"",
+       "description": "The error's title."
+      },
+      {
+       "name": "errorBody",
+       "type": "string",
+       "default": "\"Something went wrong on our side or on the way. Try again; nothing was changed.\"",
+       "description": "The error's description when its code has none in `errors`."
+      },
+      {
+       "name": "errors",
+       "type": "Record<string, string>",
+       "default": "{ NETWORK_ERROR: \"We could not reach the server. Check the connection, then try again.\", RATE_LIMITED: \"Too many requests in a short time. Wait a minute, then try again.\", SERVICE_UNAVAILABLE: \"The service is down for maintenance or overloaded. Try again in a few minutes.\", }",
+       "description": "A description per error code, e.g. `{ RATE_LIMITED: \"Too many requests. Wait a minute, then try again.\" }`."
+      },
+      {
+       "name": "code",
+       "type": "(code: string) => string",
+       "default": "(code) => `Code: ${code}`",
+       "description": "The code under the description, for support."
+      },
+      {
+       "name": "forbidden",
+       "type": "string",
+       "default": "\"You do not have access to this\"",
+       "description": ""
+      },
+      {
+       "name": "forbiddenBody",
+       "type": "string",
+       "default": "\"Your permissions do not include it. An admin of this project can change them.\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "(updatedAt?: string) => string",
+       "default": "(updatedAt) => (updatedAt ? `Showing data from ${updatedAt}. It may be out of date.` : \"This may be out of date: the last update did not arrive.\")",
+       "description": "The notice above stale content; `updatedAt` is the time as you wrote it, when you pass one."
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Try again\"",
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "The content, shown when ready and when stale."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "date-selector": [
   {
    "name": "DatePicker",
@@ -9185,6 +9313,82 @@
    "inherits": []
   }
  ],
+ "permission-gate": [
+  {
+   "name": "PermissionGate",
+   "props": [
+    {
+     "name": "allowed",
+     "type": "boolean",
+     "description": "The decision, when you already have it. Wins over `can`."
+    },
+    {
+     "name": "can",
+     "type": "(permission: string) => boolean",
+     "description": "Your permission check, e.g. CASL's `(p) => ability.can(...)` or `permissionsFrom(session.permissions)`."
+    },
+    {
+     "name": "permission",
+     "type": "string | readonly string[]",
+     "description": "The permission string, or several (all needed; any with `match=\"any\"`)."
+    },
+    {
+     "name": "match",
+     "type": "\"all\" | \"any\"",
+     "description": ""
+    },
+    {
+     "name": "mode",
+     "type": "\"hidden\" | \"disabled\" | \"read-only\" | \"forbidden\"",
+     "default": "\"hidden\"",
+     "description": ""
+    },
+    {
+     "name": "reason",
+     "type": "ReactNode",
+     "description": "Why it is not allowed, and who can change it: the tooltip and description of `disabled`, the line of `read-only`, the body of `forbidden`."
+    },
+    {
+     "name": "fallback",
+     "type": "ReactNode",
+     "default": "null",
+     "description": "Shown instead when `hidden`; nothing by default."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<PermissionGateLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "readOnly",
+       "type": "string",
+       "default": "\"View only: you can see this but not change it.\"",
+       "description": "The line above read-only content."
+      },
+      {
+       "name": "forbidden",
+       "type": "string",
+       "default": "\"You do not have access to this\"",
+       "description": ""
+      },
+      {
+       "name": "forbiddenBody",
+       "type": "string",
+       "default": "\"Your permissions do not include it. An admin of this project can change them.\"",
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "children",
+     "type": "ReactNode | ((state: { readOnly: boolean; }) => ReactNode)",
+     "required": true,
+     "description": "For `disabled`: one control (a button, a link, a menu item). A function gets `readOnly` and renders the values itself."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "phone-input": [
   {
    "name": "PhoneInput",
@@ -12491,6 +12695,152 @@
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "default": "\"offline\"",
      "description": "active (busy), normal, warning, danger or offline (the default)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "step-up-dialog": [
+  {
+   "name": "StepUpDialog",
+   "props": [
+    {
+     "name": "open",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "setup",
+     "type": "boolean",
+     "default": "false",
+     "description": "No second factor yet (TWO_FACTOR_SETUP_REQUIRED): offers `onSetup` instead of a field."
+    },
+    {
+     "name": "verify",
+     "type": "(proof: StepUpProof) => Promise<void>",
+     "required": true,
+     "description": "Checks the proof with your auth server; rejects with an error whose `code` picks the message."
+    },
+    {
+     "name": "onVerified",
+     "type": "() => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onCancel",
+     "type": "() => void",
+     "required": true,
+     "description": "Cancel, Esc, the close button or a click outside."
+    },
+    {
+     "name": "onSetup",
+     "type": "() => void",
+     "description": "Goes to the second-factor setup (your router); the pending action is cancelled."
+    },
+    {
+     "name": "methods",
+     "type": "readonly (\"totp\" | \"password\")[]",
+     "default": "[\"totp\"]",
+     "description": "Which proofs to offer, the first shown first."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StepUpDialogLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Confirm it is you\"",
+       "description": ""
+      },
+      {
+       "name": "totpBody",
+       "type": "string",
+       "default": "\"This action needs a fresh check. Enter the 6-digit code from your authenticator app.\"",
+       "description": "Under the title, per method."
+      },
+      {
+       "name": "passwordBody",
+       "type": "string",
+       "default": "\"This action needs a fresh check. Enter your password.\"",
+       "description": ""
+      },
+      {
+       "name": "code",
+       "type": "string",
+       "default": "\"6-digit code\"",
+       "description": "The code field's name."
+      },
+      {
+       "name": "password",
+       "type": "string",
+       "default": "\"Password\"",
+       "description": ""
+      },
+      {
+       "name": "usePassword",
+       "type": "string",
+       "default": "\"Use your password instead\"",
+       "description": "Switches between the methods when both are offered."
+      },
+      {
+       "name": "useCode",
+       "type": "string",
+       "default": "\"Use an authenticator code instead\"",
+       "description": ""
+      },
+      {
+       "name": "verify",
+       "type": "string",
+       "default": "\"Verify\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "close",
+       "type": "string",
+       "default": "\"Close\"",
+       "description": ""
+      },
+      {
+       "name": "setupTitle",
+       "type": "string",
+       "default": "\"Turn on two-step verification\"",
+       "description": "When no second factor is set up yet, so there is nothing to check."
+      },
+      {
+       "name": "setupBody",
+       "type": "string",
+       "default": "\"This action needs a second check, and your account has no second factor yet. Set one up, then try again.\"",
+       "description": ""
+      },
+      {
+       "name": "setup",
+       "type": "string",
+       "default": "\"Set up two-step verification\"",
+       "description": ""
+      },
+      {
+       "name": "errors",
+       "type": "Record<string, string>",
+       "default": "{ INVALID_CODE: \"That code is not right. Codes change every 30 seconds: try the current one.\", INVALID_PASSWORD: \"That password is not right.\", RATE_LIMITED: \"Too many tries. Wait a minute, then try again.\", }",
+       "description": "The message when verify fails, per error code; `failed` when its code has none."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"That did not work. Try again.\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []

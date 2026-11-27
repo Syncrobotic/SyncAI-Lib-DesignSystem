@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/docs/robotics", priority: 0.9 },
     { path: "/docs/ros", priority: 0.8 },
     { path: "/docs/nextjs", priority: 0.7 },
+    { path: "/docs/nextjs/data", priority: 0.6 },
     { path: "/docs/localisation", priority: 0.7 },
     { path: "/docs/tokens", priority: 0.7 },
     { path: "/docs/upgrading", priority: 0.7 },

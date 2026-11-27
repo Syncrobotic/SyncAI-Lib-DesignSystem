@@ -62,7 +62,7 @@ describe("notification center", () => {
     flush()
     expect(screen.queryByRole("button", { name: "Mark as read: Weekly patrol report is ready" })).toBeNull()
     expect(document.activeElement?.getAttribute("data-notification-link")).toBe("n2")
-    expect(screen.getByRole("status").textContent).toBe("Marked as read: Weekly patrol report is ready")
+    expect(screen.getByText("Marked as read: Weekly patrol report is ready").getAttribute("role")).toBe("status")
     vi.useRealTimers()
   })
 
@@ -103,7 +103,7 @@ describe("notification center", () => {
     rerender(<NotificationPanel {...clock} notifications={[]} onMarkRead={() => {}} status="loading" />)
     expect(screen.getByText("Loading notifications")).toBeTruthy()
     rerender(<NotificationPanel {...clock} notifications={[]} onMarkRead={() => {}} status="error" onRetry={onRetry} />)
-    expect(screen.getByText("Notifications did not load")).toBeTruthy()
+    expect(screen.getAllByText("Notifications did not load").length).toBeGreaterThan(0)
     fireEvent.click(screen.getByRole("button", { name: "Try again" }))
     expect(onRetry).toHaveBeenCalled()
   })

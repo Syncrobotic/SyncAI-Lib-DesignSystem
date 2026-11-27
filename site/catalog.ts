@@ -92,6 +92,10 @@ export type StoryFile =
   | "bar-list"
   | "thumbnail"
   | "viewport-overlay"
+  | "data-state"
+  | "permission-gate"
+  | "step-up-dialog"
+  | "list-query"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -862,6 +866,29 @@ const entries: Record<string, Entry> = {
       "The panel's icon sits on IconTile; inline and overlay icons are bare. Never a tile of its own.",
     ],
   },
+  "data-state": {
+    group: "Feedback",
+    examples: { file: "data-state", prefix: "DataState" },
+    rules: [
+      "Every region that fetches goes through it: a card, a table, a panel. Pick the state with `dataStateOf` from what the fetch knows, so a page never invents its own order of checks.",
+      "Empty only when the server's `total` is 0, never `items.length` of a page. A search or filter with no match is empty with an action that clears it, not an error.",
+      "An error's copy comes from its code: pass the envelope's `{ code, message }` and add a sentence per code to `labels.errors`. The message is for logs; it is never shown or parsed. An unknown code falls back to the general sentence, with the code under it for support.",
+      "A refetch that fails with data in hand is stale, not an error: keep the content, say how old it is (`updatedAt`) and offer Try again. Grey stays grey while it is fresh; the warning tint is for out of date.",
+      "Forbidden is for the viewer's own tenant: say which permission is missing and who grants it. A record in another tenant, or one that does not exist, is a not-found page, so its existence is never confirmed.",
+      "Loading says what is coming in one line and shapes the bones like the content (`skeleton`); keep the region's heading and count outside it, as they are known first.",
+    ],
+  },
+  "permission-gate": {
+    group: "Feedback",
+    examples: { file: "permission-gate", prefix: "PermissionGate" },
+    rules: [
+      "Decide by permission strings (`can` with `permission`, or `allowed`), never by a role's name: roles are bundles that change, permissions are the contract.",
+      "Hidden for what this viewer can never have here; disabled with a reason for what a person like them could be given; read-only for settings they may read; forbidden for a region they may not. The Permissions and data states foundation has the table.",
+      "A disabled action always says why and who can change it, in `reason`. It stays focusable (aria-disabled), so keyboard and screen-reader users reach it and hear the reason; a tap shows it on touch.",
+      "Read-only with a function child renders values as text (a DescriptionList), which reads better than dead fields; a plain child is put in a disabled fieldset, so nothing in it can be changed.",
+      "The gate is the interface's half. The server checks every request again: hiding a button is not security.",
+    ],
+  },
   table: {
     group: "Lists and tables",
     examples: { file: "display", prefix: "Table" },
@@ -1223,6 +1250,16 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "AlertDialog" },
     rules: ["Only for actions that cannot be undone.", "The confirm names the consequence (“Delete 38 GB”); the cancel names what is kept."],
   },
+  "step-up-dialog": {
+    group: "Overlays",
+    examples: { file: "step-up-dialog", prefix: "StepUpDialog" },
+    rules: [
+      "Open it from the server's answer (useStepUp does), not before every sensitive action: the server knows whether the session is fresh.",
+      "The action the person asked for waits and runs after the check, so they never press it twice. Cancel leaves everything as it was, and says so.",
+      "A failed check says why from its code (`labels.errors`), clears the field and puts focus back in it. A code sends itself on its sixth digit, once.",
+      "With no second factor yet (`setup`), there is nothing to check: offer the setup page and cancel the action.",
+    ],
+  },
   sheet: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Sheet" },
@@ -1566,6 +1603,35 @@ const entries: Record<string, Entry> = {
       "The stop, the slide to release, the teleop pad, the alarm list and the island call it already; call it yourself only for a moment the kit does not see (the stop confirmed by your app).",
     ],
   },
+  "list-query": {
+    group: "Hooks and libraries",
+    rules: [
+      "One grammar for every server-paged list: `page` (from 1), `limit`, `sortBy`, `order` and `search`, the same names in the URL, the request and the server's page options.",
+      "Counts come from `ListPage.total`: the items are one page, and the server may cap them. Never count `items.length` for a tab, a heading or a metric.",
+      "Parse on the server too: `parseListQuery(searchParams)` in a server component reads the same query the browser will.",
+      "Bound what a hand-edited URL may ask for: `sortable` lists the columns, `maxLimit` the largest page.",
+    ],
+  },
+  "use-list-query": {
+    group: "Hooks and libraries",
+    examples: { file: "list-query", prefix: "UseListQuery" },
+    rules: [
+      "Bind the search box to `search` and `setSearch`: the box answers every key, the URL and the request wait for the pause. Clearing never waits.",
+      "A new search, sort, limit or filter goes back to page 1; only `setPage` keeps the rest.",
+      "In Next.js pass an adapter on the router (`useSearchParams`, `useRouter`, `usePathname`), so navigation goes through it; /docs/nextjs/data has the code.",
+      "Request with `query`, not with the box's text: the query is what the URL says.",
+    ],
+  },
+  "use-step-up": {
+    group: "Hooks and libraries",
+    examples: { file: "step-up-dialog", prefix: "UseStepUp" },
+    rules: [
+      "Wrap the call, not the click: `await stepUp.run(() => api.revokeKey(id))`. Any other error passes through untouched.",
+      "Catch `isStepUpCancelled(e)` and say nothing happened; it is not a failure to report.",
+      "The codes are the server's contract (`codes`, `setupCodes`); read them with `errorCodeOf`, never from a message.",
+      "The replay runs once. If the server asks again, that error goes to the caller instead of a loop.",
+    ],
+  },
   "use-now": {
     group: "Hooks and libraries",
     rules: [
@@ -1859,6 +1925,15 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Esc`", "Let go of what is pinned"],
   ],
   dialog: overlayKeys,
+  "permission-gate": [
+    ["`Tab`", "A disabled action stays a Tab stop and shows its reason while focused"],
+    ["`Enter` / `Space`", "On a disabled action, shows the reason; the action does not run"],
+  ],
+  "step-up-dialog": [
+    ["`Esc`", "Cancel and return focus to the control that started the action"],
+    ["`Enter`", "Verify; a code also sends itself on its sixth digit"],
+    ["`Tab` / `Shift`+`Tab`", "Move between the field, the other method, Cancel and Verify; focus stays inside"],
+  ],
   "alert-dialog": [
     ["`Esc`", "Cancel"],
     ["`Tab` / `Shift`+`Tab`", "Move between the actions; Cancel has focus first"],

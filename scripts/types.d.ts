@@ -17,6 +17,8 @@ export type RegistryItem = {
   meta?: {
     version?: string
     status?: string
+    /** Blocks only: "controlled" renders from props alone, "demo" from sample data. */
+    wiring?: string
     changelog?: ChangelogEntry[]
     examples?: boolean
     [key: string]: unknown

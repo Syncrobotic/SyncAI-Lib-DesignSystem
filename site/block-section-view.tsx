@@ -4,8 +4,10 @@ import * as React from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
+import { MetaPill } from "@/registry/syncrobotic/ui/page-header"
 import { promptFor } from "./ai-prompt"
 import { BlockFrame } from "./block-frame"
+import { wiringText, type BlockFlags } from "./block-types"
 import { LazyCode } from "./lazy-code"
 import { textLink } from "./prose"
 import { useNear } from "./when-near"
@@ -17,6 +19,8 @@ export type BlockSectionData = {
   description: string
   /** What the Markdown button copies. */
   markdown: string
+  status: BlockFlags["status"]
+  wiring: BlockFlags["wiring"]
   /** The block's place in the docs (its page and anchor), and the site's address: the Prompt button's text names both. */
   href: string
   origin: string
@@ -66,6 +70,14 @@ export function BlockSectionView({ block: b, heading: H = "h3", install, near: l
           )}
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">{b.description}</p>
+        {/* Status and wiring as the component page shows its status: meta pills, each a link to what it means. */}
+        <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:items-center">
+          <span role="list" aria-label="Status and wiring" className="flex shrink-0 flex-wrap items-center gap-2">
+            {b.status === "beta" && <MetaPill href="/docs/upgrading#status">Beta</MetaPill>}
+            <MetaPill href="/docs/upgrading#wiring">{wiringText[b.wiring].label}</MetaPill>
+          </span>
+          <span className="text-xs text-muted-foreground">{wiringText[b.wiring].line}</span>
+        </div>
       </div>
       {shown ? (
         <>

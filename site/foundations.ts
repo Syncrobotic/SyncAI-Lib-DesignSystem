@@ -13,6 +13,7 @@ export const foundations = [
   { slug: "accessibility", title: "Accessibility", lead: "Contrast, target size, focus and motion, checked at build time." },
   { slug: "alarms", title: "Alarms", lead: "Three priorities, one lifecycle, and which surface each message belongs on." },
   { slug: "data-visualisation", title: "Data visualisation", lead: "The form first, colour by job, a palette checked for colour blindness." },
+  { slug: "permissions-and-data-states", title: "Permissions and data states", lead: "Hidden, disabled with a reason, read-only or forbidden; loading, empty, error or stale: one answer each." },
 ] as const
 
 export type FoundationSlug = (typeof foundations)[number]["slug"]
@@ -26,6 +27,7 @@ const start = [
   { href: "/docs/robotics", title: "Robotics UI kit" },
   { href: "/docs/ros", title: "Connect to ROS" },
   { href: "/docs/nextjs", title: "Next.js" },
+  { href: "/docs/nextjs/data", title: "Next.js forms and lists" },
   { href: "/docs/localisation", title: "Localisation" },
   { href: "/docs/tokens", title: "Design tokens" },
   { href: "/docs/upgrading", title: "Versions and upgrades" },

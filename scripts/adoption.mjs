@@ -130,13 +130,14 @@ export const RENAMED = {
 }
 
 /**
- * beta / stable from meta.status; blocks have no status (you copy them and make them yours).
+ * beta / stable from meta.status. A block reports as "block" whatever its status: it is copied and edited, so its
+ * installed file is the product's own.
  * @param {Item | undefined} item
  */
 export function statusOf(item, name = "") {
   if (!item) return name in RENAMED ? "renamed" : "unknown"
-  if (item.meta?.status === "beta") return "beta"
   if (item.type === "registry:block") return "block"
+  if (item.meta?.status === "beta") return "beta"
   return "stable"
 }
 

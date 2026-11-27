@@ -68,6 +68,18 @@ import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
 import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import type { ActionRailShellLabels } from "@/registry/syncrobotic/blocks/action-rail-shell"
 import type { ErrorPageLabels, LoadingPageLabels, NoAccessPageLabels, NotFoundPageLabels, OfflinePageLabels } from "@/registry/syncrobotic/blocks/status-pages"
+import type { DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
+import type { PermissionGateLabels } from "@/registry/syncrobotic/ui/permission-gate"
+import type { StepUpDialogLabels } from "@/registry/syncrobotic/ui/step-up-dialog"
+import type { FleetTableLabels } from "@/registry/syncrobotic/blocks/fleet-table"
+import type { UsersRolesLabels } from "@/registry/syncrobotic/blocks/users-roles"
+import type { UsersInvitationsLabels } from "@/registry/syncrobotic/blocks/users-invitations"
+import type { UsersAuditLogLabels } from "@/registry/syncrobotic/blocks/users-audit-log"
+import type { SettingsApiKeysLabels } from "@/registry/syncrobotic/blocks/settings-api-keys"
+import type { SettingsWebhooksLabels } from "@/registry/syncrobotic/blocks/settings-webhooks"
+import type { SettingsSessionsLabels } from "@/registry/syncrobotic/blocks/settings-sessions"
+import type { NotificationCenterLabels } from "@/registry/syncrobotic/blocks/notification-center"
+import type { SettingsPageLabels } from "@/registry/syncrobotic/blocks/settings-page"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -171,5 +183,17 @@ it("fits every component's labels type", () => {
   fits<CopyButtonLabels>()(zh.copyButtonLabels)
   fits<Record<ThemeChoice, string>>()(zh.themeToggleLabels)
   fits<Record<FilterOperator, string>>()(zh.filtersLabels.operators)
+  fits<DataStateLabels>()(zh.dataStateLabels)
+  fits<PermissionGateLabels>()(zh.permissionGateLabels)
+  fits<StepUpDialogLabels>()(zh.stepUpDialogLabels)
+  fits<Required<FleetTableLabels>>()(zh.fleetTableLabels)
+  fits<Required<UsersRolesLabels>>()(zh.usersRolesLabels)
+  fits<Required<UsersInvitationsLabels>>()(zh.usersInvitationsLabels)
+  fits<Required<UsersAuditLogLabels>>()(zh.usersAuditLogLabels)
+  fits<Required<SettingsApiKeysLabels>>()(zh.settingsApiKeysLabels)
+  fits<Required<SettingsWebhooksLabels>>()(zh.settingsWebhooksLabels)
+  fits<Required<SettingsSessionsLabels>>()(zh.settingsSessionsLabels)
+  fits<Required<NotificationCenterLabels>>()(zh.notificationCenterLabels)
+  fits<Required<SettingsPageLabels>>()(zh.settingsPageLabels)
   expect(zh.locale).toBe("zh-TW")
 })

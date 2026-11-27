@@ -1,11 +1,36 @@
 // Blocks are compositions: several components put together for one job, as a section of a page or a whole screen.
-// Applications: the screens and sections any app is built from. Solutions: whole working screens for one job in robot
-// operations. A set of variants of ONE component (a line chart, a timeline, a dialog) is not a block: it is that
-// component's patterns, shown on the component's page (`home`), as ReUI shows charts on its Chart page. They keep
-// their own install names and previews.
+// They are grouped by product area; Patterns holds what every area reuses. A set of variants of ONE component (a line
+// chart, a timeline, a dialog) is not a block: it is that component's patterns, shown on the component's page (`home`),
+// as ReUI shows charts on its Chart page. They keep their own install names and previews.
 
-export const blockGroups = ["Applications", "Solutions"] as const
-export type BlockGroup = (typeof blockGroups)[number] | "Patterns"
+// A group with no types yet (Device lifecycle, Platform admin, Robot control) is declared so new blocks have a place;
+// every surface hides a group until it holds a block.
+export const blockGroups = [
+  "Shell and navigation",
+  "Identity and account",
+  "Tenancy and access",
+  "Device lifecycle",
+  "Fleet operations",
+  "Platform admin",
+  "Data and AI",
+  "Robot control",
+  "Patterns",
+] as const
+export type BlockGroup = (typeof blockGroups)[number]
+
+/** One line per group, under its heading on /blocks. */
+export const blockGroupIntro: Record<BlockGroup, string> = {
+  "Shell and navigation": "The frame around every page and the ways in: app shells, the top bar, the action rail, phone tabs, the notification bell and a landing hero.",
+  "Identity and account": "Signing in and the signed-in person's settings: SSO, passkeys, 2FA, invitations, browser sessions and billing.",
+  "Tenancy and access": "Who can do what in a workspace, and what reaches it from outside: members, invitations, roles, the audit log, API keys and webhooks.",
+  "Device lifecycle": "Enrolling, approving, licensing and retiring a managed device.",
+  "Fleet operations": "Running a robot fleet day to day: the console overview, the map, the event log, incidents, maintenance and firmware rollouts.",
+  "Platform admin": "Running the platform itself: tenants and quotas, every user, system health.",
+  "Data and AI": "Datasets as a product and the agents that work on fleet data: the catalog, a dataset's release, the review queue, agent runs and approvals.",
+  "Robot control": "Driving one robot: the control app, teleoperation and camera views.",
+  Patterns:
+    "What every area reuses: stats, tables, small charts, cards, forms, wizards and page states. Ready-made uses of one component (charts, dialogs, sheets, timelines) are on that component's page.",
+}
 
 export type BlockType = {
   slug: string
@@ -21,11 +46,10 @@ export type BlockType = {
 }
 
 export const blockTypes: BlockType[] = [
-  // Applications
   {
     slug: "app-shell",
     title: "App shell",
-    group: "Applications",
+    group: "Shell and navigation",
     description: "The frame of a tool: navigation, top bar, search and the user, around whatever page you put in it.",
     use: [
       "Internal tools and consoles with more than a handful of pages.",
@@ -33,7 +57,7 @@ export const blockTypes: BlockType[] = [
       "A page that leads to one next step, such as a batch to review or a model to train: the action rail.",
       "A full-screen workspace with a history on one side and the controls for the next run on the other, such as a model playground: the action rail with `leading` and `panel`.",
     ],
-    instead: ["A single screen with no navigation: start from a Solutions block."],
+    instead: ["A single screen with no navigation: start from a screen in its product area (Fleet operations, Data and AI)."],
     rules: [
       "One shell per product. Pages change inside it; the shell does not.",
       "The current page is marked in the navigation and named in the top bar.",
@@ -52,22 +76,23 @@ export const blockTypes: BlockType[] = [
   {
     slug: "stats",
     title: "Stats",
-    group: "Applications",
+    group: "Patterns",
     description: "Headline numbers with their change, under any active alarms.",
     use: ["Under the alarms at the top of an overview page.", "A row of KPIs above a table or a chart."],
-    instead: ["A trend beside every row of a list: Small charts (sparkline).", "A whole overview screen: Solutions › Fleet operations."],
+    instead: ["A trend beside every row of a list: Small charts (sparkline).", "A whole overview screen: Fleet operations."],
     rules: ["Four numbers at most in a row.", "Only a change for the worse gets colour (decided by whether it is bad, not by its direction); good news stays neutral.", "Every number has a unit and a time range."],
   },
   {
     slug: "data-table",
     title: "Data table",
-    group: "Applications",
+    group: "Patterns",
     description: "Rows to search, filter, page through and act on, written once as a table that phones read as a list.",
     use: ["A fleet, a list of jobs or datasets: many things compared by the same few fields.", "A section of a page, under its header and the numbers."],
-    instead: ["A whole screen built around one list: Solutions › Fleet operations.", "A few things people pick from: Card."],
+    instead: ["A whole screen built around one list: Fleet operations.", "A few things people pick from: Card."],
     rules: [
       "One list of columns (ResponsiveTable): a table where there is room, a list on a phone with the name, its state and one or two facts.",
       "Narrow by one attribute with a SegmentedControl when two to four choices cover the list, each count after its word; a search beside it at the same height.",
+      "Counts and pages come from the server: FleetTableContent takes one page with its `total`, each segment's count from `counts`, and sends the query (page, limit, sortBy, order, search) out through `onQueryChange`, back to page 1 on a new search, sort or filter.",
       "Nothing matches: the header stays and one spanning cell says why, with the way back (Clear filters).",
       "A row's ⋯ menu is DropdownMenuMoreTrigger at its end; a section never stops a robot itself: the screen it sits in carries the stop.",
     ],
@@ -75,7 +100,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "data-visualisation",
     title: "Small charts",
-    group: "Applications",
+    group: "Patterns",
     description: "Numbers drawn without a chart library: sparklines in rows, status strips, rings and heatmaps.",
     use: [
       "A trend beside every row of a list or table (sparkline).",
@@ -94,7 +119,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "card",
     title: "Card",
-    group: "Applications",
+    group: "Patterns",
     description: "One thing summed up in a card: a robot, a site, a mission, with its next actions.",
     use: ["A robot on a phone.", "Grids of things people pick from."],
     instead: ["Many things compared by the same fields: a data grid."],
@@ -103,7 +128,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "auth",
     title: "Sign-in",
-    group: "Applications",
+    group: "Identity and account",
     description: "Getting in: company SSO first, an email link as the fallback, the 2FA code step, and what happens next.",
     use: ["The sign-in page of an internal tool or console.", "The second step after a password: a code from an authenticator app or a recovery code."],
     rules: [
@@ -115,21 +140,21 @@ export const blockTypes: BlockType[] = [
   {
     slug: "settings",
     title: "Settings",
-    group: "Applications",
+    group: "Identity and account",
     description: "Sections beside their explanation; switches apply at once, fields collect into a save bar.",
     use: ["Account, site and fleet settings.", "Any page of preferences.", "Plan, usage and invoices, without taking payment details."],
-    instead: ["Creating or editing one record: Form."],
+    instead: ["Creating or editing one record: Form.", "API keys and webhooks: Tenancy and access › API keys and webhooks."],
     rules: [
       "A switch applies at once; text fields wait for Save.",
       "Say what a setting does next to it, not in a tooltip.",
-      "A secret (an API key, a signing secret) is shown once, with a copy button, and says it will not be shown again.",
       "Signed-in sessions are browsers, never devices: a session is a browser's cookie.",
+      "SettingsPageContent and SettingsSessionsContent take the values and callbacks; a viewer without the write permission reads the values, never fields that look editable. Signing out is sensitive: run it through your step-up.",
     ],
   },
   {
     slug: "notifications",
     title: "Notifications",
-    group: "Applications",
+    group: "Shell and navigation",
     description: "The bell in the top bar: what happened while you were away, grouped by day, read or unread.",
     use: ["Finished missions, ready reports, installed firmware, changes someone else made.", "Anything worth knowing later that needs no action now."],
     instead: [
@@ -146,7 +171,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "form",
     title: "Form",
-    group: "Applications",
+    group: "Patterns",
     description: "Create or edit one record: one column, labels above fields, errors in the hint line.",
     use: ["New robot, new site, new mission.", "Editing one record's details."],
     instead: ["Many preferences on one page: Settings.", "A long process in steps: the Stepper component."],
@@ -155,7 +180,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "wizard",
     title: "Wizard",
-    group: "Applications",
+    group: "Patterns",
     description: "A job done in steps: adding a robot, importing a file.",
     use: ["Setup that must happen in order.", "Imports that need checking before they land."],
     instead: ["A form with no order to it: Form."],
@@ -168,7 +193,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "states",
     title: "Empty, loading and error states",
-    group: "Applications",
+    group: "Patterns",
     description: "Not found, no access, error, offline and loading: what happened, why, and the next step.",
     use: ["Whole-page states of any tool.", "Content panels that can be empty or fail."],
     rules: ["Never a dead end: every state offers the next step.", "Say what still works (robots keep their schedule)."],
@@ -176,7 +201,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "landing",
     title: "Landing",
-    group: "Applications",
+    group: "Shell and navigation",
     description: "The top of a product or marketing page: what it is, who it is for, and the two ways in.",
     use: ["A product page or a site's home."],
     rules: ["One headline, one supporting line, two actions at most."],
@@ -237,8 +262,8 @@ export const blockTypes: BlockType[] = [
     description: "Events in time order: what a robot did on its shift, who changed what.",
     use: ["A robot's or a mission's history.", "An audit log of changes."],
     instead: [
-      "Many events to sort and filter by several fields: Solutions › Fleet operations › Event log (event-log).",
-      "Who did what to people and roles, with export: Solutions › Users and access › Audit log (users-audit-log).",
+      "Many events to sort and filter by several fields: Fleet operations › Event log (event-log).",
+      "Who did what to people and roles, with export: Tenancy and access › Users and access › Audit log (users-audit-log).",
     ],
     rules: [
       "Newest first, grouped by day.",
@@ -296,11 +321,10 @@ export const blockTypes: BlockType[] = [
       "The median as a labelled dashed line, in text colour. A mean only when the spread is symmetric.",
     ],
   },
-  // Solutions
   {
     slug: "fleet-operations",
     title: "Fleet operations",
-    group: "Solutions",
+    group: "Fleet operations",
     description: "Watching and running a fleet: the overview, the live map, robot lists, the event log.",
     use: ["The control room console.", "Supervisors watching several sites."],
     instead: [
@@ -317,7 +341,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "data-operations",
     title: "Data operations",
-    group: "Solutions",
+    group: "Data and AI",
     description: "Robot datasets as a product: the catalog, one dataset's release readiness, the governance to-do, and labels reviewed by keyboard.",
     use: ["Teams that collect, label and release robot data.", "Checking a model's captions or answers one image at a time."],
     rules: [
@@ -331,19 +355,39 @@ export const blockTypes: BlockType[] = [
   {
     slug: "users-access",
     title: "Users and access",
-    group: "Solutions",
+    group: "Tenancy and access",
     description: "Who can do what: roles changed in place, invitations, removals with undo.",
     use: ["The members page of any console."],
     instead: [
       "Who changed what on one record, inside its page: Patterns › Activity and audit timelines › Audit history (timeline-audit).",
       "Robot and fleet events to filter by time and level: Fleet operations › Event log (event-log).",
     ],
-    rules: ["Roles are words people know (Operator, Supervisor), not permission lists.", "Removing someone can be undone for a few seconds."],
+    rules: [
+      "Roles are words people know (Operator, Supervisor), shown by name; the server sends each with its permission bundle, and the block decides by permission strings, never by a name.",
+      "Nobody gives a role that holds more than they do: a role whose permissions the viewer lacks is not offered, and a person who holds one keeps it (`canAssign`).",
+      "Removing someone can be undone for a few seconds.",
+      "UsersRolesContent, UsersInvitationsContent and UsersAuditLogContent take one page and the server's `total`, the query out through `onQueryChange`, and a data state; the audit log is forbidden without `audit-logs:read`.",
+    ],
+  },
+  {
+    slug: "integrations",
+    title: "API keys and webhooks",
+    group: "Tenancy and access",
+    description: "What other systems may do in a workspace and what it tells them: API keys with scopes and an expiry, webhook endpoints and their deliveries.",
+    use: ["A project's API keys page.", "A project's webhooks page, with each endpoint's recent deliveries."],
+    instead: ["A person's own settings: Identity and account › Settings."],
+    rules: [
+      "A secret (an API key, a signing secret) is shown once, with a copy button, and says it will not be shown again. It comes from the create or rotate callback and is dropped on Done: never put it in a query cache, a store or the URL.",
+      "A key holds only scopes its creator holds: the rest are listed, disabled, with the reason (`allowedScopes`).",
+      "Every key has an expiry unless someone chooses Never; the expiry is sent as an ISO time, never a local wall-clock string.",
+      "Creating, revoking and rotating are sensitive: run each callback through your step-up (`useStepUp().run`); a cancelled check leaves the form as it was.",
+      "Only a failing endpoint or an expired key is coloured; active is grey.",
+    ],
   },
   {
     slug: "incidents",
     title: "Incidents",
-    group: "Solutions",
+    group: "Fleet operations",
     description: "When something goes wrong at a site: the queue of incidents, and one incident from declared to resolved.",
     use: ["Operations teams that own what happens after an alarm."],
     instead: ["A single alarm to acknowledge: the Alarm component."],
@@ -356,7 +400,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "maintenance",
     title: "Maintenance",
-    group: "Solutions",
+    group: "Fleet operations",
     description: "Keeping robots serviced: what is coming due by hours run, and a work order at the bench.",
     use: ["Fleet technicians and the people who plan their week."],
     rules: [
@@ -368,7 +412,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "firmware-rollout",
     title: "Firmware rollout",
-    group: "Solutions",
+    group: "Fleet operations",
     description: "Updating the fleet in stages: planning a rollout, and watching one run with its gates.",
     use: ["Releasing firmware or maps to many robots."],
     rules: [
@@ -380,7 +424,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "ai-agents",
     title: "AI agents",
-    group: "Solutions",
+    group: "Data and AI",
     description: "Agents that plan and summarise for the fleet: their runs, one run step by step, a run waiting at an approval gate, a proposal waiting for a person, a run's result robot by robot, a conversation with the assistant, and which tools each agent may call.",
     use: ["Any agent that reads fleet data or proposes changes to robots."],
     rules: [
@@ -393,6 +437,22 @@ export const blockTypes: BlockType[] = [
 ]
 
 export const getBlockType = (slug: string) => blockTypes.find((t) => t.slug === slug)
+
+/** A block's flags, in its registry.json `meta` (lint:registry requires both). */
+export type BlockFlags = { status: "beta" | "stable"; wiring: "demo" | "controlled" }
+export const blockFlags = (meta: unknown): BlockFlags => {
+  const m = (meta ?? {}) as Partial<BlockFlags>
+  return { status: m.status === "stable" ? "stable" : "beta", wiring: m.wiring === "controlled" ? "controlled" : "demo" }
+}
+
+/** What a wiring means, said the same on the block's page, its markdown twin and the MCP server. */
+export const wiringText: Record<BlockFlags["wiring"], { label: string; line: string }> = {
+  demo: {
+    label: "Demo data",
+    line: "Renders built-in sample data, and a screen its own app shell: install it as a starting point, then wire your data and handlers in.",
+  },
+  controlled: { label: "Controlled", line: "Renders only from its props and callbacks, with no sample data or app shell inside: pass your data and handlers." },
+}
 
 // Where each block lives (site/block-types.ts) and how its frame sizes: whole screens keep a screen height, sections
 // follow their content. The order here is the order on the type page.
@@ -425,10 +485,10 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "auth-2fa": { type: "auth", fit: "screen" },
   "settings-page": { type: "settings", fit: "screen" },
   "settings-notifications": { type: "settings", fit: "content" },
-  "settings-api-keys": { type: "settings", fit: "content" },
+  "settings-api-keys": { type: "integrations", fit: "content" },
   "settings-billing": { type: "settings", fit: "content" },
   "notification-center": { type: "notifications", fit: "screen" },
-  "settings-webhooks": { type: "settings", fit: "content" },
+  "settings-webhooks": { type: "integrations", fit: "content" },
   "settings-sessions": { type: "settings", fit: "content" },
   "record-form": { type: "form", fit: "screen" },
   "status-pages": { type: "states", fit: "content" },
