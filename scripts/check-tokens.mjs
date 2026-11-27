@@ -7,8 +7,10 @@
 // Use it for values that cannot be tokens (brand file colours, OS metadata), never to save effort.
 import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
+import { checkBrand, readTheme } from "./brand.mjs"
 
 const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app", "stories"]
+const BRAND_EXAMPLE = "site/snippets/brand-portal.css"
 const SPACING_OK = new Set(["0", "px", "0.5", "1", "2", "3", "4", "6", "8"])
 // Files allowed to use rounded-full, and for what. The Radius page lists the same uses.
 const ROUND = {
@@ -76,6 +78,16 @@ const rules = [
     re: /\brounded-full\b/g,
     file: (f) => !(f.replaceAll("\\", "/") in ROUND),
   },
+  {
+    // A product's brand swaps these (/docs/tokens#brand) and is held to 3:1 on a surface, not the 4.5:1 words need.
+    name: "Brand colour as text (a brand only promises 3:1 on a surface: words take text-foreground, or text-primary-foreground on bg-primary)",
+    re: /(?<![\w-])text-(?:primary|ring|chart-1)(?![\w-])/g,
+  },
+  {
+    name: "Brand input in a component (only the theme reads --brand-*: use the token it feeds, such as bg-primary or outline-ring)",
+    re: /--brand-/g,
+    file: (f) => f.replaceAll("\\", "/").startsWith("registry/"),
+  },
 ]
 
 // The icon set (site/icons.ts) is the allowlist for Lucide: one icon per meaning, so a new icon is a reviewed change there.
@@ -128,6 +140,12 @@ for (const file of ROOTS.flatMap(walk)) {
     }
   })
 }
+// The documented brand override (the Portal's purple) must hold its contrast, so the example a product copies works.
+for (const p of checkBrand(readFileSync(BRAND_EXAMPLE, "utf8"), readTheme())) {
+  console.error(`${BRAND_EXAMPLE}  ${p}`)
+  bad++
+}
+
 if (bad) {
   console.error(`\n${bad} violation(s)`)
   process.exit(1)

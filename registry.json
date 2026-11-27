@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.51.0",
+        "version": "0.57.0",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "Brand layer: --primary, --primary-foreground, --ring, --chart-1 and its ink read --brand-<token> (light) and --brand-<token>-dark when a product sets them on :root; unset, the kit's values, so nothing changes by default. High contrast keeps the ink."
+          },
           {
             "version": "0.51.0",
             "date": "2026-11-27",
@@ -11133,8 +11138,13 @@
         }
       ],
       "meta": {
-        "version": "0.56.0",
+        "version": "0.57.0",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "The design language says what a brand may swap (primary, ring, chart-1 through --brand-*) and that a brand colour is never text on a surface or a status."
+          },
           {
             "version": "0.56.0",
             "date": "2026-11-27",

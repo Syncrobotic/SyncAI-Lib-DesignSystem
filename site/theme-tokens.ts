@@ -6,7 +6,8 @@ const css = readSource("registry/syncrobotic/styles/syncrobotic-theme.css")
 function block(selector: string) {
   const start = css.indexOf(`${selector} {`)
   const body = css.slice(start, css.indexOf("\n}", start))
-  return Object.fromEntries([...body.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]))
+  // A brand input (`var(--brand-primary, #09090b)`) reads as the kit's own value: the docs show the default theme.
+  return Object.fromEntries([...body.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim().replace(/^var\(--brand-[\w-]+,\s*(.+)\)$/, "$1")]))
 }
 
 const light = block(":root")

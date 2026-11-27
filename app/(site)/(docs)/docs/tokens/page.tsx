@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { startNeighbours } from "@/site/foundations"
+import { readSource } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta, site } from "@/site/config"
 import { TokenTable, Pager } from "@/site/doc"
@@ -25,6 +26,15 @@ export default {
     android: { transformGroup: "android", buildPath: "android/", files: [{ destination: "tokens.xml", format: "android/resources" }] },
   },
 }`
+
+/** The brand layer: what a product may swap, what each value must reach. scripts/brand.mjs checks the same numbers. */
+const brand = [
+  ["`--brand-primary`", "`--primary`", "Primary buttons, a switch that is on, a selected edge", "3:1 on `--background`, `--card` and `--popover`"],
+  ["`--brand-primary-foreground`", "`--primary-foreground`", "Words and icons on primary", "4.5:1 on the brand primary"],
+  ["`--brand-ring`", "`--ring`", "The focus ring (the ink by default)", "3:1 on `--background`, `--card` and `--popover`"],
+  ["`--brand-chart-1`", "`--chart-1`", "The one series that matters; annotations' predicted box in light", "3:1 on `--card`; ΔE 15 from `--chart-2` and `--chart-3`, also colour-blind"],
+  ["`--brand-chart-1-foreground`", "`--chart-1-foreground`", "A value written on the accent", "4.5:1 on the brand chart-1"],
+]
 
 export default function TokensPage() {
   const base = `${site.registryUrl}/tokens`
@@ -74,6 +84,18 @@ export default function TokensPage() {
         <Inline text="Copy the files into the app repo, or fetch them in its build, and generate platform code with Style Dictionary." />
       </p>
       <CodeBlock code={styleDictionary} lang="ts" title="style-dictionary.config.mjs" />
+
+      <H2 id="brand">Brand layer</H2>
+      <p className="max-w-3xl pb-3 text-base">
+        <Inline text="Five tokens carry a product's brand; every other token is semantic and fixed: status, surfaces, text, borders, disabled and the stop mean the same in every product. Set the brand inputs on `:root` after the theme: `--brand-<token>` for light, `--brand-<token>-dark` for dark. One left unset keeps the kit's value, so a product without a brand renders exactly as the kit. High contrast keeps the kit's ink: a brand colour rarely reaches 7:1." />
+      </p>
+      <TokenTable head={["Set", "Feeds", "Where it shows", "Must reach, in light and dark"]} rows={brand.map((r) => r.map((c) => <Inline key={c} text={c} />))} />
+      <div className="pt-4">
+        <CodeBlock code={readSource("site/snippets/brand-portal.css")} lang="css" title="globals.css: the LocalMind Portal's purple" />
+      </div>
+      <p className="max-w-3xl pt-3 text-sm text-muted-foreground">
+        <Inline text="The Portal's purple fails in dark as it ships (2.7:1 on the dark page), so the example takes a lighter step there, with ink on it. Check a brand file before shipping it: `node scripts/brand.mjs globals.css` in a checkout of this repository lists every pair below its contrast and any semantic token it sets. Components never read `--brand-*` and never write a brand colour as text (`lint:tokens`): a brand promises 3:1 on a surface, not the 4.5:1 words need. The DTCG files hold the kit's own values." />
+      </p>
 
       <H2 id="ci">Kept in step</H2>
       <p className="text-sm">
