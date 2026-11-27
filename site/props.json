@@ -562,6 +562,95 @@
    ]
   }
  ],
+ "all-or-some-field": [
+  {
+   "name": "AllOrSomeField",
+   "props": [
+    {
+     "name": "options",
+     "type": "readonly AllOrSomeOption[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "readonly string[] | null",
+     "required": true,
+     "description": "`null` is all, including future ones; an array is exactly these (empty is none)."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string[] | null) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "legend",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "allDisabledReason",
+     "type": "string",
+     "description": "Why \"all\" cannot be chosen here (a limit above the viewer's); it shows disabled with this reason."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AllOrSomeFieldLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "all",
+       "type": "string",
+       "default": "\"All, including future ones\"",
+       "description": ""
+      },
+      {
+       "name": "allHint",
+       "type": "string",
+       "default": "\"Anything added later is included too.\"",
+       "description": ""
+      },
+      {
+       "name": "some",
+       "type": "string",
+       "default": "\"Only these\"",
+       "description": ""
+      },
+      {
+       "name": "someHint",
+       "type": "string",
+       "default": "\"Fixed: anything added later is not included.\"",
+       "description": ""
+      },
+      {
+       "name": "none",
+       "type": "string",
+       "default": "\"None picked: nothing is included.\"",
+       "description": "Under an empty \"only these\": a legal choice with its own meaning, not an unfinished form."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "annotated-image": [
   {
    "name": "AnnotatedImage",
@@ -2744,7 +2833,7 @@
     },
     {
      "name": "controlAt",
-     "type": "\"end\" | \"start\"",
+     "type": "\"start\" | \"end\"",
      "default": "\"start\"",
      "description": ""
     }
@@ -8976,7 +9065,7 @@
     },
     {
      "name": "align",
-     "type": "\"end\" | \"start\"",
+     "type": "\"start\" | \"end\"",
      "default": "\"start\"",
      "description": "\"end\" moves the turn to the end of a wide container (`@container` 42 rem and up); below that every turn starts at the start."
     },
@@ -10354,6 +10443,156 @@
    ]
   }
  ],
+ "project-switcher": [
+  {
+   "name": "ProjectSwitcher",
+   "props": [
+    {
+     "name": "projects",
+     "type": "readonly SwitcherProject[]",
+     "required": true,
+     "description": "The projects to list: all of them, or the server's matches for `search`."
+    },
+    {
+     "name": "current",
+     "type": "{ id: string; name: string; detail?: string } | null",
+     "description": "The project the page shows. It may be outside `projects` (a search result list): it still names the trigger."
+    },
+    {
+     "name": "recent",
+     "type": "readonly SwitcherProject[]",
+     "default": "[]",
+     "description": "Most recent first; shown above the list while nothing is typed."
+    },
+    {
+     "name": "onSelect",
+     "type": "(project: SwitcherProject) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "search",
+     "type": "string",
+     "description": "With `onSearchChange`, the server searches: the list shows `projects` as given and filters nothing itself."
+    },
+    {
+     "name": "onSearchChange",
+     "type": "(search: string) => void",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "A server search is under way."
+    },
+    {
+     "name": "onCreate",
+     "type": "() => void",
+     "description": "Shows \"New project\" at the end; hide it from a viewer who may not create one."
+    },
+    {
+     "name": "onViewAll",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "mark",
+     "type": "(project: SwitcherProject) => ReactNode",
+     "description": "The mark before a name (a logo); default its first letter on a tile."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Open from outside (a shortcut of your own); leave both out and the trigger opens it."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ProjectSwitcherLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Project\"",
+       "description": "The trigger's line under the name, and the sheet's title."
+      },
+      {
+       "name": "none",
+       "type": "string",
+       "default": "\"Choose a project\"",
+       "description": ""
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "default": "\"Search projects\"",
+       "description": ""
+      },
+      {
+       "name": "recent",
+       "type": "string",
+       "default": "\"Recent\"",
+       "description": ""
+      },
+      {
+       "name": "results",
+       "type": "string",
+       "default": "\"Projects\"",
+       "description": ""
+      },
+      {
+       "name": "all",
+       "type": "string",
+       "default": "\"All projects\"",
+       "description": ""
+      },
+      {
+       "name": "current",
+       "type": "string",
+       "default": "\"Current\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "(query: string) => string",
+       "default": "(q) => (q ? `No project matches \"${q}\".` : \"No projects yet.\")",
+       "description": ""
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Searching…\"",
+       "description": ""
+      },
+      {
+       "name": "create",
+       "type": "string",
+       "default": "\"New project\"",
+       "description": ""
+      },
+      {
+       "name": "viewAll",
+       "type": "string",
+       "default": "\"View all projects\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "prompt-composer": [
   {
    "name": "PromptComposer",
@@ -10826,6 +11065,145 @@
        "type": "string",
        "default": "\" (required)\"",
        "description": "Read after a required question's title by screen readers only."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "quota-field": [
+  {
+   "name": "QuotaField",
+   "props": [
+    {
+     "name": "value",
+     "type": "number | null",
+     "required": true,
+     "description": "`null` is unlimited; 0 is a limit of none. Never one for the other."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: number | null) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "legend",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "min",
+     "type": "number",
+     "default": "0",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "step",
+     "type": "number",
+     "default": "1",
+     "description": ""
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "description": "Written after the number (\"devices\")."
+    },
+    {
+     "name": "used",
+     "type": "number",
+     "description": "How many are in use now, from the server: shown against the limit."
+    },
+    {
+     "name": "initialLimit",
+     "type": "number",
+     "description": "The number a limit starts at when Unlimited is turned off and none was set before. Default `used`, else `min`."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<QuotaFieldLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "unlimited",
+       "type": "string",
+       "default": "\"Unlimited\"",
+       "description": ""
+      },
+      {
+       "name": "unlimitedHint",
+       "type": "string",
+       "default": "\"No limit at all. Turn it off to set a number; 0 means none allowed.\"",
+       "description": ""
+      },
+      {
+       "name": "limit",
+       "type": "string",
+       "default": "\"Limit\"",
+       "description": "The number box's name, after the legend."
+      },
+      {
+       "name": "usedOf",
+       "type": "(used: string, limit: string) => string",
+       "default": "(used, limit) => `${used} of ${limit} in use`",
+       "description": "\"8 of 10 in use\"."
+      },
+      {
+       "name": "usedUnlimited",
+       "type": "(used: string) => string",
+       "default": "(used) => `${used} in use, no limit`",
+       "description": "\"8 in use, no limit\"."
+      },
+      {
+       "name": "zero",
+       "type": "string",
+       "default": "\"0: nothing new can be added.\"",
+       "description": "A limit of 0: legal, and not the same as unlimited."
+      },
+      {
+       "name": "over",
+       "type": "(used: string, limit: string) => string",
+       "default": "(used, limit) => `${used} in use, above the limit of ${limit}. Nothing is removed; the next one is refused.`",
+       "description": "A limit below what is in use: nothing is taken away, the next one is refused."
+      },
+      {
+       "name": "decrease",
+       "type": "string",
+       "default": "\"Decrease\"",
+       "description": ""
+      },
+      {
+       "name": "increase",
+       "type": "string",
+       "default": "\"Increase\"",
+       "description": ""
       }
      ]
     }
@@ -12156,6 +12534,135 @@
    "inherits": []
   }
  ],
+ "scope-picker": [
+  {
+   "name": "ScopePicker",
+   "props": [
+    {
+     "name": "scopes",
+     "type": "readonly ScopeOption[]",
+     "required": true,
+     "description": "Every scope a grant can hold, in the order to list them."
+    },
+    {
+     "name": "value",
+     "type": "readonly string[] | null",
+     "required": true,
+     "description": "The picked scopes; `null` is all, including ones added later (only with `allowAll`)."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string[] | null) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "allowedScopes",
+     "type": "readonly string[]",
+     "description": "The scopes the viewer holds and so may grant; the rest show disabled with the reason. Default: all of `scopes`."
+    },
+    {
+     "name": "allowAll",
+     "type": "boolean",
+     "default": "false",
+     "description": "Offer \"all, including ones added later\" beside \"only these\"."
+    },
+    {
+     "name": "legend",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "resourceLabels",
+     "type": "Record<string, string>",
+     "description": "Words for a resource's heading (\"devices\" → \"Devices\"). Default: the resource as written."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ScopePickerLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "all",
+       "type": "string",
+       "default": "\"All scopes, including ones added later\"",
+       "description": "The choice that follows the catalog: a scope added later is granted too."
+      },
+      {
+       "name": "allHint",
+       "type": "string",
+       "default": "\"A scope added to the product later is granted too.\"",
+       "description": ""
+      },
+      {
+       "name": "allAbove",
+       "type": "string",
+       "default": "\"You do not hold every scope, so you cannot grant the ones added later.\"",
+       "description": "Why \"all\" is disabled: the viewer does not hold every scope, so they cannot give the ones to come."
+      },
+      {
+       "name": "some",
+       "type": "string",
+       "default": "\"Only these scopes\"",
+       "description": ""
+      },
+      {
+       "name": "someHint",
+       "type": "string",
+       "default": "\"Fixed: a scope added later is not granted.\"",
+       "description": ""
+      },
+      {
+       "name": "outside",
+       "type": "string",
+       "default": "\"Not in your own permissions, so you cannot grant it.\"",
+       "description": "Under a scope outside `allowedScopes`."
+      },
+      {
+       "name": "group",
+       "type": "(resource: string) => string",
+       "default": "(resource) => `Every ${resource} scope`",
+       "description": "The group's own checkbox, named for screen readers."
+      },
+      {
+       "name": "selected",
+       "type": "(count: number, formatted: string) => string",
+       "default": "(n, f) => `${f} ${n === 1 ? \"scope\" : \"scopes\"} selected`",
+       "description": ""
+      },
+      {
+       "name": "none",
+       "type": "string",
+       "default": "\"No scopes: it can only prove who it is.\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "scroll-area": [
   {
    "name": "ScrollArea",
@@ -12605,7 +13112,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"left\" | \"right\" | \"bottom\" | \"end\"",
+     "type": "\"end\" | \"left\" | \"right\" | \"bottom\"",
      "default": "\"bottom\"",
      "description": ""
     }
@@ -14669,7 +15176,7 @@
     },
     {
      "name": "align",
-     "type": "\"center\" | \"end\" | \"start\"",
+     "type": "\"center\" | \"start\" | \"end\"",
      "default": "\"end\"",
      "description": "The menu's edge that lines up with the button (menu only)."
     }

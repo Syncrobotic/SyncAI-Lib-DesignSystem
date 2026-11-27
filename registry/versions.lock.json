@@ -40,8 +40,8 @@
     "hash": "c73671ae05fd9bf5"
   },
   "labels-zh-tw": {
-    "version": "0.56.0",
-    "hash": "728659e01f1853fb"
+    "version": "0.57.0",
+    "hash": "7f33884947012b76"
   },
   "ros": {
     "version": "0.53.0",
@@ -291,6 +291,18 @@
     "version": "0.56.0",
     "hash": "086c5e4d7ca6286a"
   },
+  "scope-picker": {
+    "version": "0.57.0",
+    "hash": "83078429ad82f1c9"
+  },
+  "quota-field": {
+    "version": "0.57.0",
+    "hash": "811802c53efe6419"
+  },
+  "all-or-some-field": {
+    "version": "0.57.0",
+    "hash": "50976c1e41eb8491"
+  },
   "table": {
     "version": "0.53.0",
     "hash": "0b6df2809cbdd573"
@@ -338,6 +350,10 @@
   "sidebar": {
     "version": "0.53.0",
     "hash": "f3c0232fdf3348b9"
+  },
+  "project-switcher": {
+    "version": "0.57.0",
+    "hash": "6b39ff9594ae90f4"
   },
   "graph": {
     "version": "0.53.0",
@@ -704,8 +720,8 @@
     "hash": "ed2f295992f73b9a"
   },
   "agent-skill": {
-    "version": "0.56.0",
-    "hash": "d7d9c075331b45d2"
+    "version": "0.57.0",
+    "hash": "b2d1066511c72787"
   },
   "line-chart-telemetry": {
     "version": "0.53.0",
@@ -832,8 +848,8 @@
     "hash": "7276ad84990a5f63"
   },
   "settings-api-keys": {
-    "version": "0.55.0",
-    "hash": "d38442802aa9c3eb"
+    "version": "0.57.0",
+    "hash": "eef3489e8e805289"
   },
   "settings-webhooks": {
     "version": "0.55.0",
@@ -906,6 +922,26 @@
   "device-detail": {
     "version": "0.56.0",
     "hash": "aeaf6bf2fd8d660b"
+  },
+  "project-members": {
+    "version": "0.57.0",
+    "hash": "f221329821852270"
+  },
+  "permission-matrix": {
+    "version": "0.57.0",
+    "hash": "3b33a76a072fcaf0"
+  },
+  "webhook-deliveries": {
+    "version": "0.57.0",
+    "hash": "b9a08f937aecc091"
+  },
+  "offline-licence": {
+    "version": "0.57.0",
+    "hash": "ea8007fd608e002a"
+  },
+  "tenant-admin": {
+    "version": "0.57.0",
+    "hash": "766c6d15c9d3d1d3"
   },
   "incident-queue": {
     "version": "0.53.0",
