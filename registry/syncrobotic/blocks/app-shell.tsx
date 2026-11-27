@@ -319,11 +319,19 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
       <DropdownMenuTrigger asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
-        {/* 44 px, as the links' buttons, open or as a rail: its width follows the column, so on the 68 px rail it is a 44 px
-            square like theirs, and the 28 px avatar stays 20 px in (pl-2), on the 34 px centre line, all through the fold:
-            nothing switches, nothing jumps. 8 px corners, concentric with the sidebar's 16 at 8 px in; the chevron lines up
-            with the counts on the links above (pr-3), and fades with the name. */}
-        <SidebarMenuButton size="lg" tooltip={user.name} className="h-11 rounded-xs pr-3 pl-2 text-foreground">
+        {/* Open: 40 px (44 on touch), 8 px corners. As a rail: a 44 px square with 12 px corners, as the links' buttons;
+            the height and the corners move with the fold, the width follows the column. The 28 px avatar stays 20 px in
+            (pl-2) on the 34 px centre line all through it, and the name starts at 52 px, as the links' names and the
+            brand's (gap-1 after a 28 px avatar, icon-gap-ok). The chevron lines up with the counts above (pr-3). */}
+        <SidebarMenuButton
+          size="lg"
+          tooltip={user.name}
+          className={cn(
+            "h-10 gap-1 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
+            "transition-[height,border-radius,background-color,color] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
+            "group-data-[collapsible=icon]/sidebar:h-11 group-data-[collapsible=icon]/sidebar:rounded-sm",
+          )}
+        >
           {/* 28 px, as the mark at the top: both sit 14 px from their edges, on the 34 px centre line. */}
           <Avatar className="size-7">
             <AvatarFallback>{user.initials}</AvatarFallback>
@@ -560,12 +568,21 @@ export function AppShell({
       )}
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
-        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits in a
-            44 px box 12 px in, so its centre is the rail's centre line (34 px), open or closed; only the name fades. Flush: lined, level
+        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits 20 px
+            in, so its centre is the rail's centre line (34 px), open or closed, and the name starts at 52 px, where the
+            links' names and the account's name start too: one column of text down the sidebar. Only the name fades. Flush: lined, level
             with the top bar's line. */}
-        <SidebarHeader className={cn("h-(--h-row) justify-center border-b py-0", inset ? "border-transparent" : "border-border")}>
+        {/* Each state has its own balance, and the fold moves between them: open, the 28 px mark sits 14 px from the top, as
+            the avatar from the bottom; as a rail, 4 px more room under it raises it to 12, as the avatar's 44 px square
+            lowers it to 12. */}
+        <SidebarHeader
+          className={cn(
+            "h-(--h-row) justify-center border-b py-0 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:pb-1 motion-reduce:transition-none",
+            inset ? "border-transparent" : "border-border",
+          )}
+        >
           <span className="flex min-w-0 items-center gap-1">
-            <span className="flex w-11 shrink-0 items-center justify-center">
+            <span className="ml-2 flex size-7 shrink-0 items-center justify-center">
               {logo ?? (
                 <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
                   {product.slice(0, 1)}
@@ -581,9 +598,15 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          // 8 px above and below the 44 px account button, so its fill (hover, open) never touches the frame: 8 px in, its
-          // 8 px corner concentric with the sidebar's 16.
-          <SidebarFooter className={cn("border-t py-2", inset ? "border-transparent" : "border-border")}>
+          // 56 px in both states, as the brand row. Open: 8 px around a 40 px account button, its 8 px corner concentric with
+          // the sidebar's 16 (16 = 8 + 8). As a rail: a 44 px square like the links', 4 px from the bottom, its 12 px corner
+          // concentric too (16 = 12 + 4). The fold moves the padding with the column.
+          <SidebarFooter
+            className={cn(
+              "border-t py-2 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:pb-1 motion-reduce:transition-none",
+              inset ? "border-transparent" : "border-border",
+            )}
+          >
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
