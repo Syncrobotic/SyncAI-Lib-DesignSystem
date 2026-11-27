@@ -272,7 +272,7 @@ const entries: Record<string, Entry> = {
     group: "AI",
     examples: { file: "message", prefix: "Message" },
     rules: [
-      "One turn of a conversation with a model or an agent. Map your API's `role` straight to `role`: user, assistant, tool or system.",
+      "Map your API's `role` straight to `role`: user, assistant, tool or system.",
       "Who spoke is the role word in the header (You, Assistant, Tool, System), with `name` after it (the person, the assistant, the tool called). Never tell roles apart by a bubble colour or by alignment alone: `align=\"end\"` may move a person's turns to the end of a wide container, and they keep the word.",
       "Every turn is on neutral ground. A person's turn has a quiet `surface` (muted) by default; nothing takes a colour for its role.",
       "Pass `time` already formatted (\"14:02\") and `dateTime` for machines. Format it once in the browser, or with a time zone, so the server and the page agree.",
@@ -286,7 +286,7 @@ const entries: Record<string, Entry> = {
     group: "AI",
     examples: { file: "message-actions", prefix: "MessageActions" },
     rules: [
-      "The actions under a model's answer, in Message's `actions`. Each part shows only when you give what it needs: `copyText` for Copy, `onRegenerate` for Regenerate, `onFeedbackChange` for Good and Bad, `versions` above 1 for the switcher.",
+      "It goes in Message's `actions`. Each part shows only when you give what it needs: `copyText` for Copy, `onRegenerate` for Regenerate, `onFeedbackChange` for Good and Bad, `versions` above 1 for the switcher.",
       "Good and Bad are toggles (aria-pressed), inverted when pressed like every selected control, never green or red. Pressing the pressed one again clears it.",
       "Give `reasons` to ask what was wrong after Bad: a few short ones (\"Wrong facts\", \"Did not follow the request\"). Send the feedback and the reason from `onFeedbackChange` and `onReasonChange`.",
       "Regenerating adds a version: pass `version` and `versions` and switch the shown answer in `onVersionChange`. The switcher's ends stay focusable and say they are the end.",
@@ -299,7 +299,7 @@ const entries: Record<string, Entry> = {
     group: "AI",
     examples: { file: "prompt-composer", prefix: "PromptComposer" },
     rules: [
-      "Where someone writes to a model or an agent. It is a real <form>: `onSubmit(text, files)` gets the trimmed text and the attached files; return false to keep the draft (say why beside it).",
+      "It is a real <form>: `onSubmit(text, files)` gets the trimmed text and the attached files; return false to keep the draft (say why beside it).",
       "Enter sends and Shift+Enter starts a new line. Enter that ends an input method's composition (Zhuyin, Cangjie, Pinyin, kana) only commits the characters: never send on it in your own handlers either (`isComposingEnter`).",
       "While the answer streams pass `streaming` and `onStop`: Send becomes Stop in the same place and size, with focus kept, and Enter does not send. Abort the request in `onStop`.",
       "Never a greyed Send without a reason: an empty box, an answer still streaming and a passed `maxLength` are said in words under the box and in Send's description. `disabled` takes `disabledReason` (offline, no access).",
@@ -541,7 +541,7 @@ const entries: Record<string, Entry> = {
     group: "Search & filters",
     examples: { file: "facets", prefix: "Facets" },
     rules: [
-      "The facet column beside a catalog or a table: a few questions (tier, task, site), each a group of checkboxes, any of which can be on. Options in one facet combine with OR, facets with AND; the page filters, the facets only hold the picks.",
+      "A few questions (tier, task, site), any of whose options can be on. Options in one facet combine with OR, facets with AND; the page filters, the facets only hold the picks.",
       "Give every option its `count`, how many rows have it, computed by the page or the query. Pass `locale` so counts are grouped as on the server.",
       "`Facets` is the column from 1024 px; put `FacetsDrawer` in the toolbar for smaller screens and give both the same `value` and `onValueChange`. Never a second, hand-made sheet of checkboxes.",
       "The column pins under the shell's bar (`--shell-top`) and scrolls on its own when it is taller than the space under it, so the list beside it scrolls without taking the filters away.",
@@ -556,7 +556,6 @@ const entries: Record<string, Entry> = {
     examples: { file: "filter-form", prefix: "FilterForm" },
     rules: [
       "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
-      "Typing applies a moment after it stops; a pick applies at once. The page number resets.",
       "It is a plain GET form, so it works before JavaScript loads. Pass onNavigate to stay client-side (Next.js: router.push / router.replace with scroll: false).",
     ],
   },
@@ -576,8 +575,8 @@ const entries: Record<string, Entry> = {
     group: "Search & filters",
     examples: { file: "search-field", prefix: "SearchField" },
     rules: [
-      "One search box per tool, in the top bar. / focuses it; Enter opens the results page.",
-      "On the results page set live: it mirrors ?q= and applies as you type.",
+      "One search box per tool, in the top bar.",
+      "On the results page set `live`.",
       "For jumping to pages and actions use the command palette (AppShell search); this is for searching data.",
     ],
   },
@@ -585,7 +584,7 @@ const entries: Record<string, Entry> = {
     group: "Actions",
     examples: { file: "theme-toggle", prefix: "ThemeToggle" },
     rules: [
-      "Three choices: light, match the system, dark. With no stored choice the app's default applies: light (:root).",
+      "With no stored choice the app's default applies: light (:root).",
       "Pass undefined until the stored choice is known, so nothing is shown selected and then jumps.",
       "In a top bar, at the far right beside the user.",
     ],
@@ -662,7 +661,7 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "inputs", prefix: "InputGroup" },
     rules: [
-      "For an icon, a unit or a button inside the field's edge. Use it instead of positioning icons by hand.",
+      "Use it instead of positioning icons by hand.",
       "Units are text after the value, so “120 m” reads as one; icons are decorative and hidden from screen readers.",
       "Buttons inside (clear, show password) need an aria-label; they are 36 px with a mouse and 44 px on touch, like every compact control.",
     ],
@@ -674,7 +673,7 @@ const entries: Record<string, Entry> = {
       "The value and its unit are one reading, centred between − and +: write the unit with `unit`, not in the label.",
       'For a number with a range and a unit: speed, thresholds, intervals. For a free number with no range, Input with inputMode="numeric" is enough.',
       "Never block typing. The value is kept in range when the field loses focus, and the hint says the range.",
-      "↑↓ step, Shift or PageUp/PageDown step by largeStep, Home/End go to the limits. The buttons are for touch and skip the Tab order.",
+      "Shift or PageUp/PageDown steps by `largeStep`; Home/End go to the limits. The buttons are for touch and skip the Tab order.",
     ],
   },
   textarea: {
@@ -900,7 +899,7 @@ const entries: Record<string, Entry> = {
     group: "Status & values",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
-      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active (busy), hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
+      "Status is a shape and a word: the shape reads without colour vision, the word says the state.",
       "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
       "Pass `status`: active, normal, warning, danger or offline (the default). The old `tone` names (info, success, neutral) were removed in 0.40.",
     ],
@@ -919,7 +918,6 @@ const entries: Record<string, Entry> = {
     group: "Feedback",
     examples: { file: "list", only: ["LoadingSkeleton", "SkeletonCard", "SkeletonTableRows"] },
     rules: [
-      "Show what is already known; only unknown values get a skeleton.",
       "The whole group breathes over 1.2 s with no diagonal shimmer, and stops under reduced motion.",
     ],
   },
@@ -956,7 +954,7 @@ const entries: Record<string, Entry> = {
     group: "Charts",
     examples: { file: "bar-list", prefix: "BarList" },
     rules: [
-      "A short ranked list of counts: items per class, files per format, the top 5 to 10. Pass the rows in the order to show them, largest first; `max` shows that many, then says how many more.",
+      "For items per class, files per format, the top 5 to 10. Pass the rows in the order to show them, largest first; `max` shows that many, then says how many more.",
       "One series: every bar is `--chart-1`, scaled to the largest value. No status colours, no colour per row; a row that needs attention says so in words elsewhere.",
       "The value is written in each row (tabular, with `locale`; `format` to shorten it), so it needs no Chart / Table switch, as a sparkline does.",
       "No surface of its own: put it in a Card (with CardDataHeader naming it), a table cell or a sheet. `label` names the list for screen readers; show the same words as the card's title.",
@@ -1113,7 +1111,7 @@ const entries: Record<string, Entry> = {
     // A banner spans the page, so its examples do too, also once it is dismissed.
     wide: true,
     rules: [
-      "About the app, not one record: maintenance, read-only mode, a trial ending, no connection. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
+      "About the app, not one record. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
       "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
       "Tone by consequence: neutral for calm conditions, info only while a process runs (syncing back, a maintenance window under way), warning before something is lost, danger when the app cannot work. Danger is a tint, never solid red. Give it an icon that names the subject (Wrench, Lock, CloudOff).",
       "role=\"status\" for neutral, info and warning (read politely); role=\"alert\" only for danger. It is not role=\"banner\", which is the page header landmark.",
@@ -1155,7 +1153,7 @@ const entries: Record<string, Entry> = {
     group: "Navigation",
     examples: { file: "data-pieces", prefix: "LoadMore" },
     rules: [
-      "Say how much is shown, and on the button how many it adds and how many remain. Never “Load more” alone.",
+      "Never “Load more” alone.",
       "It disappears once everything is shown. For a desktop table people jump around in, use Pagination.",
     ],
   },
@@ -1165,7 +1163,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
       "Keep the labels short and the order stable.",
-      "Over long sections, `sticky` on TabsList keeps the row in view under the shell's top bar. One sticky row per page; picking a tab while it is stuck goes back to the start of the tabs.",
+      "One sticky row (`sticky` on TabsList) per page; picking a tab while it is stuck goes back to the start of the tabs.",
       "A row of links to other pages is navigation, not tabs: use ChipGroup with `href`, or NavigationMenu.",
     ],
   },
@@ -1445,7 +1443,6 @@ const entries: Record<string, Entry> = {
     group: "Robotics",
     examples: { file: "slide-to-release", only: ["Stopped", "ReleaseStates"] },
     rules: [
-      "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
       "Viewers can see it but cannot release.",
       "Keyboard and switch control: hold Enter or Space for 2 s; the thumb travels while the key is held. Letting go, moving focus away or the page going to the background cancels the hold, so a held key never releases on its own.",
       "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
@@ -1455,7 +1452,7 @@ const entries: Record<string, Entry> = {
     group: "Robotics",
     examples: { file: "teleop-pad", prefix: "TeleopPad" },
     rules: [
-      "Dead man: the robot moves only while the stick is held. Release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call onStop with the reason.",
+      "Release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call onStop with the reason.",
       "Commands go out at a fixed rate (`rateHz`, 10 by default) while held, so the robot can run its own watchdog: if commands stop arriving for a few periods, the robot must stop by itself. The pad cannot stop a robot whose link or tab has frozen.",
       "Pressing never moves the robot: the stick starts where the finger lands, and only movement from there drives. A dead zone (10 % by default) keeps a resting thumb from creeping it.",
       "Not an emergency stop. Put StopButton beside it, above it on a phone, on every drive screen; the pad has no red.",
@@ -1468,7 +1465,6 @@ const entries: Record<string, Entry> = {
     group: "Robotics",
     examples: { file: "dock", only: ["Moving", "DockRobotStates", "DockActionStates"] },
     rules: [
-      "Three tiers, top to bottom: state action, this page's primary action, navigation.",
       "Actions in the lower tiers are never solid white, so they do not compete with the stop.",
     ],
   },
@@ -1476,7 +1472,7 @@ const entries: Record<string, Entry> = {
     group: "Robotics",
     examples: { file: "island" },
     rules: [
-      "Name, device status and notifications each expand on their own, one at a time, each into its panel: IslandRobots (switch robot), IslandStatus (connection, battery, last report), IslandNotifications. A zone with nothing to open is not a control people learn to ignore: give every zone its panel.",
+      "One zone opens at a time, each into its panel: IslandRobots (switch robot), IslandStatus (connection, battery, last report), IslandNotifications. A zone with nothing to open is not a control people learn to ignore: give every zone its panel.",
       "An open panel never hides an alarm or a failure: notices and IslandAlarm stay above it. Esc or a tap outside closes it, and focus goes back to its zone.",
       "Failure notices stay until handled. A persistent fault (stopped) changes the tray edge colour; offline stays neutral and is said in words and by its shape.",
       "IslandAlarm shows the most urgent unacknowledged alarm above any notice, from the same data as AlarmList. The edge follows it: critical danger, high warning.",
@@ -1497,7 +1493,6 @@ const entries: Record<string, Entry> = {
   "use-slide-release": {
     group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UseSlideRelease" },
-    rules: ["Drag, threshold and spring-back logic behind Slide to release."],
   },
   "use-presence": {
     group: "Hooks & libraries",
@@ -1558,7 +1553,6 @@ const entries: Record<string, Entry> = {
   "clock-time": {
     group: "Hooks & libraries",
     rules: [
-      "The one format every live component writes a time of day in: 24-hour with seconds (14:02:31), in `locale` and an optional `timeZone`.",
       "A time read during render differs between the server and the browser: read the clock with `use-now` and format what it returns.",
     ],
   },

@@ -870,7 +870,7 @@
       "name": "tray",
       "type": "registry:component",
       "title": "Tray",
-      "description": "The shared frame of the dynamic island and the dock: radius 24, padding 8, gap 8.",
+      "description": "The floating frame the dynamic island and the dock are built on; build your own floating panel on it so it matches them.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -957,7 +957,7 @@
       "name": "slide-to-release",
       "type": "registry:component",
       "title": "Slide to release",
-      "description": "Past 85% releases, short of that springs back in 200 ms; locked for viewers; hold 2 s on the keyboard instead.",
+      "description": "Releases a stopped robot with a deliberate slide: past 85% it releases, short of that it springs back in 200 ms; locked for viewers; hold 2 s on the keyboard instead.",
       "dependencies": [
         "lucide-react@^1"
       ],
@@ -1063,7 +1063,7 @@
       "name": "dock",
       "type": "registry:component",
       "title": "Dock",
-      "description": "Three tiers: state action, this page's primary action, navigation.",
+      "description": "The robot shell's action bar in three tiers, top to bottom: state action, this page's primary action, navigation.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/tray",
@@ -1281,7 +1281,7 @@
       "name": "skeleton",
       "type": "registry:component",
       "title": "Skeleton",
-      "description": "What is known shows first; only unknown values get a skeleton; the whole group breathes.",
+      "description": "Placeholders for values not loaded yet: what is known shows first, only unknown values get a skeleton, and the whole group breathes.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/spinner"
@@ -1328,7 +1328,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "Primary, secondary, outline, ghost, destructive and link; 36, 44 and 48 px; loading state with a delayed spinner.",
+      "description": "A control that does one thing now, labelled with a verb: primary, secondary, outline, ghost, destructive and link; 36, 44 and 48 px; loading state with a delayed spinner.",
       "dependencies": [
         "radix-ui@^1",
         "class-variance-authority@^0.7"
@@ -1458,7 +1458,7 @@
       "name": "spinner",
       "type": "registry:ui",
       "title": "Spinner",
-      "description": "Appears only after 300 ms, so quick work never flashes a spinner.",
+      "description": "A turning indicator for work with no measurable progress, shown only after 300 ms so quick work never flashes it.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -1489,7 +1489,7 @@
       "name": "segmented-control",
       "type": "registry:ui",
       "title": "Segmented control",
-      "description": "Switches between views of the same data, with the selected segment inverted.",
+      "description": "Two to four buttons joined into one for switching between views of the same data, with the selected segment inverted.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -1948,7 +1948,7 @@
       "name": "label",
       "type": "registry:ui",
       "title": "Label",
-      "description": "Accessible label for any control.",
+      "description": "The visible name of a control, wired to it so a click focuses the control and screen readers announce it.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -2098,7 +2098,7 @@
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",
-      "description": "Checked, unchecked and indeterminate.",
+      "description": "A box that is checked, unchecked or indeterminate, for a choice that applies when the form is saved.",
       "dependencies": [
         "radix-ui@^1",
         "lucide-react@^1"
@@ -2202,7 +2202,7 @@
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",
-      "description": "On is the primary colour, off a neutral track; takes effect immediately.",
+      "description": "On or off for a setting that takes effect immediately, with no save button; on is the primary colour, off a neutral track.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -2397,7 +2397,7 @@
       "name": "slider",
       "type": "registry:ui",
       "title": "Slider",
-      "description": "Single value or range.",
+      "description": "A track with a thumb for picking a single value or a range.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -2659,7 +2659,7 @@
       "name": "separator",
       "type": "registry:ui",
       "title": "Separator",
-      "description": "Horizontal or vertical hairline.",
+      "description": "A horizontal or vertical hairline between groups of content.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -2688,7 +2688,7 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
-      "description": "Determinate progress; blue unless the value itself is a status.",
+      "description": "A determinate bar that fills as work completes; blue unless the value itself is a status.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -2992,7 +2992,7 @@
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
-      "description": "Inline message in a status tone with icon, title and description.",
+      "description": "A message inside the page in a status tone, with icon, title and description, that stays while its condition holds.",
       "dependencies": [
         "class-variance-authority@^0.7"
       ],
@@ -4326,7 +4326,7 @@
       "name": "alert-dialog",
       "type": "registry:ui",
       "title": "Alert dialog",
-      "description": "Confirms an action that cannot be undone; the confirm names the consequence.",
+      "description": "A dialog that confirms an action that cannot be undone; the confirm button names the consequence.",
       "dependencies": [
         "radix-ui@^1"
       ],
@@ -4582,7 +4582,7 @@
       "name": "dropdown-menu",
       "type": "registry:ui",
       "title": "Dropdown menu",
-      "description": "Actions on an item; destructive actions last.",
+      "description": "A menu of actions on an item, opened from a button; destructive actions last.",
       "dependencies": [
         "radix-ui@^1",
         "lucide-react@^1"
@@ -6991,7 +6991,7 @@
       "name": "data-grid",
       "type": "registry:ui",
       "title": "Data grid",
-      "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
+      "description": "A TanStack Table grid whose state you own: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": [
         "@tanstack/react-table@^9",
         "@tanstack/react-virtual@^3",

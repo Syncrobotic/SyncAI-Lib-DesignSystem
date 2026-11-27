@@ -33,7 +33,7 @@ export function buildSearchIndex(): SearchEntry[] {
 
   for (const i of items) {
     const o = overviews[i.name]
-    out.push({ group: "Components", title: i.title, href: `/docs/components/${i.name}`, hint: o?.what ?? i.description, text: [i.name, i.group, ...(o?.use ?? [])].join(" ") })
+    out.push({ group: "Components", title: i.title, href: `/docs/components/${i.name}`, hint: i.description, text: [i.name, i.group, ...(o?.use ?? [])].join(" ") })
   }
 
   for (const t of blockTypes) {
