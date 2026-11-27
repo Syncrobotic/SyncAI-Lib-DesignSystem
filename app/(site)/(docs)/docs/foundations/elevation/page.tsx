@@ -80,6 +80,36 @@ export default function ElevationPage() {
             text: "Stack shadows on cards inside cards. Shadow means the layer floats; in-page content does not.",
           }}
         />
+        <DoDont
+          good={{
+            visual: (
+              <div className="flex w-64 flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
+                <div className="h-3 w-1/2 rounded-xs bg-muted" />
+                <div className="flex h-8 items-center rounded-sm bg-muted px-3">
+                  <div className="h-2 w-1/3 rounded-xs bg-border" />
+                </div>
+                <div className="border-t border-border pt-3">
+                  <div className="h-3 w-2/3 rounded-xs bg-muted" />
+                </div>
+              </div>
+            ),
+            text: "One edge per surface. Inside it, a field is filled (no outline), a table or a list is bare, and a part is set apart by a hairline and space. The app shell's inset content panel is the page: cards sit on it as on any page.",
+          }}
+          bad={{
+            visual: (
+              <div className="flex w-64 flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
+                <div className="h-3 w-1/2 rounded-xs bg-muted" />
+                <div className="flex h-8 items-center rounded-sm px-3 ring-1 ring-border">
+                  <div className="h-2 w-1/3 rounded-xs bg-border" />
+                </div>
+                <div className="rounded-sm p-3 ring-1 ring-border">
+                  <div className="h-3 w-2/3 rounded-xs bg-muted" />
+                </div>
+              </div>
+            ),
+            text: "Draw an edge inside an edge: an outlined field in a bordered bar, a ringed table in a card, a bordered panel in a step. Each box reads as one more layer.",
+          }}
+        />
       </Section>
 
       <Pager {...neighbours("elevation")} />

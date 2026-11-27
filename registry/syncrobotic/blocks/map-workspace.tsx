@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.45.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.47.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -103,7 +103,7 @@ export function MapWorkspace() {
               <LayoutList aria-hidden="true" /> Robots
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent side="end">
             <SheetClose
               aria-label="Close"
               className="press absolute top-2 right-2 flex size-(--h-md) items-center justify-center rounded-md text-muted-foreground hover:bg-accent"

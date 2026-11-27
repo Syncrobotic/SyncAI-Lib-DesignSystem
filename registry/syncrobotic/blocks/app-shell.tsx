@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.44.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.47.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -598,7 +598,8 @@ export function AppShell({
           {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
           <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
-          <h1 className="truncate text-lg font-bold">{title}</h1>
+          {/* The page's title, above its sections (xl 20): 2xl 24, the largest that sits in the 56 px bar. */}
+          <h1 className="truncate text-2xl font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}
           {env && (
             <Badge tone={env.tone} className="max-sm:hidden">

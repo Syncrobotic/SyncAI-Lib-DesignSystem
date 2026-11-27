@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-gate v0.43.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
+// @syncrobotic/agent-run-gate v0.47.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,7 @@ import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/a
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Code } from "@/registry/syncrobotic/ui/code"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -109,7 +109,16 @@ export const sampleAgentRun: AgentRun = {
         ],
         facts: [
           { label: "Door C3", value: "Closed since 21:41" },
-          { label: "9E37 battery", value: "14 %" },
+          // Below 15 % the level shows the warning shape, and says "low" to a screen reader, as in the fleet table.
+          {
+            label: "9E37 battery",
+            value: (
+              <span className="inline-flex items-center gap-2">
+                <StatusGlyph status="warning" />
+                14 %<span className="sr-only">, low</span>
+              </span>
+            ),
+          },
           { label: "1715 at 05:30", value: "27 %, reserve 25 %" },
           { label: "Robot data from", value: "21:58" },
         ],
@@ -366,7 +375,7 @@ function describe(step: AgentRunStep, status: TraceStatus, decided: Decided | un
  */
 function ChangesTable({ label, changes }: { label: string; changes: AgentRunRobotChange[] }) {
   return (
-    <Table aria-label={label}>
+    <Table bare aria-label={label}>
       <TableHeader>
         <TableRow>
           <TableHead>Robot</TableHead>
@@ -446,8 +455,8 @@ function GatePanel({
   return (
     <div
       data-slot="agent-run-gate-panel"
-      // A border, not a ring: the step's collapsible clips what is drawn outside the box.
-      className="flex flex-col gap-4 rounded-md border border-border p-3 sm:p-4"
+      // Inside the step's card: a hairline and space set it apart, not a box of its own, so edges never nest.
+      className="flex flex-col gap-4 border-t border-border pt-4"
     >
       <section aria-labelledby={`${id}-changes`} className="flex flex-col gap-2">
         <SectionHeader id={`${id}-changes`} variant="surface" as={heading} title="What changes" count={a.changes.length} />

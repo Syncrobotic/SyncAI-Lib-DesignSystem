@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.45.1 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.47.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -40,7 +40,7 @@ export function SheetRobotDetail({
         <SheetTrigger asChild>
           <Button variant="secondary">Open Patrol dog 9E37</Button>
         </SheetTrigger>
-        <SheetContent side="right" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
+        <SheetContent side="end" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
           {/* A visible way out, as in a dialog: 44 px, 8 px in from the corner, radius 16 = 24 - 8. Esc and the scrim close it too. */}
           <SheetClose
             aria-label="Close"
@@ -59,7 +59,9 @@ export function SheetRobotDetail({
             <Meter label="Signal" value={62} low={40} critical={20} />
           </div>
 
+          {/* Bare: the sheet is already the surface, and cards never nest. */}
           <DescriptionList
+            variant="bare"
             columns={2}
             items={[
               { label: "Mission", value: "Loading bay sweep" },
@@ -97,11 +99,13 @@ export function SheetRobotDetail({
                 }}
               />
             )}
-            <Button>
+            {/* Under the stop the actions are as in the dock: the main one a raised muted block, never solid white, so it does
+                not compete with the red stop; the other a ghost. */}
+            <Button variant="secondary" className="ring-1 ring-edge ring-inset">
               <ChargingDock aria-hidden="true" />
               Send to dock
             </Button>
-            <Button variant="secondary">
+            <Button variant="ghost">
               <Camera aria-hidden="true" />
               Open camera
             </Button>

@@ -625,7 +625,7 @@ const entries: Record<string, Entry> = {
     group: "Actions",
     examples: { file: "actions", prefix: "SegmentedControl" },
     rules: [
-      "For two to four views of the same data, or a time window (1 h, 24 h, 7 days). For sections of a page, use Tabs; for a tool or a mode, Toggle group.",
+      "For two to four views of the same data, a time window (1 h, 24 h, 7 days), or a setting with two to four short choices that applies at once or is saved with its form (Auto / Ask / Blocked). For sections of a page, use Tabs; for a tool or a mode, Toggle group.",
       "The selected segment is inverted, per the selected-state rule.",
       "A switch in a card's header (Chart / Table, Map / List) is `ChartViewSwitch`, at `--h-sm` (36 px with a mouse, 44 on touch): a header holds no field. Beside a search or a select the toolbar is the field's `--h-md`; use SegmentedControl at its default height there.",
     ],
@@ -813,6 +813,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Waits 300 ms before it appears. Work that finishes sooner never flashes a spinner.",
       "Prefer Skeleton when you know the shape of what is loading.",
+      "In the text's colour, muted beside a label, never blue: waiting is not a process the person can follow. Blue belongs to Progress and to a running state's shape (a Trace step, a route being driven).",
     ],
   },
   meter: {
@@ -863,6 +864,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Table" },
     rules: [
       "Right-align numbers. Numbers are tabular by default.",
+      "`bare` inside something that is already a surface (a card, a sheet, a step's panel): no edge of its own, only the hairlines between rows, so edges never nest.",
       "A row's actions sit in its last cell, TableActionsCell: a ⋯ menu (DropdownMenuMoreTrigger with the row's name) or one or two icon buttons. Its header cell takes the same padding (`w-0 pr-2 pl-0 sm:px-4`) and a visually hidden “Actions”.",
       'No rows: one row whose cell spans every column and holds an inline EmptyState (`size="inline"`), never a bare line of grey text.',
       "Rows that phones see too: `responsive-table`, which renders this table and a grouped list from one list of columns, never a second phone list written by hand.",
@@ -1097,6 +1099,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "A condition on this page that stays while it is true (a licence about to expire, a form that cannot be sent). No acknowledge.",
       "If the operator must act on the robot, it is an alarm instead.",
+      "Tone by consequence, as a banner: neutral for calm conditions, info only while a process runs (never for a state), warning before something is lost, danger when the page cannot work. No success tone: a success does not stay, so it is a toast.",
     ],
   },
   banner: {
@@ -1219,7 +1222,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "Sheet" },
     rules: [
       "Detail or a short form beside the list it came from, keeping the list in view. A decision that blocks the task is a Dialog.",
-      "Bottom on phones, right on wide screens, left for navigation. Esc and the scrim close it.",
+      "Bottom on phones, right on wide screens, left for navigation: `side=\"end\"` does the first two in one (bottom under 640 px, right from 640 px), for a detail or a form beside the page. Esc and the scrim close it.",
       "It floats 8 px from the screen's edges, the app shell's gutter, with every corner rounded. Set a width with w-* or sm:max-w-*; auto margins keep it on its side.",
     ],
   },
