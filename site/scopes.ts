@@ -8,7 +8,7 @@ import { iconCategories, iconCount } from "./icons"
 export type NavLink = {
   href: string
   label: string
-  /** In-page anchors or filters (?category=…), listed under the link while its page is open; `count` shows beside one. */ sections?: { href: string; label: string; count?: number }[]
+  /** In-page anchors (`#…`, under the link's own page: every page carries this list, so not its path again) or filters (?category=…), listed under the link while its page is open; `count` shows beside one. */ sections?: { href: string; label: string; count?: number }[]
   /** A beta item: its API may still change in a minor release. */ beta?: boolean
 }
 export type NavGroup = { title: string; links: NavLink[] }
@@ -61,10 +61,10 @@ export const scopes: Scope[] = [
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
           // Then its pattern sets (Line chart, Heatmap…), so a chart is found under Chart, not under Blocks.
           sections: [
-            ...(i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n, i.name) })) : []),
+            ...(i.examples ? storyNames(i.examples).map((n) => ({ href: `#example-${n}`, label: storyTitle(n, i.name) })) : []),
             ...patternsOf(i.name)
               .filter((t) => blocksOfType(t.slug).length > 0)
-              .map((t) => ({ href: `/docs/components/${i.name}#${t.slug}`, label: t.title })),
+              .map((t) => ({ href: `#${t.slug}`, label: t.title })),
           ],
         })),
       })),
@@ -88,7 +88,7 @@ export const scopes: Scope[] = [
               href: `/blocks/${t.slug}`,
               label: t.title,
               beta: blocksOfType(t.slug).some((b) => b.status === "beta"),
-              sections: blocksOfType(t.slug).map((b) => ({ href: `/blocks/${t.slug}#${b.name}`, label: b.title })),
+              sections: blocksOfType(t.slug).map((b) => ({ href: `#${b.name}`, label: b.title })),
             })),
         }))
         .filter((g) => g.links.length > 0),
