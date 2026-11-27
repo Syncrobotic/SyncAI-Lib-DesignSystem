@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.40.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.50.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1006,6 +1006,7 @@ export function GeoMap({
   const halo = "fill-none stroke-map"
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role=application: the map pans and zooms with the keys as well as the pointer
     <div
       ref={root}
       data-slot="geo-map"
@@ -1013,6 +1014,7 @@ export function GeoMap({
       aria-roledescription="map"
       aria-label={name}
       aria-describedby={hint}
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the map is a keyboard-driven widget (role=application) and must take focus
       tabIndex={0}
       onKeyDown={onKeyDown}
       onPointerDown={onPointerDown}

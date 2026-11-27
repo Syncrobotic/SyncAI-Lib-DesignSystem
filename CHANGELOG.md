@@ -2,6 +2,29 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.50.0 · 2026-11-27
+
+Accessibility checked in the markup itself, before anything renders.
+
+### Added
+- **Lint:** `eslint-plugin-jsx-a11y` (recommended rules) runs on every `.tsx` in CI, beside axe on the built pages (`check:a11y`), which only sees what renders. The plugin's peer range stops at ESLint 9, so it runs through `@eslint/compat` and `package.json` overrides the peer range. A component's own `role` prop (a chat `Message`'s `"system"`) is not checked as an ARIA role. `role="list"` on a styled list is allowed, since it puts back the list semantics Safari drops. Tests render fixtures and are not linted for it.
+
+### Fixed
+- **`breadcrumb` 0.50.0:** `BreadcrumbLink` renders its children inside the link. It was a self-closing anchor fed children through props. Output is unchanged.
+- **`date-selector`, `time-picker` 0.50.0:** an invalid trigger is marked `data-invalid`, not `aria-invalid`, which a button does not support. The error is still read through `aria-describedby`, and the ring is unchanged.
+- **`stepper` 0.50.0:** a disabled step is marked `data-disabled`, not `aria-disabled`, which its list item does not support. Its screen-reader text already says it is unavailable.
+- **`tree` 0.50.0:** rows show the pointer cursor, as everything clickable in the kit.
+
+### Changed
+- **Reasons on purpose:** where a component deliberately does what the lint flags, the line says why, and nothing it renders changed. This covers 26 items, all 0.50.0:
+  - **A focusable scroll region** (WCAG 2.1.1): `table`, `code-block`, `trace`, `message-scroller`, `data-grid`.
+  - **A canvas widget with its own keys:** `robot-map`, `geo-map`, `point-cloud`, `streaming-chart`, `teleop-pad`, `media-player`.
+  - **Focus on the next thing to use when it opens:** `filters`, `auth-2fa`, `settings-api-keys`, `agent-run-gate`.
+  - **Keys that bubble up from roving children:** `camera-wall`, `graph`, `status-tracker-uptime`, `notification-center`, `citations`.
+  - **A press on an empty field that focuses its input:** `input-group`, `number-field`.
+  - **Others:** `autocomplete` (focus stays in the combobox), `camera-feed` (a live stream with no captions to give), `prompt-composer` (the consumer's `autoFocus`), `sidebar` (the rail is a focusable splitter).
+- **Dependencies:** `lucide-react` 1.82, `vite` 8.4.
+
 ## 0.49.0 · 2026-11-27
 
 The sidebar in balance in both its states, with a fold that moves between them, and sign-in that never waits for good.

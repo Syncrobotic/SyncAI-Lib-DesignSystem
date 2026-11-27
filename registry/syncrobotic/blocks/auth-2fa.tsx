@@ -1,4 +1,4 @@
-// @syncrobotic/auth-2fa v0.49.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
+// @syncrobotic/auth-2fa v0.50.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
 "use client"
 
 import * as React from "react"
@@ -176,6 +176,7 @@ export function AuthTwoFactor({
                 <Field label="6-digit code" error={error}>
                   <InputOTP
                     ref={field}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus -- the code is the only thing to do on this step
                     autoFocus
                     maxLength={6}
                     pattern={REGEXP_ONLY_DIGITS}
@@ -199,6 +200,7 @@ export function AuthTwoFactor({
                 <Field label="Recovery code" hint="One of the 10 codes you saved when you set up 2FA." error={error}>
                   <Input
                     ref={field}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus -- the code is the only thing to do on this step
                     autoFocus
                     autoComplete="off"
                     autoCapitalize="characters"

@@ -1,4 +1,4 @@
-// @syncrobotic/settings-api-keys v0.40.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
+// @syncrobotic/settings-api-keys v0.50.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
 "use client"
 
 import * as React from "react"
@@ -79,6 +79,7 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
       {creating && (
         <form noValidate onSubmit={create} className="flex animate-appear flex-col gap-4 rounded-md bg-card p-4 ring-1 ring-border">
           <Field label="Key name" hint="Name it after what uses it, so you know what breaks if you revoke it." error={error}>
+            {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the form opens on a press of Create key; the name is the next thing to type */}
             <Input autoFocus value={name} onChange={(e) => setName(e.target.value)} />
           </Field>
           <div className="flex gap-2">

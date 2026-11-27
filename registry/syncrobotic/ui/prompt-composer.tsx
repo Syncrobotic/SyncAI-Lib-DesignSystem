@@ -1,4 +1,4 @@
-// @syncrobotic/prompt-composer v0.42.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
+// @syncrobotic/prompt-composer v0.50.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
 "use client"
 
 import * as React from "react"
@@ -291,6 +291,7 @@ export function PromptComposer({
           name={name}
           rows={1}
           value={value}
+          // eslint-disable-next-line jsx-a11y/no-autofocus -- passed through from the consumer's autoFocus prop, off by default
           autoFocus={autoFocus}
           disabled={disabled}
           placeholder={l.placeholder}

@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.47.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.50.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -456,6 +456,7 @@ export function CameraFeed({
       >
         {/* Always dark, like any video surface: the overlays take the dark theme's tokens whatever the page's theme. */}
         <div className="dark absolute inset-0 bg-background text-foreground">
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- a live camera stream: no caption file exists for it, and it has no audio unless `audio` is set */}
           <video
             ref={videoRef}
             src={stream ? undefined : src}

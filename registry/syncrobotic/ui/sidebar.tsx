@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.49.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.50.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -501,6 +501,7 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"div">
     // No tooltip while dragging: it would ride along over the page.
     <Tooltip open={resizing ? false : undefined}>
       <TooltipTrigger asChild>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- a focusable separator is a widget (value, arrow keys resize) */}
         <div
           role="separator"
           aria-orientation="vertical"
@@ -510,6 +511,7 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"div">
           // Open or a rail is in the value (72 is the rail); a separator takes no aria-expanded.
           aria-valuenow={open ? width : WIDTH.rail}
           aria-keyshortcuts={keyshortcuts}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a focusable separator is a widget (value, arrow keys resize)
           tabIndex={0}
           data-slot="sidebar-rail"
           data-dragging={resizing || undefined}
