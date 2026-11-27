@@ -63,7 +63,7 @@ export function MissionForm({
   }
 
   return (
-    <form noValidate onSubmit={form.handleSubmit(submit)} className="flex w-md max-w-full flex-col gap-6">
+    <form noValidate onSubmit={(e) => void form.handleSubmit(submit)(e)} className="flex w-md max-w-full flex-col gap-6">
       {serverError && (
         <Alert tone="danger">
           <CircleAlert aria-hidden="true" />

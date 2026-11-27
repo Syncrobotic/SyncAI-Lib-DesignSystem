@@ -33,7 +33,8 @@ export function AuthPasskey({
   const passkey = async () => {
     setStep("waiting")
     // Without a handler the sample fails, to show what happens when the passkey is not on this device.
-    const ok = onPasskey ? await onPasskey() : await new Promise<boolean>((r) => window.setTimeout(() => r(false), 900))
+    // A passkey prompt the person cancels rejects (NotAllowedError): a failed try, never a button left waiting.
+    const ok = onPasskey ? await onPasskey().catch(() => false) : await new Promise<boolean>((r) => window.setTimeout(() => r(false), 900))
     setStep(ok ? "passkey" : "failed")
   }
 
@@ -41,9 +42,16 @@ export function AuthPasskey({
     e.preventDefault()
     if (code.length < 6) return setCodeError("Enter all 6 digits.")
     setBusy(true)
-    const ok = onCode ? await onCode(code) : await new Promise<boolean>((r) => window.setTimeout(() => r(code === "123456"), 600))
+    // A request that fails is not a wrong code: null, said apart.
+    const ok = onCode ? await onCode(code).catch(() => null) : await new Promise<boolean>((r) => window.setTimeout(() => r(code === "123456"), 600))
     setBusy(false)
-    setCodeError(ok ? undefined : "That code did not work. Codes change every 30 seconds; try the current one.")
+    setCodeError(
+      ok === null
+        ? "Could not check the code. Check the connection and try again."
+        : ok
+          ? undefined
+          : "That code did not work. Codes change every 30 seconds; try the current one.",
+    )
   }
 
   return (
@@ -52,7 +60,7 @@ export function AuthPasskey({
         <PageHeader title={`Sign in to ${product}`} description="No password: use the passkey on this device." className="pb-0" />
 
         {step === "code" ? (
-          <form noValidate onSubmit={submitCode} className="flex animate-appear flex-col gap-4">
+          <form noValidate onSubmit={(e) => void submitCode(e)} className="flex animate-appear flex-col gap-4">
             <Field label="Code from your authenticator app" error={codeError}>
               <InputOTP
                 maxLength={6}
@@ -79,7 +87,7 @@ export function AuthPasskey({
           </form>
         ) : (
           <div className="flex flex-col gap-4">
-            <Button size="lg" onClick={passkey} loading={step === "waiting"}>
+            <Button size="lg" onClick={() => void passkey()} loading={step === "waiting"}>
               <Fingerprint aria-hidden="true" />
               Sign in with a passkey
             </Button>

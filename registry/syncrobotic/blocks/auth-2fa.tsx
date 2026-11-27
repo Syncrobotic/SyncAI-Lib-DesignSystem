@@ -115,8 +115,10 @@ export function AuthTwoFactor({
     if (method === "recovery" && !RECOVERY.test(value)) return setError("A recovery code is 8 letters and numbers, like 7KQ2-MV9T.")
     setBusy(true)
     setError(undefined)
-    const result = await verify(value, method, remember)
+    // A request that fails (no network, a server error) is not a wrong code: it says so, and the code stays to send again.
+    const result = await verify(value, method, remember).catch(() => null)
     setBusy(false)
+    if (!result) return setError("Could not check the code. Check the connection and try again.")
     if (result.ok) {
       setDone(true)
       return onSignedIn?.()
@@ -135,10 +137,12 @@ export function AuthTwoFactor({
     field.current?.focus()
   }
 
-  const usePasskey = async () => {
+  const tryPasskey = async () => {
     setPasskey("waiting")
     // Without a handler the sample fails, to show the way back to the code.
-    const ok = onPasskey ? await onPasskey() : await new Promise<boolean>((r) => window.setTimeout(() => r(false), 900))
+    // A passkey prompt the person cancels rejects (NotAllowedError), as does one that times out: both are a failed try, with
+    // the way back to the code, never a button left waiting.
+    const ok = onPasskey ? await onPasskey().catch(() => false) : await new Promise<boolean>((r) => window.setTimeout(() => r(false), 900))
     setPasskey(ok ? "idle" : "failed")
     if (ok) {
       setDone(true)
@@ -167,7 +171,7 @@ export function AuthTwoFactor({
           </p>
         ) : (
           <>
-            <form noValidate onSubmit={submit} className="flex flex-col gap-4">
+            <form noValidate onSubmit={(e) => void submit(e)} className="flex flex-col gap-4">
               {method === "app" ? (
                 <Field label="6-digit code" error={error}>
                   <InputOTP
@@ -231,7 +235,7 @@ export function AuthTwoFactor({
                   or
                   <Separator className="flex-1" />
                 </div>
-                <Button variant="secondary" size="lg" loading={passkey === "waiting"} onClick={usePasskey}>
+                <Button variant="secondary" size="lg" loading={passkey === "waiting"} onClick={() => void tryPasskey()}>
                   <Fingerprint aria-hidden="true" />
                   Use a passkey instead
                 </Button>

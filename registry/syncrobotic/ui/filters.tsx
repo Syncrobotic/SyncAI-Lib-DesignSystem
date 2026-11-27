@@ -737,7 +737,7 @@ function Picker({
             {fields.map((f) => (
               <CommandItem key={f.key} value={f.key} keywords={[f.label]} onSelect={() => pickField(f)}>
                 {/* When some fields have an icon, the others keep its space so every name starts on one line. */}
-                {f.icon ?? (fields.some((x) => x.icon) && <span aria-hidden="true" className="size-4 shrink-0" />)}
+                {f.icon ?? (fields.some((x) => x.icon !== undefined) && <span aria-hidden="true" className="size-4 shrink-0" />)}
                 <span className="truncate">{f.label}</span>
               </CommandItem>
             ))}

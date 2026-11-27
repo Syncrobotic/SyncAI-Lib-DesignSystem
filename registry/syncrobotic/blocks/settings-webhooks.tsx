@@ -501,7 +501,7 @@ export function SettingsWebhooks({
                 }
               />
               <div className="flex flex-wrap gap-2">
-                <Button size="sm" variant="secondary" loading={testing} disabled={selected.status === "disabled"} onClick={() => sendTest(selected)}>
+                <Button size="sm" variant="secondary" loading={testing} disabled={selected.status === "disabled"} onClick={() => void sendTest(selected)}>
                   <Send aria-hidden="true" />
                   Send test event
                 </Button>

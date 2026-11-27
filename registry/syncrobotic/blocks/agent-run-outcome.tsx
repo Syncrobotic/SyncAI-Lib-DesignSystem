@@ -253,7 +253,7 @@ export function AgentRunOutcomeContent({
                   </ul>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Not now</AlertDialogCancel>
-                    <AlertDialogAction onClick={retryFailed}>Send again</AlertDialogAction>
+                    <AlertDialogAction onClick={() => void retryFailed()}>Send again</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

@@ -102,12 +102,14 @@ export function CopyButton({
         variant={variant}
         size={children ? "sm" : "icon-sm"}
         aria-label={children ? undefined : state === "idle" ? copy : said}
-        onClick={async () => {
+        onClick={() => {
           window.clearTimeout(timer.current)
-          const ok = await copyText(value)
-          setState(ok ? "done" : "failed")
-          // A success fades back; a failure stays, so it is not missed.
-          if (ok) timer.current = window.setTimeout(() => setState("idle"), 1500)
+          // copyText never rejects: it says whether it worked.
+          void copyText(value).then((ok) => {
+            setState(ok ? "done" : "failed")
+            // A success fades back; a failure stays, so it is not missed.
+            if (ok) timer.current = window.setTimeout(() => setState("idle"), 1500)
+          })
         }}
         className={className}
       >
