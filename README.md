@@ -97,8 +97,9 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Shell and navigation | Notifications | `notification-center` |
 | Shell and navigation | Landing | `marketing-hero` |
 | Identity and account | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
-| Identity and account | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
+| Identity and account | Settings | `settings-page`, `settings-notifications`, `settings-billing`, `settings-sessions` |
 | Tenancy and access | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
+| Tenancy and access | API keys and webhooks | `settings-api-keys`, `settings-webhooks` |
 | Fleet operations | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
 | Fleet operations | Incidents | `incident-queue`, `incident-detail` |
 | Fleet operations | Maintenance | `maintenance-due`, `maintenance-work-order` |

@@ -216,7 +216,7 @@ const meta: Record<string, Meta> = {
   "settings-api-keys": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 289
+    height: 345
   },
   "settings-billing": {
     viewport: "desktop",
@@ -228,12 +228,12 @@ const meta: Record<string, Meta> = {
   "settings-webhooks": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 766
+    height: 754
   },
   "settings-sessions": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 646
+    height: 638
   },
   "dialog-confirm-destructive": {
     viewport: "desktop",
