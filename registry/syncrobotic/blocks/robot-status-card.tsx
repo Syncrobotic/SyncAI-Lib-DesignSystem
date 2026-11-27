@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.47.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.48.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -55,7 +55,7 @@ export function RobotStatusCard({
         </Avatar>
         <div className="flex min-w-0 flex-col">
           <StatusEyebrow status={robot.state.tone}>{robot.state.label}</StatusEyebrow>
-          <span className="truncate text-lg font-bold">{robot.name}</span>
+          <span className="truncate text-base font-bold">{robot.name}</span>
         </div>
       </div>
 

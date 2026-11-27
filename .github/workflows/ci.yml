@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
       # The package version has its dated CHANGELOG section and no item is ahead of it (release.yml tags it)
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
@@ -35,9 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run lint:tokens
@@ -67,11 +67,18 @@ jobs:
       # Behaviour of safety-critical interactions: stop, stop all, slide to release, keyboard and AT paths
       - run: npm test
       # Registry JSON + docs site (Next.js)
+      # Next.js keeps what it compiled in .next/cache: a later build of mostly the same tree reuses it. Keyed on the lockfile
+      # and the sources, falling back to the newest cache for the same lockfile.
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**', 'site/**', 'registry/**', 'next.config.ts') }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
       - run: npm run build
       # No prerendered page over 400 KB of HTML, a few named ones held to their own ceilings (scripts/check-html-size.mjs)
       - run: npm run lint:html-size
       - run: npm run build-storybook
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with: { name: registry, path: public/r }
 
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
@@ -83,27 +90,27 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.base_ref == 'stage')
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2, 3, 4]
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
       - run: npx playwright test --update-snapshots=none --shard=${{ matrix.shard }}/4
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: visual-baseline-${{ matrix.shard }}
           path: tests/__screenshots__
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
         with:
           name: story-test-results-${{ matrix.shard }}
@@ -116,10 +123,10 @@ jobs:
     if: github.event_name == 'pull_request' && github.base_ref == 'dev'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
@@ -128,7 +135,7 @@ jobs:
           if echo "$files" | grep -qE '^(registry/syncrobotic/|stories/)'; then echo "run=true" >> "$GITHUB_OUTPUT"
           else echo "run=false" >> "$GITHUB_OUTPUT"; echo "No component or story changed: skipped."; fi
       - if: steps.changed.outputs.run == 'true'
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.run == 'true'
         run: npm ci && npm run build-storybook
@@ -139,26 +146,35 @@ jobs:
         run: npx playwright test --update-snapshots=all --grep "${{ steps.pick.outputs.grep }}"
       - if: steps.pick.outputs.grep != ''
         run: STORY_CHECKS=visual npx playwright test --update-snapshots=none --grep "${{ steps.pick.outputs.grep }}"
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
         with:
           name: changed-story-results
           path: test-results
 
   # The built site, looked at the way the design-language checklist asks: corners that are not concentric (outer radius =
-  # inner + padding, scripts/check-radius.cjs) and rows of actions that wrap badly on a 375 px phone (scripts/check-wrap.cjs).
+  # inner + padding, scripts/check-radius.cjs), rows of actions that wrap badly on a 375 px phone (scripts/check-wrap.cjs),
+  # and axe on every docs page and block preview, dark and light (scripts/check-site-a11y.cjs; the examples' stories run
+  # axe themselves).
   site-checks:
     if: github.event_name == 'pull_request' && github.base_ref != 'main'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    timeout-minutes: 35
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root, SITE: "http://127.0.0.1:3000" }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
+      # Next.js keeps what it compiled in .next/cache: a later build of mostly the same tree reuses it. Keyed on the lockfile
+      # and the sources, falling back to the newest cache for the same lockfile.
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**', 'site/**', 'registry/**', 'next.config.ts') }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
       - run: npm run build
       # One step: the server started in the background lives as long as the step that started it.
       - run: |
@@ -166,6 +182,7 @@ jobs:
           timeout 60 bash -c 'until node -e "fetch(process.env.SITE).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"; do sleep 1; done'
           npm run check:radius
           npm run check:wrap
+          npm run check:a11y
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
   # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
@@ -175,10 +192,10 @@ jobs:
     if: github.event_name != 'pull_request' || github.base_ref != 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
@@ -200,10 +217,18 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"; echo "No component or story changed: skipped."
           fi
       - if: steps.changed.outputs.run == 'true'
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.run == 'true'
         run: npm ci
+      # Next.js keeps what it compiled in .next/cache: a later build of mostly the same tree reuses it. Keyed on the lockfile
+      # and the sources, falling back to the newest cache for the same lockfile.
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('package-lock.json') }}-${{ hashFiles('app/**', 'site/**', 'registry/**', 'next.config.ts') }}
+          restore-keys: next-${{ hashFiles('package-lock.json') }}-
       - if: steps.changed.outputs.run == 'true'
         run: npx next build
       - if: steps.changed.outputs.run == 'true'
@@ -212,7 +237,7 @@ jobs:
           for _ in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3100 && break; sleep 1; done
           SITE=http://localhost:3100 OUT=a11y-measured.json ONLY="${{ steps.changed.outputs.only }}" node scripts/a11y.cjs
           node scripts/a11y-check.mjs --measured a11y-measured.json ${{ steps.changed.outputs.only && '--only' || '' }}
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure() && steps.changed.outputs.run == 'true'
         with: { name: a11y-measured, path: a11y-measured.json }
 
@@ -221,7 +246,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
@@ -233,7 +258,7 @@ jobs:
             echo "registry=false" >> "$GITHUB_OUTPUT"; echo "No registry files changed: skipped."
           fi
       - if: steps.changed.outputs.registry == 'true'
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.registry == 'true'
         run: npm ci

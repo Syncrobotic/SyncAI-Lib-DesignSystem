@@ -2,6 +2,27 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.48.0 · 2026-11-27
+
+A calmer page: three title sizes in an app shell, a sidebar that says when there is more, and its two marks in balance.
+
+### Changed
+- **Titles in an app shell, three levels:**
+  - **The page:** 18 px, the top bar's h1. It was 24 in 0.47, raised to sit above sections of 20; it is back to 18.
+  - **Its sections and cards:** 16 px bold. `section-header` (`page`) was 20, `card` (`CardTitle`) 18.
+  - **Inside a card:** 14 px medium, as before.
+  - **Hand-written titles** in `robot-status-card`, `card-site`, `card-mission`, `list-detail`, `incident-detail`, `review-queue`, `maintenance-work-order`, `agent-approval`, `agent-run-gate`, `agent-run-outcome`, `wizard-commission`, `notification-center`, and the shells (`app-shell`, `action-rail-shell`, `app-shell-mobile-tabs`) follow, all 0.48.0. A dashboard reads quieter, closer to a console than a document; the hierarchy holds.
+  - **Docs:** typography's scale says it. 3xl 28 is a page's title in its content (`PageHeader`, outside an app shell), lg 18 the title in a top bar, base 16 bold a section or a card's title, and xl 20 a sheet's title. `agent-skill` 0.48.0 follows.
+- **`app-shell`'s account row:** it mirrors the brand row.
+  - **Size and spacing:** the mark above (32 px, was 28) and the avatar below (32 px) sit 12 px from their edges, on the same centre line and the same left edge. The avatar was 20 px from the bottom.
+  - **Right edge:** the chevron lines up with the counts on the links (4 px out before).
+
+- **`list-detail` 0.48.0:** the selected row's 2 px ink bar is an inset pill with round ends, as an alarm's priority bar. As an edge (0.47.0) it bent round the rounded row's corners like a bracket; a flat row (a table's, a log's) keeps its straight edge. The Radius foundation lists bars inside a rounded row among what is round.
+
+### Added
+- **`sidebar` 0.48.0:** when its links are taller than the column, the end that still hides some fades out (a mask, so the surface shows through), and a chevron at the foot says there is more below; a tap on it scrolls a page. A pointer's cue: out of the Tab order, as the keyboard scrolls by moving through the links.
+- **Site checks:** `npm run check:a11y` runs axe (WCAG 2.2 AA) on every docs page and block preview, dark and light, in CI's site checks. The examples are left out, as their stories run axe already. Its first run found one problem in 460 pages: the ROS guide's two wide tables scrolled but could not be reached by keyboard. They are Tab stops now.
+
 ## 0.47.0 · 2026-11-27
 
 The kit following its own rules: an audit of every block against the foundations, and the rules it found unwritten, written.

@@ -11454,7 +11454,7 @@
      "name": "variant",
      "type": "\"page\" | \"surface\"",
      "default": "\"page\"",
-     "description": "`page`: a section of the page, outside any card (20 px bold). `surface`: inside a card, a sheet or a panel (14 px medium)."
+     "description": "`page`: a section of the page, outside any card (16 px bold). `surface`: inside a card, a sheet or a panel (14 px medium)."
     },
     {
      "name": "as",

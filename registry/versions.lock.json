@@ -200,8 +200,8 @@
     "hash": "94a0b7d4ddc1f606"
   },
   "card": {
-    "version": "0.32.0",
-    "hash": "6e12d875b12237b0"
+    "version": "0.48.0",
+    "hash": "83116b8a0c1ad1b8"
   },
   "avatar": {
     "version": "0.35.0",
@@ -296,8 +296,8 @@
     "hash": "95ad49c6d314e6a5"
   },
   "sidebar": {
-    "version": "0.44.1",
-    "hash": "d16bf0d43cd3f363"
+    "version": "0.48.0",
+    "hash": "51386354686af929"
   },
   "graph": {
     "version": "0.42.0",
@@ -384,8 +384,8 @@
     "hash": "b1a9386f06c81b6b"
   },
   "section-header": {
-    "version": "0.40.0",
-    "hash": "f4494b59a670761b"
+    "version": "0.48.0",
+    "hash": "abcb9ac04b63b152"
   },
   "chip-group": {
     "version": "0.40.0",
@@ -588,32 +588,32 @@
     "hash": "bfe56962ebe9144c"
   },
   "robot-status-card": {
-    "version": "0.47.0",
-    "hash": "e4a5594c7bd58212"
+    "version": "0.48.0",
+    "hash": "770d9d8d9167a734"
   },
   "marketing-hero": {
     "version": "0.28.0",
     "hash": "b5d221d88156088f"
   },
   "app-shell": {
-    "version": "0.47.0",
-    "hash": "b80283b9c96b79d9"
+    "version": "0.48.0",
+    "hash": "0362605f34841086"
   },
   "top-bar-shell": {
     "version": "0.38.0",
     "hash": "712d892df0daec5d"
   },
   "action-rail-shell": {
-    "version": "0.47.0",
-    "hash": "6d881a3fc6afce36"
+    "version": "0.48.0",
+    "hash": "6b114a353ef96044"
   },
   "console-overview": {
     "version": "0.43.1",
     "hash": "e3481118b8f4398c"
   },
   "list-detail": {
-    "version": "0.47.0",
-    "hash": "43f5ca28146ae5df"
+    "version": "0.48.0",
+    "hash": "1d75581877d1bc52"
   },
   "event-log": {
     "version": "0.47.0",
@@ -632,8 +632,8 @@
     "hash": "8b04265261b8d43a"
   },
   "review-queue": {
-    "version": "0.17.3",
-    "hash": "684c53f92378aaa9"
+    "version": "0.48.0",
+    "hash": "4c5cec49b5331985"
   },
   "governance-todo": {
     "version": "0.40.0",
@@ -660,8 +660,8 @@
     "hash": "f3df60b316b685d3"
   },
   "agent-skill": {
-    "version": "0.47.0",
-    "hash": "903df9054c48dd0f"
+    "version": "0.48.0",
+    "hash": "62e86cd64c1ddf66"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
@@ -748,8 +748,8 @@
     "hash": "6c58a5bc0e2e0af8"
   },
   "app-shell-mobile-tabs": {
-    "version": "0.47.0",
-    "hash": "a6be31e2cd45fa2e"
+    "version": "0.48.0",
+    "hash": "74036d51da723235"
   },
   "app-shell-control": {
     "version": "0.46.0",
@@ -764,12 +764,12 @@
     "hash": "afbd72d7149a17f0"
   },
   "card-site": {
-    "version": "0.47.0",
-    "hash": "0a151d94fd2c5875"
+    "version": "0.48.0",
+    "hash": "454e008d2f6cd03e"
   },
   "card-mission": {
-    "version": "0.28.0",
-    "hash": "b42a4826d8169d68"
+    "version": "0.48.0",
+    "hash": "241083dda180c9d7"
   },
   "auth-passkey": {
     "version": "0.40.0",
@@ -804,8 +804,8 @@
     "hash": "28c15f504430947f"
   },
   "notification-center": {
-    "version": "0.40.0",
-    "hash": "d8912cb783ef1c77"
+    "version": "0.48.0",
+    "hash": "d8ce54380f178f2c"
   },
   "dialog-confirm-destructive": {
     "version": "0.17.3",
@@ -836,8 +836,8 @@
     "hash": "51739ebe545bc0f3"
   },
   "wizard-commission": {
-    "version": "0.47.0",
-    "hash": "af37d75c88538655"
+    "version": "0.48.0",
+    "hash": "f3fb2f1a35a22e88"
   },
   "wizard-import": {
     "version": "0.40.0",
@@ -860,16 +860,16 @@
     "hash": "d9d89e6bd32d1d28"
   },
   "incident-detail": {
-    "version": "0.28.0",
-    "hash": "6474631e9bfe7d44"
+    "version": "0.48.0",
+    "hash": "68c487949d1fe521"
   },
   "maintenance-due": {
     "version": "0.40.0",
     "hash": "62b26087dac2e833"
   },
   "maintenance-work-order": {
-    "version": "0.47.0",
-    "hash": "5c146f9f8d08566e"
+    "version": "0.48.0",
+    "hash": "2bf0fd77c917e944"
   },
   "rollout-overview": {
     "version": "0.40.0",
@@ -888,20 +888,20 @@
     "hash": "5987d9b1a647f9be"
   },
   "agent-approval": {
-    "version": "0.47.0",
-    "hash": "e65f27de07243d4a"
+    "version": "0.48.0",
+    "hash": "81ce58ab5e8e9b72"
   },
   "agent-chat": {
     "version": "0.47.0",
     "hash": "bcbcfb4e59b73b5f"
   },
   "agent-run-gate": {
-    "version": "0.47.0",
-    "hash": "510312872369b7a3"
+    "version": "0.48.0",
+    "hash": "fa3de56af3fde04d"
   },
   "agent-run-outcome": {
-    "version": "0.45.0",
-    "hash": "bca1b22dd800e0b0"
+    "version": "0.48.0",
+    "hash": "6d09daf05c131a59"
   },
   "markdown": {
     "version": "0.41.0",

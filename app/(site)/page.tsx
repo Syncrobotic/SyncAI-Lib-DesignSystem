@@ -127,8 +127,8 @@ export default function HomePage() {
   return (
     <>
     {/* Outside PageTransition, a client component: React does not run a <script> rendered on the client and says so in
-        the console. Here it is server HTML only. */}
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        the console. Here it is server HTML only. "<" is escaped, as in DocJsonLd, so no string in it can close the script. */}
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <PageTransition>
     <main id="content" className="pb-section">
 
