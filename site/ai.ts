@@ -49,7 +49,7 @@ export function componentMarkdown(name: string) {
     `- Source: ${site.repo}/blob/main/${item.files[0].path}`,
   ]
   if (o) {
-    out.push("", "## What it is", "", link(o.what), "", "## When to use", "", list(o.use))
+    out.push("", "## When to use", "", list(o.use))
     if (o.instead?.length) out.push("", "## When not to use", "", list(o.instead))
     if (o.notes?.length) out.push("", "## Agent notes", "", list(o.notes))
   }

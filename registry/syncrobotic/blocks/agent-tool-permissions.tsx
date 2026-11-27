@@ -1,11 +1,11 @@
-// @syncrobotic/agent-tool-permissions v0.51.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
+// @syncrobotic/agent-tool-permissions v0.52.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
 "use client"
 
 import * as React from "react"
 import { Lock, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { formatCount } from "@/registry/syncrobotic/lib/format-number"
+import { formatCount, plural } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import {
   AlertDialog,
@@ -148,8 +148,6 @@ const changesBetween = (agents: ToolAgent[], from: ToolPolicies, to: ToolPolicie
       return a === b ? [] : [{ agent, tool: t, from: a, to: b }]
     }),
   )
-
-const plural = (n: number, one: string, many: string) => `${formatCount(n)} ${n === 1 ? one : many}`
 
 // A call blocked by policy is the one an admin may want to look at (an agent tried what it may not do): the only one
 // with colour. A person's no is a decision, not a fault, so it stays grey like the rest.

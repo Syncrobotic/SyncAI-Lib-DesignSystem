@@ -1,12 +1,12 @@
-// What each item is and when to reach for it, shown at the top of its page.
-// `use`: the jobs it is for. `instead`: when another item fits better, naming it in backticks.
+// When to reach for each item, shown at the top of its page. What it is lives in one place: its registry.json
+// `description` (lint:registry fails on a line here that repeats it). `use`: the jobs it is for. `instead`: when another
+// item fits better, naming it in backticks.
 
 /** `notes`: what an AI agent (or a new teammate) most often gets wrong with this item. Shown in its markdown twin. */
-export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
+export type Overview = { use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
   "page-header": {
-    what: "The top of a page: where it sits, what it is, its state (one InlineStatus), the facts that frame it, and its actions.",
     use: [
       "The first thing in a page's content, under the app's top bar.",
       "A dataset, robot or site page whose counts and owner matter at a glance.",
@@ -16,7 +16,6 @@ export const overviews: Record<string, Overview> = {
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`.", "A section further down the page: `section-header`."],
   },
   "section-header": {
-    what: "The heading of a section at one of typography's two levels: page (16 px bold) or inside a surface (14 px medium), with an optional count, a line and actions.",
     use: [
       "A section of a page between the page header and its cards: Robots 1,284, with Add robot.",
       "A section inside a card, a sheet or a panel: Sensors 6, with Calibrate.",
@@ -32,12 +31,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "chip-group": {
-    what: "One choice among several, or any of several with `type=\"multiple\"`, shown as chips with their counts, folded after a few.",
     use: ["A quick filter above a list: task, site, tier.", "A facet where people pick two or three values at once.", "Saved views as links, so the choice lives in the URL."],
     instead: ["A long list of options to tick: checkboxes in a `field`.", "A query of several fields and rules: `filters`.", "Two to four views of the same data: `segmented-control`."],
   },
   facets: {
-    what: "The facet column beside a catalog or a table: groups of checkboxes with how many rows each option has, folded after a few, pinned under the bar; a bottom sheet on phones.",
     use: [
       "A catalog of datasets, recordings or robots narrowed by a few fixed facets: tier, task, site, sensor.",
       "A search results page with counts per facet value.",
@@ -55,12 +52,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "filter-form": {
-    what: "Filters kept in the URL: a GET form that applies itself as you type or pick, and works without JavaScript.",
     use: ["A catalog or log whose filtered view should be shareable and survive Back.", "Any page where changing a filter resets the page number."],
     instead: ["Filters on data already in the browser: filter in state, as `data-grid` does."],
   },
   filters: {
-    what: "A query people build from chips: pick a field, how to compare it and a value; every rule must match.",
     use: [
       "A long list or grid with many columns worth filtering: robots, incidents, runs.",
       "Views people tune and share: the rules go in the URL.",
@@ -79,27 +74,22 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "search-field": {
-    what: "The tool's one search box: `/` focuses it, Enter opens the results page, and on that page it follows the URL.",
     use: ["The search in an app's top bar.", "The query box on a results page (`live`)."],
     instead: ["Filtering a list on the page: an `input-group` with a search icon.", "Picking from a known list as you type: `autocomplete`."],
   },
   "theme-toggle": {
-    what: "Light, match the system, or dark, as three icon segments.",
     use: ["Settings, or the corner of an app's top bar."],
     instead: ["A single on or off: `switch`."],
   },
   "route-progress": {
-    what: "A thin bar at the top while the next page loads, after 300 ms and gone when it arrives.",
     use: ["Page changes in an app that loads data as you navigate."],
     instead: ["Work inside the page: `progress` or a `skeleton`."],
   },
   "share-bar": {
-    what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
     use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link.", "A list with one bar per row under one ShareLegend."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`.", "Counts per category, ranked: `bar-list`."],
   },
   "bar-list": {
-    what: "A short ranked list of counts, each row its label and value in words with a bar in the accent scaled to the largest, drawn without a chart library.",
     use: [
       "\"Items by class\" or \"files by format\" on a dataset's card, the top 5 to 10.",
       "Several small rankings on one data page, each inside its own card.",
@@ -119,7 +109,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "annotated-image": {
-    what: "A picture with boxes, points, polygons or poses drawn over it: what a model predicted, what a person labelled, the previous version.",
     use: [
       "Reviewing a model's detections against ground truth, frame by frame.",
       "Comparing two versions of a model or of a dataset's labels on the same picture.",
@@ -135,7 +124,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "grounded-text": {
-    what: "Text whose words point at places on a picture, linked both ways: hover or focus a word and its marks light up; hover a mark and its words do.",
     use: [
       "A vision-language model's caption, where each object's name matches a box.",
       "A model's reasoning with grounding, where \"8 zebras\" is linked to 8 points.",
@@ -151,7 +139,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "media-player": {
-    what: "A recorded clip with the kit's own controls over a native video: play, a timeline with event markers and windows, time, mute, speed, captions and full screen.",
     use: [
       "A robot's camera recording of a patrol or a mission.",
       "The clip attached to an incident, opened at the moment it fired.",
@@ -170,7 +157,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "camera-feed": {
-    what: "A robot's live camera over a native video the app feeds, that always says whether the picture is live: Live with the latency, Stalled with the last frame's time, Paused, connecting, offline or no camera.",
     use: [
       "The camera panel of a robot's page or a teleoperation screen.",
       "A robot's view beside its map or its controls; for many cameras at once, `camera-wall`.",
@@ -190,7 +176,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "camera-wall": {
-    what: "Many robot cameras at once, each a camera-feed: an auto grid that pages, one camera focused large with a strip of the rest, attention first, and only as many streams playing as the site can carry.",
     use: [
       "A control room's wall of a site's robots, watched for anything that needs someone.",
       "Checking every robot of a fleet before a shift, then opening the one that looks wrong.",
@@ -212,7 +197,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "joint-state": {
-    what: "A robot arm's joints for monitoring: each joint's position in degrees or millimetres on a thin track between its URDF limits, with velocity and effort, and words when a joint is near, at or past a limit.",
     use: [
       "The arm panel of a robot's page, beside its camera.",
       "Checking an arm's pose after a protective stop: which joint ran into its limit.",
@@ -234,7 +218,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   diagnostics: {
-    what: "A robot's hardware and software health from ROS diagnostics: the worst level and the counts first, then a tree by name with the worst level rolled up to each group, each status a glyph and a word that opens to its values.",
     use: [
       "The Health tab of a robot's page: which motor, sensor, computer or node is unwell, and what it reports.",
       "A field technician's first look at a robot that stopped: Problems narrows the tree to what is not OK.",
@@ -256,12 +239,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "restricted-preview": {
-    what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
     instead: ["Data the viewer may not see at all: leave it out and say so in an `empty-state`."],
   },
   thumbnail: {
-    what: "One small square picture for a table row, a list or a card: a size from the control scale, lazy, with a neutral fallback, and a restricted placeholder that fetches nothing.",
     use: [
       "The first column of a table of datasets, recordings or captures.",
       "The picture at the start of a list row or a card's row.",
@@ -279,7 +260,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "image-grid": {
-    what: "Many pictures at once, as a grid or a strip, that open in a lightbox or are picked one or many at a time.",
     use: [
       "A dataset's images, the frames of a run, a camera's snapshots.",
       "Picking a cover picture, or the frames to send for labelling.",
@@ -295,12 +275,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "load-more": {
-    what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
     instead: ["A desktop table people jump around in: `pagination`."],
   },
   "robot-map": {
-    what: "A site's floor plan in metres with its zones, routes and robots, panned and zoomed in place, and a list with the same robots as text.",
     use: [
       "Where the fleet is on a site right now: the map page of a fleet console, a robot's detail beside its position.",
       "A mission's route over the floor: planned (dashed) and travelled (solid).",
@@ -341,7 +319,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "waypoint-editor": {
-    what: "A robot's route as an ordered list of waypoints, edited in a list and on the robot map together: names, places, headings, actions on arrival and dwell times, with the problems that stop it saving shown where they are.",
     use: [
       "Planning a patrol or delivery route on a site before sending it to a robot.",
       "Changing a saved route: a new stop, a different order, a photo at the bay door.",
@@ -367,7 +344,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "geo-map": {
-    what: "An outdoor map in latitude and longitude for robots that work outside: tiles from your own server or a coordinate grid that needs no network, robots with their GPS fix and accuracy, geofences, a route and trails, a goal sent on confirm, and a list with the same robots as text.",
     use: [
       "A patrol, farm or delivery fleet on satellite positioning: where each robot is, how good its fix is, and whether it is inside its work area.",
       "A robot that is offline or air-gapped: the grid in degrees needs no tile server.",
@@ -392,7 +368,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "point-cloud": {
-    what: "A LiDAR or depth point cloud in 3D, drawn with WebGL2: coloured by height or intensity on one hue, over a ground grid, with the robot at the origin; turned, panned and zoomed by pointer, touch and keyboard.",
     use: [
       "What a robot's LiDAR sees right now, beside its camera on a robot's page or a teleoperation screen.",
       "Checking a depth camera's mounting or calibration: is the floor flat, are the shelves where they should be.",
@@ -416,7 +391,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "viewport-overlay": {
-    what: "The place and the surface for what is drawn over a map, a point cloud, a 3D view or a camera: one inset (16 px), one radius, the Float recipe, or the scrim over a picture.",
     use: [
       "A mode banner, a legend or a Stale notice over a map or a canvas.",
       "The zoom and fit group in the bottom left of a view.",
@@ -430,7 +404,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "robot-model": {
-    what: "A robot's pose in 3D from its URDF and live joint values, for monitoring: neutral greys, a ground grid, axes named in words, and the joints that need someone highlighted and named.",
     use: [
       "An arm's pose on its robot page, from /joint_states.",
       "Showing which joint is near its limit, or the pose a robot stopped in, beside the alarm that says so.",
@@ -457,7 +430,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   graph: {
-    what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
     use: [
       "Lineage: Dataset v3, the label sets it was built from, and the raw captures under them.",
       "A training run's inputs (dataset, base model, config) and outputs (checkpoints, metrics, evaluations).",
@@ -478,7 +450,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   trace: {
-    what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
     use: [
       "What a robot did on a mission.",
       "An AI agent's tool calls and reasoning.",
@@ -493,7 +464,6 @@ export const overviews: Record<string, Overview> = {
     notes: ["formatDuration(ms) gives 840 ms, 1.2 s, 2 m 05 s.", "Nest a Trace inside a TraceItem for sub-steps; size and total are inherited."],
   },
   marker: {
-    what: "A labelled divider across a log or feed, plus a one-line log row with a status glyph.",
     use: ["Day breaks in an event feed.", "Where an operator took over or autonomy resumed.", "An unread line in a log.", "Dense tool-call or command logs."],
     instead: ["A plain divider with no label: `separator`.", "Steps with durations and details: `trace`."],
     notes: [
@@ -502,25 +472,21 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   stepper: {
-    what: "Shows where someone is in a fixed sequence of steps, which are done, and which failed.",
     use: ["Commissioning a robot.", "An import or upload wizard.", "A pre-shift checklist done in order."],
     instead: ["Sections of one page: `tabs`.", "Progress of a machine task: `progress`.", "Asking the questions themselves: `questionnaire`."],
     notes: ["value starts at 1; a value past the last step marks all done.", 'navigable="done" lets people click back to finished steps only.'],
   },
   timeline: {
-    what: "A list of events in time order, each with a time, a marker and a title.",
     use: ["What a robot did on a shift.", "How an incident unfolded.", "Maintenance and release history."],
     instead: ["A sortable, filterable log: `data-grid`.", "Steps someone has to go through: `stepper`."],
     notes: ["`status` draws the status glyph (or colours the icon); colour only for warning and danger, never on the title.", "TimelineHeading groups events by day."],
   },
   scrollspy: {
-    what: "An On this page list that marks the section being read and scrolls to a section when clicked.",
     use: ["Long settings or detail pages.", "Docs pages.", "A robot's detail panel with many sections."],
     instead: ["Separate views people switch between: `tabs`."],
     notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "The rail sits beside the content only from sm up (`hidden sm:flex`): on a phone it would leave the content a column a few words wide. Use `variant=\"pills\"` above the content there.", "Links move focus to the section, so keyboard users land there."],
   },
   sidebar: {
-    what: "The main navigation of a console or dashboard: groups of links with counts, a switcher at the top and the account at the foot, collapsing to a rail of icons and becoming a sheet on phones.",
     use: [
       "The sections of an internal tool or a fleet console, on a laptop or a control-room screen.",
       "Switching between sites, workspaces or robots, in its header, above the sections they share.",
@@ -546,7 +512,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "navigation-menu": {
-    what: "The top navigation of a website: links, and triggers that open panels of links with descriptions.",
     use: ["A marketing or docs site header.", "A portal with a few product areas."],
     instead: ["An app's own sections: `sidebar`.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
     notes: [
@@ -555,13 +520,11 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   questionnaire: {
-    what: "A short form of questions with choice, scale and text answers, paged or on one page, that checks required answers.",
     use: ["Pre-shift checklists.", "Incident follow-up questions.", "Feedback and site surveys."],
     instead: ["A form of named fields (name, address): `field`.", "Only showing progress through steps: `stepper`."],
     notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
   },
   "data-grid": {
-    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
     use: [
       "Fleets, events and datasets people sort, select and page through.",
       "Bulk actions on selected rows.",
@@ -579,7 +542,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "log-viewer": {
-    what: "Robot and system logs in a virtual list: filtered by level and source, searched with the matches marked, following the newest line until someone scrolls up, each line opening to its whole message and fields.",
     use: [
       "A robot's /rosout on its page in a fleet console, for the operator or the engineer on call.",
       "A service's or a device's journal while commissioning or debugging.",
@@ -603,7 +565,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   citations: {
-    what: "The sources a model's answer cites: numbered markers in the text and the numbered list of what they point at, linked both ways, as grounded-text links words to marks.",
     use: [
       "An assistant that answers from manuals, maps or logs (retrieval), so an operator can check each claim.",
       "A generated report that quotes its evidence.",
@@ -622,7 +583,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   markdown: {
-    what: "A model's answer in Markdown as the kit's own elements: headings at the surface's levels, lists, tables, code blocks with Copy, quotes and links. A safe subset written for the kit, with no dependency and no HTML, that takes a growing text.",
     use: [
       "An assistant's answer that is already whole: a saved conversation, a summary on a robot's page.",
       "A generated report or a model's explanation inside your own message layout.",
@@ -643,7 +603,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "streaming-text": {
-    what: "A model's answer as it streams in: plain text that grows in place under a calm status row (queue position, Thinking, Generating with Stop) that becomes the final state in the same place: done with its timing, stopped or failed with the partial answer kept.",
     use: [
       "A VLM's caption, count or answer about a camera frame, in a playground or on a robot's page.",
       "An LLM's reply in an operator's assistant, where the answer arrives over server-sent events.",
@@ -665,7 +624,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   message: {
-    what: "One turn of a conversation with a model or an agent: who spoke (a role word, a name, the time), what they said, and the turn's actions and facts.",
     use: [
       "An operator's assistant: the person's question and the assistant's streamed answer.",
       "An agent's tool calls shown in the conversation, each a Tool turn with a Trace inside.",
@@ -684,7 +642,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "message-actions": {
-    what: "The row of actions under a model's answer: copy it, regenerate it, rate it Good or Bad (with a reason), and switch between regenerated versions.",
     use: [
       "Every assistant answer in a conversation.",
       "An answer whose quality feeds an evaluation: Good and Bad with reasons.",
@@ -703,7 +660,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "prompt-composer": {
-    what: "The box where someone writes to a model: it grows with the text, sends on Enter (never mid-composition), holds attached files as chips, and turns Send into Stop while the answer streams.",
     use: [
       "The foot of an assistant panel or a side copilot.",
       "A prompt to a vision model about a camera frame, with the frame attached.",
@@ -723,7 +679,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "message-scroller": {
-    what: "The viewport of a conversation: it keeps the newest turn in view while an answer streams, lets go when the reader scrolls up, brings them back with Jump to latest, and keeps its place when older turns load.",
     use: [
       "The middle of an assistant panel, between its header and the prompt composer.",
       "A side copilot in a Sheet, in a flex column that ends with the composer.",
@@ -743,37 +698,31 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   sortable: {
-    what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],
     instead: ["Ordering by a value (date, name): sort a `table` or `data-grid`.", "Moving items between lists: compose dnd-kit directly."],
     notes: ["Order lives in your state; onValueChange gets the new array.", "Touch drags start after a short press so the page still scrolls."],
   },
   resizable: {
-    what: "A layout of panels whose sizes the user changes by dragging or with the keyboard.",
     use: ["A map beside a robot list.", "A camera above an event log.", "An editor beside its preview."],
     instead: ["A panel that slides in over content: `sheet`.", "Fixed app chrome: the app-shell block."],
     notes: ["autoSaveId on the group remembers sizes in the browser; give each panel an id.", "collapsible panels collapse when dragged past their minSize.", "Double-click a handle to put its panel back to its default size."],
   },
   "file-upload": {
-    what: "An area that takes files by drop or by the picker, validates them, and hands the accepted ones to you.",
     use: ["Maps, logs and recordings uploaded to a site.", "A single photo or avatar.", "A compact attach row in a form."],
     instead: ["Showing files already attached: `attachment`."],
     notes: ['accept uses the input\'s syntax: "image/*,.pgm".', "The upload itself and its progress are yours; FileUpload only selects."],
   },
   attachment: {
-    what: "A file row, chip or image tile showing a file's type, name, size and state.",
     use: ["Upload queues with progress.", "Files attached to an incident or message.", "Image strips with previews."],
     instead: ["Picking files: `file-upload`.", "A file browser with many columns: `data-grid`."],
     notes: ["variant row, chip or image; status idle, uploading, done or error.", "Pass previewUrl (an object URL) for images."],
   },
   "file-type": {
-    what: "A file icon chosen from the name or extension, in a tile, as a bare glyph or as a label.",
     use: ["File rows, upload queues and file browsers.", "Showing the format of a log, map or model."],
     instead: ["A generic icon surface: `icon-tile`."],
     notes: ["familyOf(name) tells you the family (map, model, data…) for your own logic.", "label overrides the written extension (db3 → ROS2)."],
   },
   autocomplete: {
-    what: "A text field with a list of suggestions that narrows as you type, for picking one value from many.",
     use: [
       "Picking a robot, site, user or dataset from a long list.",
       "Searching a server as you type, with a loading state.",
@@ -787,7 +736,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "input-otp": {
-    what: "Boxes for a short code typed one character at a time: a verification code, a pairing code, a PIN.",
     use: ["Two-step sign-in and verification codes.", "Pairing a robot with a code from its screen.", "A short PIN to release a stop."],
     instead: ["A password: `input` with type password.", "A number with a range: `number-field`."],
     notes: [
@@ -797,7 +745,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "phone-input": {
-    what: "A country picker joined to a phone field that formats the number as it is typed and gives back an international (E.164) number.",
     use: ["On-call numbers for alarm escalation.", "Site and customer contacts."],
     instead: ["A number that is not a phone (an ID, a count): `input` or `number-field`."],
     notes: [
@@ -807,7 +754,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   calendar: {
-    what: "A month view to pick dates (react-day-picker): single, multiple or a range, one month or several.",
     use: ["Inline on a scheduling page.", "Inside a popover: use `date-selector`, which wraps it.", "Showing which days have events."],
     instead: ["A date field in a form: `date-selector`.", "A time of day: `time-picker`."],
     notes: [
@@ -817,7 +763,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "date-selector": {
-    what: "Form fields that open a calendar: DatePicker for one day and DateRangePicker for a from–to range.",
     use: ["A day or range in a form or a filter bar.", "Event and report ranges with presets."],
     instead: ["A calendar that is always visible: `calendar`.", "A time: `time-picker`."],
     notes: [
@@ -827,7 +772,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "time-picker": {
-    what: "Two ways to enter a time: TimePicker picks from a grid of slots, TimeInput reads what is typed (930, 9:30, 21.30, 9:30 pm).",
     use: ["Schedules, quiet hours and charging windows.", "Opening-hour slots with some taken.", "Fast entry for people who know the time."],
     instead: ["A date: `date-selector`.", "A duration: `number-field` with a unit."],
     notes: [
@@ -837,7 +781,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   item: {
-    what: "A general-purpose row: a leading icon, avatar or image, a title with one or two lines below, and actions, a badge or a key at the end.",
     use: [
       "Lists of people, files, integrations or settings links.",
       "Menus where each whole row is a link.",
@@ -855,7 +798,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "icon-tile": {
-    what: "A tile that gives an icon a consistent surface and size, so icons in rows, cards and empty states line up.",
     use: ["The media of a row or card.", "A status at a glance: a failed run, a warning.", "A feature or category heading."],
     instead: ["A person: `avatar`.", "A status next to text in a row: `status-glyph` or `status-eyebrow`."],
     notes: [
@@ -865,7 +807,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "text-diff": {
-    what: "Where two texts differ, word by word: insertions a grey block with an underline, removals struck through, with a +3 words, −1 word summary.",
     use: [
       "A base model's caption or answer against a fine-tuned one.",
       "A label, prompt or description before and after an edit.",
@@ -879,7 +820,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   kbd: {
-    what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
     instead: ["A code value or ID in a sentence: `code`."],
     notes: [
@@ -889,7 +829,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "button-group": {
-    what: "A strip of joined controls that reads as one: neighbours share an edge and only the outer corners are round.",
     use: [
       "A split button: the main action and a menu of variants.",
       "A stepper: minus, value, plus.",
@@ -907,7 +846,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "scroll-area": {
-    what: "A region that scrolls inside a fixed size, with a scrollbar that matches the theme on every platform.",
     use: ["A long log or list inside a card.", "A row of thumbnails that pans sideways.", "A wide table inside a panel."],
     instead: ["The whole page: let the page scroll.", "A data table with sorting: `table`, which scrolls by itself."],
     notes: [
@@ -916,7 +854,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "toggle-group": {
-    what: "A row of toggle buttons where one (single) or several (multiple) can be on.",
     use: ["A tool or a mode with a single choice: what the next tap on a map does.", "Map layers, notification channels or filter chips where any mix is on."],
     instead: [
       "Switching views of the same data, a sort order or a time window: `segmented-control`.",
@@ -929,12 +866,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "choice-field": {
-    what: "One choice as a whole tappable row: a checkbox, radio or switch with its label, a description and an optional count. FieldSet groups them under one question.",
     use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],
     instead: ["A single control with a label and nothing else: `label` next to it.", "Picking one of many: `select`."],
   },
   "metric-card": {
-    what: "One headline number on a card: what it counts, the value, how it changed and a line of context, coloured only when the change is for the worse.",
     use: [
       "The row of numbers under a dashboard's page header: robots online, events, devices, API calls.",
       "A count that opens the list behind it (with `href`).",
@@ -953,7 +888,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   meter: {
-    what: "A level within a known range, like battery or storage, neutral until it crosses a threshold.",
     use: ["Battery, storage, signal strength, CPU.", "Inline in a table cell, or above a value in a card."],
     instead: ["Work that is under way and will finish: `progress`."],
     notes: [
@@ -963,28 +897,23 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "description-list": {
-    what: "Facts about one thing as label and value pairs.",
     use: ["A robot's site, firmware and last contact.", "A dataset's owner, size and date."],
     instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`."],
   },
   breadcrumb: {
-    what: "Where this page sits, as a row of links to the levels above it.",
     use: ["Pages two or more levels deep: a dataset inside a catalog, a robot inside a site."],
     instead: ["Moving between sections at one level: `tabs`.", "Top-level navigation: the app shell's sidebar."],
   },
   pagination: {
-    what: "Where you are in a long list, and how to move through it.",
     use: ["Tables and lists with more rows than fit."],
     instead: ["A short list: show it all.", "Finding one record: `command` or a search field."],
     notes: ["Pages are zero-based in code, one-based on screen.", "Pass `labels` to translate every word, the landmark's name (`nav`) included; `paginationLabels` in labels-zh-tw has them all."],
   },
   "copy-button": {
-    what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
   },
   code: {
-    what: "Inline code: a path, a key, a version tag or a command inside a sentence, in mono on a muted tile at the size of the text around it.",
     use: [
       "\"Set max_items in the config\": a key or a file in help text and descriptions.",
       "A reference such as group/name@v3 in a table cell or a caption.",
@@ -994,7 +923,6 @@ export const overviews: Record<string, Overview> = {
     notes: ["Never set a font size or em value on it; it inherits the text's size.", "It has no copy prop: put a CopyButton beside it, never inside."],
   },
   "code-block": {
-    what: "Code or a command to read and copy, in a frame with its title and a copy button.",
     use: [
       "Install and import commands (dvc import, npx shadcn add) and curl examples.",
       "A one-time API key or webhook secret, hidden until shown.",
@@ -1008,7 +936,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   button: {
-    what: "A control that does one thing now: save, send, start a mission. The label is a verb that says what happens.",
     use: [
       "The one primary action of a screen or dialog (primary).",
       "Other actions beside it (secondary, outline, ghost).",
@@ -1026,22 +953,18 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "segmented-control": {
-    what: "Two to four buttons joined into one, for switching between views of the same data. The selected one is inverted.",
     use: ["Map / list, chart / table, day / week.", "A filter with a few exclusive options in a toolbar."],
     instead: ["Sections of a page with different content: `tabs`.", "More than four options: `select`.", "A choice inside a form: `radio-group`."],
   },
   toggle: {
-    what: "A button that stays pressed: on or off for one thing, such as a map layer.",
     use: ["Showing or hiding a layer, a column or a panel.", "Toolbar options like bold or follow robot."],
     instead: ["A setting that applies immediately and persists: `switch`.", "One choice among several: `segmented-control`."],
   },
   input: {
-    what: "A single-line text field, 44 px high with 16 px text so phones do not zoom in.",
     use: ["Names, IDs, addresses, short free text.", "Inside a `field` for its label, hint and error."],
     instead: ["A number with a range or unit: `number-field`.", "An icon, unit or button inside the edge: `input-group`.", "Several lines: `textarea`."],
   },
   "input-group": {
-    what: "An input with something inside its edge: a search icon, a unit, a clear or show-password button.",
     use: ["Search fields with an icon and a clear button.", "Values with a unit (m/s, %).", "Passwords with show / hide."],
     instead: ["A number you step through: `number-field`, which is built on it."],
     notes: [
@@ -1050,7 +973,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "number-field": {
-    what: "A number with a range, a step and a unit, with − and + buttons and full keyboard control.",
     use: ["Speed limits, battery thresholds, intervals, counts.", "Any value with limits the user should not exceed."],
     instead: ["A rough value where precision does not matter: `slider`.", "A number with no range, like an ID: `input` with inputMode numeric."],
     notes: [
@@ -1059,17 +981,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   textarea: {
-    what: "A multi-line text field.",
     use: ["Notes, descriptions, incident reports."],
     instead: ["One line of text: `input`."],
   },
   label: {
-    what: "The visible name of a control, wired to it so clicking the label focuses the control and screen readers announce it.",
     use: ["Beside a checkbox, radio or switch to make the whole row tappable.", "Any control not wrapped in a `field`."],
     instead: ["A label with a hint and an error: `field`, which includes it."],
   },
   form: {
-    what: "How to build a form with React Hook Form and the kit's Field, and an example to install and change. There is no form component: each control sits in a Controller and a Field, the way shadcn does it, so the kit itself depends on no form library.",
     use: ["Create and edit forms: a mission, a robot, a site, an account.", "Any form validated by a schema (zod, valibot) through a resolver."],
     instead: ["Filters above a list, which apply as you choose: `filter-form`.", "One field on its own with no submit (a search box): `search-field`."],
     notes: [
@@ -1078,7 +997,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   field: {
-    what: "A label, a control and one line below for the hint or the error, with ids and ARIA connected for you.",
     use: ["Every form control that needs a label, help or validation.", "Errors that grow in below the control without moving the layout."],
     instead: ["A group of checkboxes or radios under one question: a fieldset with a legend."],
     notes: [
@@ -1087,18 +1005,15 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   checkbox: {
-    what: "A box that is checked, unchecked or partly checked. Changes apply when the form is saved.",
     use: ["Agreeing to terms.", "Choosing several items from a list.", "Select all, with the partly-checked state."],
     instead: ["A setting that applies immediately: `switch`.", "Exactly one of several options: `radio-group`."],
     notes: ["ChoiceField pairs it with its label for you."],
   },
   "radio-group": {
-    what: "A set of options where exactly one is chosen, all visible at once.",
     use: ["Two to five options the user should compare, like a patrol mode."],
     instead: ["A long list: `select`.", "Switching views in a toolbar: `segmented-control`.", "Yes / no: `switch` or `checkbox`."],
   },
   switch: {
-    what: "On or off for a setting that takes effect the moment it changes, with no save button.",
     use: ["Notifications on, auto-dock on low battery, dark mode."],
     instead: ["A choice that is saved with a form: `checkbox`.", "Showing a layer or panel: `toggle`."],
     notes: [
@@ -1107,18 +1022,15 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   select: {
-    what: "A button that opens a list to pick one option from.",
     use: ["Six or more options, or options with long names.", "A compact choice in a table row or a toolbar."],
     instead: ["Two to five options worth seeing at once: `radio-group`.", "A long list the user needs to search: `autocomplete`."],
     notes: ["Inside a Field the trigger is labelled and described automatically; outside one, give the trigger an aria-label."],
   },
   slider: {
-    what: "A track with a thumb for picking a value or a range by dragging.",
     use: ["Volume, brightness, a rough range like a time window.", "Always with the current value shown beside it."],
     instead: ["An exact value or a value with a unit: `number-field`."],
   },
   badge: {
-    what: "A small tag for a fixed attribute or category (Beta, a version, the environment, a tier), and CountBadge for a count beside a label.",
     use: [
       "A release channel or a version after a name: Beta, v2.4.1.",
       "The environment in a header, as a neutral outline: Production, Staging.",
@@ -1139,13 +1051,11 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "tier-badge": {
-    what: "A dataset's licence tier as a tag: its code (T0 to T3) and what it means, Commercial to On-premises only.",
     use: ["The Tier column of a data catalog, compact.", "Beside a dataset's name on its page, with the words.", "A release check that lists what each dataset may be used for."],
     instead: ["A dataset's state (blocks release, held back): `status-eyebrow` (InlineStatus).", "Any other category: `badge` with tone neutral or outline."],
     notes: ["The tiers and their words are fixed (`Tier`, `tiers`); `labels` changes only the words."],
   },
   card: {
-    what: "One raised surface that holds a group of related content.",
     use: ["A robot's summary, a KPI, a settings section.", "A catalog tile with a cover picture (CardMedia).", "A gallery of collections as media cards: a cover or a mosaic, the title as its one link, facts and a badge (see the examples)."],
     instead: [
       "Rows of similar items: `list` or `table` inside one card. Cards are never nested.",
@@ -1156,38 +1066,31 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   avatar: {
-    what: "A person's picture or initials, round; a robot, site or team, square. With a status or count badge, and groups that fold into +N.",
     use: ["The signed-in user, an assignee, an author in a log.", "A robot or site next to its name in a list.", "Who is on shift, or which robots share a route, as a group."],
     instead: ["A robot's live state in a table: `status-glyph` and `inline-status`, not a badge on an avatar.", "A large icon in a coloured tile: `icon-tile`."],
   },
   separator: {
-    what: "A hairline between groups of content.",
     use: ["Between sections of a menu, a card or a toolbar."],
     instead: ["Rows of a list: `list`, which draws inset dividers itself.", "Space alone, when the groups are already clear."],
   },
   progress: {
-    what: "A bar that fills as work completes. Blue means in progress.",
     use: ["Uploads, map processing, a mission's completion."],
     instead: ["Waiting with no measurable progress: `spinner`.", "Content still loading: `skeleton`.", "A level that is not work, like battery: `meter`."],
   },
   spinner: {
-    what: "A turning indicator for work with no measurable progress. It appears only after 300 ms, so quick work never flashes it.",
     use: ["Inside a button while its action runs.", "A short wait for a response."],
     instead: ["Progress you can measure: `progress`.", "A page or list still loading: `skeleton`."],
   },
   "empty-state": {
-    what: "What is missing, why, and the one action that fixes it.",
     use: ["A list with no items yet, search with no results, a page without permission."],
     instead: ["A temporary error inside a page: `alert`."],
   },
   table: {
-    what: "Rows and columns for comparing many records at once, with tabular numbers.",
     use: ["Fleet lists, event logs, user lists on wide screens."],
     instead: ["The same rows on desks and on phones: `responsive-table`, a table that becomes a grouped list.", "Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
     notes: ["Sortable column: pass `sort` and `onSort` to TableHead; do not build your own header button."],
   },
   "responsive-table": {
-    what: "The same rows as a Table where there is room and as a grouped list on a phone, from one list of columns: its own width decides, and only one is rendered.",
     use: ["A robot, incident or user list a page shows on desks and phones.", "A table in a dashboard column that can be narrow."],
     instead: ["Many columns to sort, filter and select: `data-grid`.", "Rows only ever on a phone or in a side panel: `list`.", "Rows that only show on wide screens: `table`."],
     notes: [
@@ -1197,12 +1100,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   list: {
-    what: "Rows on one surface with inset dividers; status as shape plus word.",
     use: ["Robots, missions or settings on phones and in side panels."],
     instead: ["Many columns to compare: `table`.", "The same rows as a table on wide screens: `responsive-table`."],
   },
   "status-glyph": {
-    what: "Status is a shape and a word; colour only when it is abnormal. The shapes: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
     use: ["Next to a robot's name, in tables and on the map."],
     instead: ["A state with its word: `status-eyebrow`.", "An alarm: `alarm`, which has its own shapes."],
     notes: [
@@ -1210,7 +1111,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "status-eyebrow": {
-    what: "InlineStatus, a state that changes written as its shape and its word with no box, and StatusEyebrow, the same state above a headline.",
     use: [
       "InlineStatus: a row's state in a list or a table cell (Patrolling, Offline, Needs review).",
       "InlineStatus: the one state beside a page title, in PageHeader's `status`.",
@@ -1220,12 +1120,10 @@ export const overviews: Record<string, Overview> = {
     notes: ["Both come with `npx shadcn add @syncrobotic/status-eyebrow`: there is no separate inline-status item.", "In a 12 px meta line, give InlineStatus `className=\"text-xs\"` so the line keeps one size."],
   },
   skeleton: {
-    what: "Placeholders for values not loaded yet. What is known shows first; only unknown values get a skeleton.",
     use: ["A page or card whose data is loading."],
     instead: ["An action in progress: `spinner` in its button."],
   },
   alarm: {
-    what: "Alarms after ISA-18.2: three priorities, each with its own shape, colour and words, acknowledge and clear states, and a sorted list that announces new alarms.",
     use: ["Anything a person must act on: collision risk, e-stop, low battery on a mission."],
     instead: ["Feedback on what the user just did: `toast`.", "A note about the page that needs no action: `alert`."],
     notes: [
@@ -1235,13 +1133,11 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   alert: {
-    what: "A message inside the page in a status tone, with an icon, a title and a description. It stays while its condition holds.",
     use: ["A form that cannot be saved, a robot that is offline, a setting that has a consequence."],
     instead: ["Something a person must act on now: `alarm`.", "Feedback that goes away by itself: `toast`."],
     notes: ["An alert stays while its condition holds; it has no close button."],
   },
   banner: {
-    what: "A notice across the full width of the page or the app, above everything else, about the app itself. It stays while its condition holds.",
     use: [
       "Scheduled or running maintenance, read-only mode, a trial or licence about to end, no connection to the server.",
       "Anything every page of the app is affected by, shown once at the top instead of on each page.",
@@ -1258,16 +1154,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   toast: {
-    what: "Short feedback on what the user just did, at the edge of the screen: 4 s, 8 s with an action, failures until dismissed.",
     use: ["Saved, copied, mission started, with Undo where possible."],
     instead: ["Anything that needs a person to act: `alarm`, never a toast.", "A state of the page: `alert`."],
     notes: [
       "Only feedback on the user's own action. Anything needing action is an Alarm.",
-      "Mount <Toaster /> once; call toast() anywhere. Failures stay until dismissed. A second Toaster (a block that brings its own) draws nothing while the first is mounted.",
+      "A second Toaster (a block that brings its own) draws nothing while the first is mounted.",
     ],
   },
   tabs: {
-    what: "Sections of one page under a row of labels; one section shows at a time.",
     use: ["A robot's Overview, Sensors and Logs.", "A long detail page (a dataset's Overview, Browse and Versions) with `sticky`, so the row stays under the top bar."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
     notes: [
@@ -1275,7 +1169,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   tree: {
-    what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",
     use: [
       "Data lineage: a release, the label sets it was trained on, and their sources.",
       "Sites › zones › robots, to read or to pick one.",
@@ -1295,12 +1188,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   accordion: {
-    what: "Sections that open and close in place.",
     use: ["Long settings, FAQs, details the user rarely needs."],
     instead: ["Sections that are each a full view: `tabs`.", "One region behind one trigger, with no heading: `collapsible`."],
   },
   collapsible: {
-    what: "One trigger that opens one region in place, with the accordion's chevron and motion.",
     use: ["\"More filters\" under a filter bar.", "\"How to use this\" on a card.", "The rest of a long note."],
     instead: ["A set of sections with headings: `accordion`.", "A hierarchy that opens level by level: `tree`.", "Details over the page: `popover` or `sheet`."],
     notes: [
@@ -1310,29 +1201,24 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   dialog: {
-    what: "A centered panel for a short task or decision, blocking the page until it is done or closed.",
     use: ["Rename, a short form, a choice with two or three outcomes."],
     instead: ["Confirming something that cannot be undone: `alert-dialog`.", "Longer content, or on phones: `sheet`."],
     notes: ["Short decisions only; on phones or for long content use Sheet.", "Always a DialogTitle; DialogDescription when there is anything to explain."],
   },
   "alert-dialog": {
-    what: "A dialog that confirms an action that cannot be undone. The confirm button names the consequence.",
     use: ["Delete a route, stop all robots, revoke access."],
     instead: ["A reversible action: do it, and offer Undo in a `toast`."],
     notes: ['The confirm button names the consequence ("Delete route"), never "OK". Cancel has focus first.'],
   },
   sheet: {
-    what: "A panel that slides in: from the bottom on phones, from the side on wide screens.",
     use: ["Filters, a record's details next to a list, longer forms on phones."],
     instead: ["A short decision on desktop: `dialog`."],
   },
   popover: {
-    what: "A small panel anchored to a control, with extra detail or a quick setting.",
     use: ["A date picker, a short form, an explanation with a link."],
     instead: ["A name for an icon button: `tooltip`.", "A list of actions: `dropdown-menu`."],
   },
   "hover-card": {
-    what: "A preview of what a link leads to, on hover and keyboard focus: a robot's name, state, battery and last contact beside its ID.",
     use: ["Robot, site or dataset IDs in tables, event logs and text, where a glance saves opening the page."],
     instead: [
       "Anything someone needs, or anything to click: it is not on touch screens and screen readers are not told about it. Put it on the page, or in a `popover` opened by a click.",
@@ -1341,18 +1227,15 @@ export const overviews: Record<string, Overview> = {
     notes: ["The trigger is always a real link (asChild on an `a` or your router's Link) to a page that has everything the card shows."],
   },
   tooltip: {
-    what: "The name of an icon-only control, on hover and on keyboard focus.",
     use: ["Every icon button without a visible label."],
     instead: ["Anything needed on touch screens, where tooltips never show: a visible label, or `popover`."],
   },
   chart: {
-    what: "Line, area and bar charts in the categorical palette, with a crosshair tooltip, a legend and a table view.",
     use: ["Trends over time, comparisons between a few series."],
     instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`)."],
     notes: ["Spread `chartMotion` onto marks; do not set Recharts animation timing."],
   },
   "streaming-chart": {
-    what: "A live line chart for telemetry arriving many times a second: a time axis that keeps the last 30 s, 2 min or 10 min, pause and jump to live, limit lines, a crosshair, and a legend with each value now.",
     use: [
       "Motor currents, speed, a temperature or a battery's voltage on a robot's page while it works or is commissioned.",
       "Watching a value against its limit as it happens: a motor heating up, a pack sagging under load.",
@@ -1372,7 +1255,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   attitude: {
-    what: "Two instruments for a robot's state now: AttitudeIndicator (roll and pitch on an artificial horizon, the heading on a compass ring, each also written in degrees and words) and Gauge (one value with a known range on a dial, with Meter's thresholds).",
     use: [
       "A legged or tracked robot on rough ground or a slope: how far it leans, against its tip-over limit.",
       "An AMR on a ramp or a dock plate: pitch and roll while it climbs.",
@@ -1394,7 +1276,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   command: {
-    what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
     use: ["The app's search for robots, pages and actions (AppShell `search`).", "Picking from a long list by typing."],
     instead: ["Filtering a list on the page as you type: `input-group` with a search icon.", "A few options: `select`."],
     notes: [
@@ -1403,12 +1284,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "dropdown-menu": {
-    what: "A menu of actions on an item, opened from a button. Destructive actions go last.",
     use: ["Row actions in a table, the user menu, overflow (⋯) buttons."],
     instead: ["Picking a value: `select`.", "One obvious action: a `button`."],
   },
   "context-menu": {
-    what: "The menu a right-click or a long press opens on an item, in the dropdown menu's look. A shortcut to actions that are also on a visible control.",
     use: ["Rows of a robot or mission list, cards, nodes on a map or a tree: the same actions as the row's ⋯ menu, where people expect a right-click."],
     instead: [
       "The only way to an action: never. Add a ⋯ button with a `dropdown-menu` (same items), a toolbar button, or put it on the detail page.",
@@ -1420,7 +1299,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "stop-button": {
-    what: "The emergency stop: one touch stops, holding 2 s stops all; lying down it becomes wake and stand up.",
     use: ["Every screen that controls a robot, always in the same place."],
     instead: ["Any other destructive action: `button` with the destructive variant. Solid red belongs to the stop alone."],
     notes: [
@@ -1429,13 +1307,11 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "slide-to-release": {
-    what: "Releases a stopped robot with a deliberate slide: past 85% it releases, short of that it springs back.",
     use: ["Releasing an emergency stop, where a tap would be too easy in a panic."],
     instead: ["Routine confirmations: `alert-dialog`."],
     notes: ["Viewers get `locked`."],
   },
   "teleop-pad": {
-    what: "A dead-man stick for driving a mobile robot by hand: it moves only while held, and stops the moment input is let go or lost.",
     use: [
       "Driving a robot remotely from a phone or a control-room console: out of a corner, onto a dock, past an obstacle.",
       "Short manual moves during commissioning or maintenance.",
@@ -1454,12 +1330,10 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   dock: {
-    what: "The bottom bar of the control app in three tiers: the state action, this page's primary action, navigation.",
     use: ["Every page of the phone control app."],
     instead: ["Internal tools on desktop: the app shell's sidebar."],
   },
   island: {
-    what: "The top of the control app: name, device status and notifications, each expanding on its own, with the most urgent alarm inside.",
     use: ["Every page of the phone control app. The whole app, island, page and dock with the stop, is the `app-shell-control` block."],
     instead: [
       "Internal tools and the fleet console: the app shell's top bar (on a phone, `app-shell-mobile-tabs`). The island is for the person controlling one robot; a fleet has no single name, status or battery to put in it.",
@@ -1469,22 +1343,21 @@ export const overviews: Record<string, Overview> = {
       "Pair with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, where stateEdge is the persistent fault (stopped: danger; offline stays neutral), so a low alarm does not erase it. Put IslandAlarm inside, from the same alarm data as AlarmList."],
   },
   tray: {
-    what: "The shared frame of the island and the dock: radius 24, padding 8, gap 8.",
-    use: ["Building a new floating bar that should match them."],
-    instead: ["An ordinary panel: `card`."],
+    use: [
+      "A floating panel of your own over a map or a full-screen view, so it looks like the island and the dock: same corners, padding, surface and shadow.",
+      "You rarely use it directly: `island` and `dock` already wrap it.",
+    ],
+    instead: ["A panel in the page's flow: `card`.", "The robot's status bar at the top: `island`.", "A row of tools at the bottom: `dock`."],
   },
   "use-long-press": {
-    what: "A hook for press and hold, with progress from 0 to 1.",
     use: ["Hold-to-confirm actions, like stop all."],
     instead: ["A plain click: `button`."],
   },
   "use-debounce": {
-    what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
   },
   "format-number": {
-    what: "The kit's one number path: formatCount for a count (135,287, or 135K where space is short), formatNumber for any other number, both through Intl.NumberFormat, English without a locale.",
     use: [
       "A count in a table, a header, a detail page or a figure: `formatCount(n, { locale })`.",
       "A count on a tab, a chart's ticks or a compact chip: `formatCount(n, { compact: true })`, with the full number one step away.",
@@ -1497,28 +1370,23 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "clock-time": {
-    what: "formatClockTime: a time of day, 24-hour with seconds (14:02:31), in a locale and an optional time zone: the one format live components write their last update in.",
     use: ["A last-update time beside live data: Stale since 14:02:31.", "A log or an event's time of day."],
     instead: ["\"12 s ago\": count from `use-now`'s clock.", "A date: the date components (`calendar`, `date-selector`)."],
   },
   feedback: {
-    what: "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, a new critical or high alarm) and the alarm tones, through `feedback(name)`.",
     use: ["A safety moment your app sees and the kit does not: the robot confirmed the stop.", "Turning sound or vibration off in a setting: `configureFeedback`."],
     instead: ["A confirmation on screen: `toast`.", "Something someone must act on: `alarm`."],
     notes: ["Never `navigator.vibrate` directly. iOS has no vibration and sound needs a first tap, so it never replaces the screen."],
   },
   "use-now": {
-    what: "The clock in React, read again at an interval, and null until the page has hydrated, so a server render and the browser's first one never disagree about the time.",
     use: ["\"Updated 12 s ago\", a timeout, an alarm flood's window.", "Stale data: how long since the last message."],
     instead: ["A time of day to show: format the value with `clock-time`."],
   },
   "use-reduced-motion": {
-    what: "Whether the person asked for less motion: `prefersReducedMotion()` read now, for a handler, and `usePrefersReducedMotion()` followed while mounted.",
     use: ["Motion driven from JavaScript: a scroll into view, a canvas camera, a spring.", "Turning off a loop that only decorates."],
     instead: ["CSS animations: the kit's motion tokens already follow `prefers-reduced-motion`."],
   },
   "use-ros": {
-    what: "ROS and ROS 2 data in React over rosbridge, with no ROS library: RosProvider holds one connection, useRosTopic returns a topic's latest message, useRosPublisher a stable publish function (a zero Twist when a drive stops), useRosService a call with a timeout, and useRosStatus the connection's state in words.",
     use: [
       "A robot's page or console fed live from its robot: the map, the pose, the scan, the joints.",
       "Driving by hand: `teleop-pad` publishing /cmd_vel.",
@@ -1539,7 +1407,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   ros: {
-    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, Imu, Odometry, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
     use: [
       "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics`, `attitude` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
       "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
@@ -1557,7 +1424,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "use-hotkeys": {
-    what: "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types, with the key being pressed for Kbd.",
     use: ["A review or labelling queue answered by keyboard.", "A tool's global shortcuts, like mod+k for search."],
     instead: ["Keys inside one widget (arrows in a list): the widget's own onKeyDown, or the Radix component that has them."],
     notes: [
@@ -1567,7 +1433,6 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "use-slide-release": {
-    what: "A hook with the drag, threshold and spring-back logic behind slide to release.",
     use: ["Building another slide-to-confirm control."],
     instead: ["Releasing a stop: `slide-to-release`, which uses it."],
   },

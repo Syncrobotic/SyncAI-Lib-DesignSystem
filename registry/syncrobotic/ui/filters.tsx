@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.51.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.52.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,13 +8,17 @@ import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { Calendar } from "@/registry/syncrobotic/ui/calendar"
 import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { Command, CommandCheck, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/registry/syncrobotic/ui/command"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
+
+// The calendar (react-day-picker) loads when a date's value step first opens, so filters without a date never pay for it.
+const Calendar = React.lazy(() => import("@/registry/syncrobotic/ui/calendar").then((m) => ({ default: m.Calendar })))
+/** A month's room while the calendar loads (seven days across; caption, weekdays and six weeks down), so nothing jumps. */
+const calendarLoading = <div aria-busy="true" className="h-[calc(var(--h-sm)*8)] w-[calc(var(--h-sm)*7)]" />
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* The query model: plain, serialisable data. Nothing below needs React.                                              */
@@ -919,8 +923,10 @@ function ValueStep({
     if (operator === "between")
       return (
         <div role="group" aria-label={title} className="flex flex-col gap-3 p-3">
-          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
-          <Calendar mode="range" selected={days?.from ? { from: days.from, to: days.to } : undefined} onSelect={(r) => setDays(r ?? undefined)} defaultMonth={days?.from} autoFocus />
+          <React.Suspense fallback={calendarLoading}>
+            {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
+            <Calendar mode="range" selected={days?.from ? { from: days.from, to: days.to } : undefined} onSelect={(r) => setDays(r ?? undefined)} defaultMonth={days?.from} autoFocus />
+          </React.Suspense>
           <Button size="sm" disabled={!days?.from || !days.to} onClick={() => days?.from && days.to && onApply([iso(days.from), iso(days.to)])}>
             {labels.apply}
           </Button>
@@ -929,8 +935,10 @@ function ValueStep({
     const day = typeof value === "string" && DAY.test(value) ? fromDay(value) : undefined
     return (
       <div role="group" aria-label={title} className="p-3">
-        {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
-        <Calendar mode="single" selected={day} onSelect={(d) => d && onApply(iso(d))} defaultMonth={day} autoFocus />
+        <React.Suspense fallback={calendarLoading}>
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
+          <Calendar mode="single" selected={day} onSelect={(d) => d && onApply(iso(d))} defaultMonth={day} autoFocus />
+        </React.Suspense>
       </div>
     )
   }

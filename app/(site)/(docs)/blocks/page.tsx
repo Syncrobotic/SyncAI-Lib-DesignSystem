@@ -26,7 +26,7 @@ export default function BlocksPage() {
         </p>
       </header>
 
-      {blockGroups.map((g) => {
+      {blockGroups.map((g, gi) => {
         // One card per type, showing the block that best stands for it (site/blocks.tsx).
         const cards = blockCards().filter((c) => c.group === g)
         if (cards.length === 0) return null
@@ -39,7 +39,7 @@ export default function BlocksPage() {
               <p className="max-w-2xl text-sm text-muted-foreground">{groupIntro[g]}</p>
             </div>
             <Reveal className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {cards.map((t) => {
+              {cards.map((t, i) => {
                 return (
                   <AppearItem key={t.type} className="flex">
                     {/* The screenshot is framed (it is a picture of a screen); the words under it are not boxed. */}
@@ -48,7 +48,8 @@ export default function BlocksPage() {
                       className="group flex w-full flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                     >
                       <div className="overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard) group-hover:ring-muted-foreground">
-                        <BlockThumb name={t.name} />
+                        {/* The first row (three across at lg) is the largest paint. */}
+                        <BlockThumb name={t.name} priority={gi === 0 && i < 3} />
                       </div>
                       <div className="flex flex-1 flex-col gap-1">
                         <span className="flex items-baseline justify-between gap-2">

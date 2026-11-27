@@ -1,4 +1,4 @@
-// @syncrobotic/auth-passkey v0.49.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
+// @syncrobotic/auth-passkey v0.52.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
 "use client"
 
 import * as React from "react"
@@ -29,6 +29,12 @@ export function AuthPasskey({
   const [code, setCode] = React.useState("")
   const [codeError, setCodeError] = React.useState<string>()
   const [busy, setBusy] = React.useState(false)
+  // After a code is refused, focus goes to the code field once it shows the error, so both are read together.
+  const [attempt, setAttempt] = React.useState(0)
+  const form = React.useRef<HTMLFormElement>(null)
+  React.useEffect(() => {
+    if (attempt) form.current?.querySelector<HTMLElement>(":is(input, textarea, select, button)[aria-invalid=true]")?.focus()
+  }, [attempt])
 
   const passkey = async () => {
     setStep("waiting")
@@ -40,7 +46,10 @@ export function AuthPasskey({
 
   const submitCode = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (code.length < 6) return setCodeError("Enter all 6 digits.")
+    if (code.length < 6) {
+      setCodeError("Enter all 6 digits.")
+      return setAttempt((n) => n + 1)
+    }
     setBusy(true)
     // A request that fails is not a wrong code: null, said apart.
     const ok = onCode ? await onCode(code).catch(() => null) : await new Promise<boolean>((r) => window.setTimeout(() => r(code === "123456"), 600))
@@ -52,6 +61,7 @@ export function AuthPasskey({
           ? undefined
           : "That code did not work. Codes change every 30 seconds; try the current one.",
     )
+    if (!ok) setAttempt((n) => n + 1)
   }
 
   return (
@@ -60,7 +70,7 @@ export function AuthPasskey({
         <PageHeader title={`Sign in to ${product}`} description="No password: use the passkey on this device." className="pb-0" />
 
         {step === "code" ? (
-          <form noValidate onSubmit={(e) => void submitCode(e)} className="flex animate-appear flex-col gap-4">
+          <form ref={form} noValidate onSubmit={(e) => void submitCode(e)} className="flex animate-appear flex-col gap-4">
             <Field label="Code from your authenticator app" error={codeError}>
               <InputOTP
                 maxLength={6}

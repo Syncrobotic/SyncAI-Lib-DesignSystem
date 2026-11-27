@@ -53,15 +53,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}`, image: `/og/components/${item.name}` })
 }
 
-/** Whether two lines say the same thing: one contains the other, or they share their first six words. */
-function repeats(a: string, b: string) {
-  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim()
-  const x = norm(a)
-  const y = norm(b)
-  if (!x || !y) return false
-  return x.includes(y) || y.includes(x) || x.split(" ").slice(0, 6).join(" ") === y.split(" ").slice(0, 6).join(" ")
-}
-
 export default async function ComponentPage({ params }: Props) {
   const item = getItem((await params).name)
   if (!item) notFound()
@@ -72,9 +63,8 @@ export default async function ComponentPage({ params }: Props) {
   const meta = (item as { meta?: { version: string; status?: "beta" | "stable"; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
+  // What it is: the description, the page's lead (layout.tsx). The overview adds when to use it and what instead.
   const overview = overviews[item.name]
-  // Skip the overview's line when it only repeats the description above, word for word or nearly.
-  const what = overview && !repeats(overview.what, item.description ?? "")
   const install = `npx shadcn add @syncrobotic/${item.name}`
   const installBlock = <CodeBlock code={install} lang="bash" title="Terminal" />
   // A library with no examples (ros) shows what it exports here; its source, a thousand lines, is in the Source sheet.
@@ -134,12 +124,7 @@ export default async function ComponentPage({ params }: Props) {
           <h2 id="overview" className="sr-only">
             Overview
           </h2>
-          {what && (
-            <p className="max-w-3xl text-base">
-              <Linked text={overview.what} />
-            </p>
-          )}
-          <div className={`grid gap-6 sm:grid-cols-2 ${what ? "pt-6" : ""}`}>
+          <div className="grid gap-6 sm:grid-cols-2">
             <div>
               <h3 className="pb-2 text-sm font-bold">When to use</h3>
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">

@@ -1,9 +1,10 @@
-// @syncrobotic/list-detail v0.49.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.52.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowLeft, MapPin, Pause, Search, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useHydrated } from "@/registry/syncrobotic/hooks/use-now"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -28,9 +29,6 @@ const status: Record<Robot["status"], { tone: Status; label: string }> = {
   offline: { tone: "offline", label: "Offline" },
 }
 
-// Whether this is the client never changes once it is, so there is nothing to subscribe to.
-const subscribeNothing = () => () => {}
-
 /**
  * List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list.
  * The picked robot's emergency stop sits at the foot of its detail and stays on screen while it scrolls; a stopped
@@ -41,7 +39,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const [selected, setSelected] = React.useState<string | null>(null)
   // Wide screens open on the first robot; phones start on the list. It is decided once per robots list, on the client
   // (the server and the hydrating render start on the list), during render rather than in an effect that renders twice.
-  const client = React.useSyncExternalStore(subscribeNothing, () => true, () => false)
+  const client = useHydrated()
   const [seeded, setSeeded] = React.useState<Robot[] | null>(null)
   if (client && seeded !== robots) {
     setSeeded(robots)

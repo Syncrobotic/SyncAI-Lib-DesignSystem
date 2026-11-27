@@ -1,4 +1,4 @@
-// @syncrobotic/sign-in v0.45.1 · update: npx shadcn add @syncrobotic/sign-in --overwrite
+// @syncrobotic/sign-in v0.52.0 · update: npx shadcn add @syncrobotic/sign-in --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,10 +21,27 @@ export function SignIn({ product = "Fleet console", onSignIn }: { product?: stri
   React.useEffect(() => () => clearTimeout(reply.current), [])
   const [sent, setSent] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
+  // Focus follows the outcome: the field in error once it shows the error, so both are read together; the status once it
+  // says the link went out; the email field again after "Use another email". Never left on the page body.
+  const [attempt, setAttempt] = React.useState(0)
+  const form = React.useRef<HTMLFormElement>(null)
+  const status = React.useRef<HTMLDivElement>(null)
+  const wasSent = React.useRef(false)
+  React.useEffect(() => {
+    if (attempt) form.current?.querySelector<HTMLElement>(":is(input, textarea, select, button)[aria-invalid=true]")?.focus()
+  }, [attempt])
+  React.useEffect(() => {
+    if (sent) status.current?.focus()
+    else if (wasSent.current) form.current?.querySelector<HTMLElement>("input")?.focus()
+    wasSent.current = sent
+  }, [sent])
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!/^\S+@\S+\.\S+$/.test(email)) return setError("Enter your work email, e.g. name@example.com")
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setError("Enter your work email, e.g. name@example.com")
+      return setAttempt((n) => n + 1)
+    }
     setError(undefined)
     setBusy(true)
     reply.current = setTimeout(() => {
@@ -39,17 +56,27 @@ export function SignIn({ product = "Fleet console", onSignIn }: { product?: stri
       <div className="flex w-full max-w-sm flex-col gap-6">
         <PageHeader title={`Sign in to ${product}`} description="Use your SYNCROBOTIC account." className="pb-0" />
 
-        {sent ? (
-          <div role="status" className="flex animate-appear flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
-            <span className="font-medium">Check your inbox</span>
-            <span className="text-sm text-muted-foreground">
-              We sent a sign-in link to {email}. It works for 15 minutes.
-            </span>
-            <Button variant="ghost" size="sm" className="self-start" onClick={() => setSent(false)}>
-              Use another email
-            </Button>
-          </div>
-        ) : (
+        {/* Mounted from the start, empty until the link is sent, so its message is announced when it arrives. Hidden
+            (out of the flow) while empty, so the column's gap is unchanged. */}
+        <div
+          ref={status}
+          role="status"
+          tabIndex={-1}
+          className={sent ? "flex animate-appear flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border" : "sr-only"}
+        >
+          {sent && (
+            <>
+              <span className="font-medium">Check your inbox</span>
+              <span className="text-sm text-muted-foreground">
+                We sent a sign-in link to {email}. It works for 15 minutes.
+              </span>
+              <Button variant="ghost" size="sm" className="self-start" onClick={() => setSent(false)}>
+                Use another email
+              </Button>
+            </>
+          )}
+        </div>
+        {!sent && (
           <>
             <Button size="lg" onClick={() => onSignIn?.("sso")}>
               Continue with company SSO
@@ -59,7 +86,7 @@ export function SignIn({ product = "Fleet console", onSignIn }: { product?: stri
               or
               <Separator className="flex-1" />
             </div>
-            <form noValidate onSubmit={submit} className="flex flex-col gap-4">
+            <form ref={form} noValidate onSubmit={submit} className="flex flex-col gap-4">
               <Field label="Work email" error={error}>
                 <Input type="email" autoComplete="email" inputMode="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </Field>
