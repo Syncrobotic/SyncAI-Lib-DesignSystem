@@ -5235,7 +5235,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/input-modality"
+        "@syncrobotic/input-modality",
+        "@syncrobotic/kbd"
       ],
       "files": [
         {

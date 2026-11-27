@@ -233,3 +233,85 @@ describe("CameraWall announcements", () => {
     expect(names()).toEqual(["Front camera · AMR 1 連線中", "Front camera · AMR 2 為節省頻寬已暫停"])
   })
 })
+
+describe("CameraWall move between the grid and one camera", () => {
+  type Doc = { startViewTransition?: unknown }
+  const named = () => [...document.body.querySelectorAll<HTMLElement>("*")].filter((e) => e.style.getPropertyValue("view-transition-name")).length
+  // A browser's transition, minus the pictures: the update runs at once and every promise settles.
+  const fakeTransition = () => {
+    const skipTransition = vi.fn()
+    const during: (string | undefined)[][] = []
+    const nameOf = (el: HTMLElement | null | undefined) => el?.style.getPropertyValue("view-transition-name") || undefined
+    const look = () => [nameOf(document.querySelector<HTMLElement>("[data-camera-focused] [data-slot=camera-feed]")), ...tiles().map((t) => nameOf(t.querySelector("[data-camera-picture]")) ?? nameOf(t))]
+    const start = vi.fn((update: () => void) => {
+      during.push(look())
+      update()
+      during.push(look())
+      return { updateCallbackDone: Promise.resolve(), ready: Promise.resolve(), finished: Promise.resolve(), skipTransition }
+    })
+    ;(document as unknown as Doc).startViewTransition = start
+    return { start, skipTransition, during }
+  }
+  afterEach(() => {
+    delete (document as unknown as Doc).startViewTransition
+  })
+
+  it("changes at once where View Transitions are missing, and focus goes to the feed and back to the tile", () => {
+    expect((document as unknown as Doc).startViewTransition).toBeUndefined()
+    render(<CameraWall cameras={fleet(4)} getSource={source} />)
+    fireEvent.click(tileButtons()[1]!)
+    const feed = screen.getByRole("region", { name: "Front camera, AMR 2" })
+    expect(document.activeElement).toBe(feed)
+    fireEvent.keyDown(feed, { key: "Escape" })
+    expect(order()).toEqual(["AMR 1", "AMR 2", "AMR 3", "AMR 4"])
+    expect(document.activeElement).toBe(tileButtons()[1])
+    expect(named()).toBe(0)
+  })
+
+  it("names what moves only while the transition runs, with focus handled as without it", async () => {
+    const { start, during, skipTransition } = fakeTransition()
+    render(<CameraWall cameras={fleet(4)} getSource={source} />)
+    fireEvent.click(tileButtons()[1]!)
+    expect(start).toHaveBeenCalledTimes(1)
+    // Before, the chosen tile's picture and the other tiles; after, the large feed under the picture's name. (happy-dom
+    // lays nothing out, so the strip has no width and its tiles count as scrolled out of it.)
+    const [before, after] = during
+    expect(before![0]).toBeUndefined()
+    expect(before!.slice(1).every(Boolean)).toBe(true)
+    expect(new Set(before).size).toBe(5)
+    expect(after![0]).toBe(before![2])
+    // Page-wide, the page itself sits out, so the rest of it stays live.
+    expect(document.documentElement.style.getPropertyValue("view-transition-name")).toBe("none")
+    const feed = screen.getByRole("region", { name: "Front camera, AMR 2" })
+    expect(document.activeElement).toBe(feed)
+    await act(async () => {})
+    expect(named()).toBe(0)
+    expect(document.documentElement.style.getPropertyValue("view-transition-name")).toBe("")
+    fireEvent.keyDown(feed, { key: "Escape" })
+    expect(start).toHaveBeenCalledTimes(2)
+    expect(document.activeElement).toBe(tileButtons()[1])
+    await act(async () => {})
+    expect(named()).toBe(0)
+    expect(skipTransition).not.toHaveBeenCalled()
+  })
+
+  it("does not move under reduced motion", () => {
+    const { start } = fakeTransition()
+    vi.spyOn(window, "matchMedia").mockImplementation((q) => ({ matches: q.includes("reduce"), media: q }) as MediaQueryList)
+    render(<CameraWall cameras={fleet(4)} getSource={source} />)
+    fireEvent.click(tileButtons()[0]!)
+    expect(start).not.toHaveBeenCalled()
+    expect(document.activeElement).toBe(screen.getByRole("region", { name: "Front camera, AMR 1" }))
+  })
+
+  it("skips the move when a controlled `focused` does not follow, and still asks for the change", async () => {
+    const { skipTransition } = fakeTransition()
+    const onFocusedChange = vi.fn()
+    render(<CameraWall cameras={fleet(4)} getSource={source} focused={null} onFocusedChange={onFocusedChange} />)
+    fireEvent.click(tileButtons()[2]!)
+    expect(onFocusedChange).toHaveBeenLastCalledWith("AMR 3")
+    await act(async () => {})
+    expect(skipTransition).toHaveBeenCalledTimes(1)
+    expect(named()).toBe(0)
+  })
+})

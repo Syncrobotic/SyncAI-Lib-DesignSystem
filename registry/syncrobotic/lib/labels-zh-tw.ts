@@ -1191,6 +1191,9 @@ export const commandLabels = {
 export const commandDialogLabels = {
   title: "搜尋",
   description: "搜尋頁面、機器人與操作",
+  move: "移動",
+  open: "開啟",
+  close: "關閉",
   ...commandLabels,
 }
 

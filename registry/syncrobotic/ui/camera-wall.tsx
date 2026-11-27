@@ -2,6 +2,7 @@
 "use client"
 
 import * as React from "react"
+import { flushSync } from "react-dom"
 import { ArrowLeft, OctagonAlert, Pause, TriangleAlert, VideoOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
@@ -214,6 +215,7 @@ export function CameraWall({
   const feedLabels = { ...defaultCameraFeedLabels, ...l.feed }
   const rootRef = React.useRef<HTMLDivElement>(null)
   const keysId = React.useId()
+  const morphPrefix = `camera-wall-${keysId.replace(/[^\w-]/g, "")}`
 
   const [focusedInner, setFocusedInner] = React.useState<string | null>(defaultFocused)
   const focusedId = focusedProp !== undefined ? focusedProp : focusedInner
@@ -352,20 +354,23 @@ export function CameraWall({
     if (focusedProp === undefined) setFocusedInner(id)
     onFocusedChange?.(id)
   }
-  const open = (id: string) => {
-    pendingFocus.current = { to: "feed" }
-    setActiveId(id)
-    setFocused(id)
-  }
+  const open = (id: string) =>
+    morph(rootRef.current, morphPrefix, id, () => {
+      pendingFocus.current = { to: "feed" }
+      setActiveId(id)
+      setFocused(id)
+    })
   const back = () => {
     const id = focusedCamera?.id
     if (!id) return
     if (document.fullscreenElement) void document.exitFullscreen?.()
     const at = shown.findIndex((c) => c.id === id)
-    if (at >= 0) setPage(Math.floor(at / pageSize))
-    setActiveId(id)
-    pendingFocus.current = { to: "tile", id }
-    setFocused(null)
+    morph(rootRef.current, morphPrefix, id, () => {
+      if (at >= 0) setPage(Math.floor(at / pageSize))
+      setActiveId(id)
+      pendingFocus.current = { to: "tile", id }
+      setFocused(null)
+    })
   }
   React.useLayoutEffect(() => {
     const want = pendingFocus.current
@@ -496,7 +501,7 @@ export function CameraWall({
       </span>
 
       {focusedCamera ? (
-        <div data-slot="camera-wall-focus" className="flex flex-col gap-4">
+        <div data-slot="camera-wall-focus" data-camera-focused={focusedCamera.id} className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <Button variant="outline" onClick={back}>
               <ArrowLeft aria-hidden="true" />
@@ -595,6 +600,103 @@ export function CameraWall({
       )}
     </div>
   )
+}
+
+// ---------- The move between the grid and one camera (View Transitions) ----------
+
+/**
+ * The elements that move, by the camera they show: the large feed, the chosen camera's picture in its tile, and every
+ * other tile in view. A strip tile scrolled out of the strip is left out: a transition draws it unclipped, outside the strip.
+ */
+function movers(root: HTMLElement, chosen: string) {
+  const out: [HTMLElement, string][] = []
+  const focus = root.querySelector<HTMLElement>("[data-camera-focused]")
+  const feed = focus?.querySelector<HTMLElement>('[data-slot="camera-feed"]')
+  if (focus && feed) out.push([feed, focus.dataset.cameraFocused ?? ""])
+  const strip = root.querySelector('[data-slot="camera-wall-strip"]')?.getBoundingClientRect()
+  for (const li of root.querySelectorAll<HTMLElement>('[data-slot="camera-wall-tile"]')) {
+    const id = li.dataset.cameraId ?? ""
+    const r = li.getBoundingClientRect()
+    if (id === chosen) {
+      const picture = li.querySelector<HTMLElement>("[data-camera-picture]")
+      if (picture) out.push([picture, chosen])
+    } else if (!strip || (r.right > strip.left && r.left < strip.right)) out.push([li, id])
+  }
+  return out
+}
+
+/**
+ * Runs a change of layout so the chosen camera grows into its place (or back into its tile) and the others settle, at
+ * the sheet's pace. Instant without View Transitions, under reduced motion, in full screen, and when a controlled
+ * `focused` did not follow. Page-wide, as a transition scoped to the wall was aborted about one time in four (Chromium 153).
+ */
+function morph(root: HTMLElement | null, prefix: string, chosen: string, change: () => void) {
+  const still = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  if (!root || typeof document.startViewTransition !== "function" || still || document.hidden || document.fullscreenElement) return change()
+  const names = new Map<string, string>()
+  const named: HTMLElement[] = []
+  const name = () => {
+    for (const [el, id] of movers(root, chosen)) {
+      if (!names.has(id)) names.set(id, `${prefix}-${names.size}`)
+      el.style.setProperty("view-transition-name", names.get(id)!)
+      named.push(el)
+    }
+  }
+  const clear = () => named.splice(0).forEach((el) => el.style.removeProperty("view-transition-name"))
+  const restore = letPageThrough()
+  name()
+  const shown = () => root.querySelector<HTMLElement>("[data-camera-focused]")?.dataset.cameraFocused
+  const before = shown()
+  let followed = false
+  const vt = document.startViewTransition(() => {
+    clear()
+    flushSync(change)
+    followed = shown() !== before
+    if (followed) name()
+  })
+  void vt.updateCallbackDone.then(() => followed || vt.skipTransition()).catch(() => {})
+  void vt.ready.then(pace).catch(() => {})
+  void vt.finished
+    .catch(() => {})
+    .finally(() => {
+      clear()
+      restore()
+    })
+}
+
+/**
+ * While the wall moves, the page itself does not take part and the transition's overlay lets the pointer through, so
+ * everything outside the wall (a stop button, too) stays live, as the Motion foundation asks. Returns the undo.
+ */
+function letPageThrough() {
+  const html = document.documentElement
+  const was = html.style.getPropertyValue("view-transition-name")
+  html.style.setProperty("view-transition-name", "none")
+  let sheet: CSSStyleSheet | undefined
+  try {
+    sheet = new CSSStyleSheet()
+    sheet.replaceSync("::view-transition { pointer-events: none }")
+    document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet]
+  } catch {
+    sheet = undefined
+  }
+  return () => {
+    if (was) html.style.setProperty("view-transition-name", was)
+    else html.style.removeProperty("view-transition-name")
+    if (sheet) document.adoptedStyleSheets = document.adoptedStyleSheets.filter((s) => s !== sheet)
+  }
+}
+
+/** The transition's own animations run on the motion tokens (a browser's default is 250 ms, ease). */
+function pace() {
+  const css = getComputedStyle(document.documentElement)
+  const token = css.getPropertyValue("--motion-sheet").trim()
+  const duration = token.endsWith("ms") ? parseFloat(token) : token.endsWith("s") ? parseFloat(token) * 1000 : 320
+  const easing = css.getPropertyValue("--ease-standard").trim() || "cubic-bezier(0.2, 0, 0, 1)"
+  for (const a of document.documentElement.getAnimations?.({ subtree: true }) ?? []) {
+    const effect = a.effect as KeyframeEffect | null
+    if (effect?.pseudoElement?.startsWith("::view-transition")) effect.updateTiming({ duration: Number.isFinite(duration) ? duration : 320, easing })
+  }
 }
 
 // Read only in callbacks (a feed reporting its state, the announcement timer), never while rendering.
@@ -697,7 +799,7 @@ function Tile({
           </span>
           {lastFrame && <span className="sr-only"> {lastFrame}</span>}
         </div>
-        <div ref={stack} className="relative mt-auto">
+        <div ref={stack} data-camera-picture="" className="relative mt-auto">
           {playing ? (
             <TileFeed
               camera={camera}

@@ -7,6 +7,7 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
+import { Kbd, KbdGroup } from "@/registry/syncrobotic/ui/kbd"
 
 // The last input modality on the page: a palette opened with ⌘K rings its row at once; one opened with a click does not.
 trackInputModality()
@@ -133,12 +134,19 @@ export type CommandDialogLabels = CommandLabels & {
   title: string
   /** Read after the name: what can be searched. */
   description: string
+  /** The footer's hints, each after its keys: "↑↓ to move", "↵ to open", "Esc to close". */
+  move: string
+  open: string
+  close: string
 }
 
 export const defaultCommandDialogLabels: CommandDialogLabels = {
   ...defaultCommandLabels,
   title: "Search",
   description: "Search pages, robots and actions",
+  move: "to move",
+  open: "to open",
+  close: "to close",
 }
 
 /**
@@ -151,6 +159,7 @@ export function CommandDialog({
   title,
   description,
   labels,
+  hints = true,
   children,
   className,
   ...props
@@ -163,6 +172,8 @@ export function CommandDialog({
   description?: string
   /** The words it says, to translate them. */
   labels?: Partial<CommandDialogLabels>
+  /** The footer with the keys it answers to; `false` leaves it out. Never shown where the pointer is touch. */
+  hints?: boolean
 }) {
   const l = { ...defaultCommandDialogLabels, ...labels }
   // The palette has no trigger of its own (it opens from ⌘K or a field), so Radix has nowhere to return focus. Remember
@@ -202,9 +213,40 @@ export function CommandDialog({
           <Command label={title ?? l.title} labels={{ results: l.results, empty: l.empty }} className={className} {...props}>
             {children}
           </Command>
+          {hints && <CommandHints labels={l} />}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
+  )
+}
+
+/**
+ * The keys the palette answers to, at its foot like a dialog's actions. Hidden from screen readers, which hear the
+ * combobox and its listbox, and from touch, which has no keys.
+ */
+function CommandHints({ labels: l }: { labels: CommandDialogLabels }) {
+  const hint = (keys: React.ReactNode, word: string) => (
+    <span className="flex items-center gap-2">
+      <KbdGroup>{keys}</KbdGroup>
+      {word}
+    </span>
+  )
+  return (
+    <div
+      aria-hidden="true"
+      data-slot="command-hints"
+      className="flex shrink-0 flex-wrap items-center justify-end gap-x-4 gap-y-2 border-t border-border px-4 py-2 text-xs text-muted-foreground pointer-coarse:hidden"
+    >
+      {hint(
+        <>
+          <Kbd>↑</Kbd>
+          <Kbd>↓</Kbd>
+        </>,
+        l.move,
+      )}
+      {hint(<Kbd>↵</Kbd>, l.open)}
+      {hint(<Kbd>Esc</Kbd>, l.close)}
+    </div>
   )
 }
 
