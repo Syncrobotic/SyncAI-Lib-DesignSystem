@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.37.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.50.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -414,6 +414,7 @@ export function MediaPlayer({
         role="region"
         aria-label={label}
         aria-describedby={keysId}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the player frame is a Tab stop that takes the player's keys (Space, arrows, J/K/L, M, F)
         tabIndex={0}
         data-playing={playing || undefined}
         data-controls={shown ? "shown" : "hidden"}
@@ -440,6 +441,7 @@ export function MediaPlayer({
         {/* The player is always dark, like any video surface: the controls take the dark theme's tokens (white ink on
             the scrim) whatever the page's theme. The frame itself stays outside it, so its focus ring keeps the page's ink. */}
         <div className="dark absolute inset-0 bg-letterbox text-foreground">
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- captions come in through `tracks` and are rendered as <track> children below */}
           <video
             ref={videoRef}
             src={loading ? undefined : src}

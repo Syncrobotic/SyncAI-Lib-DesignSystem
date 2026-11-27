@@ -92,8 +92,8 @@
     "hash": "0400ef24e80c8d2f"
   },
   "teleop-pad": {
-    "version": "0.40.0",
-    "hash": "f1851d99a13964bb"
+    "version": "0.50.0",
+    "hash": "3592a43178258ae0"
   },
   "dock": {
     "version": "0.40.0",
@@ -116,8 +116,8 @@
     "hash": "939af3f1ab76abb6"
   },
   "geo-map": {
-    "version": "0.40.0",
-    "hash": "9c291c7f4dd6aac1"
+    "version": "0.50.0",
+    "hash": "2d17a5d79dfdcdc1"
   },
   "spinner": {
     "version": "0.23.0",
@@ -136,20 +136,20 @@
     "hash": "e77c5f40c4a70b23"
   },
   "code-block": {
-    "version": "0.19.0",
-    "hash": "12cd8fac14dc5796"
+    "version": "0.50.0",
+    "hash": "1d12e375f65d1a59"
   },
   "input": {
     "version": "0.17.3",
     "hash": "6e4683848db70d23"
   },
   "input-group": {
-    "version": "0.17.4",
-    "hash": "88e18fccd340527f"
+    "version": "0.50.0",
+    "hash": "e7212c2838652b75"
   },
   "number-field": {
-    "version": "0.36.0",
-    "hash": "dfafd7e954305711"
+    "version": "0.50.0",
+    "hash": "a9810fadca17aafa"
   },
   "textarea": {
     "version": "0.17.3",
@@ -252,8 +252,8 @@
     "hash": "c75920e4ae2969af"
   },
   "table": {
-    "version": "0.47.0",
-    "hash": "378416f6a3445f1b"
+    "version": "0.50.0",
+    "hash": "672c9b5f57081984"
   },
   "responsive-table": {
     "version": "0.45.0",
@@ -264,8 +264,8 @@
     "hash": "de452a3c7fef169e"
   },
   "streaming-chart": {
-    "version": "0.40.0",
-    "hash": "dfb28c0233c1ef02"
+    "version": "0.50.0",
+    "hash": "b26a57a62ccc43f0"
   },
   "attitude": {
     "version": "0.40.0",
@@ -280,8 +280,8 @@
     "hash": "914c1a946e221a19"
   },
   "breadcrumb": {
-    "version": "0.31.0",
-    "hash": "c52e80882c0a83ab"
+    "version": "0.50.0",
+    "hash": "ef561c386aafe93d"
   },
   "accordion": {
     "version": "0.32.0",
@@ -292,20 +292,20 @@
     "hash": "d1e24259ecc64392"
   },
   "tree": {
-    "version": "0.36.0",
-    "hash": "95ad49c6d314e6a5"
+    "version": "0.50.0",
+    "hash": "33d8906c4cd899c8"
   },
   "sidebar": {
-    "version": "0.49.0",
-    "hash": "a3e1caceb49893ca"
+    "version": "0.50.0",
+    "hash": "4ce262a6b4bdf63b"
   },
   "graph": {
-    "version": "0.42.0",
-    "hash": "020514bb57f76c06"
+    "version": "0.50.0",
+    "hash": "47b761e2cffac1d6"
   },
   "robot-map": {
-    "version": "0.40.0",
-    "hash": "28cb86025d6dcdd6"
+    "version": "0.50.0",
+    "hash": "ac186e61b5fd086a"
   },
   "waypoint-editor": {
     "version": "0.40.0",
@@ -424,16 +424,16 @@
     "hash": "ecaa27c87796ee91"
   },
   "media-player": {
-    "version": "0.37.0",
-    "hash": "1d3db157a9aa48b0"
+    "version": "0.50.0",
+    "hash": "c91069dea0d5f047"
   },
   "camera-feed": {
-    "version": "0.47.0",
-    "hash": "d0792a115e597277"
+    "version": "0.50.0",
+    "hash": "9981aa63b5161016"
   },
   "camera-wall": {
-    "version": "0.40.0",
-    "hash": "046a25d883268496"
+    "version": "0.50.0",
+    "hash": "aea5365335aedbfa"
   },
   "joint-state": {
     "version": "0.40.0",
@@ -444,8 +444,8 @@
     "hash": "7721b86828fcdcad"
   },
   "point-cloud": {
-    "version": "0.45.1",
-    "hash": "90277de71f73fe91"
+    "version": "0.50.0",
+    "hash": "6b5123635eb0f05d"
   },
   "robot-model": {
     "version": "0.47.0",
@@ -460,8 +460,8 @@
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.49.0",
-    "hash": "b56bb33a83217181"
+    "version": "0.50.0",
+    "hash": "0442e1616ab806dd"
   },
   "facets": {
     "version": "0.40.0",
@@ -480,8 +480,8 @@
     "hash": "11a278885017a03b"
   },
   "autocomplete": {
-    "version": "0.49.0",
-    "hash": "8e974af5243acd74"
+    "version": "0.50.0",
+    "hash": "d1ee7295cbece7fa"
   },
   "input-otp": {
     "version": "0.15.0",
@@ -496,16 +496,16 @@
     "hash": "09e205712a6e3474"
   },
   "date-selector": {
-    "version": "0.32.0",
-    "hash": "2a6e14538a025f5d"
+    "version": "0.50.0",
+    "hash": "31e59512ac71356b"
   },
   "time-picker": {
-    "version": "0.32.0",
-    "hash": "7547bf8f88c93234"
+    "version": "0.50.0",
+    "hash": "93eb007ed75e94bc"
   },
   "data-grid": {
-    "version": "0.40.0",
-    "hash": "e2092d60ab8896ed"
+    "version": "0.50.0",
+    "hash": "f151defd08ec752b"
   },
   "log-viewer": {
     "version": "0.40.0",
@@ -524,12 +524,12 @@
     "hash": "3e64e876026786c9"
   },
   "prompt-composer": {
-    "version": "0.42.0",
-    "hash": "e8dfcccbae201fb8"
+    "version": "0.50.0",
+    "hash": "08fcbfcbcfedd84a"
   },
   "message-scroller": {
-    "version": "0.41.0",
-    "hash": "13aade848a528ad4"
+    "version": "0.50.0",
+    "hash": "085514ddd70e9e57"
   },
   "sortable": {
     "version": "0.32.0",
@@ -552,8 +552,8 @@
     "hash": "03d1069002cfe53c"
   },
   "stepper": {
-    "version": "0.32.0",
-    "hash": "576354d039eca397"
+    "version": "0.50.0",
+    "hash": "62b1e355af74de19"
   },
   "timeline": {
     "version": "0.40.0",
@@ -572,8 +572,8 @@
     "hash": "2611a24c74ff5959"
   },
   "trace": {
-    "version": "0.47.0",
-    "hash": "7b1b04e185b6dba7"
+    "version": "0.50.0",
+    "hash": "66611e4a2c37bac8"
   },
   "marker": {
     "version": "0.40.0",
@@ -712,8 +712,8 @@
     "hash": "a80bf138e28c1936"
   },
   "status-tracker-uptime": {
-    "version": "0.17.2",
-    "hash": "397a11139844bc1a"
+    "version": "0.50.0",
+    "hash": "2624029b2c2b0aa2"
   },
   "status-tracker-runs": {
     "version": "0.40.0",
@@ -780,16 +780,16 @@
     "hash": "a66ac0e9bb8d9c76"
   },
   "auth-2fa": {
-    "version": "0.49.0",
-    "hash": "c452a0e9dd97ef35"
+    "version": "0.50.0",
+    "hash": "3f683cc568ff797b"
   },
   "settings-notifications": {
     "version": "0.47.0",
     "hash": "5cd4dd6be0ef8f37"
   },
   "settings-api-keys": {
-    "version": "0.40.0",
-    "hash": "c4d067236b8ac307"
+    "version": "0.50.0",
+    "hash": "1706d956d02dec37"
   },
   "settings-webhooks": {
     "version": "0.49.0",
@@ -804,8 +804,8 @@
     "hash": "28c15f504430947f"
   },
   "notification-center": {
-    "version": "0.48.0",
-    "hash": "d8ce54380f178f2c"
+    "version": "0.50.0",
+    "hash": "b98c4c77f3e96e91"
   },
   "dialog-confirm-destructive": {
     "version": "0.17.3",
@@ -896,8 +896,8 @@
     "hash": "bcbcfb4e59b73b5f"
   },
   "agent-run-gate": {
-    "version": "0.48.0",
-    "hash": "fa3de56af3fde04d"
+    "version": "0.50.0",
+    "hash": "7a83a1af2cc686bf"
   },
   "agent-run-outcome": {
     "version": "0.49.0",
@@ -908,8 +908,8 @@
     "hash": "fc986f0f403aa317"
   },
   "citations": {
-    "version": "0.41.0",
-    "hash": "cfc32efa1107e886"
+    "version": "0.50.0",
+    "hash": "135e8e19e91ce04c"
   },
   "agent-tool-permissions": {
     "version": "0.45.0",

@@ -1,4 +1,4 @@
-// @syncrobotic/breadcrumb v0.31.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.50.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -50,7 +50,7 @@ export function Breadcrumb({
 }
 
 /** A level above this page. Pass `asChild`-style routing by rendering your own link inside, or use href. */
-export function BreadcrumbLink({ className, ...props }: React.ComponentProps<"a">) {
+export function BreadcrumbLink({ className, children, ...props }: React.ComponentProps<"a">) {
   return (
     <a
       data-slot="breadcrumb-link"
@@ -60,7 +60,9 @@ export function BreadcrumbLink({ className, ...props }: React.ComponentProps<"a"
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 }
 

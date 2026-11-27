@@ -31,6 +31,7 @@ export function AreaTabs({ scopes, area, onArea, panel, edge }: { scopes: Scope[
     tabs.current?.querySelector<HTMLElement>(`[data-area="${key}"]`)?.focus()
   }
   return (
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- roving tabindex: the tabs take focus; the tablist handles their bubbled arrow keys
     <div
       ref={tabs}
       role="tablist"

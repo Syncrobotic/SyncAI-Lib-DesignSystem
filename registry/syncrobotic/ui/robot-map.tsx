@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.40.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.50.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1469,6 +1469,7 @@ export function RobotMap({
     .join(". ")
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role=application: the map pans and zooms with the keys as well as the pointer
     <div
       ref={root}
       data-slot="robot-map"
@@ -1476,6 +1477,7 @@ export function RobotMap({
       aria-roledescription="map"
       aria-label={name}
       aria-describedby={hint}
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the map is a keyboard-driven widget (role=application) and must take focus
       tabIndex={0}
       onKeyDown={onKeyDown}
       onPointerDown={onPointerDown}

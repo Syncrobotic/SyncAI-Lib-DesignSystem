@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.32.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.50.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -186,7 +186,8 @@ export function StepperItem({
       data-state={state}
       // The step you are on stays the current step even when it has an error.
       aria-current={step === value ? "step" : undefined}
-      aria-disabled={disabled || undefined}
+      // A list item takes no aria-disabled (ARIA 1.2); "unavailable" is said in the step's own words below.
+      data-disabled={disabled || undefined}
       className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 items-center", className)}
       {...props}
     >

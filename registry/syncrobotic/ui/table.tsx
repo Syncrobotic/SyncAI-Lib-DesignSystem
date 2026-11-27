@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.47.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.50.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -63,6 +63,7 @@ export function Table({ className, bare, ...props }: React.ComponentProps<"table
         ref={scroller}
         data-slot="table-container"
         // A table wider than the screen scrolls; keyboard users reach it with Tab and scroll it with the arrow keys.
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
         tabIndex={0}
         style={scrollFadeMask(edges)}
         // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.

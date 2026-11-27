@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.40.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.50.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -258,8 +258,10 @@ function ResizeHandle({ column, handler, label: l }: { column: GridColumn; handl
     }
   }
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- a focusable separator is a widget (value, arrow keys resize, Enter resets)
     <span
       role="separator"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a focusable separator is a widget (value, arrow keys resize, Enter resets)
       tabIndex={0}
       aria-orientation="vertical"
       // Named in words (meta.label, a plain-text header, else the id): a header that renders a component is a
@@ -386,6 +388,7 @@ export function DataGridTable({
     >
       <div
         ref={scrollRef}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
         tabIndex={0}
         role="region"
         aria-label={ariaLabel ?? l.region}
