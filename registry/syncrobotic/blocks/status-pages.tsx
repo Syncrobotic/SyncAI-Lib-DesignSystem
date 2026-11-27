@@ -121,9 +121,11 @@ export function NotFoundPage({ labels, primary, secondary, ...props }: PageProps
 export type NoAccessPageLabels = {
   code: string
   title: string
-  /** The explanation, from the reader's role and who can change it. */
-  body: (role: string, admin: string) => string
-  /** Who can change the role, when `admin` is not given. */
+  /** The explanation, from the permission the page needs and who can grant it. */
+  body: (permission: string, admin: string) => string
+  /** The explanation when no permission is named. */
+  bodyPlain: (admin: string) => string
+  /** Who can grant it, when `admin` is not given. */
   admin: string
   primary: string
   secondary: string
@@ -131,27 +133,34 @@ export type NoAccessPageLabels = {
 export const defaultNoAccessPageLabels: NoAccessPageLabels = {
   code: "403",
   title: "You do not have access",
-  body: (role, admin) => `Your role (${role}) cannot open this page. ${admin} can change it.`,
+  body: (permission, admin) => `This page needs the ${permission} permission. ${admin} can grant it.`,
+  bodyPlain: (admin) => `Your permissions do not include this page. ${admin} can change them.`,
   admin: "Your site admin",
   primary: "Request access",
   secondary: "Go back",
 }
 
+/** 403 inside the viewer's own tenant: what they cannot open, the permission it needs, who grants it. Never a role's name. */
 export function NoAccessPage({
-  role = "Viewer",
+  permission,
   admin,
   labels,
   primary,
   secondary,
   ...props
-}: PageProps & Labelled<NoAccessPageLabels> & { role?: string; admin?: string }) {
+}: PageProps &
+  Labelled<NoAccessPageLabels> & {
+    /** The permission string the page needs ("audit-logs:read"). */
+    permission?: string
+    admin?: string
+  }) {
   const l = { ...defaultNoAccessPageLabels, ...labels }
   return (
     <StatusPage
       icon={Lock}
       code={l.code}
       title={l.title}
-      body={l.body(role, admin ?? l.admin)}
+      body={permission ? l.body(permission, admin ?? l.admin) : l.bodyPlain(admin ?? l.admin)}
       primary={primary ?? l.primary}
       secondary={secondary === undefined ? l.secondary : secondary}
       {...props}
@@ -164,6 +173,10 @@ export type ErrorPageLabels = {
   title: string
   /** Said before the reference, which follows it in monospace. */
   body: string
+  /** Said when there is no reference. */
+  bodyPlain: string
+  /** The body per error code (the envelope's `error.code`), instead of `body`. */
+  errors: Record<string, string>
   primary: string
   secondary: string
 }
@@ -171,24 +184,39 @@ export const defaultErrorPageLabels: ErrorPageLabels = {
   code: "500",
   title: "Something went wrong on our side",
   body: "Your work is saved. Try again; if it keeps happening, send support this reference:",
+  bodyPlain: "Your work is saved. Try again; if it keeps happening, contact support.",
+  errors: {},
   primary: "Try again",
   secondary: "Copy reference",
 }
 
-export function ErrorPage({ reference = "a7f3-22c1", labels, primary, secondary, ...props }: PageProps & Labelled<ErrorPageLabels> & { reference?: string }) {
-  const l = { ...defaultErrorPageLabels, ...labels }
+/** 500: the error's code picks its words; `reference` (a request id) is what support needs, with Copy reference. */
+export function ErrorPage({
+  reference,
+  error,
+  labels,
+  primary,
+  secondary,
+  ...props
+}: PageProps & Labelled<ErrorPageLabels> & { reference?: string; error?: { code: string; message?: string } | null }) {
+  const l = { ...defaultErrorPageLabels, ...labels, errors: { ...defaultErrorPageLabels.errors, ...labels?.errors } }
+  const known = error ? l.errors[error.code] : undefined
   return (
     <StatusPage
       icon={RotateCw}
       code={l.code}
       title={l.title}
       body={
-        <>
-          {l.body} <span className="font-mono text-foreground">{reference}</span>
-        </>
+        reference ? (
+          <>
+            {known ?? l.body} <span className="font-mono text-foreground">{reference}</span>
+          </>
+        ) : (
+          (known ?? l.bodyPlain)
+        )
       }
       primary={primary ?? l.primary}
-      secondary={secondary === undefined ? l.secondary : secondary}
+      secondary={secondary === undefined ? (reference ? l.secondary : null) : secondary}
       {...props}
     />
   )

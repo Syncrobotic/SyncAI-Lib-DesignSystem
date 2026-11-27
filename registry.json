@@ -9230,7 +9230,13 @@
         "@syncrobotic/meter",
         "@syncrobotic/pagination",
         "@syncrobotic/format-number",
-        "@syncrobotic/responsive-table"
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/use-list-query",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -9241,7 +9247,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10542,7 +10548,10 @@
         "@syncrobotic/choice-field",
         "@syncrobotic/use-presence",
         "@syncrobotic/scrollspy",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/data-state",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -10553,7 +10562,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10691,7 +10700,14 @@
         "@syncrobotic/select",
         "@syncrobotic/table",
         "@syncrobotic/toast",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -10702,7 +10718,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12947,7 +12963,16 @@
         "@syncrobotic/code-block",
         "@syncrobotic/empty-state",
         "@syncrobotic/item",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/select"
       ],
       "files": [
         {
@@ -12958,7 +12983,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13003,7 +13028,6 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/skeleton",
         "@syncrobotic/alert-dialog",
         "@syncrobotic/button",
         "@syncrobotic/card",
@@ -13016,7 +13040,12 @@
         "@syncrobotic/sheet",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/code",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -13027,7 +13056,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13081,14 +13110,16 @@
         "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/skeleton",
         "@syncrobotic/alert-dialog",
         "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/card",
         "@syncrobotic/empty-state",
         "@syncrobotic/item",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state"
       ],
       "files": [
         {
@@ -13099,7 +13130,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13210,7 +13241,11 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/sheet",
         "@syncrobotic/skeleton",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/load-more"
       ],
       "files": [
         {
@@ -13221,7 +13256,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13911,7 +13946,13 @@
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/empty-state",
         "@syncrobotic/responsive-table",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -13922,7 +13963,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13981,7 +14022,14 @@
         "@syncrobotic/input",
         "@syncrobotic/select",
         "@syncrobotic/empty-state",
-        "@syncrobotic/responsive-table"
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/use-list-query",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -13992,7 +14040,7 @@
       "meta": {
         "version": "0.53.0",
         "status": "beta",
-        "wiring": "demo",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",

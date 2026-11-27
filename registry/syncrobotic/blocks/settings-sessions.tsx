@@ -2,8 +2,9 @@
 "use client"
 
 import * as React from "react"
-import { CloudOff, LogOut, Monitor, RotateCw, Smartphone, Tablet } from "lucide-react"
-import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
+import { LogOut, Monitor, Smartphone, Tablet } from "lucide-react"
+import { errorCodeOf, isStepUpCancelled } from "@/registry/syncrobotic/hooks/use-step-up"
+import type { ListPage } from "@/registry/syncrobotic/lib/list-query"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +19,7 @@ import {
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
+import { DataState, type DataStateError, type DataStateKind, type DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@/registry/syncrobotic/ui/item"
 import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
@@ -30,27 +32,94 @@ export type BrowserSession = {
   form: "desktop" | "phone" | "tablet"
   /** From the IP address, so it is approximate: a city at most. */
   location: string
-  lastActive: string
+  /** ISO 8601. */
+  lastActiveAt: string
   /** The browser this page is open in. */
   current?: boolean
 }
 
+/** A browser remembered at the 2FA step. `since` and `until` are ISO 8601. */
 export type TrustedBrowser = { id: string; browser: string; since: string; until: string; current?: boolean }
 
-export const sampleSessions: BrowserSession[] = [
-  { id: "s1", browser: "Chrome on macOS", form: "desktop", location: "Taipei, Taiwan", lastActive: "Active now", current: true },
-  { id: "s2", browser: "Safari on iPhone", form: "phone", location: "Taoyuan, Taiwan", lastActive: "Active 2 hours ago" },
-  { id: "s3", browser: "Edge on Windows", form: "desktop", location: "Taoyuan, Taiwan", lastActive: "Active yesterday" },
-  { id: "s4", browser: "Chrome on Android tablet", form: "tablet", location: "Hsinchu, Taiwan", lastActive: "Active 9 days ago" },
-]
+export type SettingsSessionsLabels = {
+  sessionsTitle: string
+  sessionsBody: string
+  sessions: string
+  thisBrowser: string
+  near: (place: string) => string
+  /** "Active now", "Active 2 hours ago": `when` is Intl's relative time. */
+  active: (when: string) => string
+  signOut: string
+  signOutName: (browser: string, place: string) => string
+  signedOut: (browser: string) => string
+  signOutOthers: string
+  /** "1 browser", "3 browsers". */
+  browsers: (n: number) => string
+  othersTitle: (browsers: string) => string
+  othersBody: string
+  keepOthers: string
+  signOutCount: (browsers: string) => string
+  signedOutOthers: (browsers: string) => string
+  noOthers: string
+  trustedTitle: string
+  trustedBody: string
+  trusted: string
+  remembered: (date: string) => string
+  until: (date: string) => string
+  forget: string
+  forgetName: (browser: string) => string
+  forgotten: (browser: string) => string
+  noTrusted: string
+  noTrustedBody: string
+  failed: string
+  errors: Record<string, string>
+  data?: Partial<DataStateLabels>
+}
 
-export const sampleTrusted: TrustedBrowser[] = [
-  { id: "t1", browser: "Chrome on macOS", since: "3 Nov", until: "3 Dec 2026", current: true },
-  { id: "t2", browser: "Safari on iPhone", since: "12 Nov", until: "12 Dec 2026" },
-]
+export const defaultSettingsSessionsLabels: SettingsSessionsLabels = {
+  sessionsTitle: "Where you are signed in",
+  sessionsBody: "Each browser stays signed in for 14 days after it was last used. Places are approximate, from the internet address.",
+  sessions: "Signed-in browsers",
+  thisBrowser: "This browser",
+  near: (place) => `Near ${place}`,
+  active: (when) => `Active ${when}`,
+  signOut: "Sign out",
+  signOutName: (browser, place) => `Sign out ${browser}, ${place}`,
+  signedOut: (browser) => `Signed out ${browser}.`,
+  signOutOthers: "Sign out all other browsers",
+  browsers: (n) => (n === 1 ? "1 browser" : `${n} browsers`),
+  othersTitle: (b) => `Sign out of ${b}?`,
+  othersBody: "Whoever uses them is signed out at once and has to sign in again, with a 2FA code. Work they started keeps running. This browser stays signed in.",
+  keepOthers: "Keep them signed in",
+  signOutCount: (b) => `Sign out ${b}`,
+  signedOutOthers: (b) => `Signed out ${b}. This browser is still signed in.`,
+  noOthers: "No other browsers are signed in",
+  trustedTitle: "Browsers that skip the 2FA code",
+  trustedBody: "When you tick “Remember this browser” at sign-in, that browser is not asked for a code for 30 days. Forget one you no longer use.",
+  trusted: "Remembered browsers",
+  remembered: (date) => `Remembered on ${date}`,
+  until: (date) => `until ${date}`,
+  forget: "Forget",
+  forgetName: (browser) => `Forget ${browser}`,
+  forgotten: (browser) => `${browser} will ask for a code at its next sign-in.`,
+  noTrusted: "No remembered browsers",
+  noTrustedBody: "Every sign-in asks for a code from your authenticator app.",
+  failed: "That did not work. Nothing was signed out; try again.",
+  errors: {},
+  data: { loading: "Loading browsers…", error: "This list did not load", errorBody: "We could not reach the server. Nothing was signed out." },
+}
 
 const icons = { desktop: Monitor, phone: Smartphone, tablet: Tablet }
-const browsers = (n: number) => (n === 1 ? "1 browser" : `${n} browsers`)
+
+const relative = (iso: string, now: number, locale?: string) => {
+  const s = (Date.parse(iso) - now) / 1000
+  const a = Math.abs(s)
+  const rtf = new Intl.RelativeTimeFormat(locale ?? "en", { numeric: "auto" })
+  if (a < 60) return rtf.format(0, "second")
+  if (a < 3600) return rtf.format(Math.round(s / 60), "minute")
+  if (a < 86400) return rtf.format(Math.round(s / 3600), "hour")
+  return rtf.format(Math.round(s / 86400), "day")
+}
 
 /** A detail line whose parts wrap between each other, never inside one ("Active 2 / hours ago"). */
 function Parts({ items }: { items: string[] }) {
@@ -69,14 +138,206 @@ function Parts({ items }: { items: string[] }) {
 // A row of a list on a card: the card's 16 px inside, a hairline between rows; it wraps its button under a long name.
 const row = "flex-wrap rounded-none border-b border-border px-4 last:border-b-0"
 
-function Heading({ id, title, children, action }: { id: string; title: string; children: React.ReactNode; action?: React.ReactNode }) {
-  return <SectionHeader id={id} title={title} description={children} actions={action} />
+export type SettingsSessionsContentProps = {
+  /** The signed-in browsers, this one included, with the server's total. */
+  sessions: ListPage<BrowserSession>
+  /** Browsers remembered at the 2FA step; leave it out to drop that section. */
+  trusted?: ListPage<TrustedBrowser>
+  state?: DataStateKind
+  error?: DataStateError | null
+  onRetry?: () => void
+  /** Sensitive: wrap each in your step-up (`useStepUp().run`); a cancelled check changes nothing here. */
+  onSignOut: (session: BrowserSession) => Promise<void>
+  onSignOutOthers?: () => Promise<void>
+  onForget?: (browser: TrustedBrowser) => Promise<void>
+  /** Relative times are measured from here; default the browser's clock. */
+  now?: Date
+  locale?: string
+  timeZone?: string
+  labels?: Partial<SettingsSessionsLabels>
 }
+
+/** Signed-in and remembered browsers from your data; signing out is a callback, counts come from `total`. */
+export function SettingsSessionsContent({
+  sessions,
+  trusted,
+  state = "ready",
+  error,
+  onRetry,
+  onSignOut,
+  onSignOutOthers,
+  onForget,
+  now,
+  locale,
+  timeZone,
+  labels,
+}: SettingsSessionsContentProps) {
+  const l = { ...defaultSettingsSessionsLabels, ...labels }
+  const [said, setSaid] = React.useState("")
+  const [failure, setFailure] = React.useState<string | null>(null)
+  const [clock] = React.useState(() => Date.now())
+  const at = now?.getTime() ?? clock
+  const date = new Intl.DateTimeFormat(locale ?? "en-GB", { timeZone, day: "numeric", month: "short" })
+  const dateYear = new Intl.DateTimeFormat(locale ?? "en-GB", { timeZone, day: "numeric", month: "short", year: "numeric" })
+  // The others are every session but this one, counted from the server's total.
+  const others = Math.max(0, sessions.total - (sessions.items.some((s) => s.current) ? 1 : 0))
+  const ready = state === "ready" || state === "stale"
+
+  const run = async (fn: () => Promise<void>, done: string) => {
+    setFailure(null)
+    try {
+      await fn()
+      setSaid(done)
+    } catch (e) {
+      if (!isStepUpCancelled(e)) setFailure(l.errors[errorCodeOf(e) ?? ""] ?? l.failed)
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-8">
+      {/* Read out only: the row that leaves the list is the visible answer. */}
+      <p role="status" className="sr-only">
+        {said}
+      </p>
+      {failure && (
+        <p role="alert" className="text-sm text-danger">
+          {failure}
+        </p>
+      )}
+
+      <section aria-labelledby="sessions-title" className="flex flex-col gap-4">
+        <SectionHeader
+          id="sessions-title"
+          title={l.sessionsTitle}
+          description={l.sessionsBody}
+          actions={
+            ready &&
+            onSignOutOthers &&
+            others > 0 && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">
+                    <LogOut aria-hidden="true" />
+                    {l.signOutOthers}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{l.othersTitle(l.browsers(others))}</AlertDialogTitle>
+                    <AlertDialogDescription>{l.othersBody}</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <ul className="flex flex-col gap-1 rounded-sm bg-muted p-3 text-sm">
+                    {sessions.items
+                      .filter((s) => !s.current)
+                      .map((s) => (
+                        <li key={s.id}>
+                          {s.browser} · {s.location}
+                        </li>
+                      ))}
+                  </ul>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{l.keepOthers}</AlertDialogCancel>
+                    <AlertDialogAction destructive onClick={() => void run(onSignOutOthers, l.signedOutOthers(l.browsers(others)))}>
+                      {l.signOutCount(l.browsers(others))}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )
+          }
+        />
+        <DataState state={state === "empty" ? "ready" : state} error={error} onRetry={onRetry} labels={l.data}>
+          <Card className="gap-0 p-0">
+            <ItemGroup aria-label={l.sessions} className="gap-0">
+              {sessions.items.map((s) => {
+                const Icon = icons[s.form]
+                return (
+                  <Item key={s.id} role="listitem" className={row}>
+                    <ItemMedia variant="plain">
+                      <Icon aria-hidden="true" className="size-5 text-muted-foreground" />
+                    </ItemMedia>
+                    <ItemContent className="gap-0">
+                      <ItemTitle className="flex-wrap">
+                        <span>{s.browser}</span>
+                        {s.current && <Badge>{l.thisBrowser}</Badge>}
+                      </ItemTitle>
+                      <Parts items={[l.near(s.location), l.active(relative(s.lastActiveAt, at, locale))]} />
+                    </ItemContent>
+                    {!s.current && (
+                      <ItemActions>
+                        <Button variant="outline" size="sm" aria-label={l.signOutName(s.browser, s.location)} onClick={() => void run(() => onSignOut(s), l.signedOut(s.browser))}>
+                          {l.signOut}
+                        </Button>
+                      </ItemActions>
+                    )}
+                  </Item>
+                )
+              })}
+            </ItemGroup>
+            {others === 0 && <EmptyState size="inline" className="border-t border-border" title={l.noOthers} />}
+          </Card>
+        </DataState>
+      </section>
+
+      {trusted && (
+        <section aria-labelledby="trusted-title" className="flex flex-col gap-4">
+          <SectionHeader id="trusted-title" title={l.trustedTitle} description={l.trustedBody} />
+          <DataState state={state === "empty" ? "ready" : state} error={error} onRetry={onRetry} labels={l.data}>
+            {trusted.total === 0 ? (
+              <Card className="p-0">
+                <EmptyState title={l.noTrusted} description={l.noTrustedBody} />
+              </Card>
+            ) : (
+              <Card className="gap-0 p-0">
+                <ItemGroup aria-label={l.trusted} className="gap-0">
+                  {trusted.items.map((t) => (
+                    <Item key={t.id} role="listitem" className={row}>
+                      <ItemContent className="gap-0">
+                        <ItemTitle className="flex-wrap">
+                          <span>{t.browser}</span>
+                          {t.current && <Badge>{l.thisBrowser}</Badge>}
+                        </ItemTitle>
+                        <Parts items={[l.remembered(date.format(new Date(t.since))), l.until(dateYear.format(new Date(t.until)))]} />
+                      </ItemContent>
+                      {onForget && (
+                        <ItemActions>
+                          <Button variant="outline" size="sm" aria-label={l.forgetName(t.browser)} onClick={() => void run(() => onForget(t), l.forgotten(t.browser))}>
+                            {l.forget}
+                          </Button>
+                        </ItemActions>
+                      )}
+                    </Item>
+                  ))}
+                </ItemGroup>
+              </Card>
+            )}
+          </DataState>
+        </section>
+      )}
+    </div>
+  )
+}
+
+/** The clock the sample is written against. */
+const sampleNow = new Date("2026-11-20T15:30:00+08:00")
+
+export const sampleSessions: BrowserSession[] = [
+  { id: "s1", browser: "Chrome on macOS", form: "desktop", location: "Taipei, Taiwan", lastActiveAt: "2026-11-20T15:30:00+08:00", current: true },
+  { id: "s2", browser: "Safari on iPhone", form: "phone", location: "Taoyuan, Taiwan", lastActiveAt: "2026-11-20T13:30:00+08:00" },
+  { id: "s3", browser: "Edge on Windows", form: "desktop", location: "Taoyuan, Taiwan", lastActiveAt: "2026-11-19T11:00:00+08:00" },
+  { id: "s4", browser: "Chrome on Android tablet", form: "tablet", location: "Hsinchu, Taiwan", lastActiveAt: "2026-11-11T10:00:00+08:00" },
+]
+
+export const sampleTrusted: TrustedBrowser[] = [
+  { id: "t1", browser: "Chrome on macOS", since: "2026-11-03T09:00:00+08:00", until: "2026-12-03T09:00:00+08:00", current: true },
+  { id: "t2", browser: "Safari on iPhone", since: "2026-11-12T09:00:00+08:00", until: "2026-12-12T09:00:00+08:00" },
+]
 
 /**
  * Where you are signed in, as browsers: sign one out, or all the others after a confirmation; browsers that skip
  * the 2FA code for 30 days. A session is a browser, not a device: each shows browser and system, an approximate place,
- * when it was last active, and "This browser" on the one you are using. Each trusted browser can be forgotten.
+ * when it was last active, and "This browser" on the one you are using. Each trusted browser can be forgotten. This is
+ * SettingsSessionsContent on sample data.
  */
 export function SettingsSessions({
   product = "Fleet console",
@@ -85,6 +346,7 @@ export function SettingsSessions({
   state = "ready",
   onRetry,
 }: {
+  /** Named in the sign-out confirmation: "Anyone using {product} in them…". */
   product?: string
   sessions?: BrowserSession[]
   /** Browsers remembered at the 2FA step ("Remember this browser for 30 days"). Pass [] to leave the section empty. */
@@ -95,173 +357,20 @@ export function SettingsSessions({
 }) {
   const [sessions, setSessions] = React.useState(initial)
   const [trusted, setTrusted] = React.useState(initialTrusted)
-  const [said, setSaid] = React.useState("")
-  const others = sessions.filter((s) => !s.current)
-
-  const signOut = (s: BrowserSession) => {
-    setSessions((all) => all.filter((x) => x.id !== s.id))
-    setSaid(`Signed out ${s.browser}.`)
-  }
-  const signOutOthers = () => {
-    setSessions((all) => all.filter((x) => x.current))
-    setSaid(`Signed out ${browsers(others.length)}. This browser is still signed in.`)
-  }
-
-  const body = (list: React.ReactNode) =>
-    state === "loading" ? (
-      <Card className="gap-4 p-4">
-        <LoadingLine>Loading browsers…</LoadingLine>
-        {[0, 1].map((i) => (
-          <span key={i} className="flex items-center gap-3">
-            <Bone className="size-5" />
-            <span className="flex flex-1 flex-col gap-2">
-              <Bone className="h-4 w-1/2" />
-              <Bone className="h-3 w-3/4" />
-            </span>
-          </span>
-        ))}
-      </Card>
-    ) : state === "error" ? (
-      <Card className="p-0">
-        <EmptyState
-          icon={CloudOff}
-          title="This list did not load"
-          description="We could not reach the server. Nothing was signed out."
-          action={
-            <Button variant="secondary" onClick={onRetry}>
-              <RotateCw aria-hidden="true" />
-              Try again
-            </Button>
-          }
-        />
-      </Card>
-    ) : (
-      list
-    )
-
   return (
-    <div className="flex flex-col gap-8">
-      {/* Read out only: the row that leaves the list is the visible answer. */}
-      <p role="status" className="sr-only">
-        {said}
-      </p>
-
-      <section aria-labelledby="sessions-title" className="flex flex-col gap-4">
-        <Heading
-          id="sessions-title"
-          title="Where you are signed in"
-          action={
-            state === "ready" &&
-            others.length > 0 && (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="outline">
-                    <LogOut aria-hidden="true" />
-                    Sign out all other browsers
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Sign out of {browsers(others.length)}?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Anyone using {product} in them is signed out at once and has to sign in again, with a 2FA code. Missions they started keep
-                      running. This browser stays signed in.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <ul className="flex flex-col gap-1 rounded-sm bg-muted p-3 text-sm">
-                    {others.map((s) => (
-                      <li key={s.id}>
-                        {s.browser} · {s.location}
-                      </li>
-                    ))}
-                  </ul>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Keep them signed in</AlertDialogCancel>
-                    <AlertDialogAction destructive onClick={signOutOthers}>
-                      Sign out {browsers(others.length)}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )
-          }
-        >
-          Each browser stays signed in for 14 days after it was last used. Places are approximate, from the internet address.
-        </Heading>
-        {body(
-          <Card className="gap-0 p-0">
-            <ItemGroup aria-label="Signed-in browsers" className="gap-0">
-              {sessions.map((s) => {
-                const Icon = icons[s.form]
-                return (
-                  <Item key={s.id} role="listitem" className={row}>
-                    <ItemMedia variant="plain">
-                      <Icon aria-hidden="true" className="size-5 text-muted-foreground" />
-                    </ItemMedia>
-                    <ItemContent className="gap-0">
-                      <ItemTitle className="flex-wrap">
-                        <span>{s.browser}</span>
-                        {s.current && <Badge>This browser</Badge>}
-                      </ItemTitle>
-                      <Parts items={[`Near ${s.location}`, s.lastActive]} />
-                    </ItemContent>
-                    {!s.current && (
-                      <ItemActions>
-                        <Button variant="outline" size="sm" aria-label={`Sign out ${s.browser}, ${s.location}`} onClick={() => signOut(s)}>
-                          Sign out
-                        </Button>
-                      </ItemActions>
-                    )}
-                  </Item>
-                )
-              })}
-            </ItemGroup>
-            {others.length === 0 && <EmptyState size="inline" className="border-t border-border" title="No other browsers are signed in" />}
-          </Card>,
-        )}
-      </section>
-
-      <section aria-labelledby="trusted-title" className="flex flex-col gap-4">
-        <Heading id="trusted-title" title="Browsers that skip the 2FA code">
-          When you tick “Remember this browser” at sign-in, that browser is not asked for a code for 30 days. Forget one you no longer use.
-        </Heading>
-        {body(
-          trusted.length === 0 ? (
-            <Card className="p-0">
-              <EmptyState title="No remembered browsers" description="Every sign-in asks for a code from your authenticator app." />
-            </Card>
-          ) : (
-            <Card className="gap-0 p-0">
-              <ItemGroup aria-label="Remembered browsers" className="gap-0">
-                {trusted.map((t) => (
-                  <Item key={t.id} role="listitem" className={row}>
-                    <ItemContent className="gap-0">
-                      <ItemTitle className="flex-wrap">
-                        <span>{t.browser}</span>
-                        {t.current && <Badge>This browser</Badge>}
-                      </ItemTitle>
-                      <Parts items={[`Remembered on ${t.since}`, `until ${t.until}`]} />
-                    </ItemContent>
-                    <ItemActions>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        aria-label={`Forget ${t.browser}`}
-                        onClick={() => {
-                          setTrusted((all) => all.filter((x) => x.id !== t.id))
-                          setSaid(`${t.browser} will ask for a code at its next sign-in.`)
-                        }}
-                      >
-                        Forget
-                      </Button>
-                    </ItemActions>
-                  </Item>
-                ))}
-              </ItemGroup>
-            </Card>
-          ),
-        )}
-      </section>
-    </div>
+    <SettingsSessionsContent
+      sessions={{ items: sessions, total: sessions.length }}
+      trusted={{ items: trusted, total: trusted.length }}
+      state={state}
+      onRetry={onRetry}
+      now={sampleNow}
+      timeZone="Asia/Taipei"
+      labels={{
+        othersBody: `Anyone using ${product} in them is signed out at once and has to sign in again, with a 2FA code. Missions they started keep running. This browser stays signed in.`,
+      }}
+      onSignOut={async (s) => setSessions((all) => all.filter((x) => x.id !== s.id))}
+      onSignOutOthers={async () => setSessions((all) => all.filter((x) => x.current))}
+      onForget={async (t) => setTrusted((all) => all.filter((x) => x.id !== t.id))}
+    />
   )
 }

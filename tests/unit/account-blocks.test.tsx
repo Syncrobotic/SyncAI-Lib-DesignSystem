@@ -85,7 +85,7 @@ describe("SettingsWebhooks", () => {
     fireEvent.click(confirm)
     await flush()
     expect(screen.queryByText("https://ops.example.com/hooks/fleet-events")).toBeNull()
-    expect(screen.getByRole("status").textContent).toBe("Deleted the endpoint at ops.example.com.")
+    expect(screen.getByText("Deleted the endpoint at ops.example.com.").getAttribute("role")).toBe("status")
   })
 
   it("sends a test event and lists its delivery", async () => {
@@ -121,11 +121,12 @@ describe("SettingsSessions", () => {
     expect(screen.queryByRole("button", { name: /Sign out Chrome on macOS/ })).toBeNull()
   })
 
-  it("signs one browser out at once", () => {
+  it("signs one browser out at once", async () => {
     render(<SettingsSessions />)
     fireEvent.click(screen.getByRole("button", { name: "Sign out Safari on iPhone, Taoyuan, Taiwan" }))
+    await flush()
     expect(within(screen.getByRole("list", { name: "Signed-in browsers" })).queryByText("Safari on iPhone")).toBeNull()
-    expect(screen.getByRole("status").textContent).toBe("Signed out Safari on iPhone.")
+    expect(screen.getByText("Signed out Safari on iPhone.").getAttribute("role")).toBe("status")
   })
 
   it("asks before signing out all other browsers, and keeps this one", async () => {
@@ -148,9 +149,10 @@ describe("SettingsSessions", () => {
     expect(screen.queryByRole("button", { name: "Sign out all other browsers" })).toBeNull()
   })
 
-  it("forgets a remembered browser", () => {
+  it("forgets a remembered browser", async () => {
     render(<SettingsSessions />)
     fireEvent.click(screen.getByRole("button", { name: "Forget Safari on iPhone" }))
+    await flush()
     expect(within(screen.getByRole("list", { name: "Remembered browsers" })).getAllByRole("listitem")).toHaveLength(1)
     render(<SettingsSessions trusted={[]} />)
     expect(screen.getByText("No remembered browsers")).toBeTruthy()
