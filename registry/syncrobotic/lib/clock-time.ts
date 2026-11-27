@@ -1,4 +1,4 @@
-// @syncrobotic/clock-time v0.36.0 · update: npx shadcn add @syncrobotic/clock-time --overwrite
+// @syncrobotic/clock-time v0.51.0 · update: npx shadcn add @syncrobotic/clock-time --overwrite
 import { pad } from "@/registry/syncrobotic/lib/math"
 
 /**

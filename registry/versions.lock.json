@@ -12,11 +12,11 @@
     "hash": "8ec920f8618ff43d"
   },
   "math": {
-    "version": "0.36.0",
+    "version": "0.51.0",
     "hash": "d8498cf2f34bcaad"
   },
   "clock-time": {
-    "version": "0.36.0",
+    "version": "0.51.0",
     "hash": "b52e10ecdfe0c777"
   },
   "format-number": {
@@ -52,15 +52,15 @@
     "hash": "2d5d00e9957743b6"
   },
   "use-debounce": {
-    "version": "0.15.1",
+    "version": "0.51.0",
     "hash": "2587f5cfedc35e8a"
   },
   "use-now": {
-    "version": "0.36.0",
+    "version": "0.51.0",
     "hash": "eed2bed5658f398d"
   },
   "use-reduced-motion": {
-    "version": "0.36.0",
+    "version": "0.51.0",
     "hash": "c823dd9c2048b0f4"
   },
   "use-ros": {
@@ -152,7 +152,7 @@
     "hash": "a9810fadca17aafa"
   },
   "textarea": {
-    "version": "0.17.3",
+    "version": "0.51.0",
     "hash": "4e9811da60fdc27a"
   },
   "label": {
@@ -176,7 +176,7 @@
     "hash": "ef34189d92ad4b30"
   },
   "switch": {
-    "version": "0.31.0",
+    "version": "0.51.0",
     "hash": "c5d7e919c6f976dd"
   },
   "choice-field": {
@@ -288,7 +288,7 @@
     "hash": "a9b006478d0aba5d"
   },
   "collapsible": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "d1e24259ecc64392"
   },
   "tree": {
@@ -312,11 +312,11 @@
     "hash": "fec10b4e45e757ee"
   },
   "dialog": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "b683e37c2af8b017"
   },
   "alert-dialog": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "eb97c66545b180d0"
   },
   "sheet": {
@@ -324,15 +324,15 @@
     "hash": "f4c658bea16657e1"
   },
   "popover": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "bb2ade5460d7731b"
   },
   "hover-card": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "57f531f22b697193"
   },
   "tooltip": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "b9cab804f21598c3"
   },
   "dropdown-menu": {
@@ -340,7 +340,7 @@
     "hash": "ec08972a8f00f128"
   },
   "context-menu": {
-    "version": "0.49.0",
+    "version": "0.51.0",
     "hash": "afe52b6544ac418a"
   },
   "command": {
@@ -368,7 +368,7 @@
     "hash": "a85d5eb71befb97f"
   },
   "button-group": {
-    "version": "0.9.0",
+    "version": "0.51.0",
     "hash": "8e7f546fe1ffe696"
   },
   "scroll-area": {
@@ -376,7 +376,7 @@
     "hash": "c818115eecf626bf"
   },
   "toggle-group": {
-    "version": "0.17.3",
+    "version": "0.51.0",
     "hash": "9e167fac95f73352"
   },
   "page-header": {
@@ -484,7 +484,7 @@
     "hash": "d1ee7295cbece7fa"
   },
   "input-otp": {
-    "version": "0.15.0",
+    "version": "0.51.0",
     "hash": "0f57d3b10bbfd124"
   },
   "phone-input": {
@@ -492,7 +492,7 @@
     "hash": "90dd91457d33397f"
   },
   "calendar": {
-    "version": "0.32.0",
+    "version": "0.51.0",
     "hash": "09e205712a6e3474"
   },
   "date-selector": {

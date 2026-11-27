@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.51.0 · 2026-11-27
+
+Eighteen items leave beta: their APIs only change in a major release from here.
+
+### Changed
+- **Stable:** these items now change their API only in a major release.
+  - **Overlays:** `dialog`, `alert-dialog`, `popover`, `tooltip`, `hover-card`, `context-menu`.
+  - **Inputs:** `textarea`, `switch`, `toggle-group`, `button-group`, `input-otp`, `calendar`.
+  - **Others:** `collapsible`, plus the hooks `use-debounce`, `use-reduced-motion`, `use-now` and the functions `math`, `clock-time`.
+  - **Why these:** each one's API is a standard one the kit styles (a Radix primitive, a native element, a small hook or function), unchanged for ten releases or more. Each has unit tests; the ones that had none gained them for this.
+- **The rule, written down:** an item becomes stable when a product has used it, or when its API is a standard one the kit only styles. In both cases its API must not have changed for ten releases, and it must have unit tests and, for a component, measured accessibility data. The criteria are on the Upgrading page and in CONTRIBUTING. The robotics, map and AI components stay in beta until a product has used them.
+
 ## 0.50.1 · 2026-11-27
 
 A sidebar that is where you left it from the first paint.

@@ -1,4 +1,4 @@
-// @syncrobotic/tooltip v0.32.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
+// @syncrobotic/tooltip v0.51.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
 "use client"
 
 import * as React from "react"

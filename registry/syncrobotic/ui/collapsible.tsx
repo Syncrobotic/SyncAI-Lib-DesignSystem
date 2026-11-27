@@ -1,4 +1,4 @@
-// @syncrobotic/collapsible v0.32.0 · update: npx shadcn add @syncrobotic/collapsible --overwrite
+// @syncrobotic/collapsible v0.51.0 · update: npx shadcn add @syncrobotic/collapsible --overwrite
 "use client"
 
 import type * as React from "react"

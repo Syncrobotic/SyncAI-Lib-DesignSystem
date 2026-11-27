@@ -1,4 +1,4 @@
-// @syncrobotic/alert-dialog v0.32.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
+// @syncrobotic/alert-dialog v0.51.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
 "use client"
 
 import * as React from "react"

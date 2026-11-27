@@ -1,4 +1,4 @@
-// @syncrobotic/context-menu v0.49.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
+// @syncrobotic/context-menu v0.51.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
 "use client"
 
 import * as React from "react"

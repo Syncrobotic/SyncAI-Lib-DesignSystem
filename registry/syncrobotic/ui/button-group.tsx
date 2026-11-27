@@ -1,4 +1,4 @@
-// @syncrobotic/button-group v0.9.0 · update: npx shadcn add @syncrobotic/button-group --overwrite
+// @syncrobotic/button-group v0.51.0 · update: npx shadcn add @syncrobotic/button-group --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"

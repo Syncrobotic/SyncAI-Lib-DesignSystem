@@ -1,4 +1,4 @@
-// @syncrobotic/use-now v0.36.0 · update: npx shadcn add @syncrobotic/use-now --overwrite
+// @syncrobotic/use-now v0.51.0 · update: npx shadcn add @syncrobotic/use-now --overwrite
 "use client"
 
 import * as React from "react"

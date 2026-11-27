@@ -1,4 +1,4 @@
-// @syncrobotic/toggle-group v0.17.3 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
+// @syncrobotic/toggle-group v0.51.0 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
 "use client"
 
 import * as React from "react"

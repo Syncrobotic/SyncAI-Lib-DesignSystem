@@ -1,4 +1,4 @@
-// @syncrobotic/hover-card v0.32.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
+// @syncrobotic/hover-card v0.51.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
 "use client"
 
 import * as React from "react"
