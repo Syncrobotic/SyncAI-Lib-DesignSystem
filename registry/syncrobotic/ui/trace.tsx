@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.40.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.47.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -268,7 +268,8 @@ export function TraceHeader({
   return (
     <div data-slot="trace-header" className={cn("flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border pb-3", className)}>
       <TraceStatusIcon status={status} />
-      <span className="font-medium">
+      {/* A title inside a surface: 14 px medium. */}
+      <span className="text-sm font-medium">
         {title}
         <span className="sr-only">, {l[status]}</span>
       </span>

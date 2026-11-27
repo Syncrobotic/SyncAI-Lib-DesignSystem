@@ -236,8 +236,8 @@
     "hash": "4592a29c54d315ce"
   },
   "alert": {
-    "version": "0.17.3",
-    "hash": "5599e73c521ec230"
+    "version": "0.47.0",
+    "hash": "fb18c5e40f6b30c2"
   },
   "alarm": {
     "version": "0.40.0",
@@ -252,8 +252,8 @@
     "hash": "c75920e4ae2969af"
   },
   "table": {
-    "version": "0.40.0",
-    "hash": "0367fada89960798"
+    "version": "0.47.0",
+    "hash": "378416f6a3445f1b"
   },
   "responsive-table": {
     "version": "0.45.0",
@@ -320,8 +320,8 @@
     "hash": "eb97c66545b180d0"
   },
   "sheet": {
-    "version": "0.32.0",
-    "hash": "e06515bb76830e61"
+    "version": "0.47.0",
+    "hash": "f4c658bea16657e1"
   },
   "popover": {
     "version": "0.32.0",
@@ -428,8 +428,8 @@
     "hash": "1d3db157a9aa48b0"
   },
   "camera-feed": {
-    "version": "0.36.0",
-    "hash": "05663a6aee4213d7"
+    "version": "0.47.0",
+    "hash": "d0792a115e597277"
   },
   "camera-wall": {
     "version": "0.40.0",
@@ -448,8 +448,8 @@
     "hash": "90277de71f73fe91"
   },
   "robot-model": {
-    "version": "0.45.1",
-    "hash": "1c7fead2e90d0a68"
+    "version": "0.47.0",
+    "hash": "394966c54f19e5f8"
   },
   "viewport-overlay": {
     "version": "0.35.0",
@@ -572,8 +572,8 @@
     "hash": "2611a24c74ff5959"
   },
   "trace": {
-    "version": "0.40.0",
-    "hash": "f58f221958cc6619"
+    "version": "0.47.0",
+    "hash": "7b1b04e185b6dba7"
   },
   "marker": {
     "version": "0.40.0",
@@ -588,40 +588,40 @@
     "hash": "bfe56962ebe9144c"
   },
   "robot-status-card": {
-    "version": "0.40.0",
-    "hash": "7be275ee958c123c"
+    "version": "0.47.0",
+    "hash": "e4a5594c7bd58212"
   },
   "marketing-hero": {
     "version": "0.28.0",
     "hash": "b5d221d88156088f"
   },
   "app-shell": {
-    "version": "0.44.0",
-    "hash": "fc9f679e2663920d"
+    "version": "0.47.0",
+    "hash": "b80283b9c96b79d9"
   },
   "top-bar-shell": {
     "version": "0.38.0",
     "hash": "712d892df0daec5d"
   },
   "action-rail-shell": {
-    "version": "0.35.0",
-    "hash": "1bf579844a641ace"
+    "version": "0.47.0",
+    "hash": "6d881a3fc6afce36"
   },
   "console-overview": {
     "version": "0.43.1",
     "hash": "e3481118b8f4398c"
   },
   "list-detail": {
-    "version": "0.45.1",
-    "hash": "8709d5b29d744bd3"
+    "version": "0.47.0",
+    "hash": "43f5ca28146ae5df"
   },
   "event-log": {
-    "version": "0.40.0",
-    "hash": "93da226ce0f9b521"
+    "version": "0.47.0",
+    "hash": "6035b519312153ba"
   },
   "map-workspace": {
-    "version": "0.45.1",
-    "hash": "f0c159b6168fc422"
+    "version": "0.47.0",
+    "hash": "dc87d5ae18d6da5d"
   },
   "data-catalog": {
     "version": "0.40.0",
@@ -660,8 +660,8 @@
     "hash": "f3df60b316b685d3"
   },
   "agent-skill": {
-    "version": "0.41.0",
-    "hash": "f1c94ee0512ee86a"
+    "version": "0.47.0",
+    "hash": "903df9054c48dd0f"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
@@ -736,20 +736,20 @@
     "hash": "48bcb7645422f003"
   },
   "heatmap-week-hours": {
-    "version": "0.35.0",
-    "hash": "8a4a2b08717ed7c8"
+    "version": "0.47.0",
+    "hash": "596d52d4fd6e9952"
   },
   "heatmap-zones": {
-    "version": "0.22.4",
-    "hash": "46b0ad1bfdb7cc45"
+    "version": "0.47.0",
+    "hash": "59e688f5389ed441"
   },
   "histogram-battery": {
     "version": "0.35.0",
     "hash": "6c58a5bc0e2e0af8"
   },
   "app-shell-mobile-tabs": {
-    "version": "0.40.0",
-    "hash": "b983367d6656634b"
+    "version": "0.47.0",
+    "hash": "a6be31e2cd45fa2e"
   },
   "app-shell-control": {
     "version": "0.46.0",
@@ -764,8 +764,8 @@
     "hash": "afbd72d7149a17f0"
   },
   "card-site": {
-    "version": "0.32.0",
-    "hash": "f43ffbc8c8f04618"
+    "version": "0.47.0",
+    "hash": "0a151d94fd2c5875"
   },
   "card-mission": {
     "version": "0.28.0",
@@ -784,8 +784,8 @@
     "hash": "5a5c67ecfb61c1fe"
   },
   "settings-notifications": {
-    "version": "0.40.0",
-    "hash": "a4654e16678423b5"
+    "version": "0.47.0",
+    "hash": "5cd4dd6be0ef8f37"
   },
   "settings-api-keys": {
     "version": "0.40.0",
@@ -796,8 +796,8 @@
     "hash": "e7929b215f7694bd"
   },
   "settings-sessions": {
-    "version": "0.40.0",
-    "hash": "1964543e903961e1"
+    "version": "0.47.0",
+    "hash": "a6689db4a2734e47"
   },
   "settings-billing": {
     "version": "0.40.0",
@@ -820,8 +820,8 @@
     "hash": "bf30a75f68a84874"
   },
   "sheet-robot-detail": {
-    "version": "0.45.1",
-    "hash": "288761e44d1819c3"
+    "version": "0.47.0",
+    "hash": "62f93bac5c4a58b6"
   },
   "sheet-filters": {
     "version": "0.40.0",
@@ -836,16 +836,16 @@
     "hash": "51739ebe545bc0f3"
   },
   "wizard-commission": {
-    "version": "0.40.0",
-    "hash": "03322663bade0bad"
+    "version": "0.47.0",
+    "hash": "af37d75c88538655"
   },
   "wizard-import": {
     "version": "0.40.0",
     "hash": "a033e8c11aed512b"
   },
   "mission-schedule": {
-    "version": "0.28.0",
-    "hash": "bfbd9edf34a17dd6"
+    "version": "0.47.0",
+    "hash": "5f375594f6188af6"
   },
   "users-invitations": {
     "version": "0.40.0",
@@ -868,8 +868,8 @@
     "hash": "62b26087dac2e833"
   },
   "maintenance-work-order": {
-    "version": "0.40.0",
-    "hash": "912babc17aec775d"
+    "version": "0.47.0",
+    "hash": "5c146f9f8d08566e"
   },
   "rollout-overview": {
     "version": "0.40.0",
@@ -888,16 +888,16 @@
     "hash": "5987d9b1a647f9be"
   },
   "agent-approval": {
-    "version": "0.17.3",
-    "hash": "becc267fa584901e"
+    "version": "0.47.0",
+    "hash": "e65f27de07243d4a"
   },
   "agent-chat": {
-    "version": "0.41.0",
-    "hash": "17e2d81857df5ab1"
+    "version": "0.47.0",
+    "hash": "bcbcfb4e59b73b5f"
   },
   "agent-run-gate": {
-    "version": "0.43.0",
-    "hash": "b59957ee5ab3901d"
+    "version": "0.47.0",
+    "hash": "510312872369b7a3"
   },
   "agent-run-outcome": {
     "version": "0.45.0",

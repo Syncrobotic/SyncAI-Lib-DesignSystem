@@ -461,7 +461,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"info\" | \"warning\" | \"danger\"",
      "default": "\"neutral\"",
      "description": ""
     }
@@ -6197,7 +6197,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"warning\" | \"danger\" | \"success\"",
      "default": "\"neutral\"",
      "description": ""
     },
@@ -11734,7 +11734,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"left\" | \"right\" | \"bottom\"",
+     "type": "\"left\" | \"right\" | \"bottom\" | \"end\"",
      "default": "\"bottom\"",
      "description": ""
     }
@@ -13235,7 +13235,13 @@
  "table": [
   {
    "name": "Table",
-   "props": [],
+   "props": [
+    {
+     "name": "bare",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
    "inherits": [
     "<table>"
    ]

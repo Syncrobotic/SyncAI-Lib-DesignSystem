@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-week-hours v0.35.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.47.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"
@@ -87,7 +87,7 @@ export function HeatmapWeekHours() {
           </>
         ) : (
           // Same orientation as the grid: a row per day, a column per 2-hour slot, incidents in each cell.
-          <Table>
+          <Table bare>
             <TableHeader>
               <TableRow>
                 <TableHead>Day</TableHead>

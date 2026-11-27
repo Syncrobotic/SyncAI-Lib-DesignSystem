@@ -1,11 +1,11 @@
-// @syncrobotic/app-shell-mobile-tabs v0.40.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.47.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
 import { Bell, Bot, LayoutGrid, Map as MapIcon, Search } from "lucide-react"
 import { DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -26,6 +26,14 @@ const robots: { id: string; tone: Status; state: string; where: string; battery:
   { id: "C2B0", tone: "offline", state: "Offline", where: "Last seen at Dock 1", battery: 38 },
 ]
 
+// The battery in a row's line: the number, and below 15 % the warning shape before it and the word read out, never danger.
+const Battery = ({ value }: { value: number }) => (
+  <span className="inline-flex items-center gap-2">
+    {value < 15 && <StatusGlyph status="warning" />}
+    {value} %{value < 15 && <span className="sr-only">, low</span>}
+  </span>
+)
+
 const row = "flex min-h-(--h-row) items-center gap-3 border-b border-border py-2 last:border-b-0" // icon-gap-ok: the tile is the robot's id, not an icon
 
 function SampleRobots() {
@@ -39,10 +47,10 @@ function SampleRobots() {
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-medium">Patrol dog {r.id}</span>
             <span className="truncate text-xs text-muted-foreground tabular-nums">
-              {r.where} · {r.battery} %
+              {r.where} · <Battery value={r.battery} />
             </span>
           </span>
-          {/* The state is the row's trailing word with its shape, coloured only when it needs someone; the battery stays a plain number. */}
+          {/* The state is the row's trailing word with its shape, coloured only when it needs someone; so is the battery below 15 %. */}
           <InlineStatus status={r.tone}>{r.state}</InlineStatus>
         </li>
       ))}
@@ -90,7 +98,7 @@ export function AppShellMobileTabs({
         <div className="flex min-w-0 flex-col">
           <span className="text-xs text-muted-foreground">{product}</span>
           {/* An empty tab list has no current tab, so the title is left blank rather than throwing. */}
-          <h1 className="truncate text-lg font-bold">{current?.label}</h1>
+          <h1 className="truncate text-2xl font-bold">{current?.label}</h1>
         </div>
         <Button variant="ghost" size="icon" aria-label={`Search ${product}`}>
           <Search aria-hidden="true" />

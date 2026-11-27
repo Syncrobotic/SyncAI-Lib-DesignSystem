@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.45.1 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.47.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -89,7 +89,8 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   onClick={() => setSelected(r.id)}
                   className={cn(
                     "press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-xs px-3 text-left hover:bg-accent",
-                    r.id === selected && "bg-muted font-medium",
+                    // Selected is a row's state: the accent fill with its ink bar, as a selected table row; muted is the current page.
+                    r.id === selected && "bg-accent shadow-selected",
                   )}
                 >
                   <span className="text-sm font-medium">{r.name}</span>

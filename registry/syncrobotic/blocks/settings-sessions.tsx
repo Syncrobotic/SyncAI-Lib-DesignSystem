@@ -1,4 +1,4 @@
-// @syncrobotic/settings-sessions v0.40.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
+// @syncrobotic/settings-sessions v0.47.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
 "use client"
 
 import * as React from "react"
@@ -216,7 +216,7 @@ export function SettingsSessions({
                 )
               })}
             </ItemGroup>
-            {others.length === 0 && <p className="border-t border-border px-4 py-3 text-sm text-muted-foreground">No other browsers are signed in.</p>}
+            {others.length === 0 && <EmptyState size="inline" className="border-t border-border" title="No other browsers are signed in" />}
           </Card>,
         )}
       </section>
