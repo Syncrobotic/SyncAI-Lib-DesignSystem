@@ -1085,6 +1085,55 @@ export const overviews: Record<string, Overview> = {
     use: ["A list with no items yet, search with no results, a page without permission."],
     instead: ["A temporary error inside a page: `alert`."],
   },
+  "data-state": {
+    use: [
+      "A card, table or panel filled from a server: devices, API keys, members, a usage chart.",
+      "A list whose refresh can fail while the last page is still worth reading (stale).",
+      "A region the viewer may not read inside a page they may open (forbidden).",
+    ],
+    instead: [
+      "A whole page that cannot open: the status-pages block (not found, no access, error, offline).",
+      "A condition on the page that is not about loading, true for a while: `alert` or `banner`.",
+      "An empty place with no fetch behind it: `empty-state` on its own.",
+    ],
+    notes: [
+      "Map a data layer in one line: `state={dataStateOf({ loading: isPending, error, hasData: !!data, empty: data?.total === 0, forbidden: !can(\"devices:read\") })}`.",
+      "Pass the API envelope's `error` object as it is; only `code` is read. Codes without copy fall back to `errorBody` and show the code.",
+      "Its live region is present from the first render and reads each new state once; loading is read by the spinner line.",
+    ],
+  },
+  "permission-gate": {
+    use: [
+      "A write action on a page every member can open: Add device, Remove device, Rotate key.",
+      "A settings form members may read and only admins may change.",
+      "A section inside a page that needs a further permission (the audit log).",
+    ],
+    instead: [
+      "A whole page the viewer may not open: `NoAccessPage` from status-pages.",
+      "A record in another tenant or one that does not exist: a not-found page, never forbidden.",
+      "A control off for a reason other than permission (nothing selected, a robot offline): plain `disabled`, with the reason in the interface.",
+    ],
+    notes: [
+      "`permissionsFrom(session.permissions)` turns the list the server sends into `can`; with CASL, pass `(p) => ability.can(...)` instead.",
+      "In `disabled` mode the child must be one control that takes `onClick`, `className` and `aria-*` (Button, a link, a menu item): its click is refused, and `aria-disabled` keeps it in the Tab order.",
+      "`isAllowed` is the same decision without rendering, for a menu built from data.",
+    ],
+  },
+  "step-up-dialog": {
+    use: [
+      "Revoking an API key or a device, rotating a webhook secret, removing a member, deleting a project.",
+      "Any action the server guards with a fresh check (sudo mode).",
+    ],
+    instead: [
+      "Confirming a consequence, with no identity check: `alert-dialog`.",
+      "Signing in, or the second step of a sign-in: the auth-2fa block.",
+    ],
+    notes: [
+      "Usually spread from useStepUp: `<StepUpDialog {...stepUp.dialog} />`. On its own, pass `open`, `verify`, `onVerified` and `onCancel`.",
+      "Focus opens in the field and returns to the control that started the action; a failure is read out (role alert) and the field is cleared.",
+      "Passkeys and other proofs belong in your `verify`; the dialog takes a code or a password.",
+    ],
+  },
   table: {
     use: ["Fleet lists, event logs, user lists on wide screens."],
     instead: ["The same rows on desks and on phones: `responsive-table`, a table that becomes a grouped list.", "Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
@@ -1377,6 +1426,34 @@ export const overviews: Record<string, Overview> = {
     use: ["A safety moment your app sees and the kit does not: the robot confirmed the stop.", "Turning sound or vibration off in a setting: `configureFeedback`."],
     instead: ["A confirmation on screen: `toast`.", "Something someone must act on: `alarm`."],
     notes: ["Never `navigator.vibrate` directly. iOS has no vibration and sound needs a first tap, so it never replaces the screen."],
+  },
+  "list-query": {
+    use: [
+      "Every list the server pages: devices, members, audit events, webhook deliveries.",
+      "Reading a list's query in a server component, so the first HTML shows the right page.",
+      "Building the request: `serializeListQuery(query, { complete: true })`.",
+    ],
+    instead: ["A short list the page holds whole (under a few hundred rows): filter it in the browser with `filters`."],
+    notes: [
+      "Rename URL keys with `keys` (`{ search: \"q\" }`) when a product's links already use other names; the fields keep theirs.",
+      "`clampPage` moves a query past the last page back onto it, after rows are deleted or from an old link.",
+    ],
+  },
+  "use-list-query": {
+    use: ["A list page whose filtered view should be a link people can share.", "Back and forward that restore the search, sort and page."],
+    instead: ["The grammar alone, with no React (a server component, a request): `list-query`.", "A list inside a dialog: pass `memoryAdapter()`, so the page's URL is left alone."],
+    notes: [
+      "`param` and `setParam` keep other keys (a status filter, a tab) beside the query.",
+      "An adapter is `read`, `write`, and `subscribe` when the router does not re-render by itself; `readOnServer` is what the server rendered.",
+    ],
+  },
+  "use-step-up": {
+    use: ["Every call the server may refuse with ELEVATED_SESSION_REQUIRED or TWO_FACTOR_SETUP_REQUIRED."],
+    instead: ["A confirmation with no identity check: `alert-dialog`."],
+    notes: [
+      "`errorCodeOf` finds the code on the error, in its `error`, `body`, `details` or `data`, the shapes fetch wrappers give.",
+      "A second call that asks while one waits cancels the first, so only one dialog is ever open.",
+    ],
   },
   "use-now": {
     use: ["\"Updated 12 s ago\", a timeout, an alarm flood's window.", "Stale data: how long since the last message."],

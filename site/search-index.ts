@@ -41,8 +41,10 @@ export function buildSearchIndex(): SearchEntry[] {
     if (inType.length === 0) continue
     // A pattern set (charts, timelines, dialogs, sheets) is found as part of its component, at its place on that page.
     const group = t.home ? "Components" : "Blocks"
-    out.push({ group, title: t.title, href: typeHref(t), hint: t.description, text: t.home })
-    for (const b of inType) out.push({ group, title: b.title, href: blockHref(b.name), hint: b.description, text: `${b.name} ${t.title}` })
+    // A block type is also found by its product area ("tenancy", "fleet operations").
+    const area = t.home ? "" : t.group
+    out.push({ group, title: t.title, href: typeHref(t), hint: t.description, text: [t.home, area].filter(Boolean).join(" ") })
+    for (const b of inType) out.push({ group, title: b.title, href: blockHref(b.name), hint: b.description, text: `${b.name} ${t.title} ${area}`.trim() })
   }
 
   for (const g of iconGroups) for (const ic of g.icons) out.push({ group: "Icons", title: ic.name, href: `/icons?icon=${encodeURIComponent(ic.name)}`, hint: ic.means, text: g.title })

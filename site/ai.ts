@@ -1,6 +1,6 @@
 import registry from "../registry.json"
 import { propsOf } from "./props-data"
-import { blockGroups, blockHref, blockTypes, getBlockType, placement } from "./block-types"
+import { blockFlags, blockGroups, blockHref, blockTypes, getBlockType, placement, wiringText } from "./block-types"
 import { groups, items, getItem, readSource, storyNames, storyTitle } from "./catalog"
 import { site } from "./config"
 import { foundations } from "./foundations"
@@ -33,6 +33,12 @@ const link = (text: string) =>
     })
 
 const list = (xs: string[]) => xs.map((x) => `- ${link(x)}`).join("\n")
+
+/** A block's status and wiring in a few words, for index lines: "beta, demo data". */
+const flagsOf = (meta: unknown) => {
+  const f = blockFlags(meta)
+  return `${f.status}, ${f.wiring === "demo" ? "demo data" : "controlled"}`
+}
 
 export function componentMarkdown(name: string) {
   const item = getItem(name)
@@ -103,6 +109,8 @@ export function blockMarkdown(name: string) {
         return `- Type: block${t ? ` in ${t.group} › ${t.title}` : ""} (a whole screen or section; install it, then replace the sample data)`
       })(),
       `- Version: ${b.meta?.version ?? "unversioned"}`,
+      `- Status: ${blockFlags(b.meta).status === "beta" ? "beta (its props and structure may still change in a minor release)" : "stable"}`,
+      `- Wiring: ${blockFlags(b.meta).wiring}. ${wiringText[blockFlags(b.meta).wiring].line}`,
       `- Install: \`${install(name)}\``,
       `- Preview: ${url(`/preview/${name}`)}`,
       `- Page: ${url(blockHref(name))}`,
@@ -114,7 +122,9 @@ export function blockMarkdown(name: string) {
       "",
       "## Agent notes",
       "",
-      "- Keep the block's structure and classes; replace the sample data and the hrefs, wire your router through `linkAs` where offered.",
+      blockFlags(b.meta).wiring === "controlled"
+        ? "- Keep the block's structure and classes; pass your data and handlers as props, wire your router through `linkAs` where offered."
+        : "- Keep the block's structure and classes; replace the sample data and the hrefs, wire your router through `linkAs` where offered.",
       "- App-shell blocks take `layout`, `search`, `breadcrumb`, `footer`, `user` and `userMenu`; read the app-shell twin before adding your own chrome.",
       ...(blockNotes[name] ?? []).map((n) => `- ${n}`),
       "",
@@ -186,13 +196,13 @@ export function llmsTxt() {
   out.push(
     `- [Icon set](${url("/icons")}): the ${iconCount} icons the kit uses, one meaning each: ${iconCount - kitIconCount} from Lucide and ${kitIconCount} drawn for the kit (robot-icons: \`${install("robot-icons")}\`). Full list in llms-full.txt.`,
   )
-  // Blocks by group and type, the way the site lists them.
+  // Blocks by group and type, the way the site lists them; a component's patterns follow that component.
   for (const g of blockGroups) {
-    for (const t of blockTypes.filter((x) => x.group === g)) {
+    for (const t of blockTypes.filter((x) => x.group === g && !x.home)) {
       const inType = blocks.filter((b) => placement[b.name]?.type === t.slug)
       if (!inType.length) continue
       out.push("", `## Blocks: ${g} › ${t.title}`, "")
-      for (const b of inType) out.push(`- [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)
+      for (const b of inType) out.push(`- [${b.title}](${url(`/blocks/${b.name}.md`)}) (${flagsOf(b.meta)}): ${b.description}`)
     }
   }
   for (const g of groups) {
@@ -204,7 +214,8 @@ export function llmsTxt() {
       out.push(`- [${i.title}](${url(`/docs/components/${i.name}.md`)})${beta ? " (beta)" : ""}: ${i.description ?? ""}`)
       // Its patterns: ready-made uses of this one component, each installable under its own name.
       for (const t of blockTypes.filter((x) => x.home === i.name))
-        for (const b of blocks.filter((x) => placement[x.name]?.type === t.slug)) out.push(`  - Pattern, ${t.title}: [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)
+        for (const b of blocks.filter((x) => placement[x.name]?.type === t.slug))
+          out.push(`  - Pattern, ${t.title}: [${b.title}](${url(`/blocks/${b.name}.md`)}) (${flagsOf(b.meta)}): ${b.description}`)
     }
   }
   out.push(
@@ -225,10 +236,11 @@ export function llmsFull() {
   )
   for (const g of iconGroups) out.push(`- ${g.title}: ${g.icons.map((i) => `${i.name}${i.from ? " [kit]" : ""} (${i.means})`).join("; ")}`)
   // Blocks as llms.txt lists them: by group and type, then the patterns by the component whose page shows them.
-  const blockLine = (b: (typeof blocks)[number]) => `- **${b.title}** (\`${b.name}\`): ${b.description} Install: \`${install(b.name)}\``
+  const blockLine = (b: (typeof blocks)[number]) =>
+    `- **${b.title}** (\`${b.name}\`, ${flagsOf(b.meta)}): ${b.description} Install: \`${install(b.name)}\``
   out.push("", "# Blocks")
   for (const g of blockGroups)
-    for (const t of blockTypes.filter((x) => x.group === g)) {
+    for (const t of blockTypes.filter((x) => x.group === g && !x.home)) {
       const inType = blocks.filter((b) => placement[b.name]?.type === t.slug)
       if (inType.length) out.push("", `## ${g} › ${t.title}`, "", ...inType.map(blockLine))
     }

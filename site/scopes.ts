@@ -29,6 +29,7 @@ export const scopes: Scope[] = [
           { href: "/docs/robotics", label: "Robotics UI kit" },
           { href: "/docs/ros", label: "Connect to ROS" },
           { href: "/docs/nextjs", label: "Next.js" },
+          { href: "/docs/nextjs/data", label: "Next.js forms and lists" },
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
           { href: "/docs/upgrading", label: "Versions and upgrades" },
@@ -75,15 +76,17 @@ export const scopes: Scope[] = [
     match: ["/blocks"],
     groups: [
       { title: "Browse", links: [{ href: "/blocks", label: "All blocks" }] },
-      // Like components: a group, its types, and under the open type the blocks it holds.
+      // Like components: a group, its types, and under the open type the blocks it holds. A component's patterns are on
+      // its page, so they are listed under Components.
       ...blockGroups
         .map((g) => ({
           title: g,
           links: blockTypes
-            .filter((t) => t.group === g && blocksOfType(t.slug).length > 0)
+            .filter((t) => t.group === g && !t.home && blocksOfType(t.slug).length > 0)
             .map((t) => ({
               href: `/blocks/${t.slug}`,
               label: t.title,
+              beta: blocksOfType(t.slug).some((b) => b.status === "beta"),
               sections: blocksOfType(t.slug).map((b) => ({ href: `/blocks/${t.slug}#${b.name}`, label: b.title })),
             })),
         }))

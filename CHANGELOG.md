@@ -2,6 +2,33 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.55.0 · 2026-11-27
+
+Blocks a product can wire to its API, the foundations they need, and blocks grouped by product area.
+
+### Added
+- **Permissions and data states** (new foundation page): when to hide, disable with a reason, make read-only, show a forbidden region, a no-access page or a not-found page (always 404 across tenants); the six data states; counts come from the server's `total`, never `items.length`.
+- **`list-query`, `use-list-query`** (beta): `ListQuery` (`page`, `limit`, `sortBy`, `order`, `search`) and `ListPage<T>` (`items`, `total`), parsed from and kept in the URL through an adapter (history, memory or your router's). A new search, sort, limit or filter goes back to page 1.
+- **`data-state`** (beta): one contract for a fetched region: `loading`, `empty`, `error`, `forbidden`, `stale`, `ready`. Error copy comes from `error.code`; the message is never shown or parsed.
+- **`permission-gate`** (beta): decided by permission strings, never role names; `hidden`, `disabled` with a reason (focusable, in a tooltip, on a tap and to screen readers), `read-only`, `forbidden`.
+- **`step-up-dialog`, `use-step-up`** (beta): an action refused with `ELEVATED_SESSION_REQUIRED` or `TWO_FACTOR_SETUP_REQUIRED` waits while the person verifies, then runs once; cancel rejects with `StepUpCancelledError`.
+- **Controlled blocks:** `FleetTableContent`, `UsersRolesContent`, `UsersInvitationsContent`, `UsersAuditLogContent`, `SettingsApiKeysContent`, `SettingsWebhooksContent`, `SettingsSessionsContent`, `NotificationCenterContent` / `NotificationPanelContent`, `SettingsPageContent`. Each renders only from props: one page with the server's `total`, the list query out through `onQueryChange`, a data state, permission strings through `can`, promise callbacks that work with `useStepUp`, and `labels` for every word, dates through Intl. The existing exports are demos built on them.
+  - settings-api-keys: scopes bounded by `allowedScopes`, and an expiry.
+  - users-roles, users-invitations: roles arrive with their permission bundles; nobody gives a role above their own.
+- **zh-TW labels** for the new items and the ten blocks.
+
+### Changed
+- **Blocks by product area:** Shell and navigation, Identity and account, Tenancy and access, Fleet operations, Data and AI, and Patterns. Device lifecycle, Platform admin and Robot control appear once they hold a block. API keys and webhooks move to `/blocks/integrations` in Tenancy and access; old URLs and anchors follow them.
+- **Every block declares `meta.status` and `meta.wiring`:** all start in beta; `demo` renders sample data, `controlled` renders only from props. The sidebar, block pages, llms.txt and MCP show both; `lint:registry` fails without them. CONTRIBUTING.md says what controlled requires.
+- **`button`:** `aria-disabled="true"` looks disabled in every variant and stays focusable, for a control that explains why it is off.
+- **`agent-skill`:** the design language and checklist cover permissions and data states.
+
+### Breaking
+- **settings-api-keys** `ApiKey`: `created`/`lastUsed` become ISO `createdAt`/`lastUsedAt`, plus `expiresAt` and `scopes`. Pass the API's timestamps.
+- **settings-sessions:** `lastActive` becomes ISO `lastActiveAt`; `TrustedBrowser.since`/`until` are ISO.
+- **settings-webhooks:** `WebhookDelivery.time` is removed (formatted from `at`); `failingSince` is ISO.
+- **status-pages:** `NoAccessPage` takes `permission` instead of `role` (`role="Viewer"` → `permission="audit-logs:read"`), and `NoAccessPageLabels.body` is `(permission, admin)`; `ErrorPage` has no default `reference` and shows Copy reference only with one.
+
 ## 0.54.0 · 2026-11-27
 
 A camera wall that moves, key hints in the command dialog, and components, blocks and icons grouped by what they mean.

@@ -212,17 +212,15 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
         <div className="grid gap-4 md:grid-cols-2">
           {(
             [
-              [NotFoundPage, "Not found"],
-              [NoAccessPage, "No access"],
-              [ErrorPage, "Error"],
-              [OfflinePage, "Offline"],
+              ["Not found", <NotFoundPage key="p" fill="parent" />],
+              ["No access", <NoAccessPage key="p" fill="parent" permission="audit-logs:read" />],
+              ["Error", <ErrorPage key="p" fill="parent" reference="a7f3-22c1" />],
+              ["Offline", <OfflinePage key="p" fill="parent" />],
             ] as const
-          ).map(([Page, name]) => (
+          ).map(([name, page]) => (
             <figure key={name} className="flex flex-col gap-2">
               <figcaption className="text-xs font-medium text-muted-foreground">{name}</figcaption>
-              <div className="overflow-hidden rounded-md ring-1 ring-border">
-                <Page fill="parent" />
-              </div>
+              <div className="overflow-hidden rounded-md ring-1 ring-border">{page}</div>
             </figure>
           ))}
         </div>

@@ -27,6 +27,30 @@
     "tabStops": 1,
     "live": true
   },
+  "use-list-query": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "navigation",
+      "region",
+      "row",
+      "rowgroup",
+      "searchbox",
+      "status",
+      "table"
+    ],
+    "tabStops": 5,
+    "live": true
+  },
+  "use-step-up": {
+    "roles": [
+      "button",
+      "log"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "use-ros": {
     "roles": [
       "application",
@@ -408,6 +432,23 @@
     "tabStops": 2,
     "live": false
   },
+  "data-state": {
+    "roles": [
+      "button",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "permission-gate": {
+    "roles": [
+      "button",
+      "group",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
   "table": {
     "roles": [
       "button",
@@ -592,6 +633,11 @@
       "button"
     ],
     "tabStops": 1,
+    "live": false
+  },
+  "step-up-dialog": {
+    "roles": [],
+    "tabStops": 0,
     "live": false
   },
   "sheet": {

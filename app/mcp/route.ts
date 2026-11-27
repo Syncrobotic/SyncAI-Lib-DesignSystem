@@ -1,7 +1,7 @@
 import pkg from "../../package.json"
 import registry from "../../registry.json"
 import { blockMarkdown, componentMarkdown, designLanguage, robotIconsMarkdown } from "@/site/ai"
-import { getBlockType, placement } from "@/site/block-types"
+import { blockFlags, getBlockType, placement } from "@/site/block-types"
 import { getItem, items, readSource } from "@/site/catalog"
 import { site } from "@/site/config"
 import { overviews } from "@/site/overview"
@@ -16,6 +16,12 @@ const blocks = registry.items.filter((i) => i.type === "registry:block")
 const extras = ["syncrobotic-theme", "agent-skill", "robot-icons"]
 /** A block, or a pattern: a ready-made use of one component, as blockMarkdown calls it. */
 const blockKind = (name: string) => (getBlockType(placement[name]?.type ?? "")?.home ? "pattern" : "block")
+/** "block · Fleet operations · beta, demo data": kind, group, status and wiring, so an agent can tell a sample from a controlled block. */
+const blockLabel = (b: (typeof blocks)[number]) => {
+  const t = getBlockType(placement[b.name]?.type ?? "")
+  const f = blockFlags(b.meta)
+  return [blockKind(b.name), t && !t.home ? t.group : null, `${f.status}, ${f.wiring === "demo" ? "demo data" : "controlled"}`].filter(Boolean).join(" · ")
+}
 const install = (names: string[]) => `npx shadcn add ${names.map((n) => `@syncrobotic/${n}`).join(" ")}`
 
 type Tool = {
@@ -43,7 +49,7 @@ const tools: Tool[] = [
           text: i.description ?? "",
           use: overviews[i.name]?.use.join(" ") ?? "",
         })),
-        ...blocks.map((b) => ({ name: b.name, kind: blockKind(b.name), text: b.description ?? "", use: "" })),
+        ...blocks.map((b) => ({ name: b.name, kind: blockLabel(b), text: b.description ?? "", use: "" })),
         { name: "robot-icons", kind: "icons", text: registry.items.find((i) => i.name === "robot-icons")?.description ?? "", use: "" },
       ]
       // Rank by how many of the query's words an item matches; at a tie, components before blocks and patterns (built
@@ -67,7 +73,7 @@ const tools: Tool[] = [
   {
     name: "get_item",
     description:
-      "Everything about one component, block, pattern or robot-icons: what it is, when to use it and what to use instead, rules, keyboard, agent notes, install command, version. Call this before using an item.",
+      "Everything about one component, block, pattern or robot-icons: what it is, when to use it and what to use instead, rules, keyboard, agent notes, install command, version, and for a block its status and wiring (demo data or controlled). Call this before using an item.",
     inputSchema: { type: "object", properties: { name: { type: "string", description: "e.g. meter, app-shell" } }, required: ["name"] },
     run: ({ name }) => {
       const n = String(name ?? "")

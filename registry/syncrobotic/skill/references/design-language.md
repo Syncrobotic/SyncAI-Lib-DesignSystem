@@ -71,5 +71,10 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 ## Alarms
 - Three priorities, each a shape, colour and word. An alarm stays until it clears and is acknowledged. Shelving is for a set time and never for critical; suppressed and out-of-service alarms are counted, not hidden. Over 10 in 10 minutes is a flood: name it, keep critical and high in view.
 
+## Permissions and data states
+- Permission strings decide, never a role's name (`PermissionGate` with `can` and `permission`). Hidden for what the viewer can never have here; disabled with a reason (who can grant it) for what they could be given; read-only for values they may read; forbidden for a region; a no-access page for a page; not found (404) for a record in another tenant, so its existence is never confirmed.
+- Every fetched region is one `DataState`: loading, empty, error, forbidden, stale or ready, picked by `dataStateOf`. Empty only when the server's `total` is 0; counts come from `total`, never `items.length`. An error's copy comes from its code, never its message. A failed refresh with data in hand is stale: keep the content under a notice.
+- A server-paged list keeps `page`, `limit`, `sortBy`, `order`, `search` in the URL (`useListQuery`); a new search or sort goes back to page 1. A sensitive action refused with a step-up code waits for `StepUpDialog` and runs after it (`useStepUp`).
+
 ## Accessibility
 - 44 × 44 targets on touch (48 in gloves); visible focus; never colour alone; icon-only buttons have aria-label; overlays trap focus and return it; new alarms are announced.

@@ -67,7 +67,10 @@ export default function UpgradingPage() {
 
       <H2 id="status">Beta and stable</H2>
       <p className="max-w-3xl text-base">
-        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. A stable item changes its API only in a major release. Every item starts in beta. It becomes stable when a product has used it, or its API is a standard one the kit only styles (a Radix primitive, a native element, a small hook or function), and in both cases when its API has not changed for ten releases and it has unit tests and measured accessibility data. Unmarked items are stable. Blocks and patterns have no status: you copy them and make them yours." />
+        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. A stable item changes its API only in a major release. Every item starts in beta. It becomes stable when a product has used it, or its API is a standard one the kit only styles (a Radix primitive, a native element, a small hook or function), and in both cases when its API has not changed for ten releases and it has unit tests and measured accessibility data. Unmarked items are stable. Blocks and patterns carry a status too: a stable block keeps its props and its structure until a major release." />
+      </p>
+      <p id="wiring" className="max-w-3xl scroll-mt-20 pt-3 text-base">
+        <Inline text="A block also says how it is wired. Demo data: it renders built-in sample data, and a screen its own app shell; install it as a starting point and wire your data in. Controlled: it renders only from its props and callbacks, with no sample data or app shell inside, so it takes your data as it is." />
       </p>
 
       <H2 id="upgrade">Upgrade</H2>

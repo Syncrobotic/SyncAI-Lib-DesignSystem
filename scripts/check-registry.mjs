@@ -97,9 +97,9 @@ for (const item of registry.items) {
   // was never built against.
   for (const d of item.dependencies ?? []) if (!/.@./.test(d)) fail(item.name, `"${d}" in dependencies has no version range: write "${d}@^<major>"`)
 
-  // Status: "beta" (the API may still change in a minor release) or "stable"; absent means stable. Blocks and patterns
-  // are templates you copy and edit, so they carry none. A new item starts in beta: one first released in the current
-  // minor must say so explicitly, so nothing is stable by omission.
+  // Status: "beta" (the API may still change in a minor release) or "stable"; absent means stable. A new item starts in
+  // beta: one first released in the current minor must say so explicitly, so nothing is stable by omission. A block (or
+  // pattern) always declares its status and its wiring: "controlled" (renders only from props) or "demo" (sample data).
   const description = item.description ?? ""
   if (description.length > MAX_DESCRIPTION)
     fail(item.name, `description is ${description.length} characters (max ${MAX_DESCRIPTION}): say what it is and when to use it; details go to the docs`)
@@ -109,7 +109,11 @@ for (const item of registry.items) {
 
   const status = item.meta?.status
   if (status !== undefined && !["beta", "stable"].includes(status)) fail(item.name, `meta.status must be "beta" or "stable", not "${status}"`)
-  if (status !== undefined && item.type === "registry:block") fail(item.name, `blocks carry no meta.status`)
+  if (item.type === "registry:block") {
+    if (status === undefined) fail(item.name, `a block sets meta.status ("beta" or "stable")`)
+    const wiring = item.meta?.wiring
+    if (wiring !== "demo" && wiring !== "controlled") fail(item.name, `a block sets meta.wiring: "controlled" or "demo" (CONTRIBUTING.md, "Controlled blocks"), not ${JSON.stringify(wiring)}`)
+  }
   const first = item.meta?.changelog?.at(-1)?.version
   if (item.type !== "registry:block" && first && status === undefined && minor(first) === minor(pkg.version))
     fail(item.name, `first released in ${first}: set meta.status ("beta" until a product has used it)`)
