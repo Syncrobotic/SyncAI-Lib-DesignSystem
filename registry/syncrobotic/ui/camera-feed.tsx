@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.51.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.53.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -175,8 +175,9 @@ export type CameraFeedProps = {
 }
 
 /**
- * A robot's live camera over a native `<video>` (a WebRTC `stream` or a `src`). It always says whether what you see is
- * live: "Live" with latency, "Stalled · last frame 14:02:31" over a dimmed picture, "Paused", connecting, offline.
+ * A robot's live camera over a native video the app feeds, with Live, Stalled, Paused, connecting, offline and
+ * no-camera states, snapshot, mute, full screen and overlays. It always says whether what you see is live: "Live" with
+ * latency, "Stalled · last frame 14:02:31" over a dimmed picture. Feed it a WebRTC `stream` or a `src`.
  */
 export function CameraFeed({
   label,

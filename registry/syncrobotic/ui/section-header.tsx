@@ -1,4 +1,4 @@
-// @syncrobotic/section-header v0.51.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
+// @syncrobotic/section-header v0.53.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
@@ -11,9 +11,9 @@ const levels = {
 } as const
 
 /**
- * A section heading: `page` (16 px bold, outside cards) or `surface` (14 px medium, inside a card or sheet), with an
- * optional full count (1,284, never 1.2K), a line and actions. A data card opens with CardDataHeader; a page with
- * PageHeader.
+ * A section heading at page level (16 px bold, outside cards) or surface level (14 px medium, inside one), with an
+ * optional count, a line and actions; `as` sets the heading level. The count is written in full (1,284, never 1.2K). A
+ * data card opens with CardDataHeader; a page with PageHeader.
  */
 export function SectionHeader({
   title,

@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.47.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.53.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -66,9 +66,8 @@ const alarms: AlarmData[] = [
 ]
 
 /**
- * Map workspace: the site map fills the screen; floating trays hold the selected robot, the most urgent alarm
- * and the emergency stop. The map is RobotMap (pass your floor plan); its robots are also listed, as text, in a Robots
- * sheet from the top bar.
+ * The site map edge to edge, with floating trays for the selected robot, the most urgent alarm and the emergency stop.
+ * The map is RobotMap (pass your floor plan); its robots are also listed, as text, in a Robots sheet from the top bar.
  */
 export function MapWorkspace() {
   const [selected, setSelected] = React.useState("7F3A")

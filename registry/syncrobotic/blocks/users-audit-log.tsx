@@ -1,4 +1,4 @@
-// @syncrobotic/users-audit-log v0.40.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.53.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -74,8 +74,8 @@ function Change({ from, to }: { from: string; to?: string }) {
 }
 
 /**
- * Who did what, when, from where: a table you can narrow by person and kind, and search (a list on a phone). Values changed show before and
- * after. Nothing is coloured: an emergency stop is a fact here, not an alarm. Export takes the filtered rows.
+ * Who did what, when and from where, narrowed by person and kind, with values before and after; exports what is shown.
+ * A table with search, a list on a phone. Nothing is coloured: an emergency stop is a fact here, not an alarm.
  */
 export function UsersAuditLog() {
   const [who, setWho] = React.useState("all")

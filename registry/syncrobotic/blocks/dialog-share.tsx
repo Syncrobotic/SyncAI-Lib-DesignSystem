@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-share v0.40.0 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.53.0 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,8 +25,8 @@ const samplePeople: Person[] = [
 const accessLabel = { owner: "Owner", edit: "Can edit", view: "Can view" } as const
 
 /**
- * Sharing one thing: invite people by email, change what each can do in place, and copy a link. Who can open the link is
- * said in words above it, so nobody shares more than they meant to.
+ * Sharing one thing: invite people by email, change their access in place, and copy a link whose reach is said in
+ * words. Saying who can open the link means nobody shares more than they meant to.
  */
 export function DialogShare({
   title = "Incident report, 14 Nov, loading bay",

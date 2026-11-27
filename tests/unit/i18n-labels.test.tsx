@@ -86,11 +86,11 @@ describe("labels reach the DOM", () => {
     const { rerender } = render(shell())
     expect(screen.getByRole("navigation", { name: "Main" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "Open navigation" })).toBeTruthy()
-    expect(screen.getByRole("button", { name: "Ada Lovelace, AL, account menu" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Ada Lovelace account menu" })).toBeTruthy()
     rerender(shell({ nav: "主要導覽", openNav: "開啟導覽", accountMenu: "帳號選單" }))
     expect(screen.getByRole("navigation", { name: "主要導覽" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "開啟導覽" })).toBeTruthy()
-    expect(screen.getByRole("button", { name: "Ada Lovelace, AL, 帳號選單" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Ada Lovelace 帳號選單" })).toBeTruthy()
   })
 
   it("CopyButton", () => {

@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-battery v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
+// @syncrobotic/area-chart-battery v0.53.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +15,10 @@ const data = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15
   battery: [98, 88, 77, 66, 54, 41, 30, 82, 72, 61][i],
 }))
 
-/** One robot's battery over a shift: a single series with a soft fill, the return-to-dock level marked, and the charge visible as the jump. */
+/**
+ * One robot's battery over a shift with the return-to-dock level marked; the charge shows as the jump. A single series
+ * with a soft fill.
+ */
 export function AreaChartBattery() {
   const [view, setView] = React.useState("chart")
   return (

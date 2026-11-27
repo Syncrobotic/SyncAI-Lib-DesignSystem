@@ -1,4 +1,4 @@
-// @syncrobotic/text-diff v0.52.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.53.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { plural } from "@/registry/syncrobotic/lib/format-number"
@@ -210,8 +210,9 @@ export type TextDiffProps = Omit<React.ComponentProps<"div">, "children"> & {
 }
 
 /**
- * Where two texts differ, word by word (a caption from two models, a label before and after an edit). Insertions are grey
- * and underlined, removals struck through; screen readers hear "added" and "removed".
+ * Where two texts differ, word by word: insertions underlined on grey and removals struck through, both announced,
+ * inline or side by side with a +3 words, −1 word summary. For a caption from two models, or a label before and after
+ * an edit. Screen readers hear "added" and "removed".
  */
 export function TextDiff({
   before,

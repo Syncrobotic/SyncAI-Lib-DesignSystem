@@ -1,4 +1,4 @@
-// @syncrobotic/context-menu v0.51.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
+// @syncrobotic/context-menu v0.53.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /**
- * The menu a right-click, long press, Shift+F10 or the Menu key opens; it looks like DropdownMenu. A shortcut only: every
- * action in it must also be on a visible control, since nobody can see a context menu exists.
+ * Actions on an item by right-click or long press, styled exactly like the dropdown menu; a shortcut to actions that
+ * are also on a visible control. Shift+F10 and the Menu key open it too. Nobody can see a context menu exists, so never
+ * put an action only here.
  */
 export const ContextMenu = MenuPrimitive.Root
 /** The area that opens the menu. Use `asChild` on the row or card it belongs to; it should be focusable for Shift+F10. */

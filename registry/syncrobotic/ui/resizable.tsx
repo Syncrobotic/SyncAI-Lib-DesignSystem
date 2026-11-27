@@ -1,4 +1,4 @@
-// @syncrobotic/resizable v0.51.0 · update: npx shadcn add @syncrobotic/resizable --overwrite
+// @syncrobotic/resizable v0.53.0 · update: npx shadcn add @syncrobotic/resizable --overwrite
 "use client"
 
 import * as React from "react"
@@ -68,8 +68,8 @@ export type ResizablePanelGroupProps = Omit<GroupProps, "orientation"> & {
 }
 
 /**
- * Panels resized by dragging the line between them or with the arrow keys on the handle (react-resizable-panels 4).
- * `autoSaveId` remembers the sizes per browser.
+ * Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested
+ * (react-resizable-panels). The arrow keys work on the focused handle; `autoSaveId` remembers the sizes per browser.
  */
 export function ResizablePanelGroup({
   id,

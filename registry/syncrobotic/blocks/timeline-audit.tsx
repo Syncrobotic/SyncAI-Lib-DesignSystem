@@ -1,4 +1,4 @@
-// @syncrobotic/timeline-audit v0.40.0 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
+// @syncrobotic/timeline-audit v0.53.0 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
 "use client"
 
 import * as React from "react"
@@ -49,8 +49,8 @@ const entries: Entry[] = [
 ]
 
 /**
- * Who changed what, as a history: the person (or "System"), the action, the thing, and the value before and after. A
- * filter narrows it to people or to the system. Nothing here is coloured: an audit log records, it does not alarm.
+ * Who changed what, with the value before and after, filtered to people or the system. Nothing here is coloured: an
+ * audit log records, it does not alarm.
  */
 export function TimelineAudit({ className }: { className?: string }) {
   const [who, setWho] = React.useState("all")

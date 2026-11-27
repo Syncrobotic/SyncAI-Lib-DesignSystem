@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-cumulative v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
+// @syncrobotic/area-chart-cumulative v0.53.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,7 +18,7 @@ const date = (d: unknown) => `Nov ${d}`
 // The table names each day the way the tooltip does.
 const rows = data.map((r) => ({ ...r, d: date(r.d) }))
 
-/** Progress toward a monthly target: the running total as an area, the plan as a dashed line, the gap said in words. */
+/** The running total this month as an area against the plan as a dashed line, ahead or behind said in words. */
 export function AreaChartCumulative() {
   const [view, setView] = React.useState("chart")
   // Before the first day is in there is no running total yet: nothing patrolled, nothing planned.

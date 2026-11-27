@@ -1,4 +1,4 @@
-// @syncrobotic/agent-tool-permissions v0.52.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
+// @syncrobotic/agent-tool-permissions v0.53.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
 "use client"
 
 import * as React from "react"
@@ -425,7 +425,10 @@ export function AgentToolPermissionsContent({
   )
 }
 
-/** Agent tool permissions in the sample app shell. */
+/**
+ * Which tools each AI agent may call (Auto, Ask or Blocked; robot-moving tools never Auto), with a password check
+ * before loosening a policy and the call audit below.
+ */
 export function AgentToolPermissions(props: Omit<AgentToolPermissionsContentProps, "className">) {
   return (
     <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent tool access" user={sampleUser}>

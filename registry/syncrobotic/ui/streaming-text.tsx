@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-text v0.51.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
+// @syncrobotic/streaming-text v0.53.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -160,8 +160,9 @@ type Props = {
 const live = (phase: StreamingTextPhase) => phase === "queued" || phase === "streaming"
 
 /**
- * A model's answer as it streams in, under a calm status row (queued, Thinking, Generating with Stop) that becomes the
- * final state in place ("Done in 2.4 s", Stopped, Failed with Try again). Reasoning is kept apart and closed.
+ * A model's answer streaming token by token under a calm status row (queue, Generating with Stop, Done, Stopped,
+ * Failed), with reasoning kept apart and screen readers hearing whole sentences. "Done in 2.4 s" takes the status row's
+ * place; reasoning stays closed.
  */
 export function StreamingText({
   text,

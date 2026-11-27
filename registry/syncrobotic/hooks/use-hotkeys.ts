@@ -1,4 +1,4 @@
-// @syncrobotic/use-hotkeys v0.16.0 · update: npx shadcn add @syncrobotic/use-hotkeys --overwrite
+// @syncrobotic/use-hotkeys v0.53.0 · update: npx shadcn add @syncrobotic/use-hotkeys --overwrite
 "use client"
 
 import * as React from "react"
@@ -91,10 +91,10 @@ export function isTyping(event: KeyboardEvent) {
 }
 
 /**
- * Keyboard shortcuts on the whole page while the component is mounted and `enabled`. Keys are ignored while someone
- * types in a field (unless a binding allows it), while an input method is composing, and when another handler already
- * took the key (defaultPrevented). Returns `pressed`: the combo, as written in the map, whose key is down, for
- * `<Kbd pressed>`. Listeners are removed on unmount and when disabled.
+ * Keyboard shortcuts as a map of keys to handlers ({ "1": yes, "mod+z": undo, "?": help }), quiet while someone types
+ * in a field, with the key being pressed for Kbd. Active on the whole page while mounted and `enabled`; a binding can
+ * allow typing in fields. Keys are also ignored while an input method is composing and when another handler already
+ * took the key (defaultPrevented). Listeners are removed on unmount and when disabled.
  */
 export function useHotkeys(map: HotkeyMap, { enabled = true, pressedFor = 150 }: UseHotkeysOptions = {}) {
   // Always the latest map, so handlers can close over fresh state without re-adding the listener.

@@ -1,4 +1,4 @@
-// @syncrobotic/maintenance-work-order v0.48.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
+// @syncrobotic/maintenance-work-order v0.53.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,8 +27,8 @@ const parts = [
 ]
 
 /**
- * A work order at the bench: the robot is out of service until it is signed off. Steps are a checklist done in order;
- * parts used are listed for stock; sign-off stays disabled, and says why, until every step is ticked.
+ * A work order at the bench: steps as a checklist, parts used, notes, and sign-off that says why it is not ready yet.
+ * The robot is out of service until it is signed off. Steps are done in order and parts used are listed for stock.
  */
 export function MaintenanceWorkOrder() {
   const [done, setDone] = React.useState<boolean[]>([true, true, true, false, false])

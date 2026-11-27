@@ -1,4 +1,4 @@
-// @syncrobotic/accordion v0.51.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
+// @syncrobotic/accordion v0.53.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,10 @@ import { Accordion as AccordionPrimitive } from "radix-ui"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+/**
+ * Collapsible sections for settings and FAQs. Enter or Space opens and closes a section; ↑↓, Home and End move between
+ * headers (Radix).
+ */
 export function Accordion(props: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />
 }

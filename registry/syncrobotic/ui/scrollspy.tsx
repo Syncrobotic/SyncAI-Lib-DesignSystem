@@ -1,4 +1,4 @@
-// @syncrobotic/scrollspy v0.51.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.53.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,8 +51,9 @@ export function useScrollspy(ids: string[], { offset = 96, root }: { offset?: nu
 export type ScrollspyItem = { id: string; label: React.ReactNode; level?: 1 | 2 }
 
 /**
- * An "On this page" list that follows the reader. The current link gets aria-current and a bar beside it;
- * links scroll smoothly (instantly under reduced motion) and move focus to the section.
+ * An On this page list that follows the reader through the sections of a page or a scroll area, and the useScrollspy
+ * hook behind it. The current link gets aria-current and a bar beside it; links scroll smoothly (instantly under
+ * reduced motion) and move focus to the section.
  */
 export function Scrollspy({
   items,

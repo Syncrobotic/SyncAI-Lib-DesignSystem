@@ -1,4 +1,4 @@
-// @syncrobotic/metric-card v0.51.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.53.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -39,9 +39,10 @@ function Sparkline({ series, className }: { series: number[]; className?: string
 }
 
 /**
- * One headline number on a card. Only a change for the worse is coloured (`trend="bad"`): a rise is not always good.
- * `href` makes the card one link; `loading` keeps its height; `unavailable` shows a dash, never a made-up 0. A value that
- * is itself a warning takes `tone`. Group in MetricGrid.
+ * One headline number on a card (label, value, change, context), coloured only for a change for the worse or a `tone`,
+ * with link, loading and unavailable states and MetricGrid for a row. A rise is not always good, so only `trend="bad"`
+ * is coloured. `href` makes the card one link; `loading` keeps its height; `unavailable` shows a dash, never a made-up
+ * 0.
  */
 export function MetricCard({
   label,

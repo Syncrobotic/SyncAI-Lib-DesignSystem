@@ -1,10 +1,11 @@
-// @syncrobotic/ros v0.51.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.53.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
-  ROS and ROS 2 in the browser without a ROS library: rosbridge v2 over a WebSocket, plus pure converters from messages
-  to the kit's props (`use-ros` is the React layer). Subscriptions and advertisements are ref-counted per topic and
-  resent on reconnect (capped, jittered backoff); publishes and service calls wait until open; velocity topics get a
-  zero Twist when the publisher goes away or the link drops. rosbridge has no watchdog: the robot must stop by itself
-  when commands stop arriving (a command timeout in its base controller or twist_mux).
+  ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on WebSocket and pure converters between ROS
+  messages and the kit's maps, scans, clouds, joints, poses and Nav2 goals. `use-ros` is the React layer. Subscriptions
+  and advertisements are ref-counted per topic and resent on reconnect (capped, jittered backoff); publishes and service
+  calls wait until open; velocity topics get a zero Twist when the publisher goes away or the link drops. rosbridge has
+  no watchdog: the robot must stop by itself when commands stop arriving (a command timeout in its base controller or
+  twist_mux).
 */
 
 // --- Transport ----------------------------------------------------------------------------------------------------

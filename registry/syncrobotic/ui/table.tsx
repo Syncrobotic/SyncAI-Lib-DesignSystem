@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.52.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.53.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -53,6 +53,10 @@ export type TableLabels = {
 
 export const defaultTableLabels: TableLabels = { region: "Table" }
 
+/**
+ * Dense rows for dashboards with tabular numbers. A table wider than its box scrolls sideways in a named region (a Tab
+ * stop), with a fade at an edge that still hides columns.
+ */
 export function Table({
   className,
   bare,

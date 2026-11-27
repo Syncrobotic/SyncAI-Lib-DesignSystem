@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.48.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.53.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,9 +16,8 @@ const changes = [
 ]
 
 /**
- * An AI agent's proposal waiting for a person: what it wants to change, robot by robot, before and after; why, with the
- * facts it used; and what it does not know. Approve, or send it back with a reason. Nothing moves until a person says so,
- * and the proposal expires rather than applying itself.
+ * An agent's proposed change, before and after per robot, why, and what it does not know; approve or send back with a
+ * reason. Nothing moves until a person says so, and the proposal expires rather than applying itself.
  */
 export function AgentApproval() {
   const [state, setState] = React.useState<"open" | "rejecting" | "approved" | "rejected">("open")

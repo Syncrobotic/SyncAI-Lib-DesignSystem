@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-telemetry v0.35.0 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
+// @syncrobotic/line-chart-telemetry v0.53.0 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,7 +21,7 @@ const hour = Array.from({ length: 7 }, (_, i) => ({
   south: [1.1, 1.2, 1.3, 1.2, 1.0, 1.1, 1.2][i],
 }))
 
-/** Two series over time with a range switch and a table view: the default telemetry chart for a dashboard. */
+/** Two series over time with a 1 h / 24 h switch and a table view: the default telemetry chart. */
 export function LineChartTelemetry({ title = "Average patrol speed" }: { title?: string }) {
   const [range, setRange] = React.useState("24h")
   const [view, setView] = React.useState("chart")

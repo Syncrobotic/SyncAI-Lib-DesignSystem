@@ -1,4 +1,4 @@
-// @syncrobotic/message v0.51.0 · update: npx shadcn add @syncrobotic/message --overwrite
+// @syncrobotic/message v0.53.0 · update: npx shadcn add @syncrobotic/message --overwrite
 "use client"
 
 import * as React from "react"
@@ -78,8 +78,9 @@ type MessageProps = Omit<React.ComponentProps<"article">, "role" | "children"> &
 }
 
 /**
- * One turn of a conversation: a header with the role word (You, Assistant, Tool, System), a name and the time; the body;
- * then the turn's actions and facts. Status is a shape and a word: Failed with Try again, or Stopped.
+ * One turn of a conversation with a model or agent: a role word, name and time (never a bubble colour), any body, then
+ * its actions and a quiet line of facts; streaming is aria-busy. Status is a shape and a word: Failed with Try again,
+ * or Stopped.
  */
 export function Message({
   role,
@@ -231,8 +232,13 @@ export function MessageMeta({
     <p data-slot="message-meta" className={cn("min-w-0 text-xs text-muted-foreground tabular-nums", className)}>
       {parts.map((p, i) => (
         <React.Fragment key={i}>
-          {i > 0 && <span aria-hidden="true"> · </span>}
-          {i > 0 && <span className="sr-only">, </span>}
+          {/* Real spaces around a hidden dot: read as "gpt-4 2.4 s", never run together. */}
+          {i > 0 && (
+            <>
+              {" "}
+              <span aria-hidden="true">·</span>{" "}
+            </>
+          )}
           {p}
         </React.Fragment>
       ))}

@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.47.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.53.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,9 +15,9 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Timeline, TimelineItem } from "@/registry/syncrobotic/ui/timeline"
 
 /**
- * One robot in a side panel, over the list or map it was picked from, so you never lose your place. State and name
- * first, the levels that decide the next action, the last events, and the actions at the bottom in thumb reach. The
- * sheet's scrim covers the app's own stop, so the robot's emergency stop comes with it, above the actions.
+ * One robot in a side panel over the list: state, levels, last events and actions in thumb reach. It opens over the
+ * list or map it was picked from, so you never lose your place. The sheet's scrim covers the app's own stop, so the
+ * robot's emergency stop comes with it, above the actions.
  */
 export function SheetRobotDetail({
   defaultOpen,

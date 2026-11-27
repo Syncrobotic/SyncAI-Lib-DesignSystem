@@ -1,8 +1,11 @@
-// @syncrobotic/card v0.51.0 · update: npx shadcn add @syncrobotic/card --overwrite
+// @syncrobotic/card v0.53.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-/** One surface, radius 16 (md). Do not nest cards; group rows inside one card instead. */
+/**
+ * One surface with radius 16 for a group of related content, with CardMedia for a cover picture. Do not nest cards;
+ * group rows inside one card instead.
+ */
 export function Card({ className, ...props }: React.ComponentProps<"div">) {
   return <div data-slot="card" className={cn("flex flex-col gap-4 rounded-md bg-card p-4 text-card-foreground ring-1 ring-border", className)} {...props} />
 }

@@ -1,4 +1,4 @@
-// @syncrobotic/sign-in v0.52.0 · update: npx shadcn add @syncrobotic/sign-in --overwrite
+// @syncrobotic/sign-in v0.53.0 · update: npx shadcn add @syncrobotic/sign-in --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,8 +9,8 @@ import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
 /**
- * Sign in to an internal tool: company single sign-on first, email as the fallback. One column, the product name on top,
- * the error said in words under the field it belongs to, the button names what happens.
+ * Sign in to an internal tool with company SSO first and an email link as the fallback: one column, errors under the
+ * field, a confirmation that says where the link went. The product name sits on top and the button names what happens.
  */
 export function SignIn({ product = "Fleet console", onSignIn }: { product?: string; onSignIn?: (method: "sso" | "email", email?: string) => void }) {
   const [email, setEmail] = React.useState("")

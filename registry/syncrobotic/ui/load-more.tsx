@@ -1,4 +1,4 @@
-// @syncrobotic/load-more v0.51.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.53.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,9 +19,10 @@ export const defaultLoadMoreLabels: LoadMoreLabels = {
 }
 
 /**
- * The end of a long list on a phone or in a gallery: how much is shown and one button that says how many it adds. Focus
- * stays on the button; when the last press removes it, focus moves to the count, never to the top of the page. Give rows
- * past the first batch `animate-appear` so new rows arrive rather than pop in.
+ * The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how
+ * many it adds and how many remain. Focus stays on the button; when the last press removes it, focus moves to the
+ * count, never to the top of the page. Give rows past the first batch `animate-appear` so new rows arrive rather than
+ * pop in.
  */
 export function LoadMore({
   shown,

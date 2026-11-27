@@ -1,4 +1,4 @@
-// @syncrobotic/settings-api-keys v0.50.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
+// @syncrobotic/settings-api-keys v0.53.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
 "use client"
 
 import * as React from "react"
@@ -36,9 +36,9 @@ export const sampleKeys: ApiKey[] = [
 const fakeSecret = (name: string) => `sk_live_${(name.length * 7919).toString(16).padStart(4, "0")}_${"x7Kq2mVb9TzR4wYp8NcH3sLd".slice(0, 24)}`
 
 /**
- * API keys: the list, creating one, and revoking one. A new key's secret is shown once, with a copy button, and dropped
- * from memory when you leave it; afterwards only its first characters are shown. Revoking asks first and says what will
- * stop working.
+ * Create, list and revoke API keys: a new secret shown once with a copy button, revoking confirmed first. The secret is
+ * dropped from memory when you leave it; afterwards only its first characters are shown. Revoking says what will stop
+ * working.
  */
 export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[] }) {
   const [keys, setKeys] = React.useState(initial)

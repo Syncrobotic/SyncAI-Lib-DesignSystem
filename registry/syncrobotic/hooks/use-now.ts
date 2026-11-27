@@ -1,4 +1,4 @@
-// @syncrobotic/use-now v0.52.0 · update: npx shadcn add @syncrobotic/use-now --overwrite
+// @syncrobotic/use-now v0.53.0 · update: npx shadcn add @syncrobotic/use-now --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,9 +21,10 @@ export function useHydrated(): boolean {
 }
 
 /**
- * The clock in ms since the epoch, read again every `intervalMs` (null: read once), for "12 s ago" and timeouts.
- * Null on the server and while the page hydrates, so both renders agree (a time read during render differs between them
- * and breaks hydration). A component mounted after hydration gets the time in its first render, so nothing flashes.
+ * The clock, read again at an interval, and null until the page has hydrated, so a server render and the browser's
+ * first one never disagree about the time. The value is ms since the epoch, read every `intervalMs` (null: read once),
+ * for "12 s ago" and timeouts. A component mounted after hydration gets the time in its first render, so nothing
+ * flashes.
  */
 export function useNow(intervalMs: number | null = 1000): number | null {
   // Read when this component first renders. The server reads one too, but never returns it.

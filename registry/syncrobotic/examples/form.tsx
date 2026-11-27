@@ -1,8 +1,9 @@
-// @syncrobotic/form v0.51.0 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.53.0 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
-// An example to copy, not a component: React Hook Form and zod drawn with the kit's Field, which shows the label, hint
-// and error and wires aria-invalid and aria-describedby. Each control sits in a Controller and a Field (or FieldSet).
+// A form to copy and change, with no wrapper component: React Hook Form's Controller around Field, a zod schema, focus on
+// the first error, server errors and a submit button that waits. The kit's Field shows the label, hint and error and
+// wires aria-invalid and aria-describedby.
 // - Errors wait for the first submit, then follow each change (mode "onSubmit"); noValidate turns off browser bubbles.
 // - A failed submit focuses the first field in error (shouldFocusError needs field.ref on something focusable: an
 //   Input through {...field}, a Select on its trigger, a group on its first choice).

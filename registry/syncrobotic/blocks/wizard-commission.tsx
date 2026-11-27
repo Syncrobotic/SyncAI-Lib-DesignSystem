@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.48.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.53.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,9 +17,9 @@ import { Stepper, StepperItem } from "@/registry/syncrobotic/ui/stepper"
 const checks = ["Robot answers on the network", "Battery above 50 %", "Cameras and lidar", "Emergency stop responds"]
 
 /**
- * Adding a robot to the fleet, in four steps: identify it, place it, let it check itself, then name it. Each step
- * validates before Next; finished steps can be revisited from the stepper. The self-check is the only waiting, and it
- * shows each check as it passes, in-progress blue for the one running.
+ * Adding a robot in four steps: identify, place, a live self-check, and a name. Each step validates before Next;
+ * finished steps can be revisited from the stepper. The self-check shows each check as it passes, in-progress blue for
+ * the one running.
  */
 export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string; site: string; dock: string; name: string }) => void }) {
   const [step, setStep] = React.useState(1)
@@ -134,7 +134,8 @@ export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string
                         )}
                       </span>
                       <span className={state === "waiting" ? "text-muted-foreground" : ""}>{c}</span>
-                      <span className="sr-only">, {state}</span>
+                      {" "}
+                      <span className="sr-only">{state}</span>
                     </li>
                   )
                 })}

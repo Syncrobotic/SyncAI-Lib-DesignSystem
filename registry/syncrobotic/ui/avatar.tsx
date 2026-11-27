@@ -1,4 +1,4 @@
-// @syncrobotic/avatar v0.51.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
+// @syncrobotic/avatar v0.53.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,8 +14,9 @@ const sizes = {
 } as const
 
 /**
- * A person (round), or a thing that acts like one (`shape="square"`: a robot, a site, a team), so a mixed list tells who
- * from what. Sizes sm 24, md 32 (default), lg 40, xl 48.
+ * A person (round) or a robot, site or team (square), by picture, initials or icon, in four sizes, with a status or
+ * count badge and overlapping groups that fold into +N. Square tells a thing from a person in a mixed list. Sizes sm
+ * 24, md 32 (default), lg 40, xl 48.
  */
 export function Avatar({
   className,

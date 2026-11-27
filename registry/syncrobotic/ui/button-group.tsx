@@ -1,10 +1,10 @@
-// @syncrobotic/button-group v0.51.0 · update: npx shadcn add @syncrobotic/button-group --overwrite
+// @syncrobotic/button-group v0.53.0 · update: npx shadcn add @syncrobotic/button-group --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * Buttons, a field or a menu trigger joined into one strip (a split button, prev / next, a search with its scope). It holds
+ * Buttons, a field or a menu joined into one strip: split buttons, steppers, prev / next, search with scope. It holds
  * no selection: for one choice among several use SegmentedControl or ToggleGroup.
  */
 export function ButtonGroup({ className, orientation = "horizontal", ...props }: React.ComponentProps<"div"> & { orientation?: "horizontal" | "vertical" }) {

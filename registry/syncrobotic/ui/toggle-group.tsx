@@ -1,4 +1,4 @@
-// @syncrobotic/toggle-group v0.51.0 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
+// @syncrobotic/toggle-group v0.53.0 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,9 +16,9 @@ const Ctx = React.createContext<{ variant: Variant; size: Size; joined: boolean;
 })
 
 /**
- * A set of toggles: one on (`type="single"`) or any mix (`type="multiple"`). On is inverted. Joined by default
- * (`joined={false}` spaces them); two adjacent on items keep a 1 px line so they read as two. For switching views of the
- * same data use SegmentedControl.
+ * A set of toggles, one or many on, joined or spaced, outline or ghost, and inverted when on. `type="single"` or
+ * `type="multiple"`; `joined={false}` spaces them. Two adjacent on items keep a 1 px line so they read as two. For
+ * switching views of the same data use SegmentedControl.
  */
 export function ToggleGroup({
   className,

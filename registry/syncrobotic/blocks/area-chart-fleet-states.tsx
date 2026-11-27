@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-fleet-states v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
+// @syncrobotic/area-chart-fleet-states v0.53.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,7 +24,9 @@ const data = ["06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20
 // next by a 2 px stroke in the card colour (so no dashed outlines here; the legend shows a square swatch).
 const band = (key: keyof typeof config) => ({ dataKey: key, stackId: "s", type: "stepAfter", fill: `var(--color-${key})`, fillOpacity: 1, stroke: "var(--card)", strokeWidth: 2 }) as const
 
-/** How the fleet's time splits over the day: stacked step areas, so every hour adds up to the fleet. */
+/**
+ * How the fleet splits between patrolling, charging and idle over the day: stacked step areas that add up to the fleet.
+ */
 export function AreaChartFleetStates() {
   const [view, setView] = React.useState("chart")
   return (

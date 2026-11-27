@@ -1,4 +1,4 @@
-// @syncrobotic/use-long-press v0.45.1 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
+// @syncrobotic/use-long-press v0.53.0 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,11 +15,10 @@ type Options = {
 }
 
 /**
- * Press-and-hold with progress, for pointer, keyboard and assistive tech alike:
+ * Press and hold for pointer, keyboard and assistive tech alike, with progress from 0 to 1 for a left-to-right fill.
  * - pointer down, or Enter / Space down, fires `onPress` at once; holding for `duration` fires `onLongPress`
  * - releasing, leaving the target or losing focus cancels the hold
  * - a click with no pointer and no key before it (screen readers, switch control) fires `onPress`
- * Progress runs from 0 to 1 and is meant for a left-to-right fill.
  */
 export function useLongPress({ onPress, onLongPress, duration = 2000, showAfter = 500 }: Options) {
   const [progress, setProgress] = React.useState(0)

@@ -1,11 +1,14 @@
-// @syncrobotic/toggle v0.51.0 · update: npx shadcn add @syncrobotic/toggle --overwrite
+// @syncrobotic/toggle v0.53.0 · update: npx shadcn add @syncrobotic/toggle --overwrite
 "use client"
 
 import * as React from "react"
 import { Toggle as TogglePrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
-/** An on/off button, e.g. a map or image layer. On is inverted, like a selected segment. For one choice among several, use SegmentedControl. */
+/**
+ * An on/off button for a layer or option, inverted when on like a selected segment. For one choice among several, use
+ * SegmentedControl.
+ */
 export function Toggle({ className, size = "md", ...props }: React.ComponentProps<typeof TogglePrimitive.Root> & { size?: "sm" | "md" }) {
   return (
     <TogglePrimitive.Root

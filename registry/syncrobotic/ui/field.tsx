@@ -1,4 +1,4 @@
-// @syncrobotic/field v0.51.0 · update: npx shadcn add @syncrobotic/field --overwrite
+// @syncrobotic/field v0.53.0 · update: npx shadcn add @syncrobotic/field --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,8 +17,8 @@ const FieldContext = React.createContext<FieldState | null>(null)
 export const useField = () => React.useContext(FieldContext)
 
 /**
- * Label, control, then one line: the hint, or the error in its place. Wires id, aria-describedby and aria-invalid onto the
- * child control, and shares them through useField for controls with their own trigger.
+ * Label, control and one line for the hint or the error, with ids and aria wired up. useField shares the ids with
+ * controls that have their own trigger.
  */
 export function Field({
   label,

@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-missions v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
+// @syncrobotic/bar-chart-missions v0.53.0 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,7 +19,9 @@ const data = [
   { d: "Sun", done: 10, aborted: 1 },
 ]
 
-/** Two counts side by side per day: grouped bars with a 2 px gap, rounded on the data end, and a table view. */
+/**
+ * Two counts side by side per day, with totals and a table view. Grouped bars with a 2 px gap, rounded on the data end.
+ */
 export function BarChartMissions() {
   const [view, setView] = React.useState("chart")
   return (

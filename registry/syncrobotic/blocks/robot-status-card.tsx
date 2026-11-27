@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.48.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.53.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -31,8 +31,9 @@ export const sampleRobotStatus: RobotStatus = {
 }
 
 /**
- * One robot on a phone: state first, then the numbers that decide the next action, then the actions.
- * Pair it with the dock's emergency stop; this card never stops the robot itself.
+ * One robot on a phone (state, battery, connection, location, current task, next actions) that never stops the robot
+ * itself: the app's dock carries the emergency stop. State first, then the numbers that decide the next action, then
+ * the actions.
  */
 export function RobotStatusCard({
   robot = sampleRobotStatus,

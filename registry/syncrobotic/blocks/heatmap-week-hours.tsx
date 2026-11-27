@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-week-hours v0.47.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.53.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,7 +28,9 @@ const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round((v
 // No data (null) is not none: the theme's no-data hatch (3:1 outline and lines), so a gap never passes for a quiet hour.
 const fmt = (v: number | null) => (v === null ? "no data" : `${v} ${v === 1 ? "incident" : "incidents"}`)
 
-/** When incidents happen: days by 2-hour slots, one sequential hue, the busiest slot named in words. */
+/**
+ * Days by 2-hour slots in one sequential hue, the busiest slot named, a tooltip per cell. Here: when incidents happen.
+ */
 export function HeatmapWeekHours() {
   const [view, setView] = React.useState("chart")
   let peak = { day: days[0], h: 0, v: -1 }

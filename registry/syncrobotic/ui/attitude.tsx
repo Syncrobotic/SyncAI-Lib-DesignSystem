@@ -1,4 +1,4 @@
-// @syncrobotic/attitude v0.51.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
+// @syncrobotic/attitude v0.53.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,10 +11,10 @@ import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-n
 import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
-  Two SVG instruments for a robot's state, always also written in numbers and words: AttitudeIndicator (roll, pitch and
-  heading from an IMU) and Gauge (one value with a known range on a 270° dial). For a 20 to 50 Hz stream, `push` or
-  `subscribe` moves the drawing on the next frame without a React render; the words update at most four times a second
-  (at once when a limit is crossed).
+  AttitudeIndicator (roll, pitch and heading as an artificial horizon with tip-over limits) and Gauge (one value on a
+  dial with Meter's thresholds), both fed by push() at 20 to 50 Hz. Both are also written in numbers and words: `push` or
+  `subscribe` moves the drawing on the next frame without a React render, and the words update at most four times a
+  second (at once when a limit is crossed).
 */
 
 // ---------- Numbers ----------

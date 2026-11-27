@@ -1,4 +1,4 @@
-// @syncrobotic/joint-state v0.51.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
+// @syncrobotic/joint-state v0.53.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
 "use client"
 
 import * as React from "react"
@@ -202,8 +202,8 @@ const wideGrid: Record<Columns, string> = {
 }
 
 /**
- * A robot arm's joints, for watching rather than driving: each position against its limits, with velocity and effort.
- * Near or past a limit it says so in words beside a warning or danger shape; when updates stop it says "Stale".
+ * A robot arm's joints from ROS JointState and URDF limits: each position on a track between its limits, with velocity,
+ * effort, near- and at-limit in words, and loading, empty and stale states. For watching rather than driving.
  */
 export function JointState({
   joints,

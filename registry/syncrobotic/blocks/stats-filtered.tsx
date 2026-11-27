@@ -1,4 +1,4 @@
-// @syncrobotic/stats-filtered v0.40.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
+// @syncrobotic/stats-filtered v0.53.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,10 @@ const kpis: Kpi[] = [
 
 const rangeLabel: Record<Range, string> = { "24h": "previous 24 hours", "7d": "previous 7 days", "30d": "previous 30 days" }
 
-/** A KPI row that follows one range and one site, chosen above it. Every change is compared with the period before and coloured only when it is worse. */
+/**
+ * A KPI row that follows a site and a time range chosen above it, each change compared with the period before. A change
+ * is coloured only when it is worse.
+ */
 export function StatsFiltered({ className }: { className?: string }) {
   const [range, setRange] = React.useState<Range>("7d")
   const [site, setSite] = React.useState("all")

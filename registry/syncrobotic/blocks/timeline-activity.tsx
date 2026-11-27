@@ -1,4 +1,4 @@
-// @syncrobotic/timeline-activity v0.40.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
+// @syncrobotic/timeline-activity v0.53.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,7 +24,7 @@ const days = [
   },
 ]
 
-/** What a robot did on its shift, newest first and grouped by day, each event with its kind as an icon. */
+/** A robot's shift, newest first and grouped by day, each event with its kind as an icon. */
 export function TimelineActivity({ className }: { className?: string }) {
   return (
     <Card className={cn("w-full max-w-xl", className)}>

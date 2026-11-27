@@ -1,4 +1,4 @@
-// @syncrobotic/maintenance-due v0.40.0 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
+// @syncrobotic/maintenance-due v0.53.0 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
 "use client"
 
 import * as React from "react"
@@ -62,9 +62,9 @@ const columns: ResponsiveTableColumn<Due>[] = [
 ]
 
 /**
- * Service that is coming due, by hours run rather than by date: each robot's meter fills towards its interval and turns
- * to warning near it and danger past it, and the due column says so in a word. Overdue first. Booking a slot is the one
- * action; it takes the robot off missions then. The same rows are a table where there is room and a list on a phone.
+ * Service coming due by hours run: a meter per robot that turns amber near its interval and red past it, overdue first.
+ * The due column says so in a word. Booking a slot is the one action; it takes the robot off missions then. A table
+ * where there is room, a list on a phone.
  */
 export function MaintenanceDue({ rows: initialRows = initial }: { rows?: Due[] } = {}) {
   const [rows, setRows] = React.useState(initialRows)

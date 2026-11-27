@@ -1,10 +1,14 @@
-// @syncrobotic/separator v0.5.0 · update: npx shadcn add @syncrobotic/separator --overwrite
+// @syncrobotic/separator v0.53.0 · update: npx shadcn add @syncrobotic/separator --overwrite
 "use client"
 
 import * as React from "react"
 import { Separator as SeparatorPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
+/**
+ * A horizontal or vertical hairline between groups of content. Decorative by default, so screen readers skip it; set
+ * `decorative={false}` when it separates sections they should hear about.
+ */
 export function Separator({ className, orientation = "horizontal", decorative = true, ...props }: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
   return (
     <SeparatorPrimitive.Root

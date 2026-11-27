@@ -1,4 +1,4 @@
-// @syncrobotic/camera-wall v0.51.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.53.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
@@ -186,8 +186,9 @@ export type CameraWallProps = {
 }
 
 /**
- * Many robot cameras at once: an auto grid, pages when there are more, and one focused large with a strip of the rest.
- * Off-screen or hidden tiles pause, only the focused one asks for high quality, and at most `maxLive` stream at once.
+ * Many robot cameras at once as a grid, a focused camera with a strip, or a list on phones, pausing hidden tiles and
+ * capping live streams, each tile with its robot's state and alarm. Only the focused one asks for high quality; at most
+ * `maxLive` stream at once.
  */
 export function CameraWall({
   cameras,
@@ -690,11 +691,11 @@ function Tile({
           <p className="min-w-0 break-words">
             <span className="font-medium">{camera.label}</span>
             {camera.source && <span className="text-muted-foreground"> · {camera.source}</span>}
-          </p>
+          </p>{" "}
           <span aria-hidden={playing ? undefined : true} className="flex shrink-0">
             <CameraFeedStateLine state={state} labels={feedLabels} />
           </span>
-          {lastFrame && <span className="sr-only">, {lastFrame}</span>}
+          {lastFrame && <span className="sr-only"> {lastFrame}</span>}
         </div>
         <div ref={stack} className="relative mt-auto">
           {playing ? (
