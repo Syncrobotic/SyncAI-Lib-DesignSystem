@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.53.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.55.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"

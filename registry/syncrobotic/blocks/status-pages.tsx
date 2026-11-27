@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.53.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.55.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"

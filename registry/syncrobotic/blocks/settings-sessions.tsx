@@ -1,4 +1,4 @@
-// @syncrobotic/settings-sessions v0.53.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
+// @syncrobotic/settings-sessions v0.55.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
 "use client"
 
 import * as React from "react"

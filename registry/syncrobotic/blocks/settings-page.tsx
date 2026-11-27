@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.53.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.55.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"

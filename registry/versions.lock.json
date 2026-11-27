@@ -37,7 +37,7 @@
   },
   "labels-zh-tw": {
     "version": "0.55.0",
-    "hash": "438a115797972743"
+    "hash": "d2e9d7ab6d6b2cac"
   },
   "ros": {
     "version": "0.53.0",
@@ -65,7 +65,7 @@
   },
   "use-list-query": {
     "version": "0.55.0",
-    "hash": "3c64a6d392f9b101"
+    "hash": "a0e388a38540daa9"
   },
   "use-step-up": {
     "version": "0.55.0",
@@ -608,8 +608,8 @@
     "hash": "dae4b84a4c99ce13"
   },
   "fleet-table": {
-    "version": "0.53.0",
-    "hash": "30be5468b059498b"
+    "version": "0.55.0",
+    "hash": "1489b03d62fd0f48"
   },
   "robot-status-card": {
     "version": "0.53.0",
@@ -664,24 +664,24 @@
     "hash": "60beeb02eefad633"
   },
   "settings-page": {
-    "version": "0.53.0",
-    "hash": "dee198987f07f192"
+    "version": "0.55.0",
+    "hash": "417072da2c685c93"
   },
   "record-form": {
     "version": "0.53.0",
     "hash": "304e2325449bf86c"
   },
   "users-roles": {
-    "version": "0.53.0",
-    "hash": "2cab0011dd603173"
+    "version": "0.55.0",
+    "hash": "e65ebb6b607577da"
   },
   "sign-in": {
     "version": "0.53.0",
     "hash": "d42790ed53bb6207"
   },
   "status-pages": {
-    "version": "0.53.0",
-    "hash": "abb15820ae3a2f2d"
+    "version": "0.55.0",
+    "hash": "ed2f295992f73b9a"
   },
   "agent-skill": {
     "version": "0.55.0",
@@ -812,24 +812,24 @@
     "hash": "7276ad84990a5f63"
   },
   "settings-api-keys": {
-    "version": "0.53.0",
-    "hash": "35a31f0e2674bb8c"
+    "version": "0.55.0",
+    "hash": "d38442802aa9c3eb"
   },
   "settings-webhooks": {
-    "version": "0.53.0",
-    "hash": "7c2ae14be6d90c7f"
+    "version": "0.55.0",
+    "hash": "9161a5cb28d2193b"
   },
   "settings-sessions": {
-    "version": "0.53.0",
-    "hash": "4b2d4d9cf979e38a"
+    "version": "0.55.0",
+    "hash": "b13b06014a331298"
   },
   "settings-billing": {
     "version": "0.53.0",
     "hash": "738c57e02cf295ef"
   },
   "notification-center": {
-    "version": "0.53.0",
-    "hash": "c8143d2ebb5e59dc"
+    "version": "0.55.0",
+    "hash": "a8047aa1a3d01328"
   },
   "dialog-confirm-destructive": {
     "version": "0.53.0",
@@ -872,12 +872,12 @@
     "hash": "fdee2bbc67c7d0d1"
   },
   "users-invitations": {
-    "version": "0.53.0",
-    "hash": "cbdde826010cfaed"
+    "version": "0.55.0",
+    "hash": "062e605394a4f248"
   },
   "users-audit-log": {
-    "version": "0.53.0",
-    "hash": "068d4eebb00f8500"
+    "version": "0.55.0",
+    "hash": "3f4d53b5dc724d97"
   },
   "incident-queue": {
     "version": "0.53.0",

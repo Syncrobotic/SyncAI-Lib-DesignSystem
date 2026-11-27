@@ -445,7 +445,7 @@
           {
             "version": "0.55.0",
             "date": "2026-11-27",
-            "note": "`dataStateLabels`, `permissionGateLabels` and `stepUpDialogLabels` for the new data-state, permission-gate and step-up-dialog (載入中…, 沒有權限, 確認是你本人)."
+            "note": "`dataStateLabels`, `permissionGateLabels` and `stepUpDialogLabels` for the new data-state, permission-gate and step-up-dialog (載入中…, 沒有權限, 確認是你本人). Also the ten controlled blocks' labels; `noAccessPageLabels.body` follows the new signature."
           },
           {
             "version": "0.54.0",
@@ -828,7 +828,7 @@
           {
             "version": "0.55.0",
             "date": "2026-11-27",
-            "note": "First release: the query from the URL through an adapter (`historyAdapter` by default, `memoryAdapter`, or your router's), the search text ahead of the URL with a debounce, and a new search, sort, limit or filter back on page 1."
+            "note": "First release: the query from the URL through an adapter (`historyAdapter` by default, `memoryAdapter`, or your router's), the search text ahead of the URL with a debounce, and a new search, sort, limit or filter back on page 1. `setQuery` and `useSearchText` for controlled blocks."
           }
         ]
       }
@@ -9245,10 +9245,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `FleetTableContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Segment counts come from `counts`, no longer counted in the browser."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10560,10 +10565,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsPageContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Read-only without `project:write`; delete disabled with its reason without `project:delete`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10716,10 +10726,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersRolesContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Roles arrive with their permission bundles; nobody gives a role above their own. Invite sits in the content."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10842,10 +10857,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Breaking: `NoAccessPage` takes `permission` instead of `role`, and `NoAccessPageLabels.body` is `(permission, admin)`; `ErrorPage` has no default `reference` and words errors by `error.code`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -12981,10 +13001,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsApiKeysContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Scopes bounded by `allowedScopes` and an expiry. Breaking: `ApiKey.created`/`lastUsed` become ISO `createdAt`/`lastUsedAt`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13054,10 +13079,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsWebhooksContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Breaking: `WebhookDelivery.time` is removed (formatted from `at`); `failingSince` is ISO."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13128,10 +13158,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsSessionsContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Breaking: `lastActive` becomes ISO `lastActiveAt`; `TrustedBrowser.since`/`until` are ISO."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13254,10 +13289,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `NotificationCenterContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. `NotificationPanelContent` too; the unread count comes from the server."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13961,10 +14001,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersInvitationsContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Dates are ISO, formatted through Intl."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -14038,10 +14083,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersAuditLogContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. The count reads the server's total; Export sits in the content."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",

@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.53.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.55.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
