@@ -2,6 +2,20 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.50.1 · 2026-11-27
+
+A sidebar that is where you left it from the first paint.
+
+### Fixed
+- **`sidebar` 0.50.1:** a page whose server cannot read cookies (a static page) rendered the default sidebar. React read the stored choice only after hydration, so a stored rail or width jumped into place about 40 ms into every load.
+  - **The fix:** a short script after the column now runs as the HTML is parsed, before the first paint. It sets the column's `data-state`, `data-collapsible` and `--sidebar-width` from the cookie, and React then renders the same.
+  - **Widths:** the column's width now follows those attributes (`data-[collapsible=icon]:w-17`) instead of React's state.
+  - **Strict CSP:** it needs inline scripts. Under a CSP without them it does nothing and the column moves into place after hydration, as before; read the cookies on the server instead (AppShell's `sidebarOpen` and `sidebarWidth`).
+- **Docs:** a preview opened in its own tab shows "Back to the docs" from the first paint, instead of pushing the block down 44 px after hydration.
+
+### Changed
+- **Dev tooling:** `@babel/core` 8 for the React Compiler test transform. Storybook's docgen plugin lifted to 0.9.1 through `overrides`, which drops the glob 13 / minimatch 10 chain behind four moderate `npm audit` advisories: `npm audit` reports 0.
+
 ## 0.50.0 · 2026-11-27
 
 Accessibility checked in the markup itself, before anything renders.

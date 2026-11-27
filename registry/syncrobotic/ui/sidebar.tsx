@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.50.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.50.1 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -81,6 +81,11 @@ type SidebarContextValue = {
   handOffFocus: () => void
   /** The open column's width in px (200 to 320). */
   width: number
+  /**
+   * The cookie the stored choice is read from before React runs (see Sidebar), and whether that choice decides the state:
+   * not when the provider is controlled.
+   */
+  boot: { cookieName: string; state: boolean } | null
   /** Sets the width; `keep` stores it in the cookie (at the end of a drag, not on every move). */
   setWidth: (width: number, keep?: boolean) => void
   /** true while the handle is dragged: the width follows the pointer without easing. */
@@ -106,6 +111,24 @@ const subscribeCookie = (onChange: () => void) => {
     cookieListeners.delete(onChange)
   }
 }
+/**
+ * The script Sidebar puts after its column: before the first paint it sets the stored state (when `mode` is given, the
+ * provider being uncontrolled) and width on the elements the server rendered with the defaults.
+ */
+function bootScript(cookieName: string, mode: string | null, min: number, max: number) {
+  const name = JSON.stringify(cookieName)
+  return (
+    `(function(s){var a=s&&s.previousElementSibling,w=a&&a.closest("[data-slot=sidebar-wrapper]");if(!w)return;` +
+    `var c=function(n){var r=null;document.cookie.split(";").forEach(function(p){var i=p.indexOf("=");if(p.slice(0,i).trim()===n)r=p.slice(i+1)});return r};` +
+    `var x=Number(c(${name}+"_width"));if(x)w.style.setProperty("--sidebar-width",Math.round(Math.min(${max},Math.max(${min},x)))+"px");` +
+    (mode
+      ? `var o=c(${name});if(o==="false"){a.setAttribute("data-state","collapsed");a.setAttribute("data-collapsible",${JSON.stringify(mode)})}` +
+        `else if(o==="true"){a.setAttribute("data-state","expanded");a.setAttribute("data-collapsible","")}`
+      : "") +
+    `})(document.currentScript)`
+  )
+}
+
 function readCookie(name: string) {
   for (const part of document.cookie.split(";")) {
     const [key, ...value] = part.trim().split("=")
@@ -254,6 +277,7 @@ export function SidebarProvider({
     handOffFocus,
     width,
     setWidth,
+    boot: cookieName ? { cookieName, state: openProp === undefined } : null,
     resizing,
     setResizing,
   }
@@ -263,6 +287,8 @@ export function SidebarProvider({
       <div
         data-slot="sidebar-wrapper"
         data-sidebar-provider={wrapperId}
+        // The boot script in Sidebar may have set --sidebar-width from the cookie before hydration (the same value).
+        suppressHydrationWarning
         className={cn("flex w-full", className)}
         {...props}
         style={{ "--sidebar-width": `${width}px`, ...props.style } as React.CSSProperties}
@@ -286,7 +312,7 @@ type SidebarProps = React.ComponentProps<"aside"> & {
  * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
-  const { state, isMobile, openMobile, setOpenMobile, labels, forced } = useSidebar()
+  const { state, isMobile, openMobile, setOpenMobile, labels, forced, boot } = useSidebar()
 
   if (isMobile && collapsible !== "none") {
     return (
@@ -311,7 +337,7 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
 
   const collapsed = collapsible !== "none" && state === "collapsed"
   const hidden = collapsed && collapsible === "offcanvas"
-  return (
+  const column = (
     <aside
       data-slot="sidebar"
       data-state={collapsed ? "collapsed" : "expanded"}
@@ -319,6 +345,8 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
       data-variant={variant}
       data-side={side}
       aria-label={labels.sidebar}
+      // The boot script below may have set data-state and data-collapsible from the cookie before hydration.
+      suppressHydrationWarning
       className={cn(
         // Sticky and as tall as the screen when the page scrolls; as tall as the frame when the provider has a height.
         // Not clipped itself (the frame inside clips the column), so a SidebarRail can reach over its edge.
@@ -329,9 +357,10 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         // While the handle is dragged the width follows the pointer as it is, without easing (SidebarRail sets
         // data-resizing on this element); folding, opening and springing back keep the easing.
         "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none data-resizing:transition-none",
-        collapsed ? (hidden ? "w-0" : "w-17") : "w-(--sidebar-width)",
+        // From the attributes, not React's state, so the boot script below can set the width before the first paint.
+        "w-(--sidebar-width) data-[collapsible=icon]:w-17 data-[collapsible=offcanvas]:w-0",
         variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
-        hidden && "border-0 ring-0",
+        "data-[collapsible=offcanvas]:border-0 data-[collapsible=offcanvas]:ring-0",
         className,
       )}
       {...props}
@@ -345,6 +374,23 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         </div>
       </div>
     </aside>
+  )
+  return (
+    <>
+      {column}
+      {/* A server cannot read the cookie of a static page, so its HTML has the default sidebar, and React reads the stored
+          choice only after hydration: a stored rail or width would jump into place on every load. This runs as the HTML is
+          parsed, before the first paint, and sets the column the person left: the attributes the width and the rail's
+          styles follow, and --sidebar-width. React then renders the same. Without inline scripts (a strict CSP) it does
+          nothing, and the column moves into place after hydration as before; read the cookies on the server instead
+          (AppShell's sidebarOpen and sidebarWidth). */}
+      {boot && collapsible !== "none" && (
+        <script
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: bootScript(boot.cookieName, boot.state ? collapsible : null, WIDTH.min, WIDTH.max) }}
+        />
+      )}
+    </>
   )
 }
 
