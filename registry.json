@@ -196,8 +196,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.54.0",
         "changelog": [
+          {
+            "version": "0.54.0",
+            "date": "2026-11-27",
+            "note": "Titled \"Feedback cues\", so it no longer shares a name with the Feedback group; the code is unchanged."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -412,8 +417,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.54.0",
         "changelog": [
+          {
+            "version": "0.54.0",
+            "date": "2026-11-27",
+            "note": "Command dialog key hints: 移動, 開啟, 關閉."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -5245,8 +5255,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.54.0",
         "changelog": [
+          {
+            "version": "0.54.0",
+            "date": "2026-11-27",
+            "note": "`CommandDialog` shows key hints at its foot (move, open, close), hidden on touch; `hints={false}` turns them off. Now depends on `kbd`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6517,8 +6532,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.53.0",
+        "version": "0.54.0",
         "changelog": [
+          {
+            "version": "0.54.0",
+            "date": "2026-11-27",
+            "note": "Opening a camera and going back move the pictures into place with a view transition on the motion tokens; instant under reduced motion or without the API, and the rest of the page stays live during it."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",

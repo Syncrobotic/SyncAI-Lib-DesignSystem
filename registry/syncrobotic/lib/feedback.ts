@@ -1,4 +1,4 @@
-// @syncrobotic/feedback v0.53.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
+// @syncrobotic/feedback v0.54.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
 
 /*
   Vibration patterns per safety moment (stop sent, confirmed, unconfirmed, release, drive start and stop, new critical
