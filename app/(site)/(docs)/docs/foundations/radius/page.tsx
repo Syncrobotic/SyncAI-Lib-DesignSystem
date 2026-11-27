@@ -15,6 +15,7 @@ const round = [
   "Count badges (a number in a circle)",
   "Step circles",
   "Grips and grabbers: the bottom sheet's grabber, a resize grip",
+  "Bars inside a rounded row: an alarm's priority bar, a selected row's ink bar (a straight edge would bend round the corner)",
 ]
 
 const radii = [
@@ -75,7 +76,7 @@ export default function RadiusPage() {
         </p>
       </Section>
 
-      <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a seventh step. Round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers. Never a container, card or button.">
+      <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a seventh step. Round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers, bars inside a rounded row. Never a container, card or button.">
         <div className="grid gap-4 sm:grid-cols-2">
           <ul className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 text-sm">
             {round.map((r) => (

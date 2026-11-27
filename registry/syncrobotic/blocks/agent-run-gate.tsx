@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-gate v0.47.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
+// @syncrobotic/agent-run-gate v0.48.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
 "use client"
 
 import * as React from "react"
@@ -277,7 +277,7 @@ export function AgentRunGateContent({ run = sampleAgentRun, onDecide, script = t
         <div className="flex min-w-0 flex-col gap-4">
           <div className="flex flex-col gap-1">
             <StatusEyebrow status={state}>{word}</StatusEyebrow>
-            <Title className="text-xl font-bold text-pretty">{run.goal}</Title>
+            <Title className="text-base font-bold text-pretty">{run.goal}</Title>
             <p className="flex items-center gap-2 text-sm text-muted-foreground">
               <Sparkles aria-hidden="true" className="size-4 shrink-0" />
               <span>

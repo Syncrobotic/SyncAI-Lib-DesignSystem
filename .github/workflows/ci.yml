@@ -153,11 +153,13 @@ jobs:
           path: test-results
 
   # The built site, looked at the way the design-language checklist asks: corners that are not concentric (outer radius =
-  # inner + padding, scripts/check-radius.cjs) and rows of actions that wrap badly on a 375 px phone (scripts/check-wrap.cjs).
+  # inner + padding, scripts/check-radius.cjs), rows of actions that wrap badly on a 375 px phone (scripts/check-wrap.cjs),
+  # and axe on every docs page and block preview, dark and light (scripts/check-site-a11y.cjs; the examples' stories run
+  # axe themselves).
   site-checks:
     if: github.event_name == 'pull_request' && github.base_ref != 'main'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root, SITE: "http://127.0.0.1:3000" }
     steps:
@@ -180,6 +182,7 @@ jobs:
           timeout 60 bash -c 'until node -e "fetch(process.env.SITE).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"; do sleep 1; done'
           npm run check:radius
           npm run check:wrap
+          npm run check:a11y
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
   # request touches nothing an installed item is made of (docs pages, the site, stories, CI).

@@ -1,4 +1,4 @@
-// @syncrobotic/incident-detail v0.28.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
+// @syncrobotic/incident-detail v0.48.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -64,7 +64,7 @@ export function IncidentDetail() {
         <div className="flex min-w-0 flex-col gap-6">
           <div className="flex flex-col gap-1">
             <StatusEyebrow status="warning">Sev 2 · slows work</StatusEyebrow>
-            <h2 className="text-xl font-bold">Door C3 blocks the loading bay route</h2>
+            <h2 className="text-base font-bold">Door C3 blocks the loading bay route</h2>
           </div>
           <Stepper value={states.indexOf(state) + 1} size="sm">
             {states.map((s) => (

@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.47.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.48.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -319,7 +319,9 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
       <DropdownMenuTrigger asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
-        <SidebarMenuButton size="lg" tooltip={user.name} className="text-foreground">
+        {/* pr-3: the chevron's right edge lines up with the counts on the links above (px-3); the avatar keeps px-2, on
+            the rail's centre line. */}
+        <SidebarMenuButton size="lg" tooltip={user.name} className="pr-3 text-foreground">
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
@@ -562,7 +564,7 @@ export function AppShell({
           <span className="flex min-w-0 items-center gap-1">
             <span className="flex w-12 shrink-0 items-center justify-center">
               {logo ?? (
-                <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
+                <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
                   {product.slice(0, 1)}
                 </span>
               )}
@@ -576,7 +578,9 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          <SidebarFooter className={cn("border-t", inset ? "border-transparent" : "border-border")}>
+          // The foot mirrors the head: no padding of its own around the 56 px account row, so the mark above and the 32 px
+          // avatar below sit the same 12 px from their edges, on the same centre line and the same left edge.
+          <SidebarFooter className={cn("border-t py-0", inset ? "border-transparent" : "border-border")}>
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
@@ -598,8 +602,8 @@ export function AppShell({
           {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
           <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
-          {/* The page's title, above its sections (xl 20): 2xl 24, the largest that sits in the 56 px bar. */}
-          <h1 className="truncate text-2xl font-bold">{title}</h1>
+          {/* The page's title, 18 px: above its sections and cards (16), quiet in the 56 px bar. */}
+          <h1 className="truncate text-lg font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}
           {env && (
             <Badge tone={env.tone} className="max-sm:hidden">

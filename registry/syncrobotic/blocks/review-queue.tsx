@@ -1,4 +1,4 @@
-// @syncrobotic/review-queue v0.17.3 · update: npx shadcn add @syncrobotic/review-queue --overwrite
+// @syncrobotic/review-queue v0.48.0 · update: npx shadcn add @syncrobotic/review-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -163,7 +163,7 @@ export function ReviewQueue({
     <section aria-labelledby="review-title" className={cn("mx-auto flex w-full max-w-2xl flex-col gap-4 p-4 sm:p-6", className)}>
       <header className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1">
-          <h2 id="review-title" className="text-xl font-bold">
+          <h2 id="review-title" className="text-base font-bold">
             {title}
           </h2>
           <span className="truncate font-mono text-xs text-muted-foreground">{batch}</span>
@@ -185,7 +185,7 @@ export function ReviewQueue({
       {done ? (
         <div key="done" className="flex animate-appear flex-col items-center gap-3 rounded-md bg-card p-8 text-center ring-1 ring-border">
           <CircleCheck aria-hidden="true" className="size-6 text-muted-foreground" />
-          <h3 className="text-lg font-bold">All {total} reviewed</h3>
+          <h3 className="text-base font-bold">All {total} reviewed</h3>
           <p className="text-sm text-muted-foreground">
             {choices.map((c) => `${items.filter((it) => answers[it.id] === c.value).length} ${c.label.toLowerCase()}`).join(" · ")}
           </p>
@@ -198,7 +198,7 @@ export function ReviewQueue({
             <span className="font-mono text-xs">{item.file}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-bold">{item.question}</h3>
+            <h3 className="text-base font-bold">{item.question}</h3>
             {item.caption && (
               <figure className="flex flex-col gap-1">
                 <figcaption className="text-xs text-muted-foreground">Model caption</figcaption>

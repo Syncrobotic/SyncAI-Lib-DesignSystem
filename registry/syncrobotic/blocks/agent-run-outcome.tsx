@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-outcome v0.45.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
+// @syncrobotic/agent-run-outcome v0.48.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
 "use client"
 
 import * as React from "react"
@@ -186,7 +186,7 @@ export function AgentRunOutcomeContent({
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <div className="flex min-w-0 flex-col gap-1">
             <StatusEyebrow status={state}>{stateWord}</StatusEyebrow>
-            <Title className="text-xl font-bold text-pretty">{run.goal}</Title>
+            <Title className="text-base font-bold text-pretty">{run.goal}</Title>
             <p className="flex items-center gap-2 text-sm text-muted-foreground">
               <Sparkles aria-hidden="true" className="size-4 shrink-0" />
               <span>

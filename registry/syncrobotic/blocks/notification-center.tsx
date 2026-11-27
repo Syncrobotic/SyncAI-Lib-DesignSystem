@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.40.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.48.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
@@ -152,7 +152,8 @@ export function NotificationPanel({
   settingsHref,
   linkAs: Link = "a",
   onNavigate,
-  // The sheet's title on a phone is 20 px bold; the popover's own heading is the same size, as a SectionHeader.
+  // The popover's heading is a SectionHeader, 16 px bold, as a card's title: the popover is a surface over the page. On a
+  // phone the sheet's own title (20) names it instead.
   heading = <SectionHeader title="Notifications" />,
 }: PanelProps) {
   const [filter, setFilter] = React.useState<Filter>("all")
