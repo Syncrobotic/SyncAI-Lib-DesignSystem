@@ -13,6 +13,14 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_", ignoreRestSiblings: true }],
     },
   },
+  // The registry, with types: a promise is never dropped, nor handed to an event that ignores what it returns. A rejected
+  // passkey prompt (cancelled) once left a sign-in button waiting for good; a handler awaits inside and catches, and is
+  // passed as `() => void run()`.
+  {
+    files: ["registry/**/*.{ts,tsx}"],
+    languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
+    rules: { "@typescript-eslint/no-floating-promises": "error", "@typescript-eslint/no-misused-promises": "error" },
+  },
   // The browser scripts are CommonJS: Playwright is required from wherever it is installed.
   { files: ["**/*.cjs"], rules: { "@typescript-eslint/no-require-imports": "off" } },
 )

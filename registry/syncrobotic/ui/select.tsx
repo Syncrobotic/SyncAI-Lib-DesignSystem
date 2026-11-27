@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.36.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.49.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -89,7 +89,7 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
       className={cn(
         // In keyboard use the focused option carries a 2 px ring inside it beside the fill (the fill alone is 1.2:1);
         // under the pointer the fill is enough. Radix focuses the option on hover too, so the browser outline is off.
-        "relative flex h-(--h-md) w-full cursor-default select-none items-center gap-2 rounded-sm pr-8 pl-3 text-sm outline-none",
+        "relative flex h-(--h-md) w-full cursor-pointer select-none items-center gap-2 rounded-sm pr-8 pl-3 text-sm outline-none",
         "group-data-[nav=key]/select:focus:outline-solid group-data-[nav=key]/select:focus:outline-2 group-data-[nav=key]/select:focus:-outline-offset-2 group-data-[nav=key]/select:focus:outline-ring",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled",
         className,

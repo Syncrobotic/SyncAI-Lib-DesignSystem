@@ -1532,8 +1532,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The click handler returns nothing; copyText, which never rejects, says whether it worked."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -1914,8 +1919,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.25.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The handler is passed as () => void run(), as the type-aware promise lint asks; it already caught its own errors."
+          },
           {
             "version": "0.25.0",
             "date": "2026-11-21",
@@ -2162,8 +2172,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3667,8 +3682,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The rail is 68 px (was 72): every link is a 44 px square 12 px from either edge, as in the open column, and the icons sit 12 px in, on the 34 px centre line with no extra margin. The scroll cues ease in and out (the fades' depths are registered lengths) and are gone at the end of the list and on the rail; the chevron sits at the list's foot, between it and what is under it, not over the last link. SIDEBAR_WIDTH_COOKIE_NAME names the width's cookie."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -4204,8 +4224,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4286,8 +4311,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4327,8 +4357,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5708,8 +5743,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "A field list with some icons is checked with icon !== undefined (an ElementType read as a possible promise by the type-aware lint)."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5970,8 +6010,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7653,8 +7698,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Each sidebar state has its own balance and the fold moves between them. Open: a 28 px mark 14 px from the top, a 28 px avatar 14 px from the bottom in a 40 px account button with 8 px corners, 8 px in; names 8 px after each. As a rail: both 12 px from their edges, the account a 44 px square with 12 px corners like the links', 4 px from the bottom; corners concentric with the sidebar's in both. sidebarOpen and sidebarWidth take the sidebar's state from the server's cookies, so the first paint is already right. The page's title and the product's name are both 16 px bold, on one line. User menu items take `exit`: Sign out is neutral at rest and turns danger when pointed at or focused."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -7830,8 +7880,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title is 16 px bold (was 18), as in the app shell."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -7979,8 +8034,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The list's filter is filled, not outlined: it sits in the list's own bar."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -8894,8 +8954,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The sidebar's rail is 68 px, a column of 44 px squares on one centre line. The type scale: an app shell's page title is 16 px bold, as the product's name beside it."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -10120,8 +10185,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title is 16 px bold (was 18), as in the app shell."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -10455,8 +10525,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "A cancelled passkey prompt is a failed try, never a button left waiting; a code check that fails says it could not check, not that the code was wrong."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10553,8 +10628,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "A cancelled passkey prompt (a rejected promise) is a failed try with the way back to the code, never a button left waiting; a verify request that fails says it could not check the code, not that the code was wrong."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10709,8 +10789,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The handler is passed as () => void run(), as the type-aware promise lint asks; it already caught its own errors."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -12267,8 +12352,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The handler is passed as () => void run(), as the type-aware promise lint asks; it already caught its own errors."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",

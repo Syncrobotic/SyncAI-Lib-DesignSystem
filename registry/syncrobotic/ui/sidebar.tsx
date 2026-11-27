@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.48.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.49.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,11 +12,20 @@ import { isMac, parseCombo, useHotkeys } from "@/registry/syncrobotic/hooks/use-
 
 /** The cookie that keeps the sidebar open or collapsed between visits ("true" or "false"). Read it on the server and pass it as `defaultOpen`. */
 export const SIDEBAR_COOKIE_NAME = "sidebar_state"
+/**
+ * The cookie that keeps the open column's width (px), "sidebar_state_width". Read both on the server for a first paint
+ * that is already right; by name, as a server component cannot import values from this client module:
+ *   const c = await cookies()
+ *   const open = c.get("sidebar_state")?.value      // "true" | "false" | undefined → defaultOpen (AppShell: sidebarOpen)
+ *   const width = Number(c.get("sidebar_state_width")?.value) || undefined  // → defaultWidth (AppShell: sidebarWidth)
+ */
+export const SIDEBAR_WIDTH_COOKIE_NAME = `${SIDEBAR_COOKIE_NAME}_width`
+
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 // Below md (768 px) the sidebar is a sheet from the screen's edge; the classes below use the same breakpoint (md:).
 const MOBILE_QUERY = "(max-width: 767px)"
-// The open column's width, in px: 240 at first, 200 to 320 by dragging its edge. Dragged under 140 it folds to the 72 px rail.
-const WIDTH = { min: 200, start: 240, max: 320, fold: 140, rail: 72, step: 16 }
+// The open column's width, in px: 240 at first, 200 to 320 by dragging its edge. Dragged under 140 it folds to the 68 px rail.
+const WIDTH = { min: 200, start: 240, max: 320, fold: 140, rail: 68, step: 16 }
 const clampWidth = (w: number) => Math.round(Math.min(WIDTH.max, Math.max(WIDTH.min, w)))
 
 export type SidebarLabels = {
@@ -268,12 +277,12 @@ type SidebarProps = React.ComponentProps<"aside"> & {
   side?: "left" | "right"
   /** sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`; SidebarRail sits in the 8 px gap). */
   variant?: "sidebar" | "floating"
-  /** icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
+  /** icon (default): collapses to a 68 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
   collapsible?: "icon" | "offcanvas" | "none"
 }
 
 /**
- * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 72 px rail of icons, and a sheet from the screen's
+ * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 68 px rail of icons, and a sheet from the screen's
  * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
@@ -320,7 +329,7 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         // While the handle is dragged the width follows the pointer as it is, without easing (SidebarRail sets
         // data-resizing on this element); folding, opening and springing back keep the easing.
         "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none data-resizing:transition-none",
-        collapsed ? (hidden ? "w-0" : "w-18") : "w-(--sidebar-width)",
+        collapsed ? (hidden ? "w-0" : "w-17") : "w-(--sidebar-width)",
         variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
         hidden && "border-0 ring-0",
         className,
@@ -634,31 +643,62 @@ function useVerticalEdges(ref: React.RefObject<HTMLElement | null>) {
   return edges
 }
 
+// The fades' depths are registered as lengths, so the mask can move between none and full instead of jumping: a cue that
+// comes and goes with the scroll. Where @property is not supported, the fade simply appears and leaves at once.
+let fadeRegistered = false
+function registerFadeProperties() {
+  if (fadeRegistered || typeof CSS === "undefined" || !("registerProperty" in CSS)) return
+  fadeRegistered = true
+  for (const name of ["--sidebar-fade-top", "--sidebar-fade-bottom"]) {
+    try {
+      CSS.registerProperty({ name, syntax: "<length>", inherits: false, initialValue: "0px" })
+    } catch {
+      // Already registered (another copy of the kit on the page): the same definition, so nothing to do.
+    }
+  }
+}
+
 /**
  * The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). When the
- * links are taller than the column, the end that still hides some fades out (a mask, so the sidebar's own surface shows
- * through), and while there is more below, a small chevron at the foot says so; a tap on it scrolls a page down.
+ * links are taller than the column, each end that still hides some fades out (a mask, so the sidebar's own surface shows
+ * through), and while there is more below, a small chevron sits at the list's foot, between the list and what is under it
+ * rather than over the last link; a tap on it scrolls a page down. The fades and the chevron ease in and out with the
+ * scroll, and at the bottom of the list there is neither.
  */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
-  const { labels } = useSidebar()
+  const { labels, state, isMobile } = useSidebar()
   const scroller = React.useRef<HTMLElement>(null)
-  const { top, bottom } = useVerticalEdges(scroller)
-  const fade =
-    top || bottom
-      ? `linear-gradient(to bottom, ${top ? "transparent, black 1.5rem" : "black, black"}, ${bottom ? "black calc(100% - 2.5rem), transparent" : "black"})`
-      : undefined
+  const edges = useVerticalEdges(scroller)
+  // As a rail there are no cues: a column of icons is short to scan, and a fade or a chevron would crowd 68 px. They ease
+  // out with the fold and back in when it opens.
+  const rail = state === "collapsed" && !isMobile
+  const top = edges.top && !rail
+  const bottom = edges.bottom && !rail
+  React.useEffect(registerFadeProperties, [])
   return (
     <div data-slot="sidebar-content-frame" className="relative flex min-h-0 flex-1 flex-col">
       <nav
         ref={scroller}
         data-slot="sidebar-content"
         aria-label={labels.nav}
-        style={fade ? { maskImage: fade, WebkitMaskImage: fade } : undefined}
-        className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain px-3 py-2", className)}
+        style={
+          {
+            "--sidebar-fade-top": top ? "1.5rem" : "0px",
+            "--sidebar-fade-bottom": bottom ? "2.5rem" : "0px",
+            maskImage: "linear-gradient(to bottom, transparent, black var(--sidebar-fade-top), black calc(100% - var(--sidebar-fade-bottom)), transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent, black var(--sidebar-fade-top), black calc(100% - var(--sidebar-fade-bottom)), transparent)",
+          } as React.CSSProperties
+        }
+        className={cn(
+          "flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain px-3 py-2",
+          "transition-[--sidebar-fade-top,--sidebar-fade-bottom] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+          className,
+        )}
         {...props}
       />
-      {/* A pointer's cue, out of the Tab order and hidden from screen readers: the keyboard scrolls the list by moving
-          through it, and a reader reads every link. */}
+      {/* A pointer's cue, centred 4 px above the list's foot so it reaches into the gap under it rather than over the last
+          link; out of the Tab order and hidden from screen readers: the keyboard scrolls the list by moving through it, and
+          a reader reads every link. */}
       <button
         type="button"
         tabIndex={-1}
@@ -667,9 +707,10 @@ export function SidebarContent({ className, ...props }: React.ComponentProps<"na
         data-shown={bottom || undefined}
         onClick={() => scroller.current?.scrollBy({ top: scroller.current.clientHeight * 0.8, behavior: "smooth" })}
         className={cn(
-          "press absolute bottom-1 left-1/2 flex size-6 -translate-x-1/2 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border hover:bg-accent hover:text-foreground",
-          "pointer-events-none opacity-0 transition-opacity duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-          "data-shown:pointer-events-auto data-shown:opacity-100",
+          "press absolute bottom-1 left-1/2 flex size-6 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border hover:bg-accent hover:text-foreground",
+          // It eases in from a little higher and fades, and leaves the same way.
+          "pointer-events-none -mt-1 opacity-0 transition-[opacity,margin] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+          "data-shown:pointer-events-auto data-shown:mt-0 data-shown:opacity-100",
         )}
       >
         <ChevronDown className="size-4" />
@@ -730,7 +771,7 @@ const buttonSizes = {
   sm: "h-(--h-sm)",
   /** 44 px: the main links. */
   md: "h-(--h-md)",
-  /** 56 px: a switcher in the header, the account in the footer. Leads with a 32 px mark or avatar, on the rail's centre line. */
+  /** 56 px: a switcher in the header, the account in the footer. Leads with a 28 px mark or avatar, on the rail's centre line. */
   lg: "h-(--h-row) px-2",
 } as const
 
@@ -767,8 +808,9 @@ export function SidebarMenuButton({ asChild = false, isActive = false, size = "m
         "data-[active=true]:bg-muted data-[active=true]:font-medium data-[active=true]:text-foreground data-[active=true]:hover:bg-muted",
         // Focus rings sit inside the item (-outline-offset-2), so they never stick out of the column or get clipped by it.
         "focus-visible:-outline-offset-2 disabled:pointer-events-none disabled:text-disabled aria-disabled:pointer-events-none aria-disabled:text-disabled",
-        // The icon is a 24 px box 12 px in: its centre is the rail's centre line (36 px). Other icons are 16 px.
-        "[&>svg]:shrink-0 [&>svg:first-child]:mx-0.5 [&>svg:first-child]:size-5 [&>svg:not(:first-child)]:size-4",
+        // The icon is 20 px, 12 px in: its centre is the rail's centre line (34 px), so a link on the 68 px rail is a 44 px
+        // square with the same 12 px either side as the open column. Other icons are 16 px.
+        "[&>svg]:shrink-0 [&>svg:first-child]:size-5 [&>svg:not(:first-child)]:size-4",
         "[&>span:nth-child(2)]:min-w-0 [&>span:nth-child(2)]:flex-1 [&>span:nth-child(2)]:truncate",
         // Everything after the icon fades on the rail, except what is marked to stay (a count's dot).
         "[&>:not(:first-child)]:whitespace-nowrap [&>:not(:first-child)]:transition-opacity [&>:not(:first-child)]:duration-(--motion-base) [&>:not(:first-child)]:ease-(--ease-standard)",

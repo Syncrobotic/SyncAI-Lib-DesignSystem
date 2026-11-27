@@ -12,8 +12,8 @@ const scale = [
   { key: "3xl", cls: "text-3xl", role: "Display", use: "A page's title in its content (PageHeader), outside an app shell" },
   { key: "2xl", cls: "text-2xl", role: "Figure", use: "The number that leads a card or chart" },
   { key: "xl", cls: "text-xl", role: "Title", use: "Sheet titles" },
-  { key: "lg", cls: "text-lg", role: "Heading", use: "A page's title in an app shell's top bar (its h1), dialog titles, the emergency stop's label" },
-  { key: "base", cls: "text-base", role: "Body", use: "Paragraphs, inputs. Bold: a section of the page and a card's title, under the page's title" },
+  { key: "lg", cls: "text-lg", role: "Heading", use: "Dialog titles, the emergency stop's label" },
+  { key: "base", cls: "text-base", role: "Body", use: "Paragraphs, inputs. Bold: a page's title in an app shell's top bar (its h1) and the product's name beside it, a section of the page, a card's title" },
   { key: "sm", cls: "text-sm", role: "Label", use: "Buttons, list rows, labels" },
   { key: "xs", cls: "text-xs", role: "Caption", use: "Hints, metadata, tags" },
 ]

@@ -11900,7 +11900,7 @@
      "name": "collapsible",
      "type": "\"none\" | \"icon\" | \"offcanvas\"",
      "default": "\"icon\"",
-     "description": "icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open."
+     "description": "icon (default): collapses to a 68 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open."
     }
    ],
    "inherits": [
