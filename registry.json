@@ -7678,7 +7678,7 @@
           {
             "version": "0.49.0",
             "date": "2026-11-26",
-            "note": "Each sidebar state has its own balance and the fold moves between them. Open: a 28 px mark 14 px from the top, a 28 px avatar 14 px from the bottom in a 40 px account button with 8 px corners, 8 px in; names 8 px after each. As a rail: both 12 px from their edges, the account a 44 px square with 12 px corners like the links', 4 px from the bottom; corners concentric with the sidebar's in both. sidebarOpen and sidebarWidth take the sidebar's state from the server's cookies, so the first paint is already right."
+            "note": "Each sidebar state has its own balance and the fold moves between them. Open: a 28 px mark 14 px from the top, a 28 px avatar 14 px from the bottom in a 40 px account button with 8 px corners, 8 px in; names 8 px after each. As a rail: both 12 px from their edges, the account a 44 px square with 12 px corners like the links', 4 px from the bottom; corners concentric with the sidebar's in both. sidebarOpen and sidebarWidth take the sidebar's state from the server's cookies, so the first paint is already right. The page's title and the product's name are both 16 px bold, on one line."
           },
           {
             "version": "0.48.0",
@@ -7855,8 +7855,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title is 16 px bold (was 18), as in the app shell."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -8929,7 +8934,7 @@
           {
             "version": "0.49.0",
             "date": "2026-11-26",
-            "note": "The sidebar's rail is 68 px, a column of 44 px squares on one centre line."
+            "note": "The sidebar's rail is 68 px, a column of 44 px squares on one centre line. The type scale: an app shell's page title is 16 px bold, as the product's name beside it."
           },
           {
             "version": "0.48.0",
@@ -10155,8 +10160,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title is 16 px bold (was 18), as in the app shell."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",

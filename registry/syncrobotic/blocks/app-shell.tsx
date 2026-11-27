@@ -618,7 +618,7 @@ export function AppShell({
                 </span>
               )}
             </span>
-            <span className="min-w-0 flex-1 truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
+            <span className="min-w-0 flex-1 truncate text-base font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
               {product}
             </span>
           </span>
@@ -657,8 +657,9 @@ export function AppShell({
           {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
           <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
-          {/* The page's title, 18 px: above its sections and cards (16), quiet in the 56 px bar. */}
-          <h1 className="truncate text-lg font-bold">{title}</h1>
+          {/* The page's title, 16 px bold: the product's name across the gap is the same size on the same line, so the two
+              read as one band. It leads its sections and cards (also 16) by place, in its own bar above them. */}
+          <h1 className="truncate text-base font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}
           {env && (
             <Badge tone={env.tone} className="max-sm:hidden">

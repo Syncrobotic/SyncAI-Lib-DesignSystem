@@ -18,6 +18,7 @@ The sidebar in balance in both its states, with a fold that moves between them, 
   - **Both states:** the mark, the icons and the avatar stay on one centre line through the fold, and the height, corners and padding move with it.
   - **Account menu from the rail:** pressing the avatar opens the sidebar, then the menu once the column has stopped moving, above the button as when open, and exactly as wide as the button at any sidebar width (it had a 224 px minimum, wider than a 200 px column's button). Without motion it opens at once; if the fold is reversed midway it stays shut.
   - **Before:** in 0.48.0 the account button's fill touched the sidebar's bottom edge.
+- **App shell titles, 16 px:** the page's title in the top bar is 16 px bold (was 18), and the product's name in the sidebar is 16 px bold (was 14). They sit on one line across the gap, so they are one size; the title leads its sections and cards by place. Also in `action-rail-shell` and `app-shell-mobile-tabs` 0.49.0. The type scale in the docs and the agent skill says the same.
 - **`list-detail` 0.49.0:** the list's filter is filled, not outlined. It sits in the list's own bar, and an outline there would be an edge inside an edge.
 
 ### Added

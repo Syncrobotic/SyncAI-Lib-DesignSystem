@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.48.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.49.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -458,7 +458,7 @@ export function ActionRailShell({
           </button>
         )}
         {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
-        <h1 data-slot="action-rail-title" className={cn("min-w-0 truncate text-lg font-bold", headerItems.length > 0 && "flex-1")}>
+        <h1 data-slot="action-rail-title" className={cn("min-w-0 truncate text-base font-bold", headerItems.length > 0 && "flex-1")}>
           <span>{title}</span>
         </h1>
         {headerItems.length > 0 && (
