@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.51.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.52.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -203,8 +203,11 @@ export function Alarm({
           id={`${id}-title`}
           className={cn("col-start-2 row-start-1 line-clamp-2 text-sm text-pretty @xl:col-start-3", loud ? "font-bold" : "text-muted-foreground")}
         >
-          <span className={cn("mr-2 font-medium", p.text)}>{l[priority]}</span>
-          <span className="sr-only">: </span>
+          {/* Said as one string: a positioned sr-only ": " alone would be read as "High : title". */}
+          <span aria-hidden="true" className={cn("mr-2 font-medium", p.text)}>
+            {l[priority]}
+          </span>
+          <span className="sr-only">{`${l[priority]}: `}</span>
           {keepLastWord(title)}
         </p>
         {/* Narrow: one line under the title, time first. Wide: the time is its own column and the source sits under the title. */}
@@ -239,21 +242,25 @@ export function Alarm({
               </button>
             )}
             {!shelved && onShelve && priority !== "critical" && (
-              <button data-slot="alarm-shelve" type="button" onClick={onShelve} className={cn(rowButton, "ring-transparent")}>
+              <button data-slot="alarm-shelve" type="button" aria-label={`${l.shelve}: ${title}`} onClick={onShelve} className={cn(rowButton, "ring-transparent")}>
                 {l.shelve}
-                <span className="sr-only">: {title}</span>
               </button>
             )}
             {shelved && onUnshelve && (
-              <button data-slot="alarm-unshelve" type="button" onClick={onUnshelve} className={cn(rowButton, "ring-border")}>
+              <button data-slot="alarm-unshelve" type="button" aria-label={`${l.unshelve}: ${title}`} onClick={onUnshelve} className={cn(rowButton, "ring-border")}>
                 {l.unshelve}
-                <span className="sr-only">: {title}</span>
               </button>
             )}
             {loud && onAcknowledge && (
-              <button data-slot="alarm-acknowledge" type="button" data-alarm-acknowledge="" onClick={onAcknowledge} className={cn(rowButton, "ring-input")}>
+              <button
+                data-slot="alarm-acknowledge"
+                type="button"
+                data-alarm-acknowledge=""
+                aria-label={`${l.acknowledge}: ${title}`}
+                onClick={onAcknowledge}
+                className={cn(rowButton, "ring-input")}
+              >
                 {l.acknowledge}
-                <span className="sr-only">: {title}</span>
               </button>
             )}
           </span>
@@ -377,6 +384,8 @@ type AlarmListProps = {
     acknowledgeNonCritical?: (count: number) => string
     /** Announced after "Acknowledge all": "3 alarms acknowledged". */
     acknowledgedCount?: (count: number) => string
+    /** Announced after one Acknowledge: "Acknowledged: Lidar fault. 2 unacknowledged." */
+    acknowledgedOne?: (title: string, unacknowledged: number) => string
     /** "Shelved · 2" */
     shelvedGroup?: (count: number) => string
     /** "2 suppressed by design · 1 out of service" */
@@ -448,6 +457,7 @@ export function AlarmList({
     acknowledgeShown: (n: number) => `Acknowledge ${n} shown`,
     acknowledgeNonCritical: (n: number) => `Acknowledge ${n} non-critical`,
     acknowledgedCount: (n: number) => `${n} alarm${n === 1 ? "" : "s"} acknowledged`,
+    acknowledgedOne: (title: string, n: number) => `Acknowledged: ${title}. ${n} unacknowledged.`,
     shelvedGroup: (n: number) => `Shelved · ${n}`,
     hidden: (sup: number, oos: number) => [sup && `${sup} suppressed by design`, oos && `${oos} out of service`].filter(Boolean).join(" · "),
     flood: (n: number, m: number) => `Alarm flood: ${n} alarms in ${m} min. Critical and high first; low alarms are grouped.`,
@@ -518,6 +528,7 @@ export function AlarmList({
             ? () => {
                 refocus.current = true
                 onAcknowledge(a.id)
+                setStatus(l.acknowledgedOne(a.title, Math.max(0, unack - 1)))
               }
             : undefined
         }

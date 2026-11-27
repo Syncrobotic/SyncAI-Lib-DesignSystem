@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.51.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.52.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,7 +25,57 @@ function scrollWithinList(el: HTMLElement) {
   else if (r.bottom > l.bottom) list.scrollTop += r.bottom - l.bottom
 }
 
-export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
+/** The words a list says to screen readers. */
+export type CommandLabels = {
+  /** Said politely once typing settles: "3 results". */
+  results: (count: number) => string
+  /** Said politely when a query matches nothing. */
+  empty: string
+}
+
+export const defaultCommandLabels: CommandLabels = {
+  results: (n) => `${n} result${n === 1 ? "" : "s"}`,
+  empty: "Nothing matches",
+}
+
+/** Keeps the text box's active descendant on the highlighted row, which cmdk can leave stale or unset. */
+function syncActiveDescendant(el: HTMLElement) {
+  const id = el.querySelector('[cmdk-item][aria-selected="true"]:not([aria-disabled="true"])')?.id
+  el.querySelectorAll("[cmdk-input], [cmdk-list]").forEach((n) => {
+    if (n.getAttribute("aria-activedescendant") === (id ?? null)) return
+    if (id) n.setAttribute("aria-activedescendant", id)
+    else n.removeAttribute("aria-activedescendant")
+  })
+}
+
+/** Says how many results a query has, once typing pauses, so each key press is not read out. */
+function CommandStatus({ labels }: { labels: CommandLabels }) {
+  const search = useCommandState((state) => state.search)
+  const count = useCommandState((state) => state.filtered.count)
+  const [text, setText] = React.useState("")
+  const say = React.useEffectEvent(() => setText(search ? (count ? labels.results(count) : labels.empty) : ""))
+  React.useEffect(() => {
+    const t = setTimeout(say, 500)
+    return () => clearTimeout(t)
+  }, [search, count])
+  return (
+    <div role="status" data-slot="command-status" className="sr-only">
+      {text}
+    </div>
+  )
+}
+
+export function Command({
+  className,
+  onKeyDown,
+  onPointerMove,
+  onFocus,
+  ref,
+  label = "Search",
+  labels,
+  children,
+  ...props
+}: React.ComponentProps<typeof CommandPrimitive> & { labels?: Partial<CommandLabels> }) {
   const [nav, setNav] = React.useState<"rest" | "key" | "pointer">("rest")
   const root = React.useRef<HTMLDivElement | null>(null)
   // cmdk keeps the highlighted row in view with scrollIntoView, which also scrolls the page: an inline list further down
@@ -33,15 +83,17 @@ export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...
   React.useLayoutEffect(() => {
     const el = root.current
     if (!el) return
-    const scope = () =>
+    const scope = () => {
       el.querySelectorAll<HTMLElement>("[cmdk-item], [cmdk-group-heading]").forEach((n) => {
         if (n.dataset.scrollScoped) return
         n.dataset.scrollScoped = ""
         n.scrollIntoView = () => scrollWithinList(n)
       })
+      syncActiveDescendant(el)
+    }
     scope()
     const mo = new MutationObserver(scope)
-    mo.observe(el, { childList: true, subtree: true })
+    mo.observe(el, { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-selected", "aria-activedescendant"] })
     return () => mo.disconnect()
   }, [])
   return (
@@ -65,20 +117,25 @@ export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...
         if (getLastInput() === "key") setNav("key")
         onFocus?.(e)
       }}
+      label={label}
       className={cn("group/command flex size-full flex-col overflow-hidden bg-popover text-popover-foreground", className)}
       {...props}
-    />
+    >
+      {children}
+      <CommandStatus labels={{ ...defaultCommandLabels, ...labels }} />
+    </CommandPrimitive>
   )
 }
 
-export type CommandDialogLabels = {
-  /** The palette's name for screen readers. */
+export type CommandDialogLabels = CommandLabels & {
+  /** The palette's name for screen readers, and its text box's. */
   title: string
   /** Read after the name: what can be searched. */
   description: string
 }
 
 export const defaultCommandDialogLabels: CommandDialogLabels = {
+  ...defaultCommandLabels,
   title: "Search",
   description: "Search pages, robots and actions",
 }
@@ -140,7 +197,8 @@ export function CommandDialog({
         >
           <DialogPrimitive.Title className="sr-only">{title ?? l.title}</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">{description ?? l.description}</DialogPrimitive.Description>
-          <Command className={className} {...props}>
+          {/* The text box is named after the palette unless a label of its own is given. */}
+          <Command label={title ?? l.title} labels={{ results: l.results, empty: l.empty }} className={className} {...props}>
             {children}
           </Command>
         </DialogPrimitive.Content>

@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.50.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.52.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import type { DateRange } from "react-day-picker"
 import { format, isSameDay } from "date-fns"
 import { CalendarDays, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { Calendar } from "@/registry/syncrobotic/ui/calendar"
 import { useField } from "@/registry/syncrobotic/ui/field"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
@@ -188,17 +189,7 @@ export function DateRangePicker({
 // shows one. The calendar renders only once opened, in the browser, so the server's answer is never seen. Without
 // matchMedia (an old test environment) it stays wide, as before.
 const wideQuery = "(min-width: 40rem)"
-const subscribeWide = (onChange: () => void) => {
-  const m = typeof window.matchMedia === "function" ? window.matchMedia(wideQuery) : null
-  m?.addEventListener("change", onChange)
-  return () => m?.removeEventListener("change", onChange)
-}
-const useWide = () =>
-  React.useSyncExternalStore(
-    subscribeWide,
-    () => (typeof window.matchMedia === "function" ? window.matchMedia(wideQuery).matches : true),
-    () => true,
-  )
+const useWide = () => useMediaQuery(wideQuery, true)
 
 /** The trigger's words for a day: the date-fns pattern if one is given, else Intl in `locale`, else "3 Nov 2026". */
 function dayFormatter(displayFormat: string | undefined, locale: string | undefined) {

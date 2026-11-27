@@ -1,17 +1,17 @@
-// @syncrobotic/robot-map v0.51.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.52.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Crosshair, RotateCw, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, statusText, statusWord, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
-import { clamp } from "@/registry/syncrobotic/lib/math"
+import { clamp, easeStandard } from "@/registry/syncrobotic/lib/math"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /**
@@ -387,7 +387,6 @@ const merge = (given?: Partial<RobotMapLabels>): RobotMapLabels => ({
   zoneKind: { ...defaultLabels.zoneKind, ...given?.zoneKind },
 })
 
-const statusWord = (r: RobotMapRobot, labels: RobotMapLabels) => r.statusLabel ?? labels.status[r.status]
 const abnormal = (s: Status) => s === "warning" || s === "danger"
 
 /** Whether a point is inside a polygon (even-odd rule). */
@@ -425,19 +424,6 @@ const BOTTOM = INSET + 44 + 8
 const anchor = ({ w, h, top = INSET }: Size) => ({ x: w / 2, y: (top + h - BOTTOM) / 2 })
 /** Steps for the grid and the scale bar, in metres. */
 const NICE = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
-
-/** The ease of --ease-standard, cubic-bezier(0.2, 0, 0, 1), solved for x by bisection. */
-function easeStandard(t: number) {
-  const bez = (a: number, b: number, s: number) => 3 * a * s * (1 - s) ** 2 + 3 * b * s ** 2 * (1 - s) + s ** 3
-  let lo = 0
-  let hi = 1
-  for (let i = 0; i < 20; i++) {
-    const mid = (lo + hi) / 2
-    if (bez(0.2, 0, mid) < t) lo = mid
-    else hi = mid
-  }
-  return bez(0, 1, (lo + hi) / 2)
-}
 
 /** A label's box on screen, to keep names from covering each other. */
 type Box = { x: number; y: number; w: number; h: number }
@@ -1388,7 +1374,7 @@ export function RobotMap({
   const placed = new Map<string, { x: number; y: number }>()
   for (const r of order) {
     const [x, y] = toScreen(r.x, r.y)
-    const text = r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels)}` : "")
+    const text = r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels.status)}` : "")
     const w = text.length * charWidth + 8
     const gap = DISC + 2
     // A tuple of four, so the fallback to the first place is always there.
@@ -1448,7 +1434,7 @@ export function RobotMap({
   const showCursor = editing && focused && !byPointer
   const summary = [
     robots.length ? labels.count(robots.length) : labels.empty,
-    selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels)) : "",
+    selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels.status)) : "",
     northDeg !== undefined ? labels.north(northDeg) : "",
     banner ?? "",
     editing ? labels.editKeys : "",
@@ -1667,7 +1653,7 @@ export function RobotMap({
               >
                 {r.name}
                 {(abnormal(r.status) || isSelected) && (
-                  <span className={cn("font-sans", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>&nbsp;· {statusWord(r, labels)}</span>
+                  <span className={cn("font-sans", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>&nbsp;· {statusWord(r, labels.status)}</span>
                 )}
               </span>
             </React.Fragment>
@@ -1891,7 +1877,7 @@ export function RobotMapList({ label: name, robots = [], zones = [], selectedId,
           : zone.label
             ? labels.inZone(zone.label, zone.kind === "other" ? undefined : kind)
             : labels.inUnnamedZone(kind!)
-        const word = statusWord(r, labels)
+        const word = statusWord(r, labels.status)
         return (
           <li key={r.id} className="min-w-0">
             <button data-slot="robot-map-list-item"

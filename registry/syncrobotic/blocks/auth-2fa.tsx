@@ -1,4 +1,4 @@
-// @syncrobotic/auth-2fa v0.51.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
+// @syncrobotic/auth-2fa v0.52.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
 "use client"
 
 import * as React from "react"
@@ -84,6 +84,20 @@ export function AuthTwoFactor({
   const [sample] = React.useState(() => sampleVerifier())
   const verify = onVerify ?? sample
   const field = React.useRef<HTMLInputElement>(null)
+  // Focus follows the outcome: the code field once it shows its error, so both are read together; the status once the
+  // code is accepted. Never left on the page body.
+  const [attempt, setAttempt] = React.useState(0)
+  const status = React.useRef<HTMLParagraphElement>(null)
+  React.useEffect(() => {
+    if (attempt) field.current?.focus()
+  }, [attempt])
+  React.useEffect(() => {
+    if (done) status.current?.focus()
+  }, [done])
+  const invalid = (message: string) => {
+    setError(message)
+    setAttempt((n) => n + 1)
+  }
 
   const left = lockedUntil ? Math.max(0, Math.ceil((lockedUntil - now) / 1000)) : 0
   const locked = left > 0
@@ -110,8 +124,8 @@ export function AuthTwoFactor({
     e.preventDefault()
     if (locked || busy) return
     const value = method === "app" ? code : recovery.trim().toUpperCase()
-    if (method === "app" && value.length < 6) return setError("Enter all 6 digits.")
-    if (method === "recovery" && !RECOVERY.test(value)) return setError("A recovery code is 8 letters and numbers, like 7KQ2-MV9T.")
+    if (method === "app" && value.length < 6) return invalid("Enter all 6 digits.")
+    if (method === "recovery" && !RECOVERY.test(value)) return invalid("A recovery code is 8 letters and numbers, like 7KQ2-MV9T.")
     setBusy(true)
     setError(undefined)
     // A request that fails (no network, a server error) is not a wrong code: it says so, and the code stays to send again.
@@ -128,12 +142,11 @@ export function AuthTwoFactor({
       return setError(`Too many wrong codes. To keep your account safe, sign-in is paused; try again in ${inWords(result.retryAfter)}.`)
     }
     const tries = result.attemptsLeft === undefined ? "" : result.attemptsLeft === 1 ? " 1 try left." : ` ${result.attemptsLeft} tries left.`
-    setError(
+    invalid(
       method === "app"
         ? `That code did not match. Codes change every 30 seconds; enter the one showing now.${tries}`
         : `That recovery code did not match, or it was used already.${tries}`,
     )
-    field.current?.focus()
   }
 
   const tryPasskey = async () => {
@@ -164,11 +177,11 @@ export function AuthTwoFactor({
           className="pb-0"
         />
 
-        {done ? (
-          <p role="status" className="animate-appear text-sm">
-            Verified. Opening {product}…
-          </p>
-        ) : (
+        {/* Mounted from the start, empty and out of the flow until the code is accepted, so its message is announced. */}
+        <p ref={status} role="status" tabIndex={-1} className={done ? "animate-appear text-sm" : "sr-only"}>
+          {done && `Verified. Opening ${product}…`}
+        </p>
+        {!done && (
           <>
             <form noValidate onSubmit={(e) => void submit(e)} className="flex flex-col gap-4">
               {method === "app" ? (

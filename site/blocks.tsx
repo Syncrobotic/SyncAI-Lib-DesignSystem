@@ -297,6 +297,17 @@ export const blocks = Object.keys(placement)
   .filter((i): i is NonNullable<typeof i> => !!i && i.name in meta)
   .map((i) => ({ ...i, thumb: inShell.has(i.name) ? shellView : undefined, ...meta[i.name], ...placement[i.name] }))
 
+/** Blocks that render an h1 of their own: their preview page adds none (one h1 a page; lint:html-size checks). */
+export const ownHeading = new Set<string>([
+  "action-rail-shell", "agent-approval", "agent-chat", "agent-run-gate", "agent-run-outcome", "agent-runs",
+  "agent-tool-permissions", "agent-trace", "app-shell-mobile-tabs", "app-shell", "auth-2fa", "auth-invite",
+  "auth-passkey", "console-overview", "data-catalog", "dataset-detail", "event-log", "governance-todo",
+  "incident-detail", "incident-queue", "list-detail", "maintenance-due", "maintenance-work-order", "map-workspace",
+  "marketing-hero", "mission-schedule", "notification-center", "record-form", "rollout-overview", "rollout-plan",
+  "settings-page", "sign-in", "users-audit-log", "users-invitations", "users-roles", "wizard-commission",
+  "wizard-import",
+])
+
 export const getBlock = (name: string) => blocks.find((b) => b.name === name)
 export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === slug)
 

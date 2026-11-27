@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.51.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.52.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`), with `locale="zh-TW"` where it formats numbers, days or
 // times. It imports no component, so it installs on its own.
@@ -54,6 +54,7 @@ export const alarmListLabels = {
   acknowledgeShown: (n: number) => `確認顯示的 ${n} 個警報`,
   acknowledgeNonCritical: (n: number) => `確認 ${n} 個非緊急警報`,
   acknowledgedCount: (n: number) => `已確認 ${n} 個警報`,
+  acknowledgedOne: (title: string, n: number) => `已確認：${title}。尚有 ${n} 個未確認。`,
   shelvedGroup: (n: number) => `已擱置 · ${n}`,
   hidden: (suppressed: number, outOfService: number) => [suppressed && `${suppressed} 個依設計抑制`, outOfService && `${outOfService} 個停用中`].filter(Boolean).join(" · "),
   flood: (n: number, minutes: number) => `警報氾濫：${minutes} 分鐘內 ${n} 個警報。請先處理緊急與高優先級，低優先級警報已合併顯示。`,
@@ -658,6 +659,8 @@ export const dataGridLabels = {
   empty: "沒有資料",
   resize: (column: string) => `調整「${column}」欄寬`,
   width: (px: number) => `${px} px`,
+  sortedBy: (column: string, descending: boolean) => `依「${column}」${descending ? "遞減" : "遞增"}排序`,
+  unsorted: "未排序",
   ascending: "遞增排序",
   descending: "遞減排序",
   unpin: "取消固定",
@@ -1116,6 +1119,7 @@ export const topBarShellLabels = {
   nav: "主要導覽",
   openNav: "開啟導覽",
   accountMenu: "帳號選單",
+  skip: "跳到主要內容",
 }
 
 export const actionRailShellLabels = {
@@ -1123,6 +1127,7 @@ export const actionRailShellLabels = {
   stepLabel: "下一步",
   moreActions: "更多動作",
   headerMore: "更多",
+  skip: "跳到主要內容",
 }
 
 // status-pages: one object per page.
@@ -1177,9 +1182,15 @@ export const sidebarProviderLabels = {
   drag: "拖曳以調整寬度",
 }
 
+export const commandLabels = {
+  results: (n: number) => `${formatCount(n)} 筆結果`,
+  empty: "沒有符合的項目",
+}
+
 export const commandDialogLabels = {
   title: "搜尋",
   description: "搜尋頁面、機器人與操作",
+  ...commandLabels,
 }
 
 export const dialogContentLabels = { close: "關閉" }
@@ -1190,6 +1201,8 @@ export const dropdownMenuMoreTriggerLabels = {
 }
 
 export const responsiveTableLabels = { actions: "動作" }
+
+export const tableLabels = { region: "表格" }
 
 export const stepperLabels = {
   optional: "選填",

@@ -4,7 +4,10 @@
 // nothing imports only installs files the product never uses), every npm dependency must name a version range, and files
 // that use React hooks or handlers must start with "use client". Also the text limits in CONTRIBUTING.md ("Comments and
 // docs"): a description of at most 200 characters, a changelog note of at most 300 (notes after NOTE_LIMIT_AFTER).
+// And one source for what an item is: its description. A line in site/overview.ts or site/catalog.ts that repeats it fails;
+// a component JSDoc whose first sentence differs from it is counted as a warning (`--jsdoc` lists them).
 import { readFileSync } from "node:fs"
+import ts from "typescript"
 
 /** @type {import("./types.js").Registry} */
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
@@ -62,7 +65,8 @@ for (const item of registry.items) {
   for (const f of item.files) {
     if (!/\.tsx?$/.test(f.path)) continue
     const src = readFileSync(f.path, "utf8")
-    for (const [, spec] of src.matchAll(/^import[^"']*["']([^"']+)["']/gm)) {
+    // Static imports, and dynamic ones (a part loaded on first use is still a dependency).
+    for (const [, spec] of [...src.matchAll(/^import[^"']*["']([^"']+)["']/gm), ...src.matchAll(/\bimport\(\s*["']([^"']+)["']\s*\)/g)]) {
       if (spec.startsWith("@/lib/utils")) {
         if (!reach.has("cn")) fail(item.name, `imports @/lib/utils but does not depend on @syncrobotic/cn`)
       } else if (spec.startsWith("@/registry/")) {
@@ -122,6 +126,120 @@ for (const item of registry.items)
   }
 for (const [name, specs] of ranges)
   if (specs.size > 1) fail(name, `declared as ${[...specs].map(([d, items]) => `"${d}" (${items.join(", ")})`).join(" and ")}: use one range`)
+
+// What an item is, said once. Normalised: lowercase, backticks and punctuation dropped, spaces collapsed.
+/** @param {string} t */
+const norm = (t) => t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim()
+/** @param {string} t */
+const firstSentence = (t) => (t.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] ?? t).trim()
+/** @param {string} t */
+const sentences = (t) => t.split(/(?<=[.!?])\s+/).filter((x) => norm(x))
+const STOP = new Set("the and for with its into from that this than then when what which who whose are was not nor but per one".split(" "))
+/** @param {string} t Content words: three letters or more, not a STOP word. */
+const words = (t) => new Set(norm(t).split(" ").filter((w) => w.length > 2 && !STOP.has(w)))
+/**
+ * Why one sentence of a docs line repeats the description, or null. Near-exact: equal once normalised; one inside the
+ * other (the shorter at least six words); the same first six words; or, with `byWords`, 75 % of the sentence's content
+ * words (at least six) already in the description, so it adds nothing.
+ * @param {string} line
+ * @param {string} description
+ * @param {boolean} [byWords] false for a keyboard table's cells, which name the same keys as any description of them
+ */
+export function repeats(line, description, byWords = true) {
+  const d = norm(description)
+  const dWords = words(description)
+  for (const sentence of sentences(line)) {
+    const x = norm(sentence)
+    if (sentences(description).some((s) => norm(s) === x) || x === d) return `"${sentence}" is the description's own words`
+    const xs = x.split(" ")
+    const ds = d.split(" ")
+    if (Math.min(xs.length, ds.length) >= 6 && (d.includes(x) || x.includes(d))) return `"${sentence}" contains or is contained in it`
+    if (xs.length >= 6 && ds.length >= 6 && xs.slice(0, 6).join(" ") === ds.slice(0, 6).join(" ")) return `"${sentence}" opens with its first six words`
+    const own = words(sentence)
+    const shared = [...own].filter((w) => dWords.has(w)).length
+    if (byWords && own.size >= 6 && shared / own.size >= 0.75) return `${shared} of the ${own.size} words in "${sentence}" are already in it`
+  }
+  return null
+}
+
+/**
+ * Every string under each key of the object literal `name` in `file`, with its line, except the keys in `skip`.
+ * @param {string} file
+ * @param {string} name
+ * @param {string[]} skip
+ */
+function docStrings(file, name, skip) {
+  const sf = ts.createSourceFile(file, readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true)
+  /** @type {{ item: string; text: string; line: number }[]} */
+  const out = []
+  /** @type {(node: ts.Node, item: string) => void} */
+  const collect = (node, item) => {
+    if (ts.isPropertyAssignment(node) && skip.includes(node.name.getText(sf))) return
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
+      out.push({ item, text: node.text, line: sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1 })
+    node.forEachChild((c) => collect(c, item))
+  }
+  /** @param {ts.Node} node */
+  const visit = (node) => {
+    if (ts.isVariableDeclaration(node) && node.name.getText(sf) === name && node.initializer && ts.isObjectLiteralExpression(node.initializer))
+      for (const p of node.initializer.properties)
+        if (ts.isPropertyAssignment(p)) collect(p.initializer, ts.isStringLiteral(p.name) ? p.name.text : p.name.getText(sf))
+    node.forEachChild(visit)
+  }
+  visit(sf)
+  return out
+}
+
+const docs = [
+  ...docStrings("site/overview.ts", "overviews", []).map((s) => ({ ...s, file: "site/overview.ts", keys: false })),
+  ...docStrings("site/catalog.ts", "entries", ["group", "examples", "wide"]).map((s) => ({ ...s, file: "site/catalog.ts", keys: false })),
+  ...docStrings("site/catalog.ts", "keyboard", []).map((s) => ({ ...s, file: "site/catalog.ts", keys: true })),
+]
+for (const { item, text, line, file, keys } of docs) {
+  const description = byName.get(item)?.description
+  if (!description) continue
+  const why = repeats(text, description, !keys)
+  if (why)
+    fail(`${file}:${line}`, `repeats ${item}'s registry.json description: ${why}. The description says what the item is (it is the page's lead); say here only when to use it, what instead, or a rule it does not state.\n    description: ${description}`)
+}
+
+// The component JSDoc ships in the installed source, so it stays; its first sentence should be the description's.
+// The JSDoc of the export named for the item (page-header → PageHeader, use-now → useNow). A warning until they agree.
+/** @param {string} n */
+const pascal = (n) => n.replace(/(?:^|-)(\w)/g, (_, c) => c.toUpperCase())
+/** @type {string[]} */
+const differs = []
+let documented = 0
+let unrelated = 0
+for (const item of registry.items) {
+  const path = item.files[0]?.path
+  if (!path || !/\.tsx?$/.test(path) || !item.description) continue
+  const sf = ts.createSourceFile(path, readFileSync(path, "utf8"), ts.ScriptTarget.Latest, true)
+  const names = [pascal(item.name), pascal(item.name).replace(/^Use/, "use"), String(item.title ?? "").replace(/[^A-Za-z0-9]/g, "")]
+  for (const st of sf.statements) {
+    const decl = ts.isVariableStatement(st) ? st.declarationList.declarations[0] : st
+    const declName = ts.isVariableDeclaration(decl) || ts.isFunctionDeclaration(decl) || ts.isClassDeclaration(decl) ? decl.name?.getText(sf) : undefined
+    if (!declName || !names.includes(declName)) continue
+    const doc = ts.getJSDocCommentsAndTags(decl).filter(ts.isJSDoc).at(-1)
+    // The summary ends at the first blank line or list, whichever comes before the first full stop.
+    const text = doc && ts.getTextOfJSDocComment(doc.comment)?.split(/\n\s*\n|\n\s*[-*\d]+[.)]?\s/)[0].replace(/\s+/g, " ").trim()
+    if (!text) break
+    documented++
+    const own = firstSentence(text)
+    const ownWords = words(own)
+    const descWords = words(item.description)
+    const apart = [...ownWords].filter((w) => descWords.has(w)).length < Math.min(ownWords.size, descWords.size) / 3
+    if (apart) unrelated++
+    if (norm(own) !== norm(firstSentence(item.description)))
+      differs.push(`${path}:${sf.getLineAndCharacterOfPosition(doc.getStart(sf)).line + 1}  ${item.name}${apart ? "  (under a third of the words shared)" : ""}\n    jsdoc:       ${own}\n    description: ${item.description}`)
+    break
+  }
+}
+if (process.argv.includes("--jsdoc")) for (const d of differs) console.warn(d)
+if (differs.length)
+  console.warn(
+    `warning: ${differs.length} of ${documented} component JSDocs open with a sentence other than the item's registry.json description, ${unrelated} sharing under a third of its words${process.argv.includes("--jsdoc") ? "" : " (node scripts/check-registry.mjs --jsdoc lists them)"}`,
+  )
 
 if (bad) {
   console.error(`\n${bad} registry problem(s)`)

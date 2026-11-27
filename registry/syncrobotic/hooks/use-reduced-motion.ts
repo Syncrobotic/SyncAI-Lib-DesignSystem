@@ -1,4 +1,4 @@
-// @syncrobotic/use-reduced-motion v0.51.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
+// @syncrobotic/use-reduced-motion v0.52.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,11 +15,32 @@ export function prefersReducedMotion(fallback = false): boolean {
   return window.matchMedia(QUERY).matches
 }
 
-function subscribe(onChange: () => void) {
-  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return () => {}
-  const q = window.matchMedia(QUERY)
-  q.addEventListener?.("change", onChange)
-  return () => q.removeEventListener?.("change", onChange)
+// One subscribe function per query, so useSyncExternalStore does not resubscribe on every render.
+const subscribers = new Map<string, (onChange: () => void) => () => void>()
+const subscribeTo = (query: string) => {
+  let s = subscribers.get(query)
+  if (!s) {
+    s = (onChange) => {
+      if (typeof window === "undefined" || typeof window.matchMedia !== "function") return () => {}
+      const q = window.matchMedia(query)
+      q.addEventListener?.("change", onChange)
+      return () => q.removeEventListener?.("change", onChange)
+    }
+    subscribers.set(query, s)
+  }
+  return s
+}
+
+/**
+ * Whether a CSS media query matches, followed while mounted. `fallback` on the server, while the page hydrates and in a
+ * browser without matchMedia, so both renders agree; it is also the layout drawn before the scripts run.
+ */
+export function useMediaQuery(query: string, fallback = false): boolean {
+  return React.useSyncExternalStore(
+    subscribeTo(query),
+    () => (typeof window.matchMedia === "function" ? window.matchMedia(query).matches : fallback),
+    () => fallback,
+  )
 }
 
 /**
@@ -28,5 +49,5 @@ function subscribe(onChange: () => void) {
  * is drawn before that.
  */
 export function usePrefersReducedMotion(): boolean {
-  return React.useSyncExternalStore(subscribe, () => prefersReducedMotion(), () => false)
+  return useMediaQuery(QUERY)
 }

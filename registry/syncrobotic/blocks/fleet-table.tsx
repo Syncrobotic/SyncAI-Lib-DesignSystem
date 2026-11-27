@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.51.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.52.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -48,7 +48,15 @@ export const sampleRobots: Robot[] = [
 const PhoneBattery = ({ value }: { value: number }) => (
   <span className="inline-flex items-center gap-2 tabular-nums">
     {value < 15 && <StatusGlyph status="warning" />}
-    {value} %{value < 15 && <span className="sr-only">, low</span>}
+    {/* One string when low: a positioned sr-only ", low" alone is read as "14 % , low". */}
+    {value < 15 ? (
+      <>
+        <span aria-hidden="true">{value} %</span>
+        <span className="sr-only">{`${value} %, low`}</span>
+      </>
+    ) : (
+      `${value} %`
+    )}
   </span>
 )
 

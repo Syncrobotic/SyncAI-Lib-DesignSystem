@@ -1,10 +1,10 @@
-// @syncrobotic/top-bar-shell v0.51.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.52.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
 import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { ShellSearch, sampleUserMenu, type AppSearch, type AppUser, type AppUserMenuItem } from "@/registry/syncrobotic/blocks/app-shell"
+import { ShellSearch, SkipLink, sampleUserMenu, type AppSearch, type AppUser, type AppUserMenuItem } from "@/registry/syncrobotic/blocks/app-shell"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import {
   DropdownMenu,
@@ -25,9 +25,11 @@ export type TopBarShellLabels = {
   openNav: string
   /** Read after the user's name and initials on the account button: "Ada Lovelace, AL, account menu". */
   accountMenu: string
+  /** The skip link to `<main>`, the shell's first Tab stop. */
+  skip: string
 }
 
-export const defaultTopBarShellLabels: TopBarShellLabels = { nav: "Main", openNav: "Open navigation", accountMenu: "account menu" }
+export const defaultTopBarShellLabels: TopBarShellLabels = { nav: "Main", openNav: "Open navigation", accountMenu: "account menu", skip: "Skip to content" }
 
 /**
  * The page's scroll-padding-top: the bar's bottom edge once it floats (--shell-top: its row and the 8 px it moves down)
@@ -65,7 +67,7 @@ type TopBarShellProps = {
    * two ends balance. Set them when the logo carries its own space or the bar ends in something else.
    */
   insets?: { start?: string; end?: string }
-  /** The id on `<main>`, for a skip link (`<a href="#main">`). */
+  /** The id on `<main>`, the skip link's target. */
   mainId?: string
   /** End of the page: version, copyright, links. No line above it. */
   footer?: React.ReactNode
@@ -163,6 +165,7 @@ export function TopBarShell({
       ref={frame}
       className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]"
     >
+      <SkipLink target={mainId}>{l.skip}</SkipLink>
       <header
         className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6"
         style={
@@ -259,7 +262,7 @@ export function TopBarShell({
           </div>
         </div>
       </header>
-      <main id={mainId} className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</main>
+      <main id={mainId} tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</main>
       {footer && (
         <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-6 text-xs text-muted-foreground">
           {footer}

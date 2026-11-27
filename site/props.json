@@ -246,7 +246,7 @@
     },
     {
      "name": "labels",
-     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgeNonCritical?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
+     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgeNonCritical?: (count: number) => string; acknowledgedCount?: (count: number) => string; acknowledgedOne?: (title: string, unacknowledged: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
      "description": "",
      "keys": [
       {
@@ -355,6 +355,12 @@
        "type": "(count: number) => string",
        "default": "(n: number) => `${n} alarm${n === 1 ? \"\" : \"s\"} acknowledged`",
        "description": "Announced after \"Acknowledge all\": \"3 alarms acknowledged\"."
+      },
+      {
+       "name": "acknowledgedOne",
+       "type": "(title: string, unacknowledged: number) => string",
+       "default": "(title: string, n: number) => `Acknowledged: ${title}. ${n} unacknowledged.`",
+       "description": "Announced after one Acknowledge: \"Acknowledged: Lidar fault. 2 unacknowledged.\""
       },
       {
        "name": "shelvedGroup",
@@ -2961,7 +2967,27 @@
  "command": [
   {
    "name": "Command",
-   "props": [],
+   "props": [
+    {
+     "name": "labels",
+     "type": "Partial<CommandLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "results",
+       "type": "(count: number) => string",
+       "default": "(n) => `${n} result${n === 1 ? \"\" : \"s\"}`",
+       "description": "Said politely once typing settles: \"3 results\"."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing matches\"",
+       "description": "Said politely when a query matches nothing."
+      }
+     ]
+    }
+   ],
    "inherits": [
     "CommandPrimitive"
    ]
@@ -2995,10 +3021,22 @@
      "description": "The words it says, to translate them.",
      "keys": [
       {
+       "name": "results",
+       "type": "(count: number) => string",
+       "default": "(n) => `${n} result${n === 1 ? \"\" : \"s\"}`",
+       "description": "Said politely once typing settles: \"3 results\"."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing matches\"",
+       "description": "Said politely when a query matches nothing."
+      },
+      {
        "name": "title",
        "type": "string",
        "default": "\"Search\"",
-       "description": "The palette's name for screen readers."
+       "description": "The palette's name for screen readers, and its text box's."
       },
       {
        "name": "description",
@@ -3325,6 +3363,18 @@
        "type": "(px: number) => string",
        "default": "(px) => `${px} px`",
        "description": "The handle's value, the column's width: \"200 px\"."
+      },
+      {
+       "name": "sortedBy",
+       "type": "(column: string, descending: boolean) => string",
+       "default": "(column, descending) => `Sorted by ${column}, ${descending ? \"descending\" : \"ascending\"}`",
+       "description": "Said politely when the order changes: \"Sorted by Robot, ascending\"."
+      },
+      {
+       "name": "unsorted",
+       "type": "string",
+       "default": "\"Not sorted\"",
+       "description": "Said when no column sorts any more."
       },
       {
        "name": "ascending",
@@ -7583,7 +7633,7 @@
       {
        "name": "matches",
        "type": "(current: number, total: number, locale: string | undefined) => string",
-       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, \"match\", \"matches\", locale)",
+       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, \"match\", \"matches\", { locale })",
        "description": "Beside the search box: \"3 of 120\", or how many lines match before one is picked."
       },
       {
@@ -7685,7 +7735,7 @@
       {
        "name": "total",
        "type": "(shown: number, total: number, locale: string | undefined) => string",
-       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", locale) : `${formatCount(shown, { locale })} of ${plural(total, \"line\", \"lines\", locale)}`)",
+       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", { locale }) : `${formatCount(shown, { locale })} of ${plural(total, \"line\", \"lines\", { locale })}`)",
        "description": "Footer: all lines, or the lines the filters show of them."
       },
       {
@@ -7769,7 +7819,7 @@
       {
        "name": "announce",
        "type": "(counts: { lines: number; errors: number; warnings: number; }, locale: string | undefined) => string",
-       "default": "({ lines, errors, warnings }, locale) => [plural(lines, \"new line\", \"new lines\", locale), errors && plural(errors, \"error\", \"errors\", locale), warnings && plural(warnings, \"warning\", \"warnings\", locale)] .filter(Boolean) .join(\", \")",
+       "default": "({ lines, errors, warnings }, locale) => [plural(lines, \"new line\", \"new lines\", { locale }), errors && plural(errors, \"error\", \"errors\", { locale }), warnings && plural(warnings, \"warning\", \"warnings\", { locale })] .filter(Boolean) .join(\", \")",
        "description": "Said at most every 5 s while lines stream in (see `announce`)."
       },
       {
@@ -12174,6 +12224,12 @@
      "type": "string",
      "default": "\"Hold Enter or Space for 2 seconds\"",
      "description": "Read by a screen reader after the label: how to release without a pointer."
+    },
+    {
+     "name": "stoppedLabel",
+     "type": "string",
+     "default": "\"Stopped\"",
+     "description": "Said at once (an alert) when it takes over from a StopButton that had focus."
     }
    ],
    "inherits": []
@@ -13240,6 +13296,24 @@
      "name": "bare",
      "type": "boolean",
      "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Names the scrolling region (a Tab stop). Defaults to the table's `aria-label`, then its caption."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TableLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "region",
+       "type": "string",
+       "default": "\"Table\"",
+       "description": "Names the scrolling region when the table has no `label`, `aria-label` or caption."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -13541,7 +13615,7 @@
       {
        "name": "summary",
        "type": "(added: number, removed: number) => string",
-       "default": "(added, removed) => [added ? `+${plural(added)}` : \"\", removed ? `−${plural(removed)}` : \"\"].filter(Boolean).join(\", \")",
+       "default": "(added, removed) => [added ? `+${plural(added, \"word\", \"words\")}` : \"\", removed ? `−${plural(removed, \"word\", \"words\")}` : \"\"].filter(Boolean).join(\", \")",
        "description": "The summary line."
       },
       {

@@ -78,17 +78,11 @@ export const NotFoundInTopBarShell: S = {
   ),
 }
 
-// The top-bar shell as a product mounts it: a skip link to <main> (its id is "main"; `mainId` changes it) and a logo that
-// goes home ("/"), not to the first link. On a phone, following a link in the drawer closes it.
+// The top-bar shell as a product mounts it: its own skip link to <main> (its id is "main"; `mainId` changes it) and a
+// logo that goes home ("/"), not to the first link. On a phone, following a link in the drawer closes it.
 export const TopBarShellScreen: S = {
   render: () => (
     <>
-      <a
-        href="#main"
-        className="sr-only z-50 rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
-      >
-        Skip to content
-      </a>
       <TopBarShell
         product="Fleet portal"
         home="/"

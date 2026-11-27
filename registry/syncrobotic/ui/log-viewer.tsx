@@ -1,11 +1,11 @@
-// @syncrobotic/log-viewer v0.51.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.52.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { ArrowDownToLine, Bug, ChevronDown, ChevronRight, ChevronUp, CircleAlert, Info, OctagonAlert, ScrollText, Search, SearchX, TriangleAlert, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatCount } from "@/registry/syncrobotic/lib/format-number"
+import { formatCount, plural } from "@/registry/syncrobotic/lib/format-number"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -129,8 +129,6 @@ export type LogViewerLabels = {
   keys: string
 }
 
-const plural = (n: number, one: string, many: string, locale: string | undefined) => `${formatCount(n, { locale })} ${n === 1 ? one : many}`
-
 export const defaultLogViewerLabels: LogViewerLabels = {
   name: "Log",
   debug: "Debug",
@@ -145,7 +143,7 @@ export const defaultLogViewerLabels: LogViewerLabels = {
   search: "Search the log",
   searchPlaceholder: "Search messages and sources",
   matches: (current, total, locale) =>
-    total === 0 ? "No matches" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, "match", "matches", locale),
+    total === 0 ? "No matches" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, "match", "matches", { locale }),
   previousMatch: "Previous match",
   nextMatch: "Next match",
   levels: "Levels",
@@ -162,7 +160,7 @@ export const defaultLogViewerLabels: LogViewerLabels = {
   newLines: (n, locale) => `${formatCount(n, { locale })} new`,
   following: "Following new lines",
   paused: "Paused",
-  total: (shown, total, locale) => (shown === total ? plural(total, "line", "lines", locale) : `${formatCount(shown, { locale })} of ${plural(total, "line", "lines", locale)}`),
+  total: (shown, total, locale) => (shown === total ? plural(total, "line", "lines", { locale }) : `${formatCount(shown, { locale })} of ${plural(total, "line", "lines", { locale })}`),
   capped: (max, locale) => `keeps the last ${formatCount(max, { locale })}`,
   empty: "No log lines yet",
   noMatch: "No lines match the filters",
@@ -184,7 +182,7 @@ export const defaultLogViewerLabels: LogViewerLabels = {
     return rtf.format(-Math.floor(s / 86400), "day")
   },
   announce: ({ lines, errors, warnings }, locale) =>
-    [plural(lines, "new line", "new lines", locale), errors && plural(errors, "error", "errors", locale), warnings && plural(warnings, "warning", "warnings", locale)]
+    [plural(lines, "new line", "new lines", { locale }), errors && plural(errors, "error", "errors", { locale }), warnings && plural(warnings, "warning", "warnings", { locale })]
       .filter(Boolean)
       .join(", "),
   keys: "Up and down arrows move between lines, Shift with them selects lines, Enter opens a line, C copies, End goes to the latest line, slash searches.",
