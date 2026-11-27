@@ -5,7 +5,6 @@ import { CodeBlock } from "@/site/code-block"
 import { pageMeta, site } from "@/site/config"
 import { Pager } from "@/site/doc"
 import { startNeighbours } from "@/site/foundations"
-import { overviews } from "@/site/overview"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const title = "Robotics UI kit"
@@ -65,7 +64,6 @@ export default function RoboticsPage() {
           <ul className="grid gap-3 sm:grid-cols-2">
             {s.items.map((name) => {
               const item = getItem(name)
-              const what = overviews[name]?.what
               if (!item) return null
               return (
                 <li key={name}>
@@ -74,7 +72,7 @@ export default function RoboticsPage() {
                     className="press flex h-full flex-col gap-1 rounded-md bg-card p-4 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent"
                   >
                     <span className="font-medium">{item.title}</span>
-                    {what && <span className="text-sm text-pretty text-muted-foreground">{what}</span>}
+                    {item.description && <span className="text-sm text-pretty text-muted-foreground">{item.description}</span>}
                   </Link>
                 </li>
               )

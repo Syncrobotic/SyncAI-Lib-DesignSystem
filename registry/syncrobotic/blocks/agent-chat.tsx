@@ -1,4 +1,4 @@
-// @syncrobotic/agent-chat v0.51.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
+// @syncrobotic/agent-chat v0.52.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { Sparkles, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
-import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
+import { prefersReducedMotion, useMediaQuery } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Citations, CitationSources, citationMarker, type CitationSource } from "@/registry/syncrobotic/ui/citations"
@@ -485,12 +485,6 @@ export function AgentChat({ defaultTurns = sampleAgentChatTurns, ...props }: Omi
 
 // Wide enough for the page and the copilot side by side.
 const WIDE = "(min-width: 64rem)"
-function subscribeWide(onChange: () => void) {
-  const query = window.matchMedia(WIDE)
-  query.addEventListener("change", onChange)
-  return () => query.removeEventListener("change", onChange)
-}
-const wideNow = () => window.matchMedia(WIDE).matches
 /**
  * The same assistant as a copilot: Ask the assistant in a console page's top bar opens the conversation in a sheet on the
  * right. From 1024 px the sheet is not modal and the page makes room beside it, so the table stays in use while the
@@ -507,7 +501,7 @@ export function AgentChatSheet({
 }) {
   const content = React.useRef<HTMLDivElement>(null)
   const [open, setOpen] = React.useState(defaultOpen ?? false)
-  const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => false)
+  const wide = useMediaQuery(WIDE)
   return (
     <Sheet open={open} onOpenChange={setOpen} modal={!wide}>
       {/* Beside the page on a wide screen: the page gives up the sheet's width and its 8 px gutter. */}

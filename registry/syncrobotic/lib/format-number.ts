@@ -1,4 +1,4 @@
-// @syncrobotic/format-number v0.51.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
+// @syncrobotic/format-number v0.52.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
 /**
  * The kit's one number path, so the server and the browser write the same digits and the locale changes in one place:
  * `formatCount` for a count, `formatNumber` for any other number, `resolveLocale` for the tag both use. Never
@@ -58,4 +58,9 @@ export function formatCount(n: number, { compact = false, locale }: { compact?: 
   // A count is whole: round anything after the point in the full form; the compact form keeps Intl's one or two
   // significant digits (1.2K, 12K, 135K).
   return numberFormat(locale, compact ? { notation: "compact" } : { maximumFractionDigits: 0 }).format(n)
+}
+
+/** A count and its noun, the count as formatCount writes it: plural(3, "line", "lines") is "3 lines", 1200 "1,200 lines". */
+export function plural(n: number, one: string, many: string, { locale }: { locale?: string } = {}) {
+  return `${formatCount(n, { locale })} ${n === 1 ? one : many}`
 }

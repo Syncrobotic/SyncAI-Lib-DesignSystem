@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.51.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.52.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -99,6 +99,10 @@ export type DataGridLabels = {
   resize: (column: string) => string
   /** The handle's value, the column's width: "200 px". */
   width: (px: number) => string
+  /** Said politely when the order changes: "Sorted by Robot, ascending". */
+  sortedBy: (column: string, descending: boolean) => string
+  /** Said when no column sorts any more. */
+  unsorted: string
   /** The column header menu. */
   ascending: string
   descending: string
@@ -131,6 +135,8 @@ export const defaultDataGridLabels: DataGridLabels = {
   empty: "No rows",
   resize: (column) => `Resize ${column}`,
   width: (px) => `${px} px`,
+  sortedBy: (column, descending) => `Sorted by ${column}, ${descending ? "descending" : "ascending"}`,
+  unsorted: "Not sorted",
   ascending: "Ascending",
   descending: "Descending",
   unpin: "Unpin",
@@ -352,6 +358,13 @@ export function DataGridTable({
       ? cn("@md:sticky @md:start-(--pin) @md:z-1", table.getStartVisibleLeafColumns().at(-1)?.id === c.id && "@md:border-e @md:border-border")
       : cn("@md:sticky @md:end-(--pin) @md:z-1", table.getEndVisibleLeafColumns()[0]?.id === c.id && "@md:border-s @md:border-border")
   }
+  // A change of order is said politely; the order the grid opens in is not news. State set during render, as
+  // DataGridSelectionSummary does, so the React Compiler can see what it depends on.
+  const by = table.getAllLeafColumns().find((c) => c.getIsSorted())
+  const sortKey = by ? `${by.id}:${by.getIsSorted()}` : ""
+  const [said, setSaid] = React.useState({ key: sortKey, text: "" })
+  if (said.key !== sortKey) setSaid({ key: sortKey, text: by ? l.sortedBy(columnName(by), by.getIsSorted() === "desc") : l.unsorted })
+  const headerId = React.useId()
   const pinned = table.getIsSomeColumnsPinned()
   const pinnedWidths = {
     "--pinned-start": `${pinned ? table.getStartTotalSize() : 0}px`,
@@ -396,6 +409,8 @@ export function DataGridTable({
                             ? "none"
                             : undefined
                     }
+                    // Named by its content alone: the resize separator inside it has a name of its own ("Resize Robot").
+                    aria-labelledby={h.column.getCanResize() && !h.isPlaceholder ? `${headerId}-${h.id}` : undefined}
                     style={{ width: h.getSize(), ...pinStyle(h.column) }}
                     className={cn(
                       "group/th relative h-(--h-md) border-b border-border text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground",
@@ -407,7 +422,11 @@ export function DataGridTable({
                       meta(h.column).headerClassName,
                     )}
                   >
-                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                    {h.isPlaceholder ? null : h.column.getCanResize() ? (
+                      <span id={`${headerId}-${h.id}`}>{flexRender(h.column.columnDef.header, h.getContext())}</span>
+                    ) : (
+                      flexRender(h.column.columnDef.header, h.getContext())
+                    )}
                     {h.column.getCanResize() && <ResizeHandle column={h.column} handler={h.getResizeHandler()} label={l} />}
                   </th>
                 ))}
@@ -517,6 +536,9 @@ export function DataGridTable({
           )}
         </table>
       </div>
+      <p aria-live="polite" data-slot="data-grid-status" className="sr-only">
+        {said.text}
+      </p>
     </div>
   )
 }

@@ -1,13 +1,12 @@
-// @syncrobotic/robot-model v0.51.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.52.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
 import * as THREE from "three"
 import URDFLoader, { type URDFJoint, type URDFMimicJoint, type URDFRobot } from "urdf-loader"
-import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader.js"
-import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js"
 import { Box, CircleAlert, Crosshair, OctagonAlert, Rotate3d, RotateCw, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useClientValue } from "@/registry/syncrobotic/hooks/use-now"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
@@ -272,9 +271,18 @@ export function parseUrdf(text: string, options: ParseUrdfOptions = {}): URDFRob
       if (mesh) done(mesh)
       options.onMeshEnd?.(shown, err ? reasonOf(err) : undefined)
     }
+    // Each format's loader is fetched the first time a mesh of that format is asked for: a robot of boxes needs neither.
+    const fail = (err: unknown) => end(null, err)
     if (format === "stl")
-      new STLLoader(manager).load(path, (geometry) => end(new THREE.Mesh(geometry, material ?? new THREE.MeshPhongMaterial())), undefined, (err) => end(null, err))
-    else new ColladaLoader(manager).load(path, (dae) => (dae ? end(dae.scene) : end(null, l.unsupportedMesh)), undefined, (err) => end(null, err))
+      void import("three/examples/jsm/loaders/STLLoader.js").then(({ STLLoader }) => {
+        if (signal?.aborted) return
+        new STLLoader(manager).load(path, (geometry) => end(new THREE.Mesh(geometry, material ?? new THREE.MeshPhongMaterial())), undefined, fail)
+      }, fail)
+    else
+      void import("three/examples/jsm/loaders/ColladaLoader.js").then(({ ColladaLoader }) => {
+        if (signal?.aborted) return
+        new ColladaLoader(manager).load(path, (dae) => (dae ? end(dae.scene) : end(null, l.unsupportedMesh)), undefined, fail)
+      }, fail)
   }
   // The text, not the checked document: urdf-loader tells a Document by instanceof, which fails across DOM implementations.
   return loader.parse(text)
@@ -555,8 +563,6 @@ function canDrawWebGL() {
   }
   return webglSupport
 }
-const subscribeNothing = () => () => {}
-const assumeWebGL = () => true
 
 // Theme colours are read from the page's CSS variables at run time, so the model follows light, dark and high contrast.
 // A 1×1 canvas turns any CSS colour (hex, rgb, oklch, a var() already resolved) into sRGB bytes.
@@ -718,7 +724,7 @@ export function RobotModel({
   const robotRef = React.useRef<URDFRobot | null>(null)
   const rootRef = React.useRef<THREE.Group | null>(null)
 
-  const supported = React.useSyncExternalStore(subscribeNothing, canDrawWebGL, assumeWebGL)
+  const supported = useClientValue(canDrawWebGL, true)
   const [rendererFailed, setRendererFailed] = React.useState(false)
   // The graphics context's life: lost while the browser gives it back, failed when it has not within CONTEXT_RESTORE_MS.
   const [context, setContext] = React.useState<"ok" | "lost" | "failed">("ok")

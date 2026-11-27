@@ -1,8 +1,9 @@
-// @syncrobotic/grounded-text v0.51.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
+// @syncrobotic/grounded-text v0.52.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { plural } from "@/registry/syncrobotic/lib/format-number"
 import {
   AnnotatedImage,
   type AnnotatedImageLabels,
@@ -38,7 +39,6 @@ export type GroundedTextLabels = {
   linked: (words: string[]) => string
 }
 
-const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 const defaultLabels: GroundedTextLabels = {
   marks: ({ points, boxes, shapes }) => {
     const parts = [boxes && plural(boxes, "box", "boxes"), points && plural(points, "point", "points"), shapes && plural(shapes, "shape", "shapes")].filter(Boolean)

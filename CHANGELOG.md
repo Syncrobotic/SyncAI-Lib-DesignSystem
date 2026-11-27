@@ -2,6 +2,42 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.52.0 · 2026-11-27
+
+Keyboard and screen-reader fixes from a health check, previews that load only their own block, and one source for what an item is.
+
+### Fixed
+- **Focus and announcements:**
+  - `stop-button`, `slide-to-release`: after a stop, focus moves to the release slider and the stop is announced; after release, focus goes back to the stop button.
+  - `sign-in`, `auth-invite`, `auth-2fa`, `auth-passkey`: a failed submit focuses the first invalid field. Success is announced and focused, so focus is never lost to the page.
+  - `alarm`: acknowledging announces the alarm and how many are left.
+  - `data-grid`: column names no longer include the resize handle, and sort changes are announced.
+- **Names:**
+  - `command`: the search field is named. Result counts and "Nothing matches" are announced, and the first result is active.
+  - `table`: the scroll container is a named region.
+  - Account, stop and alarm controls read as one phrase, without the avatar's initials or stray punctuation.
+- **Skip links:** `app-shell`, `top-bar-shell` and `action-rail-shell` start with "Skip to content".
+- **Docs:**
+  - A component page no longer hands focus to an open dialog in its preview frame, which trapped Tab until Esc.
+  - Each preview has one `h1`, checked by `lint:html-size`.
+
+### Changed
+- **Lighter loads:**
+  - Each preview loads only its own block: console-overview goes from 650 to 312 kB gz of JS, sign-in from 650 to 269.
+  - Every docs page loads its animation features lazily, about 33 kB gz less.
+  - On /blocks, the first row of pictures loads first.
+- **Lighter items:**
+  - `robot-model` loads its STL and Collada loaders only for meshes of those types (initial 39.8 to 24.2 kB gz).
+  - `filters` loads the date calendar on first open (78.3 to 63.3 kB gz).
+- **Shared helpers:** these replace the copies items each carried, and `registryDependencies` follow:
+  - `easeStandard` in `math`;
+  - `plural` in `format-number` (counts now group thousands everywhere);
+  - `useClientValue` and `useHydrated` in `use-now`;
+  - `useMediaQuery` in `use-reduced-motion`;
+  - `statusWord` in `status-glyph`.
+- **One source for what an item is:** the registry description. Docs pages, search and the .md twins read it. `lint:registry` fails a docs line that repeats it, and warns when a component's JSDoc opens differently. `tray` now says what it is for.
+- **CI:** `stories-changed` runs on four runners.
+
 ## 0.51.0 · 2026-11-27
 
 Eighteen items leave beta, and the docs and comments say what they need to in fewer words.

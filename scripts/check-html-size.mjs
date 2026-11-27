@@ -5,7 +5,7 @@
 // long data lists as a client component given strings, a rarely opened catalog as static JSON fetched after load.
 //
 //   npm run build && npm run lint:html-size        fails when a page is over the limit, and lists the largest pages
-import { readdirSync, statSync } from "node:fs"
+import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
@@ -45,6 +45,15 @@ if (stale.length) {
 if (over.length) {
   console.error(`\n${over.length} page(s) over budget:\n${over.map(row).join("\n")}`)
   console.error("\nMove what is hidden until opened (a tab, a sheet) out of the page, as site/lazy-code.tsx does for code.")
+  process.exit(1)
+}
+// One h1 per block preview: the page adds its sr-only title only for a block without its own (ownHeading in site/blocks.tsx).
+const headings = pages
+  .filter((p) => p.startsWith(join(ROOT, "preview")))
+  .map((p) => ({ page: p.slice(ROOT.length).replace(/\.html$/, ""), h1: (readFileSync(p, "utf8").match(/<h1[\s>]/g) ?? []).length }))
+  .filter((p) => p.h1 !== 1)
+if (headings.length) {
+  console.error(`\nPreviews without exactly one h1 (update ownHeading in site/blocks.tsx):\n${headings.map((p) => `  ${p.h1} h1  ${p.page}`).join("\n")}`)
   process.exit(1)
 }
 console.log(`\nHTML size check passed (${sizes.length} pages, the largest ${sizes[0].kb.toFixed(0)} KB)`)

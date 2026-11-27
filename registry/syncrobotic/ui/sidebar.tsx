@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.51.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.52.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,7 @@ import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Sheet, SheetContent, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 import { isMac, parseCombo, useHotkeys } from "@/registry/syncrobotic/hooks/use-hotkeys"
+import { useClientValue } from "@/registry/syncrobotic/hooks/use-now"
 
 /** The cookie that keeps the sidebar open or collapsed between visits ("true" or "false"). Read it on the server and pass it as `defaultOpen`. */
 export const SIDEBAR_COOKIE_NAME = "sidebar_state"
@@ -145,8 +146,6 @@ const subscribeMobile = (onChange: () => void) => {
   return () => query.removeEventListener("change", onChange)
 }
 const mobileNow = () => window.matchMedia(MOBILE_QUERY).matches
-// The platform never changes while the page is open, so there is nothing to subscribe to.
-const subscribeNothing = () => () => {}
 
 /** "mod+b" as people read it on this platform, and as aria-keyshortcuts names it. */
 function describeShortcut(combo: string, mac: boolean) {
@@ -257,7 +256,7 @@ export function SidebarProvider({
 
   useHotkeys(keyboardShortcut ? { [keyboardShortcut]: toggleSidebar } : {}, { enabled: !!keyboardShortcut })
   // Read on the client only; the server and the hydrating render say "Ctrl B".
-  const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
+  const mac = useClientValue(isMac, false)
   const shortcut = keyboardShortcut ? describeShortcut(keyboardShortcut, mac) : null
 
   const value: SidebarContextValue = {

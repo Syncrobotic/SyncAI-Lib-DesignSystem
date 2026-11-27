@@ -53,6 +53,7 @@
       "columnheader",
       "list",
       "listitem",
+      "region",
       "row",
       "rowgroup",
       "table"
@@ -79,11 +80,8 @@
     "live": false
   },
   "slide-to-release": {
-    "roles": [
-      "figure",
-      "slider"
-    ],
-    "tabStops": 3,
+    "roles": [],
+    "tabStops": 0,
     "live": false
   },
   "teleop-pad": {
@@ -415,6 +413,7 @@
       "button",
       "cell",
       "columnheader",
+      "region",
       "row",
       "rowgroup",
       "table"
@@ -430,6 +429,7 @@
       "list",
       "listitem",
       "meter",
+      "region",
       "row",
       "rowgroup",
       "table"
@@ -1066,6 +1066,7 @@
       "columnheader",
       "list",
       "listitem",
+      "region",
       "row",
       "rowgroup",
       "status",
@@ -1238,6 +1239,7 @@
       "link",
       "list",
       "listitem",
+      "region",
       "row",
       "rowgroup",
       "table"
