@@ -96,6 +96,10 @@ export type StoryFile =
   | "permission-gate"
   | "step-up-dialog"
   | "list-query"
+  | "freshness-stamp"
+  | "evidence-panel"
+  | "desired-state"
+  | "heartbeat-strip"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -854,7 +858,13 @@ const entries: Record<string, Entry> = {
   "description-list": {
     group: "Lists and tables",
     examples: { file: "display", prefix: "DescriptionList" },
-    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain.", "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest."],
+    rules: [
+      "Label above value, value in medium weight with tabular numbers.",
+      "`tiles` only for the few numbers that matter most; everything else plain.",
+      "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest.",
+      "A value that is not set is `null`: a dash, read as \"Not set\". Never \"N/A\", \"0\" or an empty cell the reader has to interpret.",
+      "`hint` is a caveat about the value (where it came from, how far to trust it), never a second value. `mono` for ids, fingerprints and versions, compared character by character; `copy` on the one value people paste elsewhere.",
+    ],
   },
   "empty-state": {
     group: "Feedback",
@@ -864,6 +874,18 @@ const entries: Record<string, Entry> = {
       "When a filter or search caused it, the action clears it.",
       'Every empty place uses it at its host\'s size: `panel` (default) in a card, a section or a dialog; `size="inline"` in a table, list, toolbar or small panel; `variant="overlay"` over a map, point cloud, 3D model or camera. Never a hand-made icon and paragraph, a bare grey line or a boxed note.',
       "The panel's icon sits on IconTile; inline and overlay icons are bare. Never a tile of its own.",
+    ],
+  },
+  "evidence-panel": {
+    group: "Data display",
+    wide: true,
+    examples: { file: "evidence-panel", prefix: "EvidencePanel" },
+    rules: [
+      "Everything a device said about itself goes in one panel, kept apart from the record: merging them promotes a stranger's self-description to the standing of an approved machine.",
+      "Show the same rows on every screen a reviewer decides from (the queue, the detail page), so two people never weigh different evidence.",
+      "Pass `expected` only when the record holds a value; without one the row has no verdict, never a match.",
+      "A mismatch is danger and a missing value warning, both with a shape and a word; a match is a grey check. The summary above the rows says what differs before the rows do.",
+      "Mark `copy` on the value a reviewer checks elsewhere (a key fingerprint), and `mono` on every id.",
     ],
   },
   "data-state": {
@@ -931,6 +953,30 @@ const entries: Record<string, Entry> = {
       "Status is a shape and a word: the shape reads without colour vision, the word says the state.",
       "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
       "Pass `status`: active, normal, warning, danger or offline (the default). The old `tone` names (info, success, neutral) were removed in 0.40.",
+      "`none` (a grey dashed circle) is a correct absence: not applicable, or not started. An air-gapped device that never checks in is `none`, not offline: offline means it reported, then stopped.",
+    ],
+  },
+  "freshness-stamp": {
+    group: "Status and values",
+    examples: { file: "freshness-stamp", prefix: "FreshnessStamp" },
+    rules: [
+      "Put it beside every value a device reported, not on the page once: a panel of numbers from a device that stopped yesterday looks exactly like one from a second ago.",
+      "The thresholds are the server's liveness (`laggingAfterMs`, `staleAfterMs`), and its `offline` verdict wins when it sends one. Never a number of the interface's own.",
+      "Colour only for lagging (warning) and stale (danger). Never reported and air-gapped are grey: one has not started, the other reports by design.",
+      "`hideWhenLive` where a mark on every healthy panel would teach people to stop reading marks; `variant=\"icon\"` where the age is said once nearby.",
+      "Pass one `now` from `useNow` on the page, so a list of stamps changes together.",
+    ],
+  },
+  "desired-state": {
+    group: "Status and values",
+    wide: true,
+    examples: { file: "desired-state", prefix: "DesiredState" },
+    rules: [
+      "Use it for any order that travels on a check-in: revoke, remove, a licence change. Until the device reports it, say it is ordered, never done: \"revoking\", not \"revoked\".",
+      "The reported side is believed, not known: write what the device last said (\"Running 4 modules\"), and the component labels it as believed.",
+      "Quiet while it waits. Colour only when it is overdue (`overdueAfterMs`) or cannot arrive: the device stopped reporting, or the product refuses its check-ins (`blocked` with `blockedReason`).",
+      "Air-gapped devices wait for a file applied by hand: pass `airGapped` and leave `overdueAfterMs` out unless your process has a deadline.",
+      "Ways to end the wait some other way (cancel, close out by force) go in its children, each saying what it does not do.",
     ],
   },
   "status-eyebrow": {
@@ -1293,6 +1339,18 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "Tooltip" },
     rules: ["Touch screens never show tooltips. Never put information the operator needs in one."],
   },
+  "heartbeat-strip": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "heartbeat-strip", prefix: "HeartbeatStrip" },
+    rules: [
+      "Draw the buckets the server aggregated (beats, expected, a problem); never bucket raw check-ins in the browser.",
+      "Grey for stretches that reported, half height for ones that missed some, a dashed outline for silence. Colour only where the device reported a problem: warning, or danger for a failure.",
+      "One window at a time from a SegmentedControl (1 h, 24 h, 7 d), at a bucket size that keeps it under about 60 cells.",
+      "Events (a restart, an update) are numbered marks on the same time axis, listed under it, so \"it went quiet after the update\" can be read off.",
+      "Counts of a device's own (cameras, users) are series in a Chart under it, never a hue on this strip.",
+    ],
+  },
   chart: {
     group: "Charts",
     wide: true,
@@ -1632,6 +1690,15 @@ const entries: Record<string, Entry> = {
       "The replay runs once. If the server asks again, that error goes to the caller instead of a loop.",
     ],
   },
+  "relative-time": {
+    group: "Hooks and libraries",
+    rules: [
+      "Every \"3 minutes ago\" and every timestamp a server sends goes through it, so zh-TW and English read the same moment the same way.",
+      "Pass `now` from `useNow`, never `Date.now()` in render; `minUnit: \"minute\"` where the text should not change every second.",
+      "`future: \"clamp\"` for a device's own timestamps: a clock running fast should not say \"in 2 minutes\".",
+      "With next-intl or ICU messages, take `relativeParts` and pass the unit and count to your own keys.",
+    ],
+  },
   "use-now": {
     group: "Hooks and libraries",
     rules: [
@@ -1925,6 +1992,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Esc`", "Let go of what is pinned"],
   ],
   dialog: overlayKeys,
+  "heartbeat-strip": [
+    ["`Tab`", "Focus the strip at its latest stretch; the stretch's time, count and state show in its tooltip and name"],
+    ["`←` `→`", "Move to the earlier or later stretch"],
+    ["`Home` / `End`", "First or last stretch"],
+  ],
   "permission-gate": [
     ["`Tab`", "A disabled action stays a Tab stop and shows its reason while focused"],
     ["`Enter` / `Space`", "On a disabled action, shows the reason; the action does not run"],
@@ -2069,18 +2141,19 @@ const keyboard: Record<string, [string, string][]> = {
 // in 0.40 go from the general to the special: the table before its variants, the shape of a state before its words,
 // the search before the filters, a log before its line marker. Inputs: fields, then choices, then the special ones. A
 // trace sits beside the timeline; keys and code come before prose; an answer's sources close AI. Other groups keep the
-// registry's order.
+// registry's order, except Charts, which open with the general chart.
 const ordered = [
   ...["stop-button", "slide-to-release", "dock", "island", "tray", "teleop-pad", "robot-map", "geo-map", "waypoint-editor", "camera-feed", "camera-wall", "point-cloud", "robot-model", "attitude", "joint-state", "diagnostics", "viewport-overlay"],
   ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer", "marker"],
-  ...["status-glyph", "status-eyebrow", "badge", "tier-badge", "meter", "metric-card"],
+  ...["status-glyph", "status-eyebrow", "freshness-stamp", "desired-state", "badge", "tier-badge", "meter", "metric-card"],
   ...["search-field", "filters", "filter-form", "chip-group", "facets"],
   ...["input", "input-group", "number-field", "textarea", "label", "field", "form", "checkbox", "radio-group", "switch", "choice-field", "select"],
   ...["segmented-control", "toggle-group", "toggle", "slider", "autocomplete", "input-otp", "phone-input", "questionnaire"],
-  ...["graph", "icon-tile", "avatar", "timeline", "trace"],
+  ...["graph", "icon-tile", "avatar", "timeline", "trace", "evidence-panel"],
+  ...["chart", "streaming-chart", "share-bar", "bar-list", "heartbeat-strip"],
   ...["kbd", "code", "code-block", "markdown", "text-diff"],
   ...["streaming-text", "message", "message-actions", "prompt-composer", "message-scroller", "citations", "grounded-text"],
-  ...["format-number", "clock-time", "feedback", "use-now", "use-reduced-motion"],
+  ...["format-number", "clock-time", "relative-time", "feedback", "use-now", "use-reduced-motion"],
 ]
 const within = (name: string) => (ordered.includes(name) ? ordered.indexOf(name) : -1)
 
