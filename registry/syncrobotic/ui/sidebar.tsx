@@ -634,31 +634,57 @@ function useVerticalEdges(ref: React.RefObject<HTMLElement | null>) {
   return edges
 }
 
+// The fades' depths are registered as lengths, so the mask can move between none and full instead of jumping: a cue that
+// comes and goes with the scroll. Where @property is not supported, the fade simply appears and leaves at once.
+let fadeRegistered = false
+function registerFadeProperties() {
+  if (fadeRegistered || typeof CSS === "undefined" || !("registerProperty" in CSS)) return
+  fadeRegistered = true
+  for (const name of ["--sidebar-fade-top", "--sidebar-fade-bottom"]) {
+    try {
+      CSS.registerProperty({ name, syntax: "<length>", inherits: false, initialValue: "0px" })
+    } catch {
+      // Already registered (another copy of the kit on the page): the same definition, so nothing to do.
+    }
+  }
+}
+
 /**
  * The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). When the
- * links are taller than the column, the end that still hides some fades out (a mask, so the sidebar's own surface shows
- * through), and while there is more below, a small chevron at the foot says so; a tap on it scrolls a page down.
+ * links are taller than the column, each end that still hides some fades out (a mask, so the sidebar's own surface shows
+ * through), and while there is more below, a small chevron sits at the list's foot, between the list and what is under it
+ * rather than over the last link; a tap on it scrolls a page down. The fades and the chevron ease in and out with the
+ * scroll, and at the bottom of the list there is neither.
  */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
   const { labels } = useSidebar()
   const scroller = React.useRef<HTMLElement>(null)
   const { top, bottom } = useVerticalEdges(scroller)
-  const fade =
-    top || bottom
-      ? `linear-gradient(to bottom, ${top ? "transparent, black 1.5rem" : "black, black"}, ${bottom ? "black calc(100% - 2.5rem), transparent" : "black"})`
-      : undefined
+  React.useEffect(registerFadeProperties, [])
   return (
     <div data-slot="sidebar-content-frame" className="relative flex min-h-0 flex-1 flex-col">
       <nav
         ref={scroller}
         data-slot="sidebar-content"
         aria-label={labels.nav}
-        style={fade ? { maskImage: fade, WebkitMaskImage: fade } : undefined}
-        className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain px-3 py-2", className)}
+        style={
+          {
+            "--sidebar-fade-top": top ? "1.5rem" : "0px",
+            "--sidebar-fade-bottom": bottom ? "2.5rem" : "0px",
+            maskImage: "linear-gradient(to bottom, transparent, black var(--sidebar-fade-top), black calc(100% - var(--sidebar-fade-bottom)), transparent)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent, black var(--sidebar-fade-top), black calc(100% - var(--sidebar-fade-bottom)), transparent)",
+          } as React.CSSProperties
+        }
+        className={cn(
+          "flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain px-3 py-2",
+          "transition-[--sidebar-fade-top,--sidebar-fade-bottom] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+          className,
+        )}
         {...props}
       />
-      {/* A pointer's cue, out of the Tab order and hidden from screen readers: the keyboard scrolls the list by moving
-          through it, and a reader reads every link. */}
+      {/* A pointer's cue, centred 4 px above the list's foot so it reaches into the gap under it rather than over the last
+          link; out of the Tab order and hidden from screen readers: the keyboard scrolls the list by moving through it, and
+          a reader reads every link. */}
       <button
         type="button"
         tabIndex={-1}
@@ -667,9 +693,10 @@ export function SidebarContent({ className, ...props }: React.ComponentProps<"na
         data-shown={bottom || undefined}
         onClick={() => scroller.current?.scrollBy({ top: scroller.current.clientHeight * 0.8, behavior: "smooth" })}
         className={cn(
-          "press absolute bottom-1 left-1/2 flex size-6 -translate-x-1/2 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border hover:bg-accent hover:text-foreground",
-          "pointer-events-none opacity-0 transition-opacity duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-          "data-shown:pointer-events-auto data-shown:opacity-100",
+          "press absolute bottom-1 left-1/2 flex size-6 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border hover:bg-accent hover:text-foreground",
+          // It eases in from a little higher and fades, and leaves the same way.
+          "pointer-events-none -mt-1 opacity-0 transition-[opacity,margin] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+          "data-shown:pointer-events-auto data-shown:mt-0 data-shown:opacity-100",
         )}
       >
         <ChevronDown className="size-4" />
