@@ -121,6 +121,8 @@ export function useListQuery(options: UseListQueryOptions = {}) {
     search: text,
     setSearch,
     setPage: (page: number) => write({ page: Math.max(1, Math.floor(page)) }),
+    /** Writes a whole query, as a controlled block's `onQueryChange` hands it over. */
+    setQuery: (next: Partial<ListQuery>) => write(next),
     setLimit: (limit: number) => write({ limit, page: 1 }),
     /** Sorts by a column; `order` left out flips it when the column is already sorted, else ascending. */
     setSort: (sortBy: string | undefined, order?: SortOrder) =>
@@ -136,4 +138,28 @@ export function useListQuery(options: UseListQueryOptions = {}) {
       write({ page: undefined, limit: undefined, sortBy: undefined, order: undefined, search: undefined })
     },
   }
+}
+
+/**
+ * A search box over a query held elsewhere (props, a store): the text updates at once, `onSearch` gets it when typing
+ * pauses (clearing at once), and a search changed from outside (Back, Clear filters) replaces the text.
+ */
+export function useSearchText(search: string | undefined, onSearch: (search: string | undefined) => void, debounce = 300) {
+  const outside = search ?? ""
+  const [text, setText] = React.useState(outside)
+  const [seen, setSeen] = React.useState({ outside, wrote: outside })
+  if (seen.outside !== outside) {
+    if (outside !== seen.wrote) setText(outside)
+    setSeen({ outside, wrote: outside })
+  }
+  const send = useDebouncedCallback((value: string) => {
+    setSeen((s) => ({ ...s, wrote: value.trim() }))
+    onSearch(value.trim() || undefined)
+  }, debounce)
+  const setSearch = (value: string) => {
+    setText(value)
+    send(value)
+    if (value === "" || debounce <= 0) send.flush()
+  }
+  return [text, setSearch] as const
 }
