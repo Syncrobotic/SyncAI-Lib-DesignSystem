@@ -181,6 +181,7 @@ function EventView() {
       <ContextMenu>
         <ContextMenuTrigger asChild>
           {/* Focusable, so Shift+F10 or the Menu key can open the menu from the keyboard. */}
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- focusable so Shift+F10 or the Menu key can open the context menu */}
           <div tabIndex={0} className="flex flex-col gap-1 rounded-md bg-card p-4 text-sm ring-1 ring-border">
             <p className="font-medium">24 events this week</p>
             <p className="text-muted-foreground">

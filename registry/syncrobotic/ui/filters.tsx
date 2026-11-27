@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.49.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.50.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -731,6 +731,7 @@ function Picker({
       )}
       {step === "field" && (
         <Command label={title} loop defaultValue={draft.field}>
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the step opens on a press; the search box is the next thing to type in */}
           <CommandInput autoFocus placeholder={labels.searchFields} />
           <CommandList className="max-h-72">
             <CommandEmpty>{labels.noMatches}</CommandEmpty>
@@ -746,6 +747,7 @@ function Picker({
       )}
       {step === "operator" && field && (
         <Command label={title} loop defaultValue={draft.operator}>
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the step opens on a press; the search box is the next thing to type in */}
           <CommandInput autoFocus placeholder={labels.searchOperators} />
           <CommandList className="max-h-72">
             <CommandEmpty>{labels.noMatches}</CommandEmpty>
@@ -800,6 +802,7 @@ function ValueStep({
           if (text.trim()) onApply(text.trim())
         }}
       >
+        {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; the text is the next thing to type */}
         <Input autoFocus aria-label={title} placeholder={field.placeholder} value={text} onChange={(e) => setText(e.target.value)} />
         <Button type="submit" size="sm" disabled={!text.trim()}>
           {labels.apply}
@@ -813,6 +816,7 @@ function ValueStep({
     return (
       <>
         <Command label={title} loop defaultValue={multiple ? undefined : typeof value === "string" ? value : undefined}>
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the step opens on a press; the search box is the next thing to type in */}
           <CommandInput autoFocus placeholder={labels.searchOptions} />
           <CommandList className="max-h-72">
             <CommandEmpty>{labels.noMatches}</CommandEmpty>
@@ -878,6 +882,7 @@ function ValueStep({
               <NumberField
                 {...common}
                 id={`${id}-${i}`}
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; the first number is the next thing to type
                 autoFocus={i === 0}
                 value={range[i]}
                 onValueChange={(n) => setRange((r) => (i === 0 ? [n, r[1]] : [r[0], n]))}
@@ -895,6 +900,7 @@ function ValueStep({
       <div className="flex flex-col gap-3 p-3">
         <NumberField
           {...common}
+          // eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; the number is the next thing to type
           autoFocus
           aria-label={title}
           value={num}
@@ -917,6 +923,7 @@ function ValueStep({
     if (operator === "between")
       return (
         <div role="group" aria-label={title} className="flex flex-col gap-3 p-3">
+          {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
           <Calendar mode="range" selected={days?.from ? { from: days.from, to: days.to } : undefined} onSelect={(r) => setDays(r ?? undefined)} defaultMonth={days?.from} autoFocus />
           <Button size="sm" disabled={!days?.from || !days.to} onClick={() => days?.from && days.to && onApply([iso(days.from), iso(days.to)])}>
             {labels.apply}
@@ -926,6 +933,7 @@ function ValueStep({
     const day = typeof value === "string" && DAY.test(value) ? fromDay(value) : undefined
     return (
       <div role="group" aria-label={title} className="p-3">
+        {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the value step opens on a press; focus goes into the calendar */}
         <Calendar mode="single" selected={day} onSelect={(d) => d && onApply(iso(d))} defaultMonth={day} autoFocus />
       </div>
     )
@@ -1107,6 +1115,7 @@ export function FilterViews({
               }}
             >
               <Field label={labels.name}>
+                {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the form opens on a press of Save view; the name is the next thing to type */}
                 <Input data-slot="filter-views-name" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
               </Field>
               <Button data-slot="filter-views-confirm" type="submit" size="sm" disabled={!name.trim()}>

@@ -1,4 +1,4 @@
-// @syncrobotic/number-field v0.36.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.50.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -83,6 +83,7 @@ export function NumberField({
       </button>
       {/* The reading: the value as wide as its digits, the unit right after it, the pair centred. A press anywhere in it
           puts the caret in the value. */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a press on the reading puts the caret in the input, which the keyboard reaches with Tab */}
       <div
         className={cn("flex h-full min-w-16 flex-1 cursor-text items-center justify-center", !tight(unit) && "gap-1")}
         onMouseDown={(e) => {

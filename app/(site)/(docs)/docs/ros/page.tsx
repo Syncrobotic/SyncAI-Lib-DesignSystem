@@ -136,6 +136,7 @@ export default function RosPage() {
 
       <H2 id="messages">From message to component</H2>
       {/* A table that scrolls sideways is a Tab stop, so the keyboard can scroll it too. */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1) */}
       <div tabIndex={0} role="region" aria-label="From message to component" className="overflow-x-auto rounded-md ring-1 ring-border focus-visible:outline-2 focus-visible:outline-offset-2">
         <table className="w-full text-sm">
           <thead className="bg-muted text-left">
@@ -169,6 +170,7 @@ export default function RosPage() {
       <p className="max-w-2xl pb-4 text-pretty">
         <Inline text="`useRosStatus()` gives the state, the last error, the attempt and, with the heartbeat, the latency. Show it in words and shape wherever a robot is driven or watched. After a drop the connection waits up to 0.5 s, then up to 1, 2, 4 and 8 s, never more than 10 s, each wait a random point in its upper half so many tabs do not return together; it subscribes and advertises again on every new socket." />
       </p>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1) */}
       <div tabIndex={0} role="region" aria-label="Connection states" className="overflow-x-auto rounded-md ring-1 ring-border focus-visible:outline-2 focus-visible:outline-offset-2">
         <table className="w-full text-sm">
           <thead className="bg-muted text-left">

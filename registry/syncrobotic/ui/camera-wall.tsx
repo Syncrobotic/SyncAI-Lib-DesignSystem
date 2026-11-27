@@ -1,4 +1,4 @@
-// @syncrobotic/camera-wall v0.40.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.50.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
@@ -478,6 +478,7 @@ export function CameraWall({
   const focusSource = focusedCamera && live.has(focusedCamera.id) ? getSource(focusedCamera, { quality: "high" }) : undefined
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc bubbled from a focused tile leaves the focus view; the tiles are the Tab stops
     <div
       ref={rootRef}
       data-slot="camera-wall"

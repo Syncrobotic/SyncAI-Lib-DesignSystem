@@ -40,6 +40,8 @@ export const ScrollspySidebar: S = {
       <div className="flex h-80 gap-6 rounded-md bg-card p-4 ring-1 ring-border">
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Robot details"
           className="min-w-0 flex-1 overflow-y-auto pr-2 [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -61,6 +63,8 @@ export const ScrollspyPills: S = {
         <Scrollspy items={items} root={ref} offset={24} variant="pills" title="Sections" />
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Robot details"
           className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -91,6 +95,8 @@ export const ScrollspyHookOnly: S = {
         </div>
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Robot details"
           className="min-w-0 flex-1 overflow-y-auto p-4 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -111,6 +117,8 @@ export const ScrollspyNoTitle: S = {
         <Scrollspy items={items} root={ref} offset={24} title={null} aria-label="Sections" className="hidden w-32 shrink-0 sm:flex" />
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Robot details"
           className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -144,6 +152,8 @@ export const ScrollspySettings: S = {
         <Scrollspy items={settings} root={ref} offset={24} title="Settings" className="hidden w-44 shrink-0 overflow-y-auto sm:flex" />
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Settings"
           className="min-w-0 flex-1 overflow-y-auto pr-2 [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
@@ -176,6 +186,8 @@ export const ScrollspyLongNames: S = {
         <Scrollspy items={items} root={ref} offset={24} className="hidden w-40 shrink-0 sm:flex" />
         <div
           ref={ref}
+          role="region"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
           tabIndex={0}
           aria-label="Procedures"
           className="min-w-0 flex-1 overflow-y-auto [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"

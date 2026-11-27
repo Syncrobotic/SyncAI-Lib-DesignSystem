@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.36.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.50.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -432,11 +432,12 @@ function SelectTree({
           // focus-ring: the item's own row draws it, a 2 px ring inside the row after keyboard use (data-nav="key").
           className="outline-none"
         >
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- the row draws the treeitem; the treeitem holds focus and Enter/Space select it */}
           <div
             onClick={() => select(n)}
             className={cn(
               row,
-              "cursor-default select-none pe-2 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+              "cursor-pointer select-none pe-2 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
               // Selected: the kit's current look, a muted fill and weight. Hover is the lighter accent, so the two never look alike.
               isSelected ? "bg-muted font-medium text-foreground" : "hover:bg-accent",
               n.disabled && "pointer-events-none text-disabled [&_svg]:text-disabled",

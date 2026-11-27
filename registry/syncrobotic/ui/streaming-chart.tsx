@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.40.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.50.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -1383,11 +1383,13 @@ export function StreamingChart({
       </ul>
 
       {view === "chart" ? (
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the plot is a keyboard-driven chart: Space pauses, arrow keys pan
         <div
           data-slot="streaming-chart-plot"
           role="figure"
           aria-label={label}
           aria-describedby={descId}
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the plot is a keyboard-driven chart (Space pauses, arrow keys pan) and must take focus
           tabIndex={0}
           onKeyDown={onKeyDown}
           onPointerMove={hover}

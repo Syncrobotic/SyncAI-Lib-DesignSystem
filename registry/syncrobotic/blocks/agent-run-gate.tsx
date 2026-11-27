@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-gate v0.48.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
+// @syncrobotic/agent-run-gate v0.50.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
 "use client"
 
 import * as React from "react"
@@ -507,6 +507,7 @@ function GatePanel({
           </div>
         </div>
       ) : open ? (
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc from the textarea bubbles here to cancel the form
         <form
           noValidate
           aria-label={mode === "revise" ? "Send back for changes" : "Deny this step"}
@@ -532,6 +533,7 @@ function GatePanel({
             error={error}
           >
             {/* The form opened on a press of Revise or Deny: the cursor goes where the next keystroke belongs. */}
+            {/* eslint-disable-next-line jsx-a11y/no-autofocus -- the form opens on a press of Revise or Deny; the reason is the next thing to type */}
             <Textarea rows={3} autoFocus value={reason} onChange={(e) => setReason(e.target.value)} />
           </Field>
           <div className="grid gap-2 sm:flex">

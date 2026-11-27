@@ -1,4 +1,4 @@
-// @syncrobotic/input-group v0.17.4 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.50.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -42,6 +42,7 @@ export function InputGroup({
     })
   })
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a press on the empty field puts the caret in the input, which the keyboard reaches with Tab
     <div
       data-slot="input-group"
       className={cn(

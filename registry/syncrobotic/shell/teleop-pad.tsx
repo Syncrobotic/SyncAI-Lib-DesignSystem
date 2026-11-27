@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.40.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.50.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -346,6 +346,7 @@ export function TeleopPad({
 
   return (
     <div data-slot="teleop-pad" className={cn("flex flex-col items-center gap-3", className)}>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- role=application: the pad drives with pointer and arrow/WASD keys, Space or Esc stops */}
       <div
         ref={padRef}
         role="application"
@@ -353,6 +354,7 @@ export function TeleopPad({
         aria-label={l.name}
         aria-describedby={descId}
         aria-disabled={disabled || undefined}
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the pad is a keyboard-driven widget (role=application) and must take focus
         tabIndex={0}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

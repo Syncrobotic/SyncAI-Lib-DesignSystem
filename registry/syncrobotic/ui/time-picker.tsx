@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.32.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.50.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -261,10 +261,11 @@ export function TimePicker({
           // Label then shown value, so the name contains what is on screen (WCAG 2.5.3).
           aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
           aria-describedby={f?.describedBy}
-          aria-invalid={f?.invalid || undefined}
+          // A button takes no aria-invalid (ARIA 1.2): the error is read from aria-describedby; the ring keys off data-invalid.
+          data-invalid={f?.invalid || undefined}
           disabled={disabled}
           data-empty={!picked}
-          className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border", className)}
+          className={cn(field, "data-invalid:ring-2 data-invalid:ring-danger press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border", className)}
           onPointerDown={() => setNav("pointer")}
           onKeyDown={() => setNav("key")}
         >
@@ -281,6 +282,7 @@ export function TimePicker({
       </PopoverTrigger>
       {/* Named by its field, so it is announced as "Start time, dialog" and not as a nameless dialog. */}
       <PopoverContent align="start" aria-labelledby={triggerId} className="w-48 p-1">
+        {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus -- roving tabindex: the options take focus; the listbox handles their bubbled arrow keys */}
         <div
           role="listbox"
           aria-label={ariaLabel ?? l.times}

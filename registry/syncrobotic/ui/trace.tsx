@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.47.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.50.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -233,6 +233,7 @@ export function TraceDetail({ label, className, children }: { label: React.React
 export function TraceCode({ className, children, tone }: { className?: string; children: React.ReactNode; tone?: "danger" }) {
   return (
     <pre
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
       tabIndex={0}
       className={cn(
         "max-h-48 overflow-auto rounded-sm bg-muted p-3 font-mono text-xs leading-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
