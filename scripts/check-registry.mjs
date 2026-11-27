@@ -65,7 +65,8 @@ for (const item of registry.items) {
   for (const f of item.files) {
     if (!/\.tsx?$/.test(f.path)) continue
     const src = readFileSync(f.path, "utf8")
-    for (const [, spec] of src.matchAll(/^import[^"']*["']([^"']+)["']/gm)) {
+    // Static imports, and dynamic ones (a part loaded on first use is still a dependency).
+    for (const [, spec] of [...src.matchAll(/^import[^"']*["']([^"']+)["']/gm), ...src.matchAll(/\bimport\(\s*["']([^"']+)["']\s*\)/g)]) {
       if (spec.startsWith("@/lib/utils")) {
         if (!reach.has("cn")) fail(item.name, `imports @/lib/utils but does not depend on @syncrobotic/cn`)
       } else if (spec.startsWith("@/registry/")) {

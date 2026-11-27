@@ -1,9 +1,9 @@
-// @syncrobotic/graph v0.51.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.52.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, statusText, statusWord, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -366,7 +366,6 @@ function edgePath(points: [number, number][], horizontal: boolean) {
 // ---------------------------------------------------------------------------------------------------------------------
 
 const label = (n: GraphNode) => n.label
-const statusWord = (n: GraphNode, labels: GraphLabels) => (n.status ? (n.statusLabel ?? labels.status[n.status]) : undefined)
 
 /** Inputs and outputs of every node, from the edges, in the order the nodes are laid out. */
 function useNeighbours(nodes: GraphNode[], layout: GraphLayout) {
@@ -392,7 +391,7 @@ function accessibleName(n: GraphNode, ins: GraphNode[], outs: GraphNode[], label
   // In the order the box shows them (name and badge, then status, then meta), so the spoken name starts with the words on screen.
   const parts = [n.label]
   if (n.badge) parts.push(n.badge)
-  const word = statusWord(n, labels)
+  const word = statusWord(n, labels.status)
   if (word) parts.push(word)
   if (n.meta) parts.push(n.meta)
   if (ins.length) parts.push(labels.from(ins.map(label)))
@@ -674,7 +673,7 @@ export function Graph({
               const isSelected = selected === n.id
               const lit = !!path && onPath(n.id)
               const dim = !!path && !lit
-              const word = statusWord(n, labels)
+              const word = statusWord(n, labels.status)
               const ins = inputs(n.id).map((x) => byId.get(x)!)
               const outs = outputs(n.id).map((x) => byId.get(x)!)
               const props = {
@@ -811,7 +810,7 @@ export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet
     <ul data-slot="graph-list" aria-label={name} className={cn(list, className)}>
       {layout.nodes.map(({ id }) => {
         const n = byId.get(id)!
-        const word = statusWord(n, labels)
+        const word = statusWord(n, labels.status)
         const ins = inputs(id)
         const outs = outputs(id)
         return (

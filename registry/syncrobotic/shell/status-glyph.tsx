@@ -1,4 +1,4 @@
-// @syncrobotic/status-glyph v0.40.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
+// @syncrobotic/status-glyph v0.52.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
 import { cn } from "@/lib/utils"
 
 export type Tone = "info" | "success" | "warning" | "danger" | "neutral"
@@ -8,6 +8,13 @@ export type Tone = "info" | "success" | "warning" | "danger" | "neutral"
  * danger (stopped or failed), offline. Each has its own shape, so it reads without colour.
  */
 export type Status = "active" | "normal" | "warning" | "danger" | "offline"
+
+/** The word for an item's status: its own `statusLabel`, else `words[status]`; none for an item without a status. */
+export function statusWord(item: { status: Status; statusLabel?: string }, words: Record<Status, string>): string
+export function statusWord(item: { status?: Status; statusLabel?: string }, words: Record<Status, string>): string | undefined
+export function statusWord(item: { status?: Status; statusLabel?: string }, words: Record<Status, string>) {
+  return item.status ? (item.statusLabel ?? words[item.status]) : undefined
+}
 
 // Colour is for what is abnormal. Active and normal read from the shape alone, in the text colour,
 // so a fleet that is fine looks calm and the one robot that is not stands out.

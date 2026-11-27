@@ -1,18 +1,18 @@
-// @syncrobotic/geo-map v0.51.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.52.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Crosshair, LocateOff, RotateCw, TriangleAlert, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
-import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, statusText, statusWord, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
-import { clamp } from "@/registry/syncrobotic/lib/math"
+import { clamp, easeStandard } from "@/registry/syncrobotic/lib/math"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /** A place on Earth in WGS 84 degrees: latitude north positive, longitude east positive. Objects, never a pair, so the order is never in doubt. */
@@ -240,7 +240,6 @@ const merge = (given?: Partial<GeoMapLabels>): GeoMapLabels => ({
   fenceKind: { ...defaultLabels.fenceKind, ...given?.fenceKind },
 })
 
-const statusWord = (r: GeoMapRobot, labels: GeoMapLabels) => r.statusLabel ?? labels.status[r.status]
 const abnormal = (s: Status) => s === "warning" || s === "danger"
 /** Six decimals: about 0.1 m, finer than an RTK fix. */
 const COORD_DIGITS = 6
@@ -272,19 +271,6 @@ const FIT_MAX_ZOOM = 18
 const NICE_M = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000, 2_000_000, 5_000_000]
 /** Graticule steps, in degrees. */
 const NICE_DEG = [0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 45]
-
-/** The ease of --ease-standard, cubic-bezier(0.2, 0, 0, 1), solved for x by bisection. */
-function easeStandard(t: number) {
-  const bez = (a: number, b: number, s: number) => 3 * a * s * (1 - s) ** 2 + 3 * b * s ** 2 * (1 - s) + s ** 3
-  let lo = 0
-  let hi = 1
-  for (let i = 0; i < 20; i++) {
-    const mid = (lo + hi) / 2
-    if (bez(0.2, 0, mid) < t) lo = mid
-    else hi = mid
-  }
-  return bez(0, 1, (lo + hi) / 2)
-}
 
 type Box = { x: number; y: number; w: number; h: number }
 const overlap = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
@@ -963,7 +949,7 @@ export function GeoMap({
   const names: Box[] = []
   const placed = new Map<string, { x: number; y: number }>()
   const labelText = (r: GeoMapRobot) =>
-    r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels)}` : "") + (r.fix === "none" ? ` · ${labels.fix.none}` : "")
+    r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels.status)}` : "") + (r.fix === "none" ? ` · ${labels.fix.none}` : "")
   for (const r of order) {
     const [x, y] = geoToScreen(r)
     const w = labelText(r).length * charWidth + 8
@@ -991,7 +977,7 @@ export function GeoMap({
   const showCursor = editing && focused && !byPointer && !draft
   const summary = [
     robots.length ? labels.count(robots.length) : labels.empty,
-    selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels)) : "",
+    selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels.status)) : "",
     banner ?? "",
     editing ? labels.editKeys : "",
   ]
@@ -1213,7 +1199,7 @@ export function GeoMap({
             >
               {r.name}
               {(abnormal(r.status) || isSelected) && (
-                <span className={cn("font-sans", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>&nbsp;· {statusWord(r, labels)}</span>
+                <span className={cn("font-sans", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>&nbsp;· {statusWord(r, labels.status)}</span>
               )}
               {lost && <span className="font-sans text-warning">&nbsp;· {labels.fix.none}</span>}
             </span>
@@ -1389,7 +1375,7 @@ export function GeoMapList({ label: name, robots = [], fences = [], selectedId, 
                 <span className={cn("font-mono text-sm", isSelected ? "font-bold" : "font-medium")}>{r.name}</span>
                 <span className={cn("flex items-center gap-2 text-xs", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>
                   <StatusGlyph status={r.status} />
-                  {statusWord(r, labels)}
+                  {statusWord(r, labels.status)}
                 </span>
                 {fix && (
                   <span data-slot="geo-map-fix" className={cn("flex items-center gap-2 text-xs tabular-nums", lost ? "text-warning" : "text-muted-foreground")}>

@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.51.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.52.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,7 @@ import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewpo
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
-import { clamp } from "@/registry/syncrobotic/lib/math"
+import { clamp, easeStandard } from "@/registry/syncrobotic/lib/math"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 
@@ -434,19 +434,6 @@ export function pointCloudGizmoLayout(c: PointCloudCamera, words: string[], arm:
         b.label.y += away * (overlapY + 2)
       }
   return placed.map(({ tip, label }) => ({ tip, label }))
-}
-
-/** A glide's ease: --ease-standard, cubic-bezier(0.2, 0, 0, 1), solved for x by bisection (as robot-map does). */
-function easeStandard(t: number) {
-  const bez = (a: number, b: number, s: number) => 3 * a * s * (1 - s) ** 2 + 3 * b * s ** 2 * (1 - s) + s ** 3
-  let lo = 0
-  let hi = 1
-  for (let i = 0; i < 20; i++) {
-    const mid = (lo + hi) / 2
-    if (bez(0.2, 0, mid) < t) lo = mid
-    else hi = mid
-  }
-  return bez(0, 1, (lo + hi) / 2)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

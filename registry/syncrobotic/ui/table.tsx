@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.51.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.52.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,9 +46,39 @@ export function scrollFadeMask({ start, end }: { start: boolean; end: boolean })
  * Dense data for dashboards; numbers are tabular, right-align numeric columns. Give phones their own layout first; a table
  * that still scrolls fades on the hidden side. `bare` inside a surface: only the hairlines between rows, so edges never nest.
  */
-export function Table({ className, bare, ...props }: React.ComponentProps<"table"> & { bare?: boolean }) {
+export type TableLabels = {
+  /** Names the scrolling region when the table has no `label`, `aria-label` or caption. */
+  region: string
+}
+
+export const defaultTableLabels: TableLabels = { region: "Table" }
+
+export function Table({
+  className,
+  bare,
+  label,
+  labels,
+  ...props
+}: React.ComponentProps<"table"> & {
+  bare?: boolean
+  /** Names the scrolling region (a Tab stop). Defaults to the table's `aria-label`, then its caption. */
+  label?: string
+  labels?: Partial<TableLabels>
+}) {
   const scroller = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scroller)
+  const named = label ?? props["aria-label"]
+  const captionId = React.useId()
+  // A caption, once rendered, names the region instead of the fallback word. Set on the node: React does not render
+  // aria-labelledby here, and the caption is a child it cannot see from this component.
+  React.useLayoutEffect(() => {
+    const el = scroller.current
+    const caption = el?.querySelector<HTMLElement>(":scope > table > caption")
+    if (!el) return
+    if (named || !caption) return el.removeAttribute("aria-labelledby")
+    caption.id ||= captionId
+    el.setAttribute("aria-labelledby", caption.id)
+  })
   return (
     // The frame draws the edge and the focus ring, so the fade on the scrolling box never eats either.
     <div
@@ -62,6 +92,8 @@ export function Table({ className, bare, ...props }: React.ComponentProps<"table
         // A table wider than the screen scrolls; keyboard users reach it with Tab and scroll it with the arrow keys.
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrolling region is a Tab stop so the keyboard can scroll it (WCAG 2.1.1)
         tabIndex={0}
+        role="region"
+        aria-label={named ?? labels?.region ?? defaultTableLabels.region}
         style={scrollFadeMask(edges)}
         // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.
         className="relative w-full overflow-x-auto rounded-md outline-none"

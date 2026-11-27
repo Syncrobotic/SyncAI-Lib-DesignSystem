@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.28.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.52.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -80,14 +80,20 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
     onLongPress: () => onStopAll?.(),
     duration: holdAllMs,
   })
+  const button = React.useRef<HTMLButtonElement>(null)
+  useFocusHandoff(button, "stop", "release")
   const holdingAll = Boolean(onStopAll) && holding
   const Icon = icons[state]
   const pale = state === "idle"
   const disabled = state === "dead"
+  // Named in one string: a screen-reader-only ", " is positioned, so name computation reads it as "stop , 7F3A".
+  const name = tag ? [holdingAll ? l.holdAll : l[state], (holdingAll || !disabled) && tag].filter(Boolean).join(", ") : undefined
 
   return (
     <button
+      ref={button}
       type="button"
+      aria-label={name}
       disabled={disabled}
       {...(disabled ? {} : handlers)}
       className={cn(
@@ -105,7 +111,6 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
       <span className={cn("relative flex items-center gap-2", holdingAll && "invisible")}>
         <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
         <span className="text-lg font-bold">{l[state]}</span>
-        {tag && !disabled && <span className="sr-only">, </span>}
         {tag && !disabled && <Tag tag={tag} className={pale ? "ring-1 ring-danger ring-inset" : state === "bluetooth-sent" ? "ring-1 ring-white ring-inset" : "bg-stop-deep"} />}
       </span>
       {holdingAll && (
@@ -118,6 +123,29 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
       )}
     </button>
   )
+}
+
+/**
+ * The stop and SlideToRelease take turns in one slot, so the one leaving hands focus on: if it has focus as it unmounts,
+ * it marks the slot (`data-stop-focus`), and the one mounting in a marked slot takes focus unless focus went elsewhere.
+ * SlideToRelease keeps its own copy of this, so neither item imports the other.
+ */
+function useFocusHandoff(ref: React.RefObject<HTMLElement | null>, self: string, next: string, onTaken?: () => void) {
+  const taken = React.useEffectEvent(() => onTaken?.())
+  React.useLayoutEffect(() => {
+    const el = ref.current
+    const slot = el?.parentElement
+    if (el && slot?.getAttribute("data-stop-focus") === self) {
+      slot.removeAttribute("data-stop-focus")
+      if (!document.activeElement || document.activeElement === document.body) {
+        el.focus({ preventScroll: true })
+        taken()
+      }
+    }
+    return () => {
+      if (el && slot && document.activeElement === el) slot.setAttribute("data-stop-focus", next)
+    }
+  }, [ref, self, next])
 }
 
 // On the deep red (delivered over Bluetooth) a deep-red tag would vanish: there it takes a white outline instead.

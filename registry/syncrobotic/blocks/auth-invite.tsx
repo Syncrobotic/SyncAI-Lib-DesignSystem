@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.45.1 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.52.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,10 +51,25 @@ export function AuthInvite({
   // that is gone.
   const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
   React.useEffect(() => () => clearTimeout(reply.current), [])
+  // Focus follows the outcome: the field in error once it shows the error, so both are read together; the status once
+  // the invitation is accepted. Never left on the page body.
+  const [attempt, setAttempt] = React.useState(0)
+  const form = React.useRef<HTMLFormElement>(null)
+  const status = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    if (attempt) form.current?.querySelector<HTMLElement>(":is(input, textarea, select, button)[aria-invalid=true]")?.focus()
+  }, [attempt])
+  const accepted = state === "accepted"
+  React.useEffect(() => {
+    if (accepted) status.current?.focus()
+  }, [accepted])
 
   const accept = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim()) return setError("Enter your name as your team knows it.")
+    if (!name.trim()) {
+      setError("Enter your name as your team knows it.")
+      return setAttempt((n) => n + 1)
+    }
     setError(undefined)
     setState("busy")
     reply.current = setTimeout(() => {
@@ -67,15 +82,19 @@ export function AuthInvite({
   return (
     <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        {state === "accepted" ? (
-          <div role="status" className="flex animate-appear flex-col gap-4">
-            <IconTile variant="muted">
-              <Check aria-hidden="true" />
-            </IconTile>
-            <PageHeader title={`You have joined ${i.site}`} description={`You are an ${i.role}. ${i.from.name} can change your role.`} className="pb-0" />
-            <Button size="lg">Open {product}</Button>
-          </div>
-        ) : (
+        {/* Mounted from the start, empty and out of the flow until the invitation is accepted, so its message is announced. */}
+        <div ref={status} role="status" tabIndex={-1} className={accepted ? "flex animate-appear flex-col gap-4" : "sr-only"}>
+          {accepted && (
+            <>
+              <IconTile variant="muted">
+                <Check aria-hidden="true" />
+              </IconTile>
+              <PageHeader title={`You have joined ${i.site}`} description={`You are an ${i.role}. ${i.from.name} can change your role.`} className="pb-0" />
+              <Button size="lg">Open {product}</Button>
+            </>
+          )}
+        </div>
+        {!accepted && (
           <>
             <div className="flex items-center gap-3">
               <Avatar className="size-10">
@@ -97,7 +116,7 @@ export function AuthInvite({
                 ))}
               </ul>
             </div>
-            <form noValidate onSubmit={accept} className="flex flex-col gap-4">
+            <form ref={form} noValidate onSubmit={accept} className="flex flex-col gap-4">
               <Field label="Your name" hint="Shown to your team in alarms and logs." error={error}>
                 <Input autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} />
               </Field>

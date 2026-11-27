@@ -1,87 +1,96 @@
-import { AppShellDemo } from "./app-shell-demo"
-import { TopBarShellDemo } from "./top-bar-shell-demo"
-import { ActionRailShellDemo } from "./action-rail-shell-demo"
-import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
-import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
-import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
-import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
-import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
-import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
-import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
-import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
-import { ReviewQueue } from "@/registry/syncrobotic/blocks/review-queue"
-import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
-import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
-import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
-import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
-import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
-import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
-import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card"
-import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
-import { LineChartTelemetry } from "@/registry/syncrobotic/blocks/line-chart-telemetry"
-import { LineChartLimit } from "@/registry/syncrobotic/blocks/line-chart-limit"
-import { HistogramBattery } from "@/registry/syncrobotic/blocks/histogram-battery"
-import { LineChartCompare } from "@/registry/syncrobotic/blocks/line-chart-compare"
-import { AreaChartBattery } from "@/registry/syncrobotic/blocks/area-chart-battery"
-import { AreaChartFleetStates } from "@/registry/syncrobotic/blocks/area-chart-fleet-states"
-import { AreaChartCumulative } from "@/registry/syncrobotic/blocks/area-chart-cumulative"
-import { BarChartMissions } from "@/registry/syncrobotic/blocks/bar-chart-missions"
-import { BarChartRanked } from "@/registry/syncrobotic/blocks/bar-chart-ranked"
-import { BarChartStacked } from "@/registry/syncrobotic/blocks/bar-chart-stacked"
-import { BarChartVariance } from "@/registry/syncrobotic/blocks/bar-chart-variance"
-import { SparklineRobotList } from "@/registry/syncrobotic/blocks/sparkline-robot-list"
-import { SparklineTable } from "@/registry/syncrobotic/blocks/sparkline-table"
-import { StatusTrackerUptime } from "@/registry/syncrobotic/blocks/status-tracker-uptime"
-import { StatusTrackerRuns } from "@/registry/syncrobotic/blocks/status-tracker-runs"
-import { StatusTrackerRollout } from "@/registry/syncrobotic/blocks/status-tracker-rollout"
-import { RadialChartBattery } from "@/registry/syncrobotic/blocks/radial-chart-battery"
-import { RadialChartGoal } from "@/registry/syncrobotic/blocks/radial-chart-goal"
-import { RadialChartCapacity } from "@/registry/syncrobotic/blocks/radial-chart-capacity"
-import { HeatmapWeekHours } from "@/registry/syncrobotic/blocks/heatmap-week-hours"
-import { HeatmapZones } from "@/registry/syncrobotic/blocks/heatmap-zones"
-import { AppShellMobileTabs } from "@/registry/syncrobotic/blocks/app-shell-mobile-tabs"
-import { AppShellControl } from "@/registry/syncrobotic/blocks/app-shell-control"
-import { StatsMeters } from "@/registry/syncrobotic/blocks/stats-meters"
-import { StatsFiltered } from "@/registry/syncrobotic/blocks/stats-filtered"
-import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
-import { CardMission } from "@/registry/syncrobotic/blocks/card-mission"
-import { AuthPasskey } from "@/registry/syncrobotic/blocks/auth-passkey"
-import { AuthInvite } from "@/registry/syncrobotic/blocks/auth-invite"
-import { AuthTwoFactor } from "@/registry/syncrobotic/blocks/auth-2fa"
-import { SettingsNotifications } from "@/registry/syncrobotic/blocks/settings-notifications"
-import { SettingsApiKeys } from "@/registry/syncrobotic/blocks/settings-api-keys"
-import { SettingsBilling } from "@/registry/syncrobotic/blocks/settings-billing"
-import { NotificationCenterDemo } from "./notification-center-demo"
-import { SettingsWebhooks } from "@/registry/syncrobotic/blocks/settings-webhooks"
-import { SettingsSessions } from "@/registry/syncrobotic/blocks/settings-sessions"
-import { DialogConfirmDestructive } from "@/registry/syncrobotic/blocks/dialog-confirm-destructive"
-import { DialogForm } from "@/registry/syncrobotic/blocks/dialog-form"
-import { DialogShare } from "@/registry/syncrobotic/blocks/dialog-share"
-import { SheetRobotDetail } from "@/registry/syncrobotic/blocks/sheet-robot-detail"
-import { SheetFilters } from "@/registry/syncrobotic/blocks/sheet-filters"
-import { TimelineActivity } from "@/registry/syncrobotic/blocks/timeline-activity"
-import { TimelineAudit } from "@/registry/syncrobotic/blocks/timeline-audit"
-import { WizardCommission } from "@/registry/syncrobotic/blocks/wizard-commission"
-import { WizardImport } from "@/registry/syncrobotic/blocks/wizard-import"
-import { MissionSchedule } from "@/registry/syncrobotic/blocks/mission-schedule"
-import { UsersInvitations } from "@/registry/syncrobotic/blocks/users-invitations"
-import { UsersAuditLog } from "@/registry/syncrobotic/blocks/users-audit-log"
-import { IncidentQueue } from "@/registry/syncrobotic/blocks/incident-queue"
-import { IncidentDetail } from "@/registry/syncrobotic/blocks/incident-detail"
-import { MaintenanceDue } from "@/registry/syncrobotic/blocks/maintenance-due"
-import { MaintenanceWorkOrder } from "@/registry/syncrobotic/blocks/maintenance-work-order"
-import { RolloutOverview } from "@/registry/syncrobotic/blocks/rollout-overview"
-import { RolloutPlan } from "@/registry/syncrobotic/blocks/rollout-plan"
-import { AgentRuns } from "@/registry/syncrobotic/blocks/agent-runs"
-import { AgentTrace } from "@/registry/syncrobotic/blocks/agent-trace"
-import { AgentApproval } from "@/registry/syncrobotic/blocks/agent-approval"
-import { AgentChatDemo } from "./agent-chat-demo"
-import { AgentRunGate } from "@/registry/syncrobotic/blocks/agent-run-gate"
-import { AgentRunOutcome } from "@/registry/syncrobotic/blocks/agent-run-outcome"
-import { AgentToolPermissions } from "@/registry/syncrobotic/blocks/agent-tool-permissions"
-import { blocks } from "./blocks"
+"use client"
 
-/** Each block's preview, for /preview/<name> only: importing this file loads every block. */
+import dynamic from "next/dynamic"
+
+// One chunk per block: a preview loads only its own block, not all of them (and recharts). The server renders it, and
+// hydration keeps that HTML until the chunk arrives, so the framed height never flashes.
+const AppShellDemo = dynamic(() => import("./app-shell-demo").then((m) => m.AppShellDemo))
+const TopBarShellDemo = dynamic(() => import("./top-bar-shell-demo").then((m) => m.TopBarShellDemo))
+const ActionRailShellDemo = dynamic(() => import("./action-rail-shell-demo").then((m) => m.ActionRailShellDemo))
+const SignIn = dynamic(() => import("@/registry/syncrobotic/blocks/sign-in").then((m) => m.SignIn))
+const RecordForm = dynamic(() => import("@/registry/syncrobotic/blocks/record-form").then((m) => m.RecordForm))
+const SettingsPage = dynamic(() => import("@/registry/syncrobotic/blocks/settings-page").then((m) => m.SettingsPage))
+const UsersRoles = dynamic(() => import("@/registry/syncrobotic/blocks/users-roles").then((m) => m.UsersRoles))
+const DataCatalog = dynamic(() => import("@/registry/syncrobotic/blocks/data-catalog").then((m) => m.DataCatalog))
+const DatasetDetail = dynamic(() => import("@/registry/syncrobotic/blocks/dataset-detail").then((m) => m.DatasetDetail))
+const GovernanceTodo = dynamic(() => import("@/registry/syncrobotic/blocks/governance-todo").then((m) => m.GovernanceTodo))
+const ReviewQueue = dynamic(() => import("@/registry/syncrobotic/blocks/review-queue").then((m) => m.ReviewQueue))
+const ConsoleOverview = dynamic(() => import("@/registry/syncrobotic/blocks/console-overview").then((m) => m.ConsoleOverview))
+const EventLog = dynamic(() => import("@/registry/syncrobotic/blocks/event-log").then((m) => m.EventLog))
+const ListDetail = dynamic(() => import("@/registry/syncrobotic/blocks/list-detail").then((m) => m.ListDetail))
+const MapWorkspace = dynamic(() => import("@/registry/syncrobotic/blocks/map-workspace").then((m) => m.MapWorkspace))
+const FleetTable = dynamic(() => import("@/registry/syncrobotic/blocks/fleet-table").then((m) => m.FleetTable))
+const MarketingHero = dynamic(() => import("@/registry/syncrobotic/blocks/marketing-hero").then((m) => m.MarketingHero))
+const RobotStatusCard = dynamic(() => import("@/registry/syncrobotic/blocks/robot-status-card").then((m) => m.RobotStatusCard))
+const StatsCards = dynamic(() => import("@/registry/syncrobotic/blocks/stats-cards").then((m) => m.StatsCards))
+const LineChartTelemetry = dynamic(() => import("@/registry/syncrobotic/blocks/line-chart-telemetry").then((m) => m.LineChartTelemetry))
+const LineChartLimit = dynamic(() => import("@/registry/syncrobotic/blocks/line-chart-limit").then((m) => m.LineChartLimit))
+const HistogramBattery = dynamic(() => import("@/registry/syncrobotic/blocks/histogram-battery").then((m) => m.HistogramBattery))
+const LineChartCompare = dynamic(() => import("@/registry/syncrobotic/blocks/line-chart-compare").then((m) => m.LineChartCompare))
+const AreaChartBattery = dynamic(() => import("@/registry/syncrobotic/blocks/area-chart-battery").then((m) => m.AreaChartBattery))
+const AreaChartFleetStates = dynamic(() => import("@/registry/syncrobotic/blocks/area-chart-fleet-states").then((m) => m.AreaChartFleetStates))
+const AreaChartCumulative = dynamic(() => import("@/registry/syncrobotic/blocks/area-chart-cumulative").then((m) => m.AreaChartCumulative))
+const BarChartMissions = dynamic(() => import("@/registry/syncrobotic/blocks/bar-chart-missions").then((m) => m.BarChartMissions))
+const BarChartRanked = dynamic(() => import("@/registry/syncrobotic/blocks/bar-chart-ranked").then((m) => m.BarChartRanked))
+const BarChartStacked = dynamic(() => import("@/registry/syncrobotic/blocks/bar-chart-stacked").then((m) => m.BarChartStacked))
+const BarChartVariance = dynamic(() => import("@/registry/syncrobotic/blocks/bar-chart-variance").then((m) => m.BarChartVariance))
+const SparklineRobotList = dynamic(() => import("@/registry/syncrobotic/blocks/sparkline-robot-list").then((m) => m.SparklineRobotList))
+const SparklineTable = dynamic(() => import("@/registry/syncrobotic/blocks/sparkline-table").then((m) => m.SparklineTable))
+const StatusTrackerUptime = dynamic(() => import("@/registry/syncrobotic/blocks/status-tracker-uptime").then((m) => m.StatusTrackerUptime))
+const StatusTrackerRuns = dynamic(() => import("@/registry/syncrobotic/blocks/status-tracker-runs").then((m) => m.StatusTrackerRuns))
+const StatusTrackerRollout = dynamic(() => import("@/registry/syncrobotic/blocks/status-tracker-rollout").then((m) => m.StatusTrackerRollout))
+const RadialChartBattery = dynamic(() => import("@/registry/syncrobotic/blocks/radial-chart-battery").then((m) => m.RadialChartBattery))
+const RadialChartGoal = dynamic(() => import("@/registry/syncrobotic/blocks/radial-chart-goal").then((m) => m.RadialChartGoal))
+const RadialChartCapacity = dynamic(() => import("@/registry/syncrobotic/blocks/radial-chart-capacity").then((m) => m.RadialChartCapacity))
+const HeatmapWeekHours = dynamic(() => import("@/registry/syncrobotic/blocks/heatmap-week-hours").then((m) => m.HeatmapWeekHours))
+const HeatmapZones = dynamic(() => import("@/registry/syncrobotic/blocks/heatmap-zones").then((m) => m.HeatmapZones))
+const AppShellMobileTabs = dynamic(() => import("@/registry/syncrobotic/blocks/app-shell-mobile-tabs").then((m) => m.AppShellMobileTabs))
+const AppShellControl = dynamic(() => import("@/registry/syncrobotic/blocks/app-shell-control").then((m) => m.AppShellControl))
+const StatsMeters = dynamic(() => import("@/registry/syncrobotic/blocks/stats-meters").then((m) => m.StatsMeters))
+const StatsFiltered = dynamic(() => import("@/registry/syncrobotic/blocks/stats-filtered").then((m) => m.StatsFiltered))
+const CardSite = dynamic(() => import("@/registry/syncrobotic/blocks/card-site").then((m) => m.CardSite))
+const CardMission = dynamic(() => import("@/registry/syncrobotic/blocks/card-mission").then((m) => m.CardMission))
+const AuthPasskey = dynamic(() => import("@/registry/syncrobotic/blocks/auth-passkey").then((m) => m.AuthPasskey))
+const AuthInvite = dynamic(() => import("@/registry/syncrobotic/blocks/auth-invite").then((m) => m.AuthInvite))
+const AuthTwoFactor = dynamic(() => import("@/registry/syncrobotic/blocks/auth-2fa").then((m) => m.AuthTwoFactor))
+const SettingsNotifications = dynamic(() => import("@/registry/syncrobotic/blocks/settings-notifications").then((m) => m.SettingsNotifications))
+const SettingsApiKeys = dynamic(() => import("@/registry/syncrobotic/blocks/settings-api-keys").then((m) => m.SettingsApiKeys))
+const SettingsBilling = dynamic(() => import("@/registry/syncrobotic/blocks/settings-billing").then((m) => m.SettingsBilling))
+const NotificationCenterDemo = dynamic(() => import("./notification-center-demo").then((m) => m.NotificationCenterDemo))
+const SettingsWebhooks = dynamic(() => import("@/registry/syncrobotic/blocks/settings-webhooks").then((m) => m.SettingsWebhooks))
+const SettingsSessions = dynamic(() => import("@/registry/syncrobotic/blocks/settings-sessions").then((m) => m.SettingsSessions))
+const DialogConfirmDestructive = dynamic(() => import("@/registry/syncrobotic/blocks/dialog-confirm-destructive").then((m) => m.DialogConfirmDestructive))
+const DialogForm = dynamic(() => import("@/registry/syncrobotic/blocks/dialog-form").then((m) => m.DialogForm))
+const DialogShare = dynamic(() => import("@/registry/syncrobotic/blocks/dialog-share").then((m) => m.DialogShare))
+const SheetRobotDetail = dynamic(() => import("@/registry/syncrobotic/blocks/sheet-robot-detail").then((m) => m.SheetRobotDetail))
+const SheetFilters = dynamic(() => import("@/registry/syncrobotic/blocks/sheet-filters").then((m) => m.SheetFilters))
+const TimelineActivity = dynamic(() => import("@/registry/syncrobotic/blocks/timeline-activity").then((m) => m.TimelineActivity))
+const TimelineAudit = dynamic(() => import("@/registry/syncrobotic/blocks/timeline-audit").then((m) => m.TimelineAudit))
+const WizardCommission = dynamic(() => import("@/registry/syncrobotic/blocks/wizard-commission").then((m) => m.WizardCommission))
+const WizardImport = dynamic(() => import("@/registry/syncrobotic/blocks/wizard-import").then((m) => m.WizardImport))
+const MissionSchedule = dynamic(() => import("@/registry/syncrobotic/blocks/mission-schedule").then((m) => m.MissionSchedule))
+const UsersInvitations = dynamic(() => import("@/registry/syncrobotic/blocks/users-invitations").then((m) => m.UsersInvitations))
+const UsersAuditLog = dynamic(() => import("@/registry/syncrobotic/blocks/users-audit-log").then((m) => m.UsersAuditLog))
+const IncidentQueue = dynamic(() => import("@/registry/syncrobotic/blocks/incident-queue").then((m) => m.IncidentQueue))
+const IncidentDetail = dynamic(() => import("@/registry/syncrobotic/blocks/incident-detail").then((m) => m.IncidentDetail))
+const MaintenanceDue = dynamic(() => import("@/registry/syncrobotic/blocks/maintenance-due").then((m) => m.MaintenanceDue))
+const MaintenanceWorkOrder = dynamic(() => import("@/registry/syncrobotic/blocks/maintenance-work-order").then((m) => m.MaintenanceWorkOrder))
+const RolloutOverview = dynamic(() => import("@/registry/syncrobotic/blocks/rollout-overview").then((m) => m.RolloutOverview))
+const RolloutPlan = dynamic(() => import("@/registry/syncrobotic/blocks/rollout-plan").then((m) => m.RolloutPlan))
+const AgentRuns = dynamic(() => import("@/registry/syncrobotic/blocks/agent-runs").then((m) => m.AgentRuns))
+const AgentTrace = dynamic(() => import("@/registry/syncrobotic/blocks/agent-trace").then((m) => m.AgentTrace))
+const AgentApproval = dynamic(() => import("@/registry/syncrobotic/blocks/agent-approval").then((m) => m.AgentApproval))
+const AgentChatDemo = dynamic(() => import("./agent-chat-demo").then((m) => m.AgentChatDemo))
+const AgentRunGate = dynamic(() => import("@/registry/syncrobotic/blocks/agent-run-gate").then((m) => m.AgentRunGate))
+const AgentRunOutcome = dynamic(() => import("@/registry/syncrobotic/blocks/agent-run-outcome").then((m) => m.AgentRunOutcome))
+const AgentToolPermissions = dynamic(() => import("@/registry/syncrobotic/blocks/agent-tool-permissions").then((m) => m.AgentToolPermissions))
+const ErrorPage = dynamic(() => import("@/registry/syncrobotic/blocks/status-pages").then((m) => m.ErrorPage))
+const LoadingPage = dynamic(() => import("@/registry/syncrobotic/blocks/status-pages").then((m) => m.LoadingPage))
+const NoAccessPage = dynamic(() => import("@/registry/syncrobotic/blocks/status-pages").then((m) => m.NoAccessPage))
+const NotFoundPage = dynamic(() => import("@/registry/syncrobotic/blocks/status-pages").then((m) => m.NotFoundPage))
+const OfflinePage = dynamic(() => import("@/registry/syncrobotic/blocks/status-pages").then((m) => m.OfflinePage))
+
+/** Each block's preview; tests/unit/block-previews.test.ts checks every block has one. */
 export const blockRenders: Record<string, () => React.ReactNode> = {
   "line-chart-telemetry": () => (
       <div className="mx-auto max-w-3xl p-6">
@@ -333,4 +342,7 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "wizard-import": () => <WizardImport />,
 }
 
-for (const b of blocks) if (!(b.name in blockRenders)) throw new Error(`Block ${b.name} has no preview in site/block-renders.tsx`)
+/** One block's preview, for /preview/<name>. */
+export function BlockPreview({ name }: { name: string }) {
+  return blockRenders[name]()
+}

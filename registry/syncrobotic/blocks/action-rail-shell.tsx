@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.51.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.52.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -66,6 +66,8 @@ export type ActionRailShellLabels = {
   moreActions: string
   /** The top bar's ⋯ menu, which holds the header items that do not fit. */
   headerMore: string
+  /** The skip link to `<main>`, the shell's first Tab stop. */
+  skip: string
 }
 
 export const defaultActionRailShellLabels: ActionRailShellLabels = {
@@ -73,6 +75,7 @@ export const defaultActionRailShellLabels: ActionRailShellLabels = {
   stepLabel: "Next step",
   moreActions: "More actions",
   headerMore: "More",
+  skip: "Skip to content",
 }
 
 type ActionRailShellProps = {
@@ -173,6 +176,8 @@ export function ActionRailShell({
 }: ActionRailShellProps) {
   const l = { ...defaultActionRailShellLabels, ...labels }
   const back = backLabel ?? l.back
+  const autoId = React.useId()
+  const mainId = `${autoId}main`
   const workspace = !!(leading || panel)
   const rail = React.useRef<HTMLElement>(null)
   const header = React.useRef<HTMLElement>(null)
@@ -436,6 +441,20 @@ export function ActionRailShell({
         workspace && "lg:h-[var(--app-shell-height,100dvh)]",
       )}
     >
+      {/* The first Tab stop, hidden until focused; focus moves by hand, so a hash router never sees the #id. */}
+      <a
+        data-slot="action-rail-skip-link"
+        href={`#${mainId}`}
+        onClick={(e) => {
+          const main = document.getElementById(mainId)
+          if (!main) return
+          e.preventDefault()
+          main.focus()
+        }}
+        className="sr-only z-50 rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+      >
+        {l.skip}
+      </a>
       <header ref={header} className="flex h-(--h-row) shrink-0 items-center gap-3 rounded-md bg-card px-4 ring-1 ring-border">
         {onBack && (
           <button data-slot="action-rail-back"
@@ -498,7 +517,7 @@ export function ActionRailShell({
           </aside>
         )}
 
-        <main data-slot="action-rail-main" className={cn("min-w-0 flex-1 self-stretch rounded-md bg-card p-4 ring-1 ring-border", workspace && "lg:overflow-y-auto lg:overscroll-contain")}>
+        <main id={mainId} tabIndex={-1} data-slot="action-rail-main" className={cn("min-w-0 flex-1 self-stretch rounded-md bg-card p-4 ring-1 ring-border", workspace && "lg:overflow-y-auto lg:overscroll-contain")}>
           {children}
         </main>
 

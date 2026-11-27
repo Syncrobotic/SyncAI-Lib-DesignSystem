@@ -1,6 +1,7 @@
-// @syncrobotic/text-diff v0.51.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.52.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { plural } from "@/registry/syncrobotic/lib/format-number"
 
 /** One run of the diff: words both texts share, or words only one of them has. `text` keeps the words' own spacing. */
 export type DiffPart = { type: "same" | "added" | "removed"; text: string; words: number }
@@ -128,8 +129,6 @@ export function diffStats(parts: DiffPart[]) {
   }
 }
 
-const plural = (n: number) => `${n} ${n === 1 ? "word" : "words"}`
-
 export type TextDiffLabels = {
   /** Read before an insertion. */
   added: string
@@ -150,7 +149,7 @@ const defaultLabels: TextDiffLabels = {
   removed: "removed:",
   end: "(end)",
   // A real minus sign (U+2212), so +3 and −1 line up.
-  summary: (added, removed) => [added ? `+${plural(added)}` : "", removed ? `−${plural(removed)}` : ""].filter(Boolean).join(", "),
+  summary: (added, removed) => [added ? `+${plural(added, "word", "words")}` : "", removed ? `−${plural(removed, "word", "words")}` : ""].filter(Boolean).join(", "),
   none: "No changes",
   empty: "Empty",
 }

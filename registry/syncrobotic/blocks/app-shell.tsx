@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.51.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.52.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -267,7 +267,33 @@ type AppShellProps = {
    */
   sidebarOpen?: boolean
   sidebarWidth?: number
+  /** The id on `<main>`, the skip link's target. Unique per shell by default. */
+  mainId?: string
+  /** The skip link, the shell's first Tab stop. */
+  skipLabel?: string
   children: React.ReactNode
+}
+
+/**
+ * The first Tab stop of a shell, hidden until focused: it moves focus past the navigation to `<main>` (which takes
+ * `tabIndex={-1}`). Focus is moved by hand, so a hash router never sees the `#id`.
+ */
+export function SkipLink({ target, children = "Skip to content" }: { target: string; children?: React.ReactNode }) {
+  return (
+    <a
+      data-slot="skip-link"
+      href={`#${target}`}
+      onClick={(e) => {
+        const main = document.getElementById(target)
+        if (!main) return
+        e.preventDefault()
+        main.focus()
+      }}
+      className="sr-only z-50 rounded-sm bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+    >
+      {children}
+    </a>
+  )
 }
 
 function AppNav({ nav, current, linkAs: Link = "a" }: { nav: AppNavGroup[]; current?: string; linkAs?: React.ElementType }) {
@@ -358,6 +384,8 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
         <SidebarMenuButton
           size="lg"
           tooltip={user.name}
+          // One string, without the avatar's initials: a positioned sr-only ", account menu" is read as "… , account menu".
+          aria-label={`${[user.name, user.email].filter(Boolean).join(" ")}, account menu`}
           className={cn(
             "h-10 gap-2 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
             "transition-[height,border-radius,background-color,color] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
@@ -365,14 +393,13 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
           )}
         >
           {/* 28 px, as the mark at the top: both sit 14 px from their edges, on the 34 px centre line. */}
-          <Avatar className="size-7">
+          <Avatar aria-hidden="true" className="size-7">
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
           <span className="flex flex-col">
             <span className="truncate text-sm font-medium">{user.name}</span>
             {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
           </span>
-          <span className="sr-only">, account menu</span>
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
@@ -578,8 +605,12 @@ export function AppShell({
   sidebarLabels,
   sidebarOpen,
   sidebarWidth,
+  mainId,
+  skipLabel,
   children,
 }: AppShellProps) {
+  const autoId = React.useId()
+  const main = mainId ?? `${autoId}main`
   const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => true)
   const env = environment ? environments[environment] : null
   const inset = layout === "inset"
@@ -597,6 +628,7 @@ export function AppShell({
         inset ? "gap-2 p-2 [--shell-surface:var(--color-card)]" : "[--shell-surface:var(--color-background)]",
       )}
     >
+      <SkipLink target={main}>{skipLabel}</SkipLink>
       <Sidebar variant={inset ? "floating" : "sidebar"}>
         {/* As tall as the top bar, so their edges line up. The 28 px logo sits 20 px in, so its centre is the rail's
             centre line (34 px) open or closed; only the name fades. */}
@@ -677,7 +709,7 @@ export function AppShell({
             {actions}
           </div>
         </header>
-        <main className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "rounded-md bg-card ring-1 ring-border")}>
+        <main id={main} tabIndex={-1} className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "rounded-md bg-card ring-1 ring-border")}>
           <div className={cn("flex-1", !bleed && (inset ? "p-4" : "p-6"))}>{children}</div>
           {footer && (
             <footer
