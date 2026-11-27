@@ -1,4 +1,4 @@
-// @syncrobotic/load-more v0.40.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.51.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,13 +19,9 @@ export const defaultLoadMoreLabels: LoadMoreLabels = {
 }
 
 /**
- * The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how
- * many it adds and how many remain. Gone once everything is shown. Pages (Pagination) suit a desktop table; this suits
- * scrolling. Focus stays on the button, so the next press is where the thumb already is; when the last press removes it,
- * focus moves to the count ("Showing 125 of 125"), which is read out, instead of falling to the top of the page.
- *
- * The rows a press adds should arrive, not pop in: give the items past the first batch `animate-appear`
- * (`i >= firstBatch && "animate-appear"`). It runs once, when a row mounts, so rows already shown stay still.
+ * The end of a long list on a phone or in a gallery: how much is shown and one button that says how many it adds. Focus
+ * stays on the button; when the last press removes it, focus moves to the count, never to the top of the page. Give rows
+ * past the first batch `animate-appear` so new rows arrive rather than pop in.
  */
 export function LoadMore({
   shown,

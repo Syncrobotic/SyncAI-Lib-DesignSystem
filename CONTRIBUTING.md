@@ -16,8 +16,8 @@ npm run storybook        # http://localhost:6006; the toolbar switches dark and 
 
 ```bash
 npm run lint:tokens      # any value outside the tokens, in the registry, the docs site and the stories
-npm run lint:registry    # an item's dependencies drifting from its imports; a file with hooks missing "use client"
-npm run lint:rules       # focus never removed, battery thresholds, a chart with axes without its table view
+npm run lint:registry    # dependencies drifting from imports; "use client"; description and note lengths
+npm run lint:rules       # focus never removed, battery thresholds, a chart's table view; comment length and history
 npm run lint:numbers     # a number written with toLocaleString or its own Intl.NumberFormat instead of format-number
 npm run lint:motion      # durations and easing outside the motion tokens, buttons without press feedback
 npm run lint:versions    # an item changed without a version bump and changelog line
@@ -56,10 +56,18 @@ Not a check, a report: `npm run adoption -- <dir â€¦>` (or `--github <org>`, wit
 - Loops only while waiting: the Spinner, the skeleton's breath and the caret (no `animate-pulse`, `ping` or `bounce`).
 - Icons are 16, 20 or 24 px (`size-4`, `size-5`, `size-6`) with a 2 px stroke; an icon beside a label is 8 px from it (`gap-2`), except inside a 24 px Badge.
 - A registry file that uses hooks or handlers starts with `"use client"` (`lint:registry`).
-- `lint:rules`: `outline-none` only with a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); a battery warns below 15 % and has no `critical`; a chart block with axes has a table view.
+- `lint:rules`: `outline-none` only with a visible focus in its place (or a `// focus-ring:` comment saying where focus shows), and never beside `focus-visible:outline-*` (Tailwind 4 cancels the ring); a battery warns below 15 % and has no `critical`; a chart block with axes has a table view, a graph block a `GraphList`, a map block its list; a registry timer keeps its handle and is cleared on unmount (or a `// timer-ok:` comment says why it outlives the component).
 - No native number input; use `NumberField`.
 - Numbers go through `@syncrobotic/format-number`: `formatCount` for a count, `formatNumber` for any other number, both English when no locale is given (`lint:numbers` bans `.toLocaleString(` and a second `Intl.NumberFormat` in the registry).
 - Icons only from the icon set (`site/icons.ts`, browsable at `/icons`), one meaning per icon. A new icon is a new entry there, with its meaning.
+
+### Comments and docs
+
+- A comment says why, not what: the code already says what it does.
+- No history in source comments ("used to", "before 0.40", "the audit found"): that goes in `CHANGELOG.md`. Keep the rule, drop the story. An upstream fact ("rosbridge before 0.11") takes a `history-ok:` marker.
+- A comment block is at most 8 lines. Longer is a docs page; point to it.
+- A `registry.json` description is at most 200 characters; a `meta.changelog` note at most 300 (what changed and why).
+- `lint:rules` checks the comments (`scripts/check-comments.mjs`, in `scripts/`, `site/`, `app/` and `stories/`); `lint:registry` checks the lengths.
 
 ## Visual baselines
 
@@ -75,7 +83,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions â
    Before you open it, check it against the rules the audit kept finding: colour only for what needs someone (calm states and offline are grey; blue only for a process being waited on); nothing focusable removes its focus ring; field edges use `--input`; a battery is a `Meter` that warns below 15 %; a chart with axes (line, area, bar, heatmap) ships a Chart / Table switch, and a sparkline, ring or status strip writes its numbers in words; every target is at least 44 px on touch; 36 (`--h-sm`) with a mouse only. The agent skill's checklist (`registry/syncrobotic/skill/references/checklist.md`) is the full list. `npm run lint:rules` checks the focus, battery and chart-table rules; where `outline-none` is right because focus shows elsewhere, say where in a `// focus-ring:` comment above it.
 6. Add a line to `CHANGELOG.md` under Unreleased, and open a pull request once `npm run ci` passes.
 
-After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing a component's props, run `npm run props` (CI checks the API reference matches the types). After adding a component or changing its markup, run `npm run a11y` against a running site (`SITE=http://localhost:3100 npm run a11y`): it measures the roles and Tab stops the Accessibility tab shows, into `site/a11y.json`. CI measures again from the built site and fails when the committed data differs. A new item starts with `meta.status: "beta"` (lint:registry asks for it); set it to `"stable"` once a product has used it and its API has settled. After changing the theme, run `npm run tokens`.
+After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing a component's props, run `npm run props` (CI checks the API reference matches the types). After adding a component or changing its markup, run `npm run a11y` against a running site (`SITE=http://localhost:3100 npm run a11y`): it measures the roles and Tab stops the Accessibility tab shows, into `site/a11y.json`. CI measures again from the built site and fails when the committed data differs. A new item starts with `meta.status: "beta"` (lint:registry asks for it); set it to `"stable"` when a product has used it, or its API is a standard one the kit only styles (a Radix primitive, a native element, a small hook or function), and in both cases when its API has not changed for ten releases and it has unit tests (and, for a component, measured a11y data). A stable item changes its API only in a major release. After changing the theme, run `npm run tokens`.
 
 ## Repository layout
 

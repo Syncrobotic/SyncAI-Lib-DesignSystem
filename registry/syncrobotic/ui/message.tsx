@@ -1,4 +1,4 @@
-// @syncrobotic/message v0.41.0 · update: npx shadcn add @syncrobotic/message --overwrite
+// @syncrobotic/message v0.51.0 · update: npx shadcn add @syncrobotic/message --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,16 +9,10 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { formatDuration } from "@/registry/syncrobotic/ui/streaming-text"
 
 /*
-  One turn of a conversation with a model or an agent: who spoke (a role word in the header, never a bubble colour),
-  when, what they said (the body: StreamingText, a Trace of tool calls, attachments, a markdown renderer: anything),
-  and a footer for the facts about it (model, time, tokens) and its actions.
-
-  Every turn sits on the same neutral ground. A person's turns may take a quiet surface and move to the end on a wide
-  container (`align="end"`), but they keep the role word: alignment and fill are never the only way to tell who spoke.
-
-  Accessibility: an <article> named "Assistant, 14:02" (role word, name, time), so a screen reader's article list reads
-  as the conversation's outline. While the answer streams it is aria-busy; a failed or stopped turn says so in words
-  beside its shape, in a polite live region, so the change is heard once.
+  One turn of a conversation: who spoke (a role word, never a bubble colour), when, the body, and a footer with facts and
+  actions. A person's turns may take a quiet surface and `align="end"`, but keep the role word. An <article> named
+  "Assistant, 14:02", so the article list reads as the conversation's outline; aria-busy while streaming, and a failed or
+  stopped turn says so once in a polite live region.
 */
 
 // The words, then Try again: 12 px between them; the glyph keeps its 8 px inside the words (icon-gap-ok).

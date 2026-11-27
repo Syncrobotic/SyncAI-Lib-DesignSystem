@@ -1,4 +1,4 @@
-// @syncrobotic/copy-button v0.49.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
+// @syncrobotic/copy-button v0.51.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,9 +7,8 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
 /**
- * Puts text on the clipboard and reports whether it worked. The Clipboard API exists only on HTTPS and localhost, and
- * internal tools are often served over plain HTTP on a LAN, so it falls back to a hidden textarea and
- * `document.execCommand("copy")`. Returns false when neither works, so the caller can say so instead of pretending.
+ * Puts text on the clipboard. The Clipboard API needs HTTPS or localhost, and internal tools often run on plain HTTP, so
+ * it falls back to `document.execCommand("copy")`. Returns false when neither works, so the caller can say so.
  */
 export async function copyText(value: string): Promise<boolean> {
   if (typeof window !== "undefined" && window.isSecureContext && navigator.clipboard) {
@@ -59,9 +58,8 @@ export const defaultCopyButtonLabels: CopyButtonLabels = {
 }
 
 /**
- * Copies a value and says what happened: the icon swaps to a check for 1.5 s (the swap pattern, --motion-fast), or to an
- * alert when the copy did not go through, and the result is announced. With `children` it is a text button; without,
- * an icon button named by `label`.
+ * Copies a value and says what happened: a check for 1.5 s, or an alert icon when it failed, and an announcement. With
+ * `children` a text button; without, an icon button named by `label`.
  */
 export function CopyButton({
   value,

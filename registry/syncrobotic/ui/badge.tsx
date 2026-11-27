@@ -1,4 +1,4 @@
-// @syncrobotic/badge v0.40.0 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.51.0 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -6,10 +6,8 @@ import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * A label for a fixed attribute or category: Beta, a version, a tier, a data use (`neutral`, the default), or the
- * environment, Production or Staging (`outline`). A state that changes (Offline, Low battery, Updating) is not a badge:
- * it is an InlineStatus, its shape and its word with no box, so a badge has no status tones. A count is a CountBadge and
- * a test result a ResultBadge.
+ * A label for a fixed attribute: Beta, a version, a tier (`neutral`), or the environment (`outline`). A changing state is
+ * an InlineStatus, a count a CountBadge, a test result a ResultBadge, so a badge has no status tones.
  */
 export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center gap-1 whitespace-nowrap rounded-xs px-2 text-xs font-medium [&_svg]:size-4", {
   variants: {
@@ -33,9 +31,8 @@ const results = {
 } as const
 
 /**
- * The verdict of a test, an evaluation or an audit. Passing is a calm, lasting state, so it is grey with a check, never
- * green; a failure is a danger outline with danger text, never a solid red; too few samples to judge is grey with a
- * dashed circle. Fill, edge and icon differ, so the three read without colour. Pass `children` to change the word.
+ * The verdict of a test or an evaluation: passing is grey with a check (never green), failing a danger outline (never
+ * solid red), too few samples grey with a dashed circle. Fill, edge and icon differ, so it reads without colour.
  */
 export function ResultBadge({
   result,

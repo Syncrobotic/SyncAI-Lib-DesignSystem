@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.50.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.51.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -132,9 +132,8 @@ export type MediaPlayerProps = {
 }
 
 /**
- * A recorded clip (a robot's camera recording, an incident clip) with the kit's controls over a native `<video>`. Controls
- * sit on a scrim in the dark theme, so they read over any picture; they hide while playing once the pointer rests, and
- * stay while a finger or the keyboard is on them. Keys work only while focus is in the player.
+ * A recorded clip with the kit's controls over a native `<video>`. Controls sit on a dark scrim so they read over any
+ * picture, and hide while playing once the pointer rests. Keys work only while focus is in the player.
  */
 export function MediaPlayer({
   label,

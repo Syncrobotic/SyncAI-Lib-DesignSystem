@@ -5,16 +5,12 @@ const meta: Meta = { title: "Display/Media player" }
 export default meta
 type S = StoryObj
 
-// The sample clip is generated, not filmed: 60 s, 320 × 180, VP9 WebM, 30 KB, in public/media (served to Storybook by
-// staticDirs). A bright floor, so the controls are seen over a light picture; a robot drives in, stops at an obstacle at
-// 0:42 and goes on at 0:50. WebM because Chromium without proprietary codecs (Playwright's) does not play H.264.
-// A canvas captureStream would avoid the file, but it is a live stream: no length, no seeking, nothing this player is for.
-// Made with:
+// The sample clip is generated: 60 s, 320 × 180, 30 KB, in public/media. VP9 WebM: Playwright's Chromium has no H.264.
+// A bright floor, so the controls show over a light picture; a robot stops at an obstacle at 0:42 and goes on at 0:50.
+// A file, not a canvas captureStream: a live stream has no length and no seeking. Made with:
 //   ffmpeg -f lavfi -i "color=c=0xe8e6e1:size=320x180:rate=10:duration=60" -vf "drawgrid=w=32:h=32:t=1:c=0xc9c6bf,
-//     drawbox=x=0:y=120:w=320:h=60:c=0xd6d3cc:t=fill,
-//     drawbox=x='if(lt(t,42),t*5-40,if(lt(t,50),170,170+(t-50)*5))':y=96:w=40:h=28:c=0x55585f:t=fill,
-//     drawbox=x=214:y=104:w=14:h=20:c=0xb5762a:t=fill:enable='between(t,30,50)',
-//     drawtext=text='CAM 1  %{pts\:hms}':x=8:y=8:fontsize=11:fontcolor=0x33363c"
+//     drawbox=x=0:y=120:w=320:h=60:c=0xd6d3cc:t=fill,drawbox=x='if(lt(t,42),t*5-40,if(lt(t,50),170,170+(t-50)*5))':y=96:w=40:h=28:c=0x55585f:t=fill,
+//     drawbox=x=214:y=104:w=14:h=20:c=0xb5762a:t=fill:enable='between(t,30,50)',drawtext=text='CAM 1  %{pts\:hms}':x=8:y=8:fontsize=11:fontcolor=0x33363c"
 //     -c:v libvpx-vp9 -b:v 0 -crf 52 -an patrol-clip.webm
 //   ffmpeg -i patrol-clip.webm -frames:v 1 -c:v libwebp -quality 70 patrol-clip-poster.webp
 const clip = "/media/patrol-clip.webm"

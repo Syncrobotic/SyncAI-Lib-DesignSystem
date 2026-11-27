@@ -1,4 +1,4 @@
-// @syncrobotic/filter-form v0.10.0 · update: npx shadcn add @syncrobotic/filter-form --overwrite
+// @syncrobotic/filter-form v0.51.0 · update: npx shadcn add @syncrobotic/filter-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,10 +19,8 @@ export function filterUrl(path: string, data: Iterable<[string, FormDataEntryVal
 }
 
 /**
- * Filters that live in the URL, so a filtered view can be shared, bookmarked and undone with Back. A plain GET form: a
- * moment after typing stops, or at once when a select or checkbox changes, the URL takes the form's non-empty fields and
- * the page number resets. A pick is a history entry Back undoes; a run of typing refines the entry it began. Without
- * JavaScript it still works: the browser submits it.
+ * Filters in the URL, so a view can be shared and undone with Back. A plain GET form: after typing pauses, or at once on a
+ * select or checkbox, the URL takes the non-empty fields and the page resets. Works without JavaScript.
  */
 export function FilterForm({
   children,

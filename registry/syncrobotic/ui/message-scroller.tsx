@@ -1,4 +1,4 @@
-// @syncrobotic/message-scroller v0.50.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
+// @syncrobotic/message-scroller v0.51.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,21 +10,11 @@ import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
 /*
-  The viewport of a conversation: Message turns, oldest first, in a box that scrolls on its own.
-
-  It follows the newest words: while the reader is at the bottom it stays there as an answer streams and as turns
-  arrive. The moment they scroll up it lets go and keeps what they are reading where it is; "Jump to latest" (with how
-  many turns came since) brings them back, gliding unless they asked for less motion. Sending a turn of one's own
-  always goes back to the bottom.
-
-  Older turns put in front (Load earlier) do not move what is on screen: the first turn in view keeps its place
-  (scroll anchoring, done here because Safari has no overflow-anchor).
-
-  Screen readers: role="log", but with its own live region turned off. StreamingText already reads an answer in whole
-  sentences as it streams, so the log saying every change would read it twice. Instead a turn that arrives complete (a
-  tool's result, a message from someone else) is read once, by name and text; a streamed answer that ends is read only
-  when nothing inside it read it already. The turns on screen when it mounts, older turns loaded in front and the
-  reader's own turns are never read.
+  Follows the newest words while the reader is at the bottom and lets go when they scroll up. Older turns loaded in front
+  keep the first turn in view in place (anchoring done here: Safari has no overflow-anchor). role="log" with its live
+  region off, since StreamingText already reads answers in sentences and the log would read them twice: a turn arriving
+  complete is read once, a streamed one only if nothing inside it was read. Turns present at mount, older turns and the
+  reader's own are never read.
 */
 
 export type MessageScrollerLabels = {
@@ -67,9 +57,8 @@ function spoken(el: Element, l: MessageScrollerLabels) {
 }
 
 /**
- * A conversation's scrolling viewport: follows the newest turn while the reader is at the bottom, lets go when they
- * scroll up and offers "Jump to latest" with the count of new turns, keeps the view still when older turns are put in
- * front, and reads turns that arrive complete once (role="log").
+ * A conversation's scrolling viewport: follows the newest turn at the bottom, offers "Jump to latest" with a count when
+ * scrolled up, holds still when older turns load in front, and reads complete turns once.
  */
 export function MessageScroller({
   children,

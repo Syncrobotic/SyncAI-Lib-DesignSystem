@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { blockCards } from "@/site/blocks"
 
 // The /blocks cards are pictures (scripts/thumbs.mjs --blocks), not live previews: each card's block has its four files,
-// light and dark at 400 and 800 px, and no picture is left over from a block that no longer stands for a type.
+// light and dark at 400 and 800 px, and no picture is left over for a block that does not stand for a type.
 // Part of npm run lint:thumbs, with the components' check in the script itself.
 const OUT = "public/thumbs/blocks"
 const files = (name: string) => ["light", "dark"].flatMap((t) => [400, 800].map((w) => `${name}-${t}-${w}.webp`))

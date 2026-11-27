@@ -1,4 +1,4 @@
-// @syncrobotic/file-upload v0.32.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
+// @syncrobotic/file-upload v0.51.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,9 +24,8 @@ export const formatBytes = (n: number) =>
   n < 1024 ? `${n} B` : n < 1024 ** 2 ? `${(n / 1024).toFixed(0)} KB` : n < 1024 ** 3 ? `${(n / 1024 ** 2).toFixed(1)} MB` : `${(n / 1024 ** 3).toFixed(1)} GB`
 
 /**
- * A drop zone that is also a button: drag files onto it, or click (or Enter / Space) to open the picker. It checks type,
- * size and count before handing files over, and reports what it refused and why. What happens next (the upload, its
- * progress, the list) is yours: show it with Attachment rows.
+ * A drop zone that is also a button. It checks type, size and count and says what it refused and why; the upload itself
+ * is yours, shown with Attachment rows.
  */
 export function FileUpload({
   onFiles,

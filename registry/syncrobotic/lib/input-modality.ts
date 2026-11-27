@@ -1,11 +1,8 @@
-// @syncrobotic/input-modality v0.36.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
+// @syncrobotic/input-modality v0.51.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
 /*
-  The last way anyone moved on the page: keys or a pointer. Menus, lists and trees ring their highlighted row only in
-  keyboard use and keep the calm fill under the pointer, so each asks which came last when it opens or takes focus.
-
-  One pair of capture listeners on the document for the whole page, attached the first time anything asks (a component
-  calls trackInputModality() as its module loads, so the key press that opens a menu is already counted), never on the
-  server.
+  The last input on the page, keys or a pointer: menus, lists and trees ring their highlighted row only after keys.
+  One pair of capture listeners for the whole page, attached on the first trackInputModality() (called as a module
+  loads, so the key press that opens a menu is counted), never on the server.
 */
 
 export type InputModality = "key" | "pointer"

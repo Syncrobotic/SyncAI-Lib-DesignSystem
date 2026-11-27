@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.42.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.51.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,9 +46,8 @@ export function isPhoneValid(e164: string | undefined) {
 }
 
 /**
- * A phone number with its country (libphonenumber-js): pick the country, type the national number, and it formats as
- * you type. The value is E.164 (+886912345678), the form to store and send. Pasting an international number switches the
- * country. Validation is yours to show, through Field's error, so the field never scolds someone halfway through typing.
+ * A phone number with its country (libphonenumber-js), formatted as you type; the value is E.164 (+886912345678).
+ * Validation is yours, through Field's error, so it never scolds someone halfway through typing.
  */
 export function PhoneInput({
   value,

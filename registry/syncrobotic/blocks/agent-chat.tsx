@@ -1,4 +1,4 @@
-// @syncrobotic/agent-chat v0.47.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
+// @syncrobotic/agent-chat v0.51.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,16 +20,10 @@ import { StreamingText, type StreamingTextPhase } from "@/registry/syncrobotic/u
 import { Trace, TraceItem, type TraceStatus } from "@/registry/syncrobotic/ui/trace"
 
 /*
-  A conversation with the fleet's assistant, from the conversation parts: Message turns in a MessageScroller that fills
-  the height, the PromptComposer at its foot, an answer that streams as Markdown with its sources, the tool calls it made
-  as a Trace, and the actions and facts under each answer.
-
-  The assistant reads; it never moves a robot. When asked to, it drafts a proposal and points to it: a person approves
-  anything that moves a robot (agent-approval).
-
-  The streaming here is a script, so the block runs without a model: replace `respond` and the timer in `play` with your
-  API's stream (append each chunk to the turn's text, set the phase as the request goes). It is deterministic, and under
-  reduced motion the answer arrives a sentence at a time instead of a few words.
+  A conversation with the fleet's assistant: Message turns in a MessageScroller, the PromptComposer at its foot, answers
+  streaming as Markdown with sources, tool calls as a Trace. The assistant never moves a robot: it drafts a proposal a
+  person approves (agent-approval). The streaming is a script so the block runs without a model: replace `respond` and
+  the timer in `play` with your API's stream (append each chunk to the turn's text, set the phase as the request goes).
 */
 
 /** One tool call the assistant made, as a Trace step. */
@@ -498,11 +492,9 @@ function subscribeWide(onChange: () => void) {
 }
 const wideNow = () => window.matchMedia(WIDE).matches
 /**
- * The same assistant as a copilot: an ordinary console page (the robots) with Ask the assistant in its top bar, which
- * opens the conversation in a sheet on the right and puts the cursor in the composer. On a wide screen (1024 px and up)
- * the sheet is not modal: the page moves over to make room beside it and stays in use, so a person can read the table
- * while they ask about it, and a click on the page leaves the sheet open (Esc or Close closes it). Narrower, the sheet
- * covers the page and is modal, as every sheet is.
+ * The same assistant as a copilot: Ask the assistant in a console page's top bar opens the conversation in a sheet on the
+ * right. From 1024 px the sheet is not modal and the page makes room beside it, so the table stays in use while the
+ * person asks about it; narrower, it covers the page and is modal.
  */
 export function AgentChatSheet({
   defaultOpen,

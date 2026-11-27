@@ -1,4 +1,4 @@
-// @syncrobotic/message-actions v0.41.0 · update: npx shadcn add @syncrobotic/message-actions --overwrite
+// @syncrobotic/message-actions v0.51.0 · update: npx shadcn add @syncrobotic/message-actions --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,14 +10,10 @@ import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 
 /*
-  What someone can do with a model's answer: copy it, ask for another, say whether it was good, say what was wrong, and
-  move between the answers a regeneration made (‹ 2 / 3 ›).
-
-  Quiet on a desk: with a mouse and no touch screen the buttons stay out of sight until the turn is hovered or anything in
-  it has focus, so a long conversation is not a wall of icons. On touch they are always there, and a keyboard always
-  finds them (focus shows them). Feedback that has been given, and the version switcher, never hide: they are state.
-
-  Good and Bad are toggle buttons (aria-pressed), inverted when pressed like every selected control; never green or red.
+  What someone can do with a model's answer: copy, regenerate, rate, say what was wrong, switch versions (‹ 2 / 3 ›).
+  With a mouse and no touch screen the buttons show only on hover or focus, so a long conversation is not a wall of icons;
+  on touch they always show. Given feedback and the version switcher never hide: they are state. Good and Bad are toggles
+  (aria-pressed), inverted when pressed, never green or red.
 */
 
 export type MessageFeedback = "good" | "bad"
@@ -75,9 +71,8 @@ const pressed = "aria-pressed:bg-primary aria-pressed:text-primary-foreground ar
 const ended = "aria-disabled:cursor-default aria-disabled:text-disabled aria-disabled:hover:bg-transparent"
 
 /**
- * The actions under a model's answer: Copy, Regenerate, Good and Bad (toggles, with an optional reason after Bad) and a
- * version switcher for regenerated answers. Each part shows only when you give what it needs. Put it in Message's
- * `actions`.
+ * The actions under a model's answer: Copy, Regenerate, Good and Bad (with an optional reason), and a version switcher.
+ * Each part shows only when you give what it needs. Put it in Message's `actions`.
  */
 export function MessageActions({
   copyText,

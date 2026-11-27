@@ -1,4 +1,4 @@
-// @syncrobotic/governance-todo v0.40.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
+// @syncrobotic/governance-todo v0.51.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
 "use client"
 
 import * as React from "react"
@@ -56,7 +56,7 @@ export type GovernanceTodoProps = {
   /** No row actions, for people who only read the list (the work is done elsewhere: a pipeline, a pull request). Rows keep their layout. */
   readOnly?: boolean
   /**
-   * The app owns completion: a row's action calls this with its id, and the row leaves when `todos` no longer has it.
+   * The app owns completion: a row's action calls this with its id, and the row leaves when `todos` drops it.
    * Without it, the block hides a done row itself.
    */
   onDone?: (id: string) => void

@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.40.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.51.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
@@ -30,11 +30,9 @@ export type ShareSegment = {
 const toneOf = (s: { tone?: keyof typeof tones }, i: number) => s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4)
 
 /**
- * How a whole splits, as one thin bar: segments in the chart palette, 2 px apart, each with its share on hover. Light
- * enough for a table cell. Read by screen readers as one sentence; identity never rests on colour alone, so outside a
- * table cell show the `legend`, which names every value. A segment with `href` makes its legend entry a link ("Source A
- * 1,204, 42 %"); the bar itself stays one picture, so each part has one target. For a list of bars, one ShareLegend
- * above the list.
+ * How a whole splits, as one thin bar in the chart palette, light enough for a table cell. Read as one sentence. Outside
+ * a cell show the `legend`, so identity never rests on colour; a segment's `href` links its legend entry. For a list of
+ * bars, one ShareLegend above it.
  */
 export function ShareBar({
   segments,
@@ -136,9 +134,8 @@ export type ShareLegendSegment = Pick<ShareSegment, "key" | "label" | "tone"> & 
 }
 
 /**
- * One legend for a list of ShareBars, above the list, so each row does not repeat it. Give it the same segments in the
- * same order as the bars (values optional): the colours come from the same order, so they match. Each bar keeps its own
- * accessible name ("Detection: Manual 60, Model 40"); the legend only shows what the colours mean.
+ * One legend above a list of ShareBars. Give the same segments in the same order (values optional) so the colours match;
+ * each bar keeps its own accessible name.
  */
 export function ShareLegend({
   segments,

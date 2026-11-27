@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.36.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.51.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -98,8 +98,8 @@ function forward(ref: React.Ref<HTMLDivElement> | undefined, node: HTMLDivElemen
 /** The tabs in a row over a hairline. The underline travels to the tab you pick: the Move pattern, --motion-base. */
 export function TabsList({ className, children, sticky, ref, ...props }: TabsListProps) {
   const list = React.useRef<HTMLDivElement>(null)
-  // A ref passed in is merged with the one the underline measures; spread over it, it replaced it and the underline
-  // never showed.
+  // A ref passed in is merged with the one the underline measures; spread over it, it would replace it and the underline
+  // would never show.
   const setList = React.useCallback(
     (node: HTMLDivElement | null) => {
       list.current = node

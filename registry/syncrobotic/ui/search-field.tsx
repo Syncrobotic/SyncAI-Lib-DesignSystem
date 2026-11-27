@@ -1,4 +1,4 @@
-// @syncrobotic/search-field v0.28.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
+// @syncrobotic/search-field v0.51.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,10 +19,9 @@ export type SearchFieldLabels = {
 export const defaultSearchFieldLabels: SearchFieldLabels = { label: "Search", placeholder: "Search" }
 
 /**
- * The tool's one search box, in the top bar. `/` focuses it from anywhere on the page (not while typing in a field).
- * Enter opens the results page; on the results page (`live`) it holds the query from the URL and applies itself a moment
- * after typing stops, refining one history entry. Without JavaScript it is a GET form to `action`. With `onValueChange`
- * it filters what is already on the screen instead, and never navigates.
+ * The tool's one search box, in the top bar; `/` focuses it. Enter opens the results page; there (`live`) it holds the
+ * URL's query and applies itself as typing pauses. A GET form without JavaScript. With `onValueChange` it filters the
+ * screen instead and never navigates.
  */
 export function SearchField({
   action = "/search",

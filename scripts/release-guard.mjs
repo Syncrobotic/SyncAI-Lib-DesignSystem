@@ -1,7 +1,6 @@
-// On the way to main, the package version is the release: release.yml tags it and publishes its CHANGELOG section, and
-// does nothing when that tag exists. An item ahead of the package version would reach main untagged and unannounced
-// (0.33.0 did). Run on pull requests into main: every item's version is at most the package version, and the package
-// version has its own dated CHANGELOG section, not "Unreleased".
+// Run on pull requests into main, where the package version is the release (release.yml tags it and publishes its
+// CHANGELOG section): every item's version is at most the package version, so nothing reaches main untagged, and the
+// package version has its own dated CHANGELOG section, not "Unreleased".
 import { readFileSync } from "node:fs"
 
 const pkg = JSON.parse(readFileSync("package.json", "utf8")).version

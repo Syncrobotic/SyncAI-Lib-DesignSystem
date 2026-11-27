@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.50.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.51.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -126,10 +126,8 @@ function Meta({ node, id }: { node: TreeNode; id?: string }) {
 }
 
 /**
- * A hierarchy: data lineage, sites › zones › robots, the folders of a dataset. Two modes, because WAI-ARIA keeps
- * role="tree" for a widget people move and select in. list (default) is a nested list with a guide line per level, a
- * disclosure button per branch and links that are ordinary Tab stops. select is a tree: one Tab stop, the arrow keys of
- * the WAI-ARIA tree view pattern, type-ahead and one selected node.
+ * A hierarchy (lineage, sites › zones › robots, folders). `list` (default): nested list with links as ordinary Tab stops.
+ * `select`: a WAI-ARIA tree, one Tab stop, arrow keys, type-ahead and one selected node, since role="tree" is for that.
  */
 export function Tree({
   items,

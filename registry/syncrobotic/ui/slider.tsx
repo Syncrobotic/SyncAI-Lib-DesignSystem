@@ -1,4 +1,4 @@
-// @syncrobotic/slider v0.31.0 · update: npx shadcn add @syncrobotic/slider --overwrite
+// @syncrobotic/slider v0.51.0 · update: npx shadcn add @syncrobotic/slider --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,9 +6,8 @@ import { Slider as SliderPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * Each thumb is a focusable control and needs its own name. By default it takes the slider's
- * `aria-label` ("… minimum" / "… maximum" for a range); pass `thumbLabels` to name them yourself. `valueText` writes the
- * value as it is read out ("0:42 of 1:00", "40 %") when the bare number would not say what it is.
+ * Each thumb is a focusable control with its own name: the slider's `aria-label` ("… minimum" / "… maximum" for a range),
+ * or `thumbLabels`. `valueText` says the value when the bare number would not ("0:42 of 1:00").
  */
 export function Slider({
   className,

@@ -1,4 +1,4 @@
-// @syncrobotic/use-reduced-motion v0.36.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
+// @syncrobotic/use-reduced-motion v0.51.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
 "use client"
 
 import * as React from "react"

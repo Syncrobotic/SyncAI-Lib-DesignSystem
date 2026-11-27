@@ -1,4 +1,4 @@
-// @syncrobotic/attitude v0.40.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
+// @syncrobotic/attitude v0.51.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,14 +11,10 @@ import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-n
 import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
-  Two instruments for a robot's state now, drawn in SVG in the kit's chart language (graphite and one accent, no
-  gradients) and always written out in numbers and words beside the drawing:
-  - AttitudeIndicator: roll and pitch as an artificial horizon, the heading on a compass ring, from an IMU;
-  - Gauge: one value with a known range on a 270° dial (speed, a motor's temperature, a wheel's current), with Meter's
-    thresholds and words.
-  Both take plain props, and for a stream at 20 to 50 Hz a `push` on the ref or a `subscribe` function: a reading moves the
-  drawing on the next animation frame without rendering React, and the numbers and words are rendered at most four times a
-  second (at once when a limit is crossed), so they stay readable and React stays idle.
+  Two SVG instruments for a robot's state, always also written in numbers and words: AttitudeIndicator (roll, pitch and
+  heading from an IMU) and Gauge (one value with a known range on a 270° dial). For a 20 to 50 Hz stream, `push` or
+  `subscribe` moves the drawing on the next frame without a React render; the words update at most four times a second
+  (at once when a limit is crossed).
 */
 
 // ---------- Numbers ----------
@@ -55,10 +51,9 @@ type Reading = Record<string, number | undefined>
 type ReadingSample<R extends Reading> = { [K in keyof R]?: number | null }
 
 /**
- * The latest reading of an instrument, kept out of React. `push` stores it and asks for an animation frame; the frame
- * moves the drawing straight in the DOM (`draw`) and, at most every 250 ms or at once when `key` changes (a limit
- * crossed), hands the reading to React (`publish`) for the numbers and words. Under reduced motion the drawing steps with
- * the numbers instead of following every frame.
+ * The latest reading, kept out of React. `push` stores it and asks for a frame; the frame moves the drawing in the DOM
+ * (`draw`) and, at most every 250 ms or at once when `key` changes, hands it to React (`publish`) for the words. Under
+ * reduced motion the drawing steps with the numbers.
  */
 class LiveReading<R extends Reading> {
   values: R
@@ -196,9 +191,8 @@ function useStale(engine: { hasData: () => boolean; receivedAt: number; sampleTi
 }
 
 /**
- * A polite announcement when a limit is crossed, and when everything is back within limits; never per reading. At most one
- * every `everyMs`, except a step up to critical, which is said at once. A crossing held back is said when the wait is
- * over, if it still holds.
+ * A polite announcement when a limit is crossed or everything is back within limits, never per reading. At most one every
+ * `everyMs`, except a step up to critical; a held-back crossing is said after the wait if it still holds.
  */
 class Announcer {
   private last = -Infinity
@@ -271,9 +265,8 @@ export type AttitudeLimit = { warning?: number; critical?: number }
 export type AttitudeLimits = { roll?: AttitudeLimit; pitch?: AttitudeLimit }
 
 /**
- * One reading, in degrees, with REP 103's signs: positive roll is the right side down, positive pitch the nose down.
- * `heading` is a compass heading, clockwise from north. A key left out keeps its last value; null makes it unknown.
- * `imuToAttitude` from `ros` gives one from a sensor_msgs/Imu.
+ * One reading in degrees, REP 103 signs: positive roll is right side down, positive pitch nose down; `heading` clockwise
+ * from north. A key left out keeps its last value; null makes it unknown. `imuToAttitude` (`ros`) reads a sensor_msgs/Imu.
  */
 export type AttitudeSample = { roll?: number | null; pitch?: number | null; heading?: number | null }
 
@@ -400,11 +393,9 @@ const LADDER_LABELLED = new Set([-20, -10, 10, 20])
 const TICK_CLEARANCE = 7
 
 /**
- * The instrument's geometry in CSS pixels, from the outside in (md: c 96, R 66, ladder 42):
- * 8 px for the heading mark above the ring; the compass ring (ticks, then the letters inside them); the horizon disc,
- * whose outer 24 px hold the bank scale, its limit marks and pointer, and the robot's wings; and the ladder's disc inside
- * that, where the pitch rungs and their numbers live. `k` is px per degree of pitch, so the ±20° rungs and their numbers
- * fit inside the ladder's disc when level.
+ * The geometry in CSS px, outside in (md: c 96, R 66, ladder 42): 8 px for the heading mark, the compass ring, the horizon
+ * disc (its outer 24 px hold the bank scale and the wings), then the ladder's disc. `k` is px per degree of pitch, sized
+ * so the ±20° rungs fit the ladder's disc when level.
  */
 function instrumentGeometry(size: keyof typeof INSTRUMENT_PX) {
   const px = INSTRUMENT_PX[size]
@@ -426,10 +417,8 @@ const clampPitch = (p: number) => Math.min(90, Math.max(-90, p))
 const polar = (angle: number, r: number) => ({ x: r * Math.sin((angle * Math.PI) / 180), y: -r * Math.cos((angle * Math.PI) / 180) })
 
 /**
- * A robot's attitude now: roll and pitch on an artificial horizon, the heading on a compass ring, each also written in
- * degrees with its direction in words ("12° left", "3° nose down", "271° W"). Limits are marked on the drawing with the
- * kit's status shapes; past one, the value, the marks and the robot's symbol turn warning or danger and say so in a word.
- * Fed by props, or by `push` at 20 to 50 Hz without a React render per reading.
+ * A robot's attitude: roll and pitch on an artificial horizon, heading on a compass ring, each also written with its
+ * direction in words ("12° left", "271° W"). Past a limit the value, marks and symbol turn warning or danger and say so.
  */
 export function AttitudeIndicator({
   roll,
@@ -698,10 +687,9 @@ export function AttitudeIndicator({
 }
 
 /**
- * The moving part, in two layers that turn and slide together: the ground and the horizon line on the whole disc, with the
- * bank pointer; and the pitch ladder with its limit lines on a smaller disc inside it, clear of the bank scale and the
- * robot's wings. Each layer is clipped in the frame's coordinates, outside its own transforms. A rung's number sits past
- * its right end, so it never lies on a line, and a pitch limit is a dashed rung.
+ * The moving part: ground and horizon line on the whole disc, and the pitch ladder on a smaller disc clear of the bank
+ * scale and wings. Each layer is clipped outside its own transforms. Rung numbers sit past the rung's end; a pitch limit
+ * is a dashed rung.
  */
 function Horizon({
   R,
@@ -941,9 +929,8 @@ const START = -135
 type GaugeReading = { value: number | undefined }
 
 /**
- * One value with a known range on a 270° dial: a robot's speed, a motor's temperature, a wheel's current. The arc is
- * graphite like Meter's bar and turns warning or danger only past `low` or `critical`, where a shape and a word say so too;
- * the value is always written in the middle with its unit, the range's ends at the arc's ends. role="meter".
+ * One value with a known range on a 270° dial (speed, temperature, current), role="meter". The arc is graphite and turns
+ * warning or danger only past `low` or `critical`, with a shape and a word; the value is always written with its unit.
  */
 export function Gauge({
   value,

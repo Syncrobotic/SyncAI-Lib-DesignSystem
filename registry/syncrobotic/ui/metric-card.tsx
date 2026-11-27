@@ -1,4 +1,4 @@
-// @syncrobotic/metric-card v0.32.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.51.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -24,9 +24,8 @@ const defaultLabels: Required<MetricCardLabels> = { better: ", better", worse: "
 const trendText = { good: "text-foreground", bad: "text-danger", flat: "text-muted-foreground" } as const
 
 /**
- * The shape of the last values, no axes. Neutral and hidden from screen readers: the delta and caption say it in words.
- * From 640 px it sits beside the value and gives way (shrinks) so the value and its unit stay on one line; on a phone,
- * where a card is too narrow to share, it takes its own full-width line under the value.
+ * The shape of the last values, no axes, hidden from screen readers (the delta and caption say it). From 640 px it sits
+ * beside the value and shrinks first; on a phone it takes its own line.
  */
 function Sparkline({ series, className }: { series: number[]; className?: string }) {
   const min = Math.min(...series)
@@ -40,13 +39,9 @@ function Sparkline({ series, className }: { series: number[]; className?: string
 }
 
 /**
- * One headline number on a card: what it is, the number, how it changed and a line of context. Only a change for the
- * worse takes colour (`trend="bad"`); good news stays foreground and no change stays grey, because a rise is not always
- * good (more events is worse). The value is the card's figure (24 px, tabular, as CardFigure). With `href` the whole card
- * is one link; `loading` keeps its height with bones; `unavailable` shows a dash and says why, never a made-up 0.
- * A number that is itself a warning (items waiting for review, a quota near its limit) takes `tone`: the caption gets the
- * status's shape and colour, as a MetaPill does; the value stays foreground and the card is never tinted.
- * Put several in a MetricGrid.
+ * One headline number on a card. Only a change for the worse is coloured (`trend="bad"`): a rise is not always good.
+ * `href` makes the card one link; `loading` keeps its height; `unavailable` shows a dash, never a made-up 0. A value that
+ * is itself a warning takes `tone`. Group in MetricGrid.
  */
 export function MetricCard({
   label,

@@ -88,7 +88,7 @@ describe("SlideToRelease", () => {
   })
 
   // Safety: a hold that outlives the operator's attention must not release. Tab away, another window, or the page going
-  // to the background while Enter is down used to release 2 s later anyway (no key up ever reaches the track).
+  // to the background while Enter is down must cancel it: no key up ever reaches the track.
   it("cancels the keyboard hold when focus leaves the track", () => {
     const onRelease = vi.fn()
     render(<SlideToRelease onRelease={onRelease} />)

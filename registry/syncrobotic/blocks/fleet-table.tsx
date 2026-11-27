@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.40.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.51.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -71,9 +71,8 @@ const matches: Record<Filter, (r: Robot) => boolean> = {
 }
 
 /**
- * The fleet at a glance: search, filter by state, page through, act on a row. The rows are a ResponsiveTable: a table
- * where there is room, a list on a phone (the name, its state, and the battery and site under it). A section, not a screen: the screen it sits in carries the emergency stop, one tap away
- * (the app shell's, as in console-overview); the table never stops a robot itself.
+ * The fleet at a glance: search, filter by state, page through, act on a row; a table where there is room, a list on a
+ * phone. A section, not a screen: the screen around it carries the emergency stop (as in console-overview).
  */
 
 export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { robots?: Robot[]; pageSize?: number; onOpen?: (r: Robot) => void }) {
