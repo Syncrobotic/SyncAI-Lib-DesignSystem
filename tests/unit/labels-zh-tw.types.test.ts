@@ -68,6 +68,9 @@ import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
 import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import type { ActionRailShellLabels } from "@/registry/syncrobotic/blocks/action-rail-shell"
 import type { ErrorPageLabels, LoadingPageLabels, NoAccessPageLabels, NotFoundPageLabels, OfflinePageLabels } from "@/registry/syncrobotic/blocks/status-pages"
+import type { DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
+import type { PermissionGateLabels } from "@/registry/syncrobotic/ui/permission-gate"
+import type { StepUpDialogLabels } from "@/registry/syncrobotic/ui/step-up-dialog"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -171,5 +174,8 @@ it("fits every component's labels type", () => {
   fits<CopyButtonLabels>()(zh.copyButtonLabels)
   fits<Record<ThemeChoice, string>>()(zh.themeToggleLabels)
   fits<Record<FilterOperator, string>>()(zh.filtersLabels.operators)
+  fits<DataStateLabels>()(zh.dataStateLabels)
+  fits<PermissionGateLabels>()(zh.permissionGateLabels)
+  fits<StepUpDialogLabels>()(zh.stepUpDialogLabels)
   expect(zh.locale).toBe("zh-TW")
 })
