@@ -185,7 +185,7 @@ const meta: Record<string, Meta> = {
   "agent-run-gate": { viewport: "desktop", height: 1200},
   "agent-run-outcome": { viewport: "desktop", height: 960},
   "agent-tool-permissions": { viewport: "desktop", height: 1400},
-  // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
+  // Applications, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "app-shell-control": { viewport: "mobile", height: 760},
   "stats-meters": {
@@ -313,7 +313,7 @@ export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === sl
 
 
 /**
- * The /blocks cards: one per type of the Application and Solutions groups, showing the block that stands for the type (its
+ * The /blocks cards: one per type of the Applications and Solutions groups, showing the block that stands for the type (its
  * cover if one is marked, else the first). Each is a picture taken by scripts/thumbs.mjs (npm run thumbs -- --blocks) from
  * the block's preview at `width`: a desktop screen shows one region of itself (`view`, by default its top-left 480 px) at
  * about half size, where the words still read; a section or a phone sits whole, centred. The page and the script read this

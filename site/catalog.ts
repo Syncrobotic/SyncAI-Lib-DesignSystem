@@ -95,27 +95,29 @@ export type StoryFile =
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
-// Robotics third: after the two groups every product reaches for first, and before the general ones, as the kit's reason to exist.
-// The robot shell (dock, island, tray) is part of it, after the stop. Then what a data screen is made of, from the rows to
-// the values in them: lists and tables, status and values, search and filters, then the rest of data display. AI holds the
-// parts of a conversation with a model or an agent, from the answer's text to the box that sends the next question. No group
-// holds more than about twenty, so each reads as one choice in the sidebar.
+// Robotics after the inputs every product reaches for first (actions, fields, dates), and before the general groups, as the
+// kit's reason to exist. The robot shell (dock, island, tray) is part of it, after the stop. Then what a data screen is made
+// of, from the rows to the values in them: lists and tables, status and values, search and filters, then the rest of data
+// display, and code and text. AI holds the parts of a conversation with a model or an agent, up to the box that sends the
+// next question. No group holds more than twenty, so each reads as one choice in the sidebar.
 export const groups = [
   "Actions",
   "Inputs",
+  "Date and time",
   "Robotics",
-  "Lists & tables",
-  "Status & values",
-  "Search & filters",
+  "Lists and tables",
+  "Status and values",
+  "Search and filters",
   "Data display",
+  "Code and text",
   "AI",
   "Charts",
-  "Media & files",
+  "Media and files",
   "Feedback",
   "Navigation",
   "Overlays",
   "Layout",
-  "Hooks & libraries",
+  "Hooks and libraries",
 ] as const
 export type Group = (typeof groups)[number]
 
@@ -154,7 +156,7 @@ const entries: Record<string, Entry> = {
   },
   trace: {
     wide: true,
-    group: "AI",
+    group: "Data display",
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
@@ -165,7 +167,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   marker: {
-    group: "Data display",
+    group: "Lists and tables",
     examples: { file: "marker", prefix: "Marker" },
     rules: [
       "Marker for moments that change how the lines after it read (a takeover, a new day, unread). Not for every event.",
@@ -223,7 +225,7 @@ const entries: Record<string, Entry> = {
   },
   "data-grid": {
     wide: true,
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
       "Build the table with `useTable`, with `dataGridFeatures` in its features; `DataGrid` draws it.",
@@ -239,7 +241,7 @@ const entries: Record<string, Entry> = {
   },
   "log-viewer": {
     wide: true,
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "log-viewer", prefix: "LogViewer" },
     rules: [
       "For lines a program writes as it runs: ROS /rosout, journald, a service's log. Events people act on are `alarm`; a table people sort and page is `data-grid`; one run's steps are `trace`.",
@@ -324,7 +326,7 @@ const entries: Record<string, Entry> = {
   },
   markdown: {
     wide: true,
-    group: "AI",
+    group: "Code and text",
     examples: { file: "markdown", prefix: "Markdown" },
     rules: [
       "For text a model wrote in Markdown: an assistant's answer, a summary, a generated report. A streamed answer is StreamingText with `format=\"markdown\"`, which renders through this and reads it aloud; use Markdown alone for an answer that is already whole, or inside your own message layout.",
@@ -349,7 +351,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   sortable: {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "sortable", prefix: "Sortable" },
     rules: [
       "Only the handle drags; the rest of the row stays clickable.",
@@ -368,17 +370,17 @@ const entries: Record<string, Entry> = {
     ],
   },
   "file-upload": {
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "file-upload", prefix: "FileUpload" },
     rules: ["Say what is accepted and how big, in the hint.", "Report refused files by name and reason.", "Show what was taken as Attachment rows."],
   },
   attachment: {
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "attachment", prefix: "Attachment" },
     rules: ["An error says why in words and offers Retry.", "Remove is always the last action, and names the file for screen readers."],
   },
   "file-type": {
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "file-type", prefix: "FileType" },
     rules: ["Neutral like every icon; the label tells formats apart, not colour."],
   },
@@ -409,12 +411,12 @@ const entries: Record<string, Entry> = {
     ],
   },
   calendar: {
-    group: "Inputs",
+    group: "Date and time",
     examples: { file: "calendar", prefix: "Calendar" },
     rules: ["The picked day is inverted; today is bold with a ring.", "Weeks start on Monday by default.", "Disabled days stay visible and struck through."],
   },
   "date-selector": {
-    group: "Inputs",
+    group: "Date and time",
     examples: { file: "date-selector", prefix: "Date" },
     rules: [
       "The trigger reads like an input and shows the date in words.",
@@ -423,12 +425,12 @@ const entries: Record<string, Entry> = {
     ],
   },
   "time-picker": {
-    group: "Inputs",
+    group: "Date and time",
     examples: { file: "time-picker", prefix: "Time" },
     rules: ['Values are "HH:mm" on a 24-hour clock; hour12 only changes how they read.', "Taken slots stay in the list, struck through."],
   },
   item: {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "item", prefix: "Item" },
     rules: [
       "One row per thing: a person, a file, a service, a setting link.",
@@ -449,7 +451,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "text-diff": {
-    group: "Data display",
+    group: "Code and text",
     /** Side by side needs the row: examples use the card's full width. */
     wide: true,
     examples: { file: "display", prefix: "TextDiff" },
@@ -461,7 +463,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   kbd: {
-    group: "Data display",
+    group: "Code and text",
     examples: { file: "kbd", prefix: "Kbd" },
     rules: [
       "One key per Kbd; a chord is a KbdGroup without plus signs. How it is pressed (Hold, Double-press) is a word beside the key, not a Kbd.",
@@ -470,7 +472,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   code: {
-    group: "Data display",
+    group: "Code and text",
     examples: { file: "code", prefix: "Code" },
     rules: [
       "A path, a key, a version tag or a command inside a sentence or a cell. Code on its own lines is a CodeBlock; a key to press is a Kbd.",
@@ -480,7 +482,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "code-block": {
-    group: "Data display",
+    group: "Code and text",
     examples: { file: "code-block", prefix: "CodeBlock" },
     rules: [
       "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
@@ -526,7 +528,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "chip-group": {
-    group: "Search & filters",
+    group: "Search and filters",
     examples: { file: "chip-group", prefix: "ChipGroup" },
     rules: [
       "One choice among several, with the count each gives. `type=\"multiple\"` for any of several values in one facet (\"detection or segmentation\"); `value` is then a list. For a long list of options use checkboxes in a FieldSet.",
@@ -538,7 +540,7 @@ const entries: Record<string, Entry> = {
   },
   facets: {
     wide: true,
-    group: "Search & filters",
+    group: "Search and filters",
     examples: { file: "facets", prefix: "Facets" },
     rules: [
       "A few questions (tier, task, site), any of whose options can be on. Options in one facet combine with OR, facets with AND; the page filters, the facets only hold the picks.",
@@ -552,7 +554,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "filter-form": {
-    group: "Search & filters",
+    group: "Search and filters",
     examples: { file: "filter-form", prefix: "FilterForm" },
     rules: [
       "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
@@ -560,7 +562,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   filters: {
-    group: "Search & filters",
+    group: "Search and filters",
     examples: { file: "filters", prefix: "Filters" },
     rules: [
       "For a query people build themselves: any field, any number of rules. For a few fixed facets use Chip group or Filter form.",
@@ -572,7 +574,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "search-field": {
-    group: "Search & filters",
+    group: "Search and filters",
     examples: { file: "search-field", prefix: "SearchField" },
     rules: [
       "One search box per tool, in the top bar.",
@@ -599,7 +601,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "toggle-group": {
-    group: "Actions",
+    group: "Inputs",
     examples: { file: "toggle-group", prefix: "ToggleGroup" },
     rules: [
       'type="single" only for a tool or a mode: what the next tap on a map does, a drive mode. type="multiple" for layers, channels or filter chips.',
@@ -621,7 +623,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "segmented-control": {
-    group: "Actions",
+    group: "Inputs",
     examples: { file: "actions", prefix: "SegmentedControl" },
     rules: [
       "For two to four views of the same data, a time window (1 h, 24 h, 7 days), or a setting with two to four short choices that applies at once or is saved with its form (Auto / Ask / Blocked). For sections of a page, use Tabs; for a tool or a mode, Toggle group.",
@@ -639,7 +641,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   toggle: {
-    group: "Actions",
+    group: "Inputs",
     examples: { file: "actions", prefix: "Toggle" },
     rules: [
       "On/off for one thing, such as an image or map layer. On is inverted.",
@@ -751,7 +753,7 @@ const entries: Record<string, Entry> = {
   slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
   badge: {
-    group: "Status & values",
+    group: "Status and values",
     examples: { file: "display", prefix: "Badge" },
     rules: [
       "A fixed attribute or category: a tier, a data use, an environment, a version, Beta. A state that changes (a robot's status, a job's state) is `status-eyebrow`'s `InlineStatus`, in a row or a header; a count is a `CountBadge`.",
@@ -761,7 +763,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "tier-badge": {
-    group: "Status & values",
+    group: "Status and values",
     examples: { file: "tier-badge", prefix: "TierBadge" },
     rules: [
       "A dataset's licence tier, wherever the dataset is named: a row, a page header, a release check.",
@@ -817,7 +819,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   meter: {
-    group: "Status & values",
+    group: "Status and values",
     examples: { file: "display", prefix: "Meter" },
     rules: [
       "For a level in a known range (battery, storage). For work under way, use Progress.",
@@ -830,7 +832,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "metric-card": {
-    group: "Status & values",
+    group: "Status and values",
     /** A row of cards needs the row: examples use the card's full width. */
     wide: true,
     examples: { file: "metric-card", prefix: "MetricCard" },
@@ -846,7 +848,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "description-list": {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "display", prefix: "DescriptionList" },
     rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain.", "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest."],
   },
@@ -861,7 +863,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   table: {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "display", prefix: "Table" },
     rules: [
       "Right-align numbers. Numbers are tabular by default.",
@@ -872,7 +874,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "responsive-table": {
-    group: "Lists & tables",
+    group: "Lists and tables",
     /** The table needs the row's width to show its wide layout. */
     wide: true,
     examples: { file: "responsive-table", prefix: "ResponsiveTable" },
@@ -887,7 +889,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   list: {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "list", only: ["GroupedList"] },
     rules: [
       "Rows of the same kind, each a whole touch target at 56 px, with its state in the trailing slot.",
@@ -896,7 +898,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "status-glyph": {
-    group: "Status & values",
+    group: "Status and values",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is a shape and a word: the shape reads without colour vision, the word says the state.",
@@ -905,7 +907,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "status-eyebrow": {
-    group: "Status & values",
+    group: "Status and values",
     examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] },
     rules: [
       "`InlineStatus` is the one way to write a state that changes (a robot's status, a job's state): its shape and its word, no box, in a row's trailing slot, a table cell, or beside a page title (PageHeader's `status`, at most one). Never a Badge or a MetaPill for a state.",
@@ -963,7 +965,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "restricted-preview": {
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "data-pieces", prefix: "RestrictedPreview" },
     rules: [
       "For pictures someone should choose to see: restricted tiers, faces, number plates. Nothing loads until they ask.",
@@ -972,7 +974,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   thumbnail: {
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "thumbnail", prefix: "Thumbnail" },
     rules: [
       "One small picture at the start of a table row, a list row or a card's row. Many pictures to browse or open: ImageGrid.",
@@ -985,7 +987,7 @@ const entries: Record<string, Entry> = {
   },
   "image-grid": {
     wide: true,
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "image-grid", prefix: "ImageGrid" },
     rules: [
       "Every tile keeps its aspect box before and after the picture loads, so the grid never jumps; pictures load lazily.",
@@ -999,7 +1001,7 @@ const entries: Record<string, Entry> = {
   },
   "annotated-image": {
     wide: true,
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "annotated-image", prefix: "AnnotatedImage" },
     rules: [
       "Coordinates are the picture's own pixels; give its natural `width` and `height`. The box keeps that aspect ratio, so the marks line up at any size.",
@@ -1014,7 +1016,7 @@ const entries: Record<string, Entry> = {
   },
   "grounded-text": {
     wide: true,
-    group: "Media & files",
+    group: "AI",
     examples: { file: "grounded-text", prefix: "GroundedText" },
     rules: [
       "For text that names places on a picture: a model's caption or reasoning, a review note. A picture with marks and no text is `annotated-image`.",
@@ -1029,7 +1031,7 @@ const entries: Record<string, Entry> = {
   },
   "media-player": {
     wide: true,
-    group: "Media & files",
+    group: "Media and files",
     examples: { file: "media-player", prefix: "MediaPlayer" },
     rules: [
       "For a recorded clip with an end. A live camera is `camera-feed`: no timeline, no speed, a latency and a connection state instead.",
@@ -1187,7 +1189,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   tree: {
-    group: "Lists & tables",
+    group: "Lists and tables",
     examples: { file: "tree", prefix: "Tree" },
     rules: [
       "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
@@ -1486,16 +1488,16 @@ const entries: Record<string, Entry> = {
   },
   // Hooks: each has a small live demo; the source is in the Source sheet.
   "use-long-press": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     examples: { file: "hooks", prefix: "UseLongPress" },
     rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."],
   },
   "use-slide-release": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     examples: { file: "hooks", prefix: "UseSlideRelease" },
   },
   "use-presence": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     examples: { file: "hooks", prefix: "UsePresence" },
     rules: [
       "Keeps an element (usePresence) or list items (usePresenceList) mounted while they leave, so an exit plays disappear instead of vanishing.",
@@ -1503,7 +1505,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "use-hotkeys": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     examples: { file: "hooks", prefix: "UseHotkeys" },
     rules: [
       "Single keys only where people work through a queue by keyboard (1 Yes, 2 No, ? help); everywhere else a shortcut takes a modifier (mod+k).",
@@ -1513,7 +1515,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "use-ros": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     wide: true,
     examples: { file: "hooks", prefix: "UseRos" },
     rules: [
@@ -1525,7 +1527,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   ros: {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "Pure TypeScript, no React and no npm dependency: the rosbridge v2 client (createRosConnection) and the converters. use-ros is the React layer on top.",
       "The converters follow the components' documented conventions (robot-map's plan coordinates, REP 103, SI units); do not convert again before passing the result on.",
@@ -1533,7 +1535,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "use-debounce": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     examples: { file: "hooks", prefix: "UseDebounce" },
     rules: [
       "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",
@@ -1542,7 +1544,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "format-number": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "Every number the screen writes goes through it: `formatCount(n, { locale })` for a count (whole things: rows, robots, matches), `formatNumber(n, { locale, ...options })` for any other number (a reading, a share, a price).",
       "A count is in full with grouping (135,287) in tables, headers, detail pages and figures; `compact` (135K; 14萬 in zh-TW) only on a tab's count, a chart's ticks or a compact chip, with the full number one step away.",
@@ -1551,13 +1553,13 @@ const entries: Record<string, Entry> = {
     ],
   },
   "clock-time": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "A time read during render differs between the server and the browser: read the clock with `use-now` and format what it returns.",
     ],
   },
   feedback: {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "`feedback(name)` for a safety moment (stop sent, confirmed, unconfirmed, release, a new critical or high alarm), never `navigator.vibrate` directly: one pattern per moment, so the hand learns it.",
       "Critical repeats until acknowledged; low is silent. Neither replaces the screen: iOS has no vibration and sound needs a first tap.",
@@ -1565,14 +1567,14 @@ const entries: Record<string, Entry> = {
     ],
   },
   "use-now": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "The clock for \"12 s ago\", for what has timed out, for a flood window: `useNow(intervalMs)`, null on the server and until the page hydrates, so the two renders agree.",
       "Render nothing time-based (or a placeholder) while it is null, never `Date.now()` in render.",
     ],
   },
   "use-reduced-motion": {
-    group: "Hooks & libraries",
+    group: "Hooks and libraries",
     rules: [
       "`usePrefersReducedMotion()` while mounted, `prefersReducedMotion()` in a handler. Under reduced motion only opacity changes and loops stop.",
       "CSS animations in the kit already follow the media query; use it for motion driven from JavaScript (a scroll, a canvas, a spring).",
@@ -1990,12 +1992,19 @@ const keyboard: Record<string, [string, string][]> = {
 // Robotics in the order an operator meets them, as on /docs/robotics: stop it (and the shell around the stop: dock,
 // island, tray), drive it and send it, see what it sees, read its state, and what is drawn over a view. The groups made
 // in 0.40 go from the general to the special: the table before its variants, the shape of a state before its words,
-// the search before the filters. Other groups keep the registry's order.
+// the search before the filters, a log before its line marker. Inputs: fields, then choices, then the special ones. A
+// trace sits beside the timeline; keys and code come before prose; an answer's sources close AI. Other groups keep the
+// registry's order.
 const ordered = [
   ...["stop-button", "slide-to-release", "dock", "island", "tray", "teleop-pad", "robot-map", "geo-map", "waypoint-editor", "camera-feed", "camera-wall", "point-cloud", "robot-model", "attitude", "joint-state", "diagnostics", "viewport-overlay"],
-  ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer"],
+  ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer", "marker"],
   ...["status-glyph", "status-eyebrow", "badge", "tier-badge", "meter", "metric-card"],
   ...["search-field", "filters", "filter-form", "chip-group", "facets"],
+  ...["input", "input-group", "number-field", "textarea", "label", "field", "form", "checkbox", "radio-group", "switch", "choice-field", "select"],
+  ...["segmented-control", "toggle-group", "toggle", "slider", "autocomplete", "input-otp", "phone-input", "questionnaire"],
+  ...["graph", "icon-tile", "avatar", "timeline", "trace"],
+  ...["kbd", "code", "code-block", "markdown", "text-diff"],
+  ...["streaming-text", "message", "message-actions", "prompt-composer", "message-scroller", "citations", "grounded-text"],
   ...["format-number", "clock-time", "feedback", "use-now", "use-reduced-motion"],
 ]
 const within = (name: string) => (ordered.includes(name) ? ordered.indexOf(name) : -1)
@@ -2006,6 +2015,9 @@ export const items: Item[] = registry.items
   .sort((a, b) => groups.indexOf(a.group) - groups.indexOf(b.group) || within(a.name) - within(b.name))
 
 export const getItem = (name: string) => items.find((i) => i.name === name)
+
+/** What an item is, from its registry type: a hook and a library share a group but not a name. */
+export const itemKind = (i: Pick<Item, "type">) => (i.type === "registry:hook" ? "React hook" : i.type === "registry:lib" ? "Library" : "React component")
 
 const root = process.cwd()
 

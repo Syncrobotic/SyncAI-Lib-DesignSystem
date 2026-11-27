@@ -1,10 +1,10 @@
 // Blocks are compositions: several components put together for one job, as a section of a page or a whole screen.
-// Application: the screens and sections any app is built from. Solutions: whole working screens for one job in robot
+// Applications: the screens and sections any app is built from. Solutions: whole working screens for one job in robot
 // operations. A set of variants of ONE component (a line chart, a timeline, a dialog) is not a block: it is that
 // component's patterns, shown on the component's page (`home`), as ReUI shows charts on its Chart page. They keep
 // their own install names and previews.
 
-export const blockGroups = ["Application", "Solutions"] as const
+export const blockGroups = ["Applications", "Solutions"] as const
 export type BlockGroup = (typeof blockGroups)[number] | "Patterns"
 
 export type BlockType = {
@@ -21,11 +21,11 @@ export type BlockType = {
 }
 
 export const blockTypes: BlockType[] = [
-  // Application
+  // Applications
   {
     slug: "app-shell",
     title: "App shell",
-    group: "Application",
+    group: "Applications",
     description: "The frame of a tool: navigation, top bar, search and the user, around whatever page you put in it.",
     use: [
       "Internal tools and consoles with more than a handful of pages.",
@@ -52,16 +52,16 @@ export const blockTypes: BlockType[] = [
   {
     slug: "stats",
     title: "Stats",
-    group: "Application",
+    group: "Applications",
     description: "Headline numbers with their change, under any active alarms.",
     use: ["Under the alarms at the top of an overview page.", "A row of KPIs above a table or a chart."],
-    instead: ["A trend beside every row of a list: Data visualisation (sparkline).", "A whole overview screen: Solutions › Fleet operations."],
+    instead: ["A trend beside every row of a list: Small charts (sparkline).", "A whole overview screen: Solutions › Fleet operations."],
     rules: ["Four numbers at most in a row.", "Only a change for the worse gets colour (decided by whether it is bad, not by its direction); good news stays neutral.", "Every number has a unit and a time range."],
   },
   {
     slug: "data-table",
     title: "Data table",
-    group: "Application",
+    group: "Applications",
     description: "Rows to search, filter, page through and act on, written once as a table that phones read as a list.",
     use: ["A fleet, a list of jobs or datasets: many things compared by the same few fields.", "A section of a page, under its header and the numbers."],
     instead: ["A whole screen built around one list: Solutions › Fleet operations.", "A few things people pick from: Card."],
@@ -74,8 +74,8 @@ export const blockTypes: BlockType[] = [
   },
   {
     slug: "data-visualisation",
-    title: "Data visualisation",
-    group: "Application",
+    title: "Small charts",
+    group: "Applications",
     description: "Numbers drawn without a chart library: sparklines in rows, status strips, rings and heatmaps.",
     use: [
       "A trend beside every row of a list or table (sparkline).",
@@ -94,7 +94,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "card",
     title: "Card",
-    group: "Application",
+    group: "Applications",
     description: "One thing summed up in a card: a robot, a site, a mission, with its next actions.",
     use: ["A robot on a phone.", "Grids of things people pick from."],
     instead: ["Many things compared by the same fields: a data grid."],
@@ -103,7 +103,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "auth",
     title: "Sign-in",
-    group: "Application",
+    group: "Applications",
     description: "Getting in: company SSO first, an email link as the fallback, the 2FA code step, and what happens next.",
     use: ["The sign-in page of an internal tool or console.", "The second step after a password: a code from an authenticator app or a recovery code."],
     rules: [
@@ -115,7 +115,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "settings",
     title: "Settings",
-    group: "Application",
+    group: "Applications",
     description: "Sections beside their explanation; switches apply at once, fields collect into a save bar.",
     use: ["Account, site and fleet settings.", "Any page of preferences.", "Plan, usage and invoices, without taking payment details."],
     instead: ["Creating or editing one record: Form."],
@@ -129,7 +129,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "notifications",
     title: "Notifications",
-    group: "Application",
+    group: "Applications",
     description: "The bell in the top bar: what happened while you were away, grouped by day, read or unread.",
     use: ["Finished missions, ready reports, installed firmware, changes someone else made.", "Anything worth knowing later that needs no action now."],
     instead: [
@@ -146,16 +146,29 @@ export const blockTypes: BlockType[] = [
   {
     slug: "form",
     title: "Form",
-    group: "Application",
+    group: "Applications",
     description: "Create or edit one record: one column, labels above fields, errors in the hint line.",
     use: ["New robot, new site, new mission.", "Editing one record's details."],
     instead: ["Many preferences on one page: Settings.", "A long process in steps: the Stepper component."],
     rules: ["One column.", "On submit, errors appear under their fields and focus moves to the first.", "The primary action names what it does."],
   },
   {
+    slug: "wizard",
+    title: "Wizard",
+    group: "Applications",
+    description: "A job done in steps: adding a robot, importing a file.",
+    use: ["Setup that must happen in order.", "Imports that need checking before they land."],
+    instead: ["A form with no order to it: Form."],
+    rules: [
+      "Five steps at most, each named by what you do in it.",
+      "Each step checks its fields before Next; finished steps can be revisited.",
+      "The last button names the result (Add to fleet, Import 3 checkpoints).",
+    ],
+  },
+  {
     slug: "states",
-    title: "Empty and error states",
-    group: "Application",
+    title: "Empty, loading and error states",
+    group: "Applications",
     description: "Not found, no access, error, offline and loading: what happened, why, and the next step.",
     use: ["Whole-page states of any tool.", "Content panels that can be empty or fail."],
     rules: ["Never a dead end: every state offers the next step.", "Say what still works (robots keep their schedule)."],
@@ -163,7 +176,7 @@ export const blockTypes: BlockType[] = [
   {
     slug: "landing",
     title: "Landing",
-    group: "Application",
+    group: "Applications",
     description: "The top of a product or marketing page: what it is, who it is for, and the two ways in.",
     use: ["A product page or a site's home."],
     rules: ["One headline, one supporting line, two actions at most."],
@@ -183,9 +196,9 @@ export const blockTypes: BlockType[] = [
     title: "Form and share dialogs",
     group: "Patterns",
     home: "dialog",
-    description: "A short decision over the page: confirm a deletion, fill three fields, share with people.",
-    use: ["Confirming something that cannot be undone.", "A form of three fields or fewer.", "Sharing one thing."],
-    instead: ["A form longer than three fields: Form.", "Details you read while using the page: Sheet."],
+    description: "A short decision over the page: fill three fields, share with people.",
+    use: ["A form of three fields or fewer.", "Sharing one thing."],
+    instead: ["Confirming something that cannot be undone: Confirm a destructive action.", "A form longer than three fields: Form.", "Details you read while using the page: Sheet."],
     rules: [
       "The title is the question or the action; the buttons repeat its verb.",
       "The safe choice is focused first. The destructive one is an outline, never solid red.",
@@ -223,24 +236,14 @@ export const blockTypes: BlockType[] = [
     home: "timeline",
     description: "Events in time order: what a robot did on its shift, who changed what.",
     use: ["A robot's or a mission's history.", "An audit log of changes."],
-    instead: ["Many events to sort and filter by several fields: Solutions › Fleet operations › Event log."],
+    instead: [
+      "Many events to sort and filter by several fields: Solutions › Fleet operations › Event log (event-log).",
+      "Who did what to people and roles, with export: Solutions › Users and access › Audit log (users-audit-log).",
+    ],
     rules: [
       "Newest first, grouped by day.",
       "Only an abnormal event is coloured; an audit log is never coloured.",
       "A change shows its value before and after.",
-    ],
-  },
-  {
-    slug: "wizard",
-    title: "Wizard",
-    group: "Application",
-    description: "A job done in steps: adding a robot, importing a file.",
-    use: ["Setup that must happen in order.", "Imports that need checking before they land."],
-    instead: ["A form with no order to it: Form."],
-    rules: [
-      "Five steps at most, each named by what you do in it.",
-      "Each step checks its fields before Next; finished steps can be revisited.",
-      "The last button names the result (Add to fleet, Import 3 checkpoints).",
     ],
   },
   // Charts
@@ -251,7 +254,7 @@ export const blockTypes: BlockType[] = [
     home: "chart",
     description: "Values over time: telemetry, a measurement against its limit, this period against the last.",
     use: ["Speed, temperature, latency, any reading over time.", "Comparing two periods or two sites."],
-    instead: ["A count per category: Bar chart.", "A running total or a share of the fleet: Area chart."],
+    instead: ["A count per category: Bar chart.", "A running total or a share of the fleet: Area chart.", "A trend beside every row of a list, with no chart library: Small charts (sparkline)."],
     rules: [
       "One axis. Two measures of different scale are two charts.",
       "A legend for two series or more, and a table view beside the chart.",
@@ -265,7 +268,7 @@ export const blockTypes: BlockType[] = [
     home: "chart",
     description: "A quantity over time with weight under it: battery, a running total, how the fleet splits.",
     use: ["One series where the amount matters, not just the shape.", "Parts of a whole over time, stacked."],
-    instead: ["Several unrelated series: Line chart."],
+    instead: ["Several unrelated series: Line chart.", "One share of a whole at a glance (battery, a goal): Small charts (radial)."],
     rules: ["Stacked areas only when the parts add up to something real.", "Soft fill (12 %) for one series; stronger for stacks so the layers read."],
   },
   {
@@ -275,7 +278,7 @@ export const blockTypes: BlockType[] = [
     home: "chart",
     description: "Counts per category: grouped, ranked, stacked, and above or below a plan.",
     use: ["Missions per day, stops per cause, hours per site."],
-    instead: ["A trend over many points: Line chart.", "The top few counts inside a card or a table cell, no chart library: bar-list."],
+    instead: ["A trend over many points: Line chart.", "The top few counts inside a card or a table cell, no chart library: bar-list.", "Two categories crossed, shaded by how much: Small charts (heatmap)."],
     rules: ["Bars start at zero.", "Rounded on the data end only, 2 px apart.", "Long category names: horizontal bars, sorted."],
   },
   {
@@ -300,6 +303,10 @@ export const blockTypes: BlockType[] = [
     group: "Solutions",
     description: "Watching and running a fleet: the overview, the live map, robot lists, the event log.",
     use: ["The control room console.", "Supervisors watching several sites."],
+    instead: [
+      "Who changed what on one record, inside its page: Patterns › Activity and audit timelines › Audit history (timeline-audit).",
+      "Who did what to people and roles: Users and access › Audit log (users-audit-log).",
+    ],
     rules: [
       "Active alarms come first, above the numbers and the tables.",
       "Normal is calm: colour only for what needs someone.",
@@ -327,6 +334,10 @@ export const blockTypes: BlockType[] = [
     group: "Solutions",
     description: "Who can do what: roles changed in place, invitations, removals with undo.",
     use: ["The members page of any console."],
+    instead: [
+      "Who changed what on one record, inside its page: Patterns › Activity and audit timelines › Audit history (timeline-audit).",
+      "Robot and fleet events to filter by time and level: Fleet operations › Event log (event-log).",
+    ],
     rules: ["Roles are words people know (Operator, Supervisor), not permission lists.", "Removing someone can be undone for a few seconds."],
   },
   {

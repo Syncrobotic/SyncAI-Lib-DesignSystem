@@ -11,7 +11,7 @@ const files = (name: string) => ["light", "dark"].flatMap((t) => [400, 800].map(
 describe("block thumbnails", () => {
   const cards = blockCards()
 
-  it("has a card for every Application and Solutions type", () => {
+  it("has a card for every Applications and Solutions type", () => {
     expect(cards.length).toBeGreaterThanOrEqual(10)
   })
 

@@ -4,7 +4,7 @@ import { blockGroups, blockHref, blockTypes, getBlockType, placement } from "./b
 import { groups, items, getItem, readSource, storyNames, storyTitle } from "./catalog"
 import { site } from "./config"
 import { foundations } from "./foundations"
-import { iconCount, iconGroups } from "./icons"
+import { iconCount, iconGroups, kitIconCount } from "./icons"
 import { overviews } from "./overview"
 import { a11yMarkdown } from "./a11y"
 import { promptFor } from "./ai-prompt"
@@ -20,12 +20,17 @@ const install = (name: string) => `npx shadcn add @syncrobotic/${name}`
 const all = registry.items as RegistryItem[]
 const blocks = all.filter((i) => i.type === "registry:block")
 
-/** `name` in prose becomes a link to that item's markdown twin. */
+/** `name` in prose becomes a link to that item's markdown twin, `/blocks/type` to that block type's page. */
 const link = (text: string) =>
-  text.replace(/`([a-z0-9-]+)`/g, (m, name) => {
-    const it = getItem(name)
-    return it ? `[${it.title}](${url(`/docs/components/${name}.md`)})` : m
-  })
+  text
+    .replace(/`([a-z0-9-]+)`/g, (m, name) => {
+      const it = getItem(name)
+      return it ? `[${it.title}](${url(`/docs/components/${name}.md`)})` : m
+    })
+    .replace(/`\/blocks\/([a-z0-9-]+)`/g, (m, slug) => {
+      const t = getBlockType(slug)
+      return t ? `[${t.title}](${url(`/blocks/${slug}`)})` : m
+    })
 
 const list = (xs: string[]) => xs.map((x) => `- ${link(x)}`).join("\n")
 
@@ -118,6 +123,37 @@ export function blockMarkdown(name: string) {
   )
 }
 
+const kitIcons = iconGroups.flatMap((g) => g.icons.filter((i) => i.from).map((i) => ({ ...i, group: g.title })))
+
+/** robot-icons, the one installable item that is neither a component page nor a block: the icons it draws, by meaning. */
+export function robotIconsMarkdown(name: string) {
+  const r = name === "robot-icons" ? all.find((i) => i.name === name) : undefined
+  if (!r) return null
+  return (
+    [
+      `# ${r.title}`,
+      "",
+      `> ${r.description}`,
+      "",
+      `- Version: ${r.meta?.version ?? "unversioned"}`,
+      `- Install: \`${install(name)}\``,
+      `- Page: ${url("/icons")}`,
+      `- Source: ${site.repo}/blob/main/${r.files[0].path}`,
+      "",
+      "## Icons",
+      "",
+      ...kitIcons.map((i) => `- ${i.name} (${i.group}): ${i.means}`),
+      "",
+      "## Agent notes",
+      "",
+      "- Import from the installed file (`@/components/ui/robot-icons`), not lucide-react; each takes Lucide's props.",
+      "- Use one only for the meaning listed; every other meaning has a Lucide icon in the icon set (llms-full.txt).",
+      "",
+      `Index: ${url("/llms.txt")}`,
+    ].join("\n") + "\n"
+  )
+}
+
 export function foundationMarkdown(slug: string) {
   const f = foundations.find((x) => x.slug === slug)
   if (!f) return null
@@ -147,7 +183,9 @@ const intro = [
 export function llmsTxt() {
   const out = [...intro, "", "## Foundations", "", "Each foundation's `.md` twin carries the whole design language.", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
-  out.push(`- [Icon set](${url("/icons")}): the ${iconCount} Lucide icons the kit uses, one meaning each. Full list in llms-full.txt.`)
+  out.push(
+    `- [Icon set](${url("/icons")}): the ${iconCount} icons the kit uses, one meaning each: ${iconCount - kitIconCount} from Lucide and ${kitIconCount} drawn for the kit (robot-icons: \`${install("robot-icons")}\`). Full list in llms-full.txt.`,
+  )
   // Blocks by group and type, the way the site lists them.
   for (const g of blockGroups) {
     for (const t of blockTypes.filter((x) => x.group === g)) {
@@ -181,11 +219,26 @@ export function llmsTxt() {
 
 export function llmsFull() {
   const out = [...intro, "", designLanguage(), "", "# Icon set", ""]
-  out.push("Lucide icons, one meaning each. Use the icon listed for a meaning; do not import another Lucide icon for it.", "")
-  for (const g of iconGroups)
-    out.push(`- ${g.title}${g.from ? " (`npx shadcn add @syncrobotic/robot-icons`, not lucide-react)" : ""}: ${g.icons.map((i) => `${i.name} (${i.means})`).join("; ")}`)
-  out.push("", "# Blocks", "")
-  for (const b of blocks) out.push(`- **${b.title}** (\`${b.name}\`): ${b.description} Install: \`${install(b.name)}\``)
+  out.push(
+    `Icons by meaning, one meaning each. Use the icon listed for a meaning; do not import another Lucide icon for it. Those marked [kit] are not in Lucide: \`${install("robot-icons")}\`, then import from \`@/components/ui/robot-icons\`.`,
+    "",
+  )
+  for (const g of iconGroups) out.push(`- ${g.title}: ${g.icons.map((i) => `${i.name}${i.from ? " [kit]" : ""} (${i.means})`).join("; ")}`)
+  // Blocks as llms.txt lists them: by group and type, then the patterns by the component whose page shows them.
+  const blockLine = (b: (typeof blocks)[number]) => `- **${b.title}** (\`${b.name}\`): ${b.description} Install: \`${install(b.name)}\``
+  out.push("", "# Blocks")
+  for (const g of blockGroups)
+    for (const t of blockTypes.filter((x) => x.group === g)) {
+      const inType = blocks.filter((b) => placement[b.name]?.type === t.slug)
+      if (inType.length) out.push("", `## ${g} › ${t.title}`, "", ...inType.map(blockLine))
+    }
+  for (const t of blockTypes.filter((x) => x.home)) {
+    const inType = blocks.filter((b) => placement[b.name]?.type === t.slug)
+    if (inType.length) out.push("", `## Patterns: ${getItem(t.home!)?.title ?? t.home} › ${t.title}`, "", ...inType.map(blockLine))
+  }
+  const unplaced = blocks.filter((b) => !placement[b.name])
+  if (unplaced.length) out.push("", "## Other blocks", "", ...unplaced.map(blockLine))
+
   out.push("", "# Components", "")
   for (const i of items) {
     const o = overviews[i.name]

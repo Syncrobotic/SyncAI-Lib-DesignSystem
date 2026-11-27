@@ -8,7 +8,7 @@
     "hash": "60ad6d03daa7a5f6"
   },
   "feedback": {
-    "version": "0.53.0",
+    "version": "0.54.0",
     "hash": "f6dcba657d7153d2"
   },
   "math": {
@@ -32,8 +32,8 @@
     "hash": "c73671ae05fd9bf5"
   },
   "labels-zh-tw": {
-    "version": "0.53.0",
-    "hash": "b675381b0d9ec0f4"
+    "version": "0.54.0",
+    "hash": "4ef5170c67935084"
   },
   "ros": {
     "version": "0.53.0",
@@ -344,8 +344,8 @@
     "hash": "6e7eac72c30530d1"
   },
   "command": {
-    "version": "0.53.0",
-    "hash": "1477ca22ae45543e"
+    "version": "0.54.0",
+    "hash": "113404ed915ab132"
   },
   "item": {
     "version": "0.53.0",
@@ -432,8 +432,8 @@
     "hash": "c8ccb4e12ecb0c04"
   },
   "camera-wall": {
-    "version": "0.53.0",
-    "hash": "dca876bd0e201793"
+    "version": "0.54.0",
+    "hash": "80b40f2cf7f9a547"
   },
   "joint-state": {
     "version": "0.53.0",

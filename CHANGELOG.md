@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.54.0 · 2026-11-27
+
+A camera wall that moves, key hints in the command dialog, and components, blocks and icons grouped by what they mean.
+
+### Added
+- **`camera-wall`:** opening a camera grows its picture into the large feed and going back shrinks it into its tile, with a view transition on `--motion-sheet`. Instant under reduced motion or without View Transitions; the stop button and the rest of the page stay live during it.
+- **`command`:** `CommandDialog` shows key hints at its foot (↑↓ to move, ↵ to open, Esc to close), hidden on touch. `hints={false}` turns them off; the words are labels, with zh-TW strings in `labels-zh-tw`.
+
+### Changed
+- **Components:** new **Date and time** group (calendar, date-selector, time-picker) and **Code and text** group (kbd, code, code-block, markdown, text-diff). segmented-control, toggle-group and toggle move to Inputs, trace to Data display beside timeline, marker to Lists and tables, grounded-text to AI. Group names use "and" ("Lists and tables").
+- **Hooks and libraries:** pages and social cards say "Library" or "React hook" from the item's type; the `feedback` lib is titled "Feedback cues".
+- **Blocks:** the Application group is now **Applications**; Wizard follows Form; "Data visualisation" is **Small charts** (same URL), linked from Charts and the chart patterns; "Empty, loading and error states"; the dialog pattern no longer covers destructive confirms; the event log and both audit logs point to each other.
+- **Icons:** grouped by meaning only; the six kit-drawn icons sit in their meaning's group with a **Kit** badge; devices and theme icons share Views and layout; old category links still filter.
+- **Agents:** MCP `get_item` and `get_install_command` know `robot-icons`, and search labels patterns as `pattern`; llms-full lists blocks by group and type; llms.txt counts Lucide and kit-drawn icons separately.
+
 ## 0.53.0 · 2026-11-27
 
 Every item's doc opens with its description, and accessible names read the words they show.
