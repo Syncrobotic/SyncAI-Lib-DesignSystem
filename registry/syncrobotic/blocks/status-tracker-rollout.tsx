@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-rollout v0.40.0 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.53.0 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
 import { Check } from "lucide-react"
@@ -14,7 +14,10 @@ const stages = [
   { name: "All", robots: 56, done: 0, state: "waiting" },
 ] as const
 
-/** A rollout as stage lanes: finished stages checked and neutral, the running one in progress (blue), later ones waiting. */
+/**
+ * A rollout as stage lanes: finished stages checked, the running one in progress, later ones waiting. Finished stages
+ * are neutral; the running one is blue.
+ */
 export function StatusTrackerRollout() {
   return (
     <Card>

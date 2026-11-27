@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.50.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.53.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -149,8 +149,9 @@ export type TimePickerLabels = {
 export const defaultTimePickerLabels: TimePickerLabels = { placeholder: "Pick a time", times: "Times" }
 
 /**
- * A time picked from a list of slots, for a fixed grid of times (every 15 minutes, opening hours). Taken slots stay in
- * the list, disabled and struck through, so people see why a time is missing. The list scrolls to the picked slot.
+ * TimePicker (slots in a popover) and TimeInput (typed), on a 24-hour "HH:mm" value. TimePicker is for a fixed grid of
+ * times (every 15 minutes, opening hours). Taken slots stay in the list, disabled and struck through, so people see why
+ * a time is missing. The list scrolls to the picked slot.
  */
 export function TimePicker({
   value,

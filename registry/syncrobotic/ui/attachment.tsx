@@ -1,4 +1,4 @@
-// @syncrobotic/attachment v0.51.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
+// @syncrobotic/attachment v0.53.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
 "use client"
 
 import * as React from "react"
@@ -38,8 +38,8 @@ export const defaultAttachmentLabels: AttachmentLabels = {
 }
 
 /**
- * One file in a list, a composer or an upload queue: type, name, size and state, with Retry on error and Download when
- * done. `chip` is the compact form for a message composer; `image` shows a preview.
+ * One file in a list, a composer or a queue: type, name, size, progress, error with Retry, Download and Remove. `chip`
+ * is the compact form for a message composer; `image` shows a preview.
  */
 export function Attachment({
   name,

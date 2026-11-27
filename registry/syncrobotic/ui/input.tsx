@@ -1,10 +1,10 @@
-// @syncrobotic/input v0.17.3 · update: npx shadcn add @syncrobotic/input --overwrite
+// @syncrobotic/input v0.53.0 · update: npx shadcn add @syncrobotic/input --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * 16 px text so iOS does not zoom on focus. `aria-invalid` turns the edge danger and 2 px at --motion-fast:
- * the error is a state change, shown in place, never a shake.
+ * 44 px text field with 16 px text so iOS does not zoom; aria-invalid turns the edge danger. The error edge is 2 px at
+ * --motion-fast: a state change, shown in place, never a shake.
  */
 export function Input({ className, type = "text", ...props }: React.ComponentProps<"input">) {
   return (

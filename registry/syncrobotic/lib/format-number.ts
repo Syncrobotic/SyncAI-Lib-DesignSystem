@@ -1,7 +1,7 @@
-// @syncrobotic/format-number v0.52.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
+// @syncrobotic/format-number v0.53.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
 /**
- * The kit's one number path, so the server and the browser write the same digits and the locale changes in one place:
- * `formatCount` for a count, `formatNumber` for any other number, `resolveLocale` for the tag both use. Never
+ * The kit's one number path: formatCount (135,287, or compact 135K only where space is short), formatNumber for other
+ * numbers and resolveLocale, in English by default so server and browser match. The locale changes in one place. Never
  * `toLocaleString()` without a locale: it follows the runtime, so the server and browser renders can differ.
  */
 

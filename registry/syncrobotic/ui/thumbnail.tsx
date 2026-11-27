@@ -1,4 +1,4 @@
-// @syncrobotic/thumbnail v0.51.0 · update: npx shadcn add @syncrobotic/thumbnail --overwrite
+// @syncrobotic/thumbnail v0.53.0 · update: npx shadcn add @syncrobotic/thumbnail --overwrite
 "use client"
 
 import * as React from "react"
@@ -38,8 +38,8 @@ type ThumbnailProps = {
 }
 
 /**
- * One small square picture for a row, a list or a card, loaded lazily; a failed one shows a neutral fallback in the same
- * box. `restricted` shows RestrictedPreview's placeholder and fetches nothing. Never focusable: make the row the target.
+ * One small square picture for a row, list or card at sm, md or lg: lazy and object-cover, with ImageGrid's fallback
+ * when it fails and a restricted placeholder that fetches nothing. Never focusable: make the row the target.
  */
 export function Thumbnail({ src, alt = "", size = "sm", restricted = false, reason, labels: labelsProp, className }: ThumbnailProps) {
   const labels = { ...defaultThumbnailLabels, ...labelsProp }

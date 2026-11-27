@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-goal v0.40.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
+// @syncrobotic/radial-chart-goal v0.53.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
 "use client"
 
 import * as React from "react"
@@ -50,7 +50,7 @@ const parts = [
   { label: "Not reached yet", value: "7 %" },
 ]
 
-/** Progress to a goal: one large ring with the share in the middle, and the breakdown beside it in words. */
+/** One large ring with the share of the plan done and the breakdown beside it in words. */
 export function RadialChartGoal() {
   return (
     <Card>

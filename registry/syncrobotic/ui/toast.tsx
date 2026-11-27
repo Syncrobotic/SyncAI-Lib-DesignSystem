@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.51.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.53.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,10 +6,6 @@ import { Toast as ToastPrimitive } from "radix-ui"
 import { CircleCheck, CircleAlert, Info, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/**
- * A short, transient message about something the user just did. 4 s, 8 s with an action (undo), failures until
- * dismissed. Never an alarm: anything an operator must act on goes to the alarm list.
- */
 export type ToastTone = "neutral" | "success" | "danger"
 
 export type ToastInput = {
@@ -113,6 +109,10 @@ function escapeToDialog(e: KeyboardEvent) {
   if (dialog.dispatchEvent(new Event("cancel", { cancelable: true }))) dialog.close()
 }
 
+/**
+ * Transient feedback on what the user just did (4 s, 8 s with an action, failures until dismissed): call toast() anywhere
+ * and mount <Toaster /> once. Never an alarm: anything an operator must act on goes to the alarm list.
+ */
 export function Toast({
   className,
   tone = "neutral",

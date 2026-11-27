@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.51.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.53.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
@@ -30,9 +30,9 @@ export type ShareSegment = {
 const toneOf = (s: { tone?: keyof typeof tones }, i: number) => s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4)
 
 /**
- * How a whole splits, as one thin bar in the chart palette, light enough for a table cell. Read as one sentence. Outside
- * a cell show the `legend`, so identity never rests on colour; a segment's `href` links its legend entry. For a list of
- * bars, one ShareLegend above it.
+ * How a whole splits, as one thin bar in the chart palette light enough for a table cell, with optional label, total
+ * and linked legend; ShareLegend is one legend for several bars. Read as one sentence. Outside a cell show the
+ * `legend`, so identity never rests on colour; a segment's `href` links its legend entry.
  */
 export function ShareBar({
   segments,
@@ -111,7 +111,7 @@ export function ShareBar({
                   {key}
                   <span>
                     {s.label} {fmt(s.value)}
-                    <span className="sr-only">, {said(pct(s.value))} %</span>
+                    <span className="sr-only"> ({said(pct(s.value))} %)</span>
                   </span>
                 </Link>
               ) : (

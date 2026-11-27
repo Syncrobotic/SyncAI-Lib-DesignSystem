@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-limit v0.35.0 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
+// @syncrobotic/line-chart-limit v0.53.0 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,8 +24,8 @@ const data = [
 ]
 
 /**
- * One measurement against its limit: the latest value up top, the limit as a labelled dashed line. The header turns to
- * warning only while the value is over the limit; the line itself keeps its series colour.
+ * One measurement against its limit: the latest value up top, the limit as a labelled dashed line, a warning only while
+ * it is over. The line itself keeps its series colour.
  */
 export function LineChartLimit() {
   const [view, setView] = React.useState("chart")

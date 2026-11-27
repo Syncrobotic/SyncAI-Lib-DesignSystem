@@ -1,4 +1,4 @@
-// @syncrobotic/checkbox v0.15.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
+// @syncrobotic/checkbox v0.53.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,10 @@ import { Checkbox as CheckboxPrimitive } from "radix-ui"
 import { Check, Minus } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/** 20 px box inside a 44 px hit area: wrap it with its label so the whole row is tappable. */
+/**
+ * A box that is checked, unchecked or indeterminate, for a choice that applies when the form is saved. A 20 px box
+ * inside a 44 px hit area: wrap it with its label so the whole row is tappable.
+ */
 export function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
   return (
     <CheckboxPrimitive.Root

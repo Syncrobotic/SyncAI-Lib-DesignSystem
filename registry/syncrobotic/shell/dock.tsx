@@ -1,4 +1,4 @@
-// @syncrobotic/dock v0.40.0 · update: npx shadcn add @syncrobotic/dock --overwrite
+// @syncrobotic/dock v0.53.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,7 @@ import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 
 /**
- * Three tiers, top to bottom:
+ * The robot shell's action bar in three tiers, top to bottom: state action, this page's primary action, navigation.
  *   1. state action — StopButton while the dog stands, WakeButton while it lies down,
  *      SlideToRelease while it is stopped. Always present, always the same height.
  *   2. this page's one primary action — optional, only while needed.

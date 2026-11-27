@@ -1,4 +1,4 @@
-// @syncrobotic/waypoint-editor v0.51.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
+// @syncrobotic/waypoint-editor v0.53.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
 "use client"
 
 import * as React from "react"
@@ -400,8 +400,9 @@ export type WaypointEditorProps = {
 }
 
 /**
- * A robot's route as an ordered list of waypoints, edited in a list and on robot-map together: name, place, heading,
- * action and dwell. Problems show on the row and the point, and Save says why it is disabled. Narrow, the map is a tab.
+ * A robot's route as an ordered list of waypoints, edited in a list and on robot-map together, with actions on arrival,
+ * reordering, checks that say why Save is disabled and a read-only mode. Each waypoint has a name, place, heading,
+ * action and dwell; problems show on the row and the point. Narrow, the map is a tab.
  */
 export function WaypointEditor({
   value,

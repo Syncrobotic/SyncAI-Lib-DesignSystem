@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-overview v0.40.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.53.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -58,9 +58,9 @@ const columns: ResponsiveTableColumn<RobotRow>[] = [
 ]
 
 /**
- * A firmware rollout while it runs: the stage it is in, the gates that pause it on their own, and the robots in this
- * stage, failures first. Updating is the only blue. A failure says what happened and that the robot still works. Pause and
- * roll back are always one click away.
+ * A firmware rollout while it runs: its stage, the gates that pause it, and the robots in the stage, failures first.
+ * Updating is the only blue. A failure says what happened and that the robot still works. Pause and roll back are
+ * always one click away.
  */
 export function RolloutOverview() {
   const [paused, setPaused] = React.useState(false)

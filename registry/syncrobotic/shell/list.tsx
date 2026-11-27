@@ -1,9 +1,12 @@
-// @syncrobotic/list v0.40.0 · update: npx shadcn add @syncrobotic/list --overwrite
+// @syncrobotic/list v0.53.0 · update: npx shadcn add @syncrobotic/list --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/** One surface per group. Rows are separated by an inset hairline, never nested cards. */
+/**
+ * A grouped list: one surface per group with inset dividers, icons only when they carry meaning, and status as shape
+ * plus word. Never nested cards.
+ */
 export function ListGroup({ className, ...props }: React.ComponentProps<"div">) {
   return <div className={cn("flex flex-col rounded-md bg-card px-4 ring-1 ring-border", className)} {...props} />
 }

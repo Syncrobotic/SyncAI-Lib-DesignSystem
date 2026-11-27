@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.51.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.53.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -36,8 +36,9 @@ type PageProps = {
 const actionOf = (a: StatusPageAction, onClick?: () => void) => (typeof a === "string" ? { label: a, onClick } : a)
 
 /**
- * One layout for every page that is not the content (404, error, offline): what happened, why, and the next step, centred
- * in any frame. `fill="screen"` is the page's <main>; `fill="parent"` is a <section> inside the frame's own <main>.
+ * Not found, no access, error, offline and loading pages that say what happened, why and the next step, never a dead
+ * end. One layout, centred in any frame: `fill="screen"` is the page's <main>; `fill="parent"` is a <section> inside
+ * the frame's own <main>.
  */
 export function StatusPage({
   icon: Icon,

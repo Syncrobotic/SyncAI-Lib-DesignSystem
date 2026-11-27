@@ -1,4 +1,4 @@
-// @syncrobotic/prompt-composer v0.51.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
+// @syncrobotic/prompt-composer v0.53.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
 "use client"
 
 import * as React from "react"
@@ -67,8 +67,9 @@ export function isComposingEnter(e: Pick<KeyboardEvent, "isComposing" | "keyCode
 type Entry = { key: number; file: File }
 
 /**
- * A message box for a model: grows with the text, Enter sends, Shift+Enter adds a line, files go in a tray, and Send
- * becomes Stop while the answer streams. Return false from `onSubmit(text, files)` to keep the draft.
+ * Where someone writes to a model: a form with a growing text box, Enter to send (never during IME composition),
+ * attachments, Send that becomes Stop, and disabled reasons and limits in words. Shift+Enter adds a line. Return false
+ * from `onSubmit(text, files)` to keep the draft.
  */
 export function PromptComposer({
   onSubmit,

@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.52.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.53.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
@@ -496,8 +496,9 @@ type Props = {
 }
 
 /**
- * Robot and system logs: a virtual list smooth at 100,000 lines, filtered by level and source, searched with matches
- * marked, following the newest line until someone scrolls up. Each line opens to its whole message and fields.
+ * Robot and system logs in a virtual list smooth at 100,000 lines: follows the newest, keeps maxLines, filters by level
+ * and source, searches, wraps, opens a line, copies, and batches fast appends. Following stops when someone scrolls up.
+ * Each line opens to its whole message and fields.
  */
 export function LogViewer({
   lines,

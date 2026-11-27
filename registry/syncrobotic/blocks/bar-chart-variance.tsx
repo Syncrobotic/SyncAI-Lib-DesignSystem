@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-variance v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
+// @syncrobotic/bar-chart-variance v0.53.0 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,7 +18,7 @@ const data = [
   { r: "5384", delta: -2 },
 ]
 
-/** Above and below zero: one hue, the zero line drawn, the biggest miss named in words. */
+/** Positive and negative values in one hue around a drawn zero line, the biggest gap named. */
 export function BarChartVariance() {
   const [view, setView] = React.useState("chart")
   const worst = data.reduce((a, b) => (Math.abs(b.delta) > Math.abs(a.delta) ? b : a))

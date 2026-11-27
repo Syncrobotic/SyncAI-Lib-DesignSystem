@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-plan v0.40.0 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
+// @syncrobotic/rollout-plan v0.53.0 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,9 +15,8 @@ const FLEET = 56
 type Stage = { name: string; share: number; wait: number }
 
 /**
- * Planning a rollout: which version, to how much of the fleet at each stage, how long to watch before the next, and what
- * pauses it on its own. Robots update only when docked and idle, in the window you choose. The summary under the plan
- * says what will happen in plain words before you start it.
+ * Planning a rollout: version, stages with share and watch time, update window and safety, with what will happen said
+ * in plain words before it starts. Robots update only when docked and idle, in the window you choose.
  */
 export function RolloutPlan() {
   const [version, setVersion] = React.useState("2.4.1")

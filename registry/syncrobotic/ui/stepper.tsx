@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.51.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.53.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,10 +6,6 @@ import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 
-/**
- * Where someone is in a fixed sequence of steps, numbered from 1: done steps a check, the current one filled, an error a
- * cross. The current step is neutral, never blue: blue means a machine is working, not a person.
- */
 type StepState = "done" | "current" | "upcoming" | "error"
 
 export type StepperLabels = {
@@ -67,6 +63,11 @@ const labelRoom: Record<number, [string, string]> = {
 }
 const roomFor = (count: number) => (count <= 3 ? null : (labelRoom[count] ?? ["@3xl:not-sr-only", "@3xl:hidden"]))
 
+/**
+ * Where someone is in a fixed sequence of steps: done, current, upcoming and error steps, horizontal or vertical, with a
+ * compact bar for phones. Steps are numbered from 1; the current one is neutral, never blue: blue means a machine is
+ * working, not a person.
+ */
 export function Stepper({
   value,
   onValueChange,
@@ -171,7 +172,7 @@ export function StepperItem({
       >
         <span className={cn("text-sm", state === "upcoming" ? "text-muted-foreground" : "font-medium text-foreground", state === "error" && "text-danger")}>
           {title}
-        </span>
+        </span>{" "}
         {(description || optional) && (
           <span className="text-xs text-muted-foreground">{description ?? (typeof optional === "string" ? optional : l.optional)}</span>
         )}
@@ -221,12 +222,12 @@ export function StepperItem({
             )}
           >
             {label}
-            <span className="sr-only">, {status}</span>
+            <span className="sr-only"> {status}</span>
           </button>
         ) : (
           <div className={cn("flex min-w-0", vertical ? "items-start gap-3" : "max-w-full flex-col items-center gap-2")}>
             {label}
-            <span className="sr-only">, {status}</span>
+            <span className="sr-only"> {status}</span>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.52.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.53.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -693,9 +693,9 @@ export type RobotModelProps = {
 }
 
 /**
- * A robot's pose in 3D from its URDF and live joint values (`sensor_msgs/JointState`), for monitoring: it never moves the
- * robot. Turn, move and zoom by pointer or keys; highlighted joints are named in a callout. Three.js draws only when the
- * joints, camera, size or theme change.
+ * A robot's pose in 3D from its URDF and live JointState, in theme greys with highlighted joints, orbit, pan and zoom,
+ * and loading, error, stale and no-WebGL states; the kit's one three.js item. For monitoring: it never moves the robot.
+ * Three.js draws only when the joints, camera, size or theme change.
  */
 export function RobotModel({
   urdf,

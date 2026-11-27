@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.51.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.53.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -78,8 +78,8 @@ type IslandProps = {
 }
 
 /**
- * Three zones — name, device status, notifications — each opens on its own.
- * Notices live inside the island as a child, assembled like the e-stop in the dock.
+ * The dynamic island: name, device status and notifications, each zone expanding on its own, with notices and the most
+ * urgent unacknowledged alarm inside it. Notices are assembled as a child, like the e-stop in the dock.
  */
 export function Island({
   name,
@@ -356,8 +356,11 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       {/* The alarm is never cut: two lines, and the buttons move to their own row before they squeeze it under 160 px. */}
       <span className="flex min-w-0 flex-1 basis-40 flex-col">
         <span className="line-clamp-2 text-sm font-bold break-words">
-          <span className={cn("mr-2 font-medium", p.text)}>{l[top.priority]}</span>
-          <span className="sr-only">: </span>
+          {/* Said as one string, as in AlarmList: a positioned sr-only ": " alone would be read as "High : title". */}
+          <span aria-hidden="true" className={cn("mr-2 font-medium", p.text)}>
+            {l[top.priority]}
+          </span>
+          <span className="sr-only">{`${l[top.priority]}: `}</span>
           {top.title}
         </span>
         <span className="truncate text-xs text-muted-foreground">

@@ -1,4 +1,4 @@
-// @syncrobotic/message-actions v0.51.0 · update: npx shadcn add @syncrobotic/message-actions --overwrite
+// @syncrobotic/message-actions v0.53.0 · update: npx shadcn add @syncrobotic/message-actions --overwrite
 "use client"
 
 import * as React from "react"
@@ -71,8 +71,9 @@ const pressed = "aria-pressed:bg-primary aria-pressed:text-primary-foreground ar
 const ended = "aria-disabled:cursor-default aria-disabled:text-disabled aria-disabled:hover:bg-transparent"
 
 /**
- * The actions under a model's answer: Copy, Regenerate, Good and Bad (with an optional reason), and a version switcher.
- * Each part shows only when you give what it needs. Put it in Message's `actions`.
+ * The actions under a model's answer (Copy, Regenerate, Good and Bad with a reason, a ‹ 2 / 3 › switcher), quiet until
+ * hovered or focused, always shown on touch and to the keyboard. Each part shows only when you give what it needs. Put
+ * it in Message's `actions`.
  */
 export function MessageActions({
   copyText,

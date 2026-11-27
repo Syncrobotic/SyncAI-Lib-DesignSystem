@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.51.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.53.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -120,9 +120,10 @@ type Props = {
 }
 
 /**
- * Manual driving: a dead-man stick, so the robot moves only while it is held. Letting go, lost focus, a hidden page or
- * `timeoutMs` without pointer events send a zero command and call `onStop`. Commands go out at a fixed rate so the robot
- * can run its own watchdog, which it must: this pad cannot reach a frozen tab. Not an emergency stop: add a StopButton.
+ * A dead-man stick to drive a mobile robot by hand: it moves only while held and stops when input is let go or lost,
+ * with fixed-rate commands, dead zone, speed cap and keyboard. Letting go, lost focus, a hidden page or `timeoutMs`
+ * without pointer events send a zero command and call `onStop`. The robot must run its own watchdog: this pad cannot
+ * reach a frozen tab. Not an emergency stop: add a StopButton.
  */
 export function TeleopPad({
   onCommand,

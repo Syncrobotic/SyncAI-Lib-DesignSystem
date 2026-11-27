@@ -1,4 +1,4 @@
-// @syncrobotic/stats-meters v0.40.0 · update: npx shadcn add @syncrobotic/stats-meters --overwrite
+// @syncrobotic/stats-meters v0.53.0 · update: npx shadcn add @syncrobotic/stats-meters --overwrite
 import { cn } from "@/lib/utils"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
@@ -24,7 +24,7 @@ export const sampleLevels: LevelStat[] = [
   { label: "Robots with good signal", value: 12, max: 14, unit: "of 14", low: 10, critical: 7, caption: "2 weak at the car park" },
 ]
 
-/** Levels in a fixed range, one per card: the bar shows how full, the number says exactly, and only a level past its line is coloured. */
+/** Levels in a fixed range, one per card: a bar for how full, the number for exactly, colour only past a line. */
 export function StatsMeters({ stats = sampleLevels, className }: { stats?: LevelStat[]; className?: string }) {
   return (
     // One per row on a phone, where a bar and its label need the width; two across from 640 px, four from 1280 px.

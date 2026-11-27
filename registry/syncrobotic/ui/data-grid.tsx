@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.52.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.53.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -167,10 +167,10 @@ const useGrid = () => {
 }
 
 /**
- * A data table on TanStack Table 9 (sorting, pagination, selection, pinning, resizing, expanding, virtual scrolling); build
- * it with useTable and dataGridFeatures. For a handful of static rows, Table is enough. Keep `data` and `columns` stable
- * between renders (a new array re-renders without end), and keep useTable's default state selector: a narrower one leaves
- * the grid showing old state.
+ * A TanStack Table grid whose state you own: sorting, pagination, selection, column menus, pinning, resizing,
+ * expandable rows, totals, loading, virtual rows. Build it with useTable and dataGridFeatures; for a handful of static
+ * rows, Table is enough. Keep `data` and `columns` stable between renders (a new array re-renders without end), and
+ * keep useTable's default state selector: a narrower one leaves the grid showing old state.
  */
 export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>({
   table,

@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-uptime v0.50.0 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
+// @syncrobotic/status-tracker-uptime v0.53.0 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
 "use client"
 
 import * as React from "react"
@@ -70,7 +70,10 @@ function Strip({ label, days }: { label: string; days: Day[] }) {
   )
 }
 
-/** Uptime per robot over 30 days, one cell a day: a calm grey strip where everything ran, colour only on the bad days. */
+/**
+ * One cell a day per robot: grey where it ran, colour only on degraded and down days, with a tooltip per day. Here 30
+ * days of uptime per robot.
+ */
 export function StatusTrackerUptime() {
   return (
     <TooltipProvider delayDuration={100}>

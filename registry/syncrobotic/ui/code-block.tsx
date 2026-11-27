@@ -1,4 +1,4 @@
-// @syncrobotic/code-block v0.51.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
+// @syncrobotic/code-block v0.53.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
 "use client"
 
 import * as React from "react"
@@ -55,9 +55,10 @@ function Words({ text }: { text: string }) {
 }
 
 /**
- * Code or a command to read and copy, with a header and a CopyButton that copies `code` exactly. No highlighter: pass one's
- * output (shiki's `<pre>`) as `children`. `wrap="words"` wraps shell commands between words; `wrap="none"` scrolls and
- * takes focus for the arrow keys. `secret` hides a one-time value until Show; Copy always copies it.
+ * Code or a command with a copy button that wraps commands between words, scrolls source sideways, hides a one-time
+ * secret until shown and takes a highlighter's output as children. It copies `code` exactly. It has no highlighter:
+ * pass one's output (shiki's `<pre>`) as `children`. `wrap="none"` takes focus for the arrow keys; Copy copies a
+ * `secret` even while it is hidden.
  */
 export function CodeBlock({
   code,

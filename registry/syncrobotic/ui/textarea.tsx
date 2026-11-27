@@ -1,7 +1,10 @@
-// @syncrobotic/textarea v0.51.0 · update: npx shadcn add @syncrobotic/textarea --overwrite
+// @syncrobotic/textarea v0.53.0 · update: npx shadcn add @syncrobotic/textarea --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
+/**
+ * Multi-line text field. It has Input's edge, focus ring and `aria-invalid` error ring; name it with a Label or a Field.
+ */
 export function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (
     <textarea

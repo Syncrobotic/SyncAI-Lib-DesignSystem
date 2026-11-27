@@ -1,4 +1,4 @@
-// @syncrobotic/incident-queue v0.40.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.53.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -100,9 +100,9 @@ const columns: ResponsiveTableColumn<Incident>[] = [
 ]
 
 /**
- * The incident queue: unowned incidents first, then by severity, then by age. Severity has a shape and a number, and only
- * the two that stop or slow work are coloured. An incident nobody owns says so, in words, in the owner column, and offers
- * Take at the end of its row. The same rows are a table where there is room and a list on a phone (ResponsiveTable).
+ * Open incidents, unowned first, then by severity and age; severity has a shape and a number, and nobody-owns-it is a
+ * button. Only the two severities that stop or slow work are coloured. An incident nobody owns says so in the owner
+ * column and offers Take at the end of its row. A table where there is room, a list on a phone (ResponsiveTable).
  */
 export function IncidentQueue({ onOpen, onTake }: { onOpen?: (incident: Incident) => void; onTake?: (incident: Incident) => void } = {}) {
   const [tab, setTab] = React.useState("open")

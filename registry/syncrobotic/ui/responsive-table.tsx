@@ -1,4 +1,4 @@
-// @syncrobotic/responsive-table v0.51.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
+// @syncrobotic/responsive-table v0.53.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -49,8 +49,9 @@ const defaultLabels: ResponsiveTableLabels = { actions: "Actions" }
 const TABLE_MIN_REM = 36
 
 /**
- * One column list rendered as a Table where there is room and as a grouped list under 36rem of its own width. Only one
- * is rendered, so nothing is read twice; before the first measure a container query picks one, so no table flashes.
+ * The same rows as a Table where there is room and as a grouped list under 36rem of its own width, from one list of
+ * columns, rendering only one so the semantics fit. Before the first measure a container query picks one, so no table
+ * flashes and nothing is read twice.
  */
 export function ResponsiveTable<T>({
   rows,

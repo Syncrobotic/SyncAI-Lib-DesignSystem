@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.51.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.53.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,10 +6,6 @@ import { DateLib, DayPicker, type DayButtonProps, type Modifiers } from "react-d
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/**
- * A month grid for picking a day, several days or a range (react-day-picker). Days are 36 px with a mouse, 44 px on touch.
- * Weeks start on Monday unless `weekStartsOn` says otherwise.
- */
 // The day button's spoken name starts with the number shown ("26 October 2026, Monday"), so speech input users can say
 // what they see (WCAG 2.5.3); the library's default ("Monday, October 26th") does not contain it.
 const labelDayButton = (date: Date, modifiers: Modifiers, options?: ConstructorParameters<typeof DateLib>[0], dateLib?: DateLib) => {
@@ -19,6 +15,10 @@ const labelDayButton = (date: Date, modifiers: Modifiers, options?: ConstructorP
   return label
 }
 
+/**
+ * A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch. Built on react-day-picker;
+ * weeks start on Monday unless `weekStartsOn` says otherwise.
+ */
 export function Calendar({ className, classNames, showOutsideDays, weekStartsOn = 1, labels, ...props }: React.ComponentProps<typeof DayPicker>) {
   // Days of the next and previous month fill a single month's grid. With several months side by side they would show a
   // day twice (5 December at the end of November and again in December), and a range's ends twice with it.

@@ -1,14 +1,10 @@
-// @syncrobotic/item v0.51.0 · update: npx shadcn add @syncrobotic/item --overwrite
+// @syncrobotic/item v0.53.0 · update: npx shadcn add @syncrobotic/item --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import { iconTileVariants } from "@/registry/syncrobotic/ui/icon-tile"
 
-/**
- * A row of content: media, a title and a line, actions at the end (people, files, settings links). For robot rows with a
- * live status use the shell's List. Only a link (`asChild`) draws the hover fill, so a static row never looks clickable.
- */
 export const itemVariants = cva(
   "group/item flex w-full items-center gap-3 rounded-sm text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard) [a&]:press [a&]:hover:bg-accent",
   {
@@ -32,6 +28,10 @@ export function ItemGroup({ className, ...props }: React.ComponentProps<"div">) 
   return <div role="list" data-slot="item-group" className={cn("flex flex-col gap-1", className)} {...props} />
 }
 
+/**
+ * A row of content (media, title and description, trailing actions) whose links draw the hover fill. Only a link
+ * (`asChild`) draws it, so a static row never looks clickable; for robot rows with a live status use the shell's List.
+ */
 export function Item({ className, variant, size, asChild, ...props }: React.ComponentProps<"div"> & VariantProps<typeof itemVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "div"
   return <Comp data-slot="item" data-size={size ?? "md"} className={cn(itemVariants({ variant, size }), className)} {...props} />

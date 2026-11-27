@@ -1,4 +1,4 @@
-// @syncrobotic/agent-trace v0.40.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
+// @syncrobotic/agent-trace v0.53.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
 "use client"
 
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
@@ -8,9 +8,9 @@ import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Trace, TraceCode, TraceDetail, TraceHeader, TraceItem } from "@/registry/syncrobotic/ui/trace"
 
 /**
- * One agent run, step by step: what it read, which tools it called with what, and what came back, as a waterfall so slow
- * steps stand out. Steps open to their input and output as they were. A failed step shows its error and what the agent
- * did next; the run never hides a failure behind a final answer.
+ * One agent run step by step as a waterfall: tools called, inputs and outputs, a warning and what the agent did about
+ * it. Slow steps stand out; steps open to their input and output as they were. The run never hides a failure behind a
+ * final answer.
  */
 export function AgentTrace() {
   return (

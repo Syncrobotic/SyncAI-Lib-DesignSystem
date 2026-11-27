@@ -1,4 +1,4 @@
-// @syncrobotic/use-reduced-motion v0.52.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
+// @syncrobotic/use-reduced-motion v0.53.0 · update: npx shadcn add @syncrobotic/use-reduced-motion --overwrite
 "use client"
 
 import * as React from "react"
@@ -44,9 +44,9 @@ export function useMediaQuery(query: string, fallback = false): boolean {
 }
 
 /**
- * Whether the person asked for less motion, followed while mounted: the component renders again when the setting
- * changes. False on the server and while the page hydrates, so both render the same; CSS `motion-reduce:` covers what
- * is drawn before that.
+ * Whether the person asked for less motion: prefersReducedMotion() read now, for a handler, and
+ * usePrefersReducedMotion() followed while mounted. The hook renders again when the setting changes. False on the
+ * server and while the page hydrates, so both render the same; CSS `motion-reduce:` covers what is drawn before that.
  */
 export function usePrefersReducedMotion(): boolean {
   return useMediaQuery(QUERY)

@@ -1,4 +1,4 @@
-// @syncrobotic/description-list v0.51.0 · update: npx shadcn add @syncrobotic/description-list --overwrite
+// @syncrobotic/description-list v0.53.0 · update: npx shadcn add @syncrobotic/description-list --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -7,8 +7,8 @@ type Item = { label: React.ReactNode; value: React.ReactNode }
 const cols = { 1: "", 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "sm:grid-cols-2 lg:grid-cols-4" } as const
 
 /**
- * Facts about one thing as label and value pairs. `plain` in a card; `tiles` gives each its own tile; `bare` has no
- * surface, for a place that already is one, so cards never nest.
+ * Label and value pairs about one thing, plain or as tiles. `plain` in a card; `tiles` gives each its own tile; `bare`
+ * has no surface, for a place that already is one, so cards never nest.
  */
 export function DescriptionList({
   items,

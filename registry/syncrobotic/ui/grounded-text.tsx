@@ -1,4 +1,4 @@
-// @syncrobotic/grounded-text v0.52.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
+// @syncrobotic/grounded-text v0.53.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -389,8 +389,8 @@ type GroundedTextProps = {
 }
 
 /**
- * A picture and the text that points at it, linked both ways: a span highlights its marks, a mark its spans. For a vision
- * model's caption or reasoning beside an annotated picture.
+ * Text whose words point at places on a picture, as a vision-language model answers: a span highlights its boxes, a
+ * mark its words; `fromGrounding` reads a model's offsets and coordinates.
  */
 export function GroundedText({
   text,

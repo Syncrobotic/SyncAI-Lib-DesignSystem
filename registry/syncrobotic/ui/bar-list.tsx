@@ -1,4 +1,4 @@
-// @syncrobotic/bar-list v0.51.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
+// @syncrobotic/bar-list v0.53.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
@@ -26,9 +26,9 @@ export const defaultBarListLabels: BarListLabels = {
 }
 
 /**
- * A short ranked list of counts ("items per class") without a chart library: each row's label and value in words with an
- * accent bar scaled to the largest, so it needs no table view. One series, one colour. A bare `<ul>`; rows with `href`
- * are links.
+ * A short ranked list of counts with no chart library: each row a label, a value and a --chart-1 bar scaled to the
+ * largest, with optional links and "N more" and no surface of its own. Label and value are words, so it needs no table
+ * view. One series, one colour. A bare `<ul>`.
  */
 export function BarList({
   items,

@@ -1,4 +1,4 @@
-// @syncrobotic/input-otp v0.51.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
+// @syncrobotic/input-otp v0.53.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils"
 export { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS }
 
 /**
- * A one-time code or PIN, one box per character (input-otp). One real input underneath, so paste, autofill from SMS
- * (`autoComplete="one-time-code"`) and screen readers work as with any field. Boxes are 44 px, the touch minimum.
+ * A one-time code or PIN, one 44 px box per character, with paste and SMS autofill. One real input underneath
+ * (input-otp), so paste, `autoComplete="one-time-code"` and screen readers work as with any field.
  */
 export function InputOTP({
   className,

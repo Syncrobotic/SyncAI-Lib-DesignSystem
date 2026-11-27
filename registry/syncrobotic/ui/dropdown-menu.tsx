@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.51.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.53.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,10 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
+/**
+ * A menu of actions on an item, opened from a button; destructive actions last. ↑↓ move, Enter runs, Escape closes and
+ * returns focus to the button. To pick a value, use a Select.
+ */
 export const DropdownMenu = MenuPrimitive.Root
 /** The button that opens the menu. With `asChild`, a kit child (Button) keeps its own data-slot. */
 export function DropdownMenuTrigger(props: React.ComponentProps<typeof MenuPrimitive.Trigger>) {

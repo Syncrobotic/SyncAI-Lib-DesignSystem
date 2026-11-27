@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.51.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.53.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,10 +10,6 @@ import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-grou
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 import { cn } from "@/lib/utils"
 
-/**
- * A short set of questions answered in order (a pre-shift checklist, feedback). Paged shows one at a time; list shows all.
- * A missing required answer blocks Next with a message under the question, never a shake.
- */
 export type QuestionOption = { value: string; label: React.ReactNode; description?: React.ReactNode }
 export type Question =
   | { id: string; type: "single"; title: React.ReactNode; description?: React.ReactNode; required?: boolean; options: QuestionOption[] }
@@ -86,6 +82,10 @@ export const defaultQuestionnaireLabels: QuestionnaireLabels = {
 const isAnswered = (q: Question, a: Answers[string]) =>
   q.type === "multiple" ? Array.isArray(a) && a.length > 0 : q.type === "text" ? typeof a === "string" && a.trim() !== "" : a !== undefined && a !== ""
 
+/**
+ * A short set of questions, one per page or all on one form: single and multiple choice, scales and text, required
+ * checks and a review page. A missing required answer blocks Next with a message under the question, never a shake.
+ */
 export function Questionnaire({
   questions,
   mode = "paged",

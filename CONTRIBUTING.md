@@ -68,7 +68,7 @@ Not a check, a report: `npm run adoption -- <dir …>` (or `--github <org>`, wit
 - A comment block is at most 8 lines. Longer is a docs page; point to it.
 - A `registry.json` description is at most 200 characters; a `meta.changelog` note at most 300 (what changed and why).
 - `lint:rules` checks the comments (`scripts/check-comments.mjs`, in `scripts/`, `site/`, `app/` and `stories/`); `lint:registry` checks the lengths.
-- What an item is is said once, in its `registry.json` description. `lint:registry` fails on a line in `site/overview.ts` or `site/catalog.ts` that repeats it, and warns while a component's JSDoc opens with a different sentence (`node scripts/check-registry.mjs --jsdoc` lists them).
+- What an item is is said once, in its `registry.json` description. `lint:registry` fails on a line in `site/overview.ts` or `site/catalog.ts` that repeats it, and on an item whose doc does not open with it, word for word: the JSDoc of the export named for the item, else the module's header comment, else the first documented export. A line that starts with a digit ends the summary, so wrap so none does.
 
 ## Visual baselines
 

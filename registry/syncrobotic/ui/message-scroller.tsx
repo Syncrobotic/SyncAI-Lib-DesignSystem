@@ -1,4 +1,4 @@
-// @syncrobotic/message-scroller v0.51.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
+// @syncrobotic/message-scroller v0.53.0 · update: npx shadcn add @syncrobotic/message-scroller --overwrite
 "use client"
 
 import * as React from "react"
@@ -57,8 +57,8 @@ function spoken(el: Element, l: MessageScrollerLabels) {
 }
 
 /**
- * A conversation's scrolling viewport: follows the newest turn at the bottom, offers "Jump to latest" with a count when
- * scrolled up, holds still when older turns load in front, and reads complete turns once.
+ * A conversation's scrolling log that follows the newest turn at the bottom, offers Jump to latest, holds still when
+ * older turns load, and reads each complete turn once. Jump to latest counts the turns below.
  */
 export function MessageScroller({
   children,

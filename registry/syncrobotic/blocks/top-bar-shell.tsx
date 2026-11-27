@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.52.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.53.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,7 +23,7 @@ export type TopBarShellLabels = {
   nav: string
   /** The menu button that opens the drawer on phones. */
   openNav: string
-  /** Read after the user's name and initials on the account button: "Ada Lovelace, AL, account menu". */
+  /** Read after the user's name and email on the account button: "Ada Lovelace ada@example.com account menu". */
   accountMenu: string
   /** The skip link to `<main>`, the shell's first Tab stop. */
   skip: string
@@ -77,8 +77,9 @@ type TopBarShellProps = {
 }
 
 /**
- * The frame for a tool or site without a sidebar: a top bar and the content. Once the page scrolls the bar gathers into a
- * floating panel lined up with the content, without moving anything below. Phones put the links in a drawer.
+ * The frame for a tool or site without a sidebar: a top bar of links, search and user that floats on scroll, then the
+ * content and a footer, with a skip-link target and `labels`. Once the page scrolls the bar gathers into a floating
+ * panel lined up with the content, without moving anything below. Phones put the links in a drawer.
  */
 export function TopBarShell({
   product,
@@ -222,14 +223,12 @@ export function TopBarShell({
             {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button
-                    type="button"
-                    aria-label={`${user.name}, ${user.initials}, ${l.accountMenu}`}
-                    className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent"
-                  >
-                    <Avatar>
+                  <button type="button" className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent">
+                    <Avatar aria-hidden="true">
                       <AvatarFallback>{user.initials}</AvatarFallback>
                     </Avatar>
+                    {/* Named by its words, as app-shell's account button; the initials hidden, no comma, one text. */}
+                    <span className="sr-only">{[user.name, user.email, l.accountMenu].filter(Boolean).join(" ")}</span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-56">

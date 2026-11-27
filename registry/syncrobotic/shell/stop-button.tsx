@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.52.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.53.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -54,9 +54,9 @@ type Props = {
 }
 
 /**
- * The app's soft e-stop. It is a remote stop, not the certified e-stop: the dog has a physical one.
- * This component is UI only — sending, waiting for the reply and falling back to Bluetooth belong
- * to the app layer, which passes the resulting `state` back in.
+ * An emergency stop: one touch stops, a 2 s hold stops all, and lying down it becomes wake and stand up; sending and
+ * the Bluetooth fallback live in the app. It is a remote stop, not the certified e-stop: the dog has a physical one.
+ * This component is UI only: the app passes the resulting `state` back in.
  */
 export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs = 2000, labels, className }: Props) {
   const l = { ...defaultStopButtonLabels, ...labels }

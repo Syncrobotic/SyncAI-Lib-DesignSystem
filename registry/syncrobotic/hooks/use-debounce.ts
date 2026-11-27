@@ -1,7 +1,9 @@
-// @syncrobotic/use-debounce v0.51.0 · update: npx shadcn add @syncrobotic/use-debounce --overwrite
+// @syncrobotic/use-debounce v0.53.0 · update: npx shadcn add @syncrobotic/use-debounce --overwrite
 "use client"
 
 import * as React from "react"
+
+// A value, or a function call, that waits until changes pause: a search sent when the typing stops, not on every key.
 
 /**
  * The value, once it has stopped changing for `delay` ms: a search box's text, sent to a server only when the typing

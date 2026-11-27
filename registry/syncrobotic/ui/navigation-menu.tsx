@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.51.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.53.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils"
 import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
- * A site's top-level navigation: links, and triggers that open a panel of links.
- * For an app's own sections use the app shell's sidebar; for actions use DropdownMenu.
+ * A site's top navigation: links, and triggers that open panels of links and cards (Radix NavigationMenu). For an app's
+ * own sections use the app shell's sidebar; for actions use DropdownMenu.
  */
 export function NavigationMenu({
   className,

@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-gate v0.51.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
+// @syncrobotic/agent-run-gate v0.53.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
 "use client"
 
 import * as React from "react"
@@ -111,7 +111,7 @@ export const sampleAgentRun: AgentRun = {
             value: (
               <span className="inline-flex items-center gap-2">
                 <StatusGlyph status="warning" />
-                14 %<span className="sr-only">, low</span>
+                14 % <span className="sr-only">low</span>
               </span>
             ),
           },
@@ -557,7 +557,8 @@ function GatePanel({
 }
 
 /**
- * An agent run that waits at a gate before a step that moves robots, as a page of the console.
+ * An agent run that stops before a step that would move robots and shows the change, why and when it expires, for a
+ * person to Approve, Revise or Deny; AgentRunGateContent drops the frame.
  */
 export function AgentRunGate(props: Omit<AgentRunGateContentProps, "className" | "headingLevel">) {
   return (
