@@ -66,6 +66,7 @@ import type { IslandAlarm, IslandLabels, IslandNotificationsLabels, IslandRobots
 import type { StopButtonLabels } from "@/registry/syncrobotic/shell/stop-button"
 import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
 import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
+import type { ShellSearchLabels } from "@/registry/syncrobotic/blocks/app-shell"
 import type { ActionRailShellLabels } from "@/registry/syncrobotic/blocks/action-rail-shell"
 import type { ErrorPageLabels, LoadingPageLabels, NoAccessPageLabels, NotFoundPageLabels, OfflinePageLabels } from "@/registry/syncrobotic/blocks/status-pages"
 import type { DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
@@ -87,6 +88,15 @@ import type { NotificationCenterLabels } from "@/registry/syncrobotic/blocks/not
 import type { SettingsPageLabels } from "@/registry/syncrobotic/blocks/settings-page"
 import type { DeviceEnrolmentLabels } from "@/registry/syncrobotic/blocks/device-enrolment"
 import type { DeviceDetailLabels } from "@/registry/syncrobotic/blocks/device-detail"
+import type { ScopePickerLabels } from "@/registry/syncrobotic/ui/scope-picker"
+import type { QuotaFieldLabels } from "@/registry/syncrobotic/ui/quota-field"
+import type { AllOrSomeFieldLabels } from "@/registry/syncrobotic/ui/all-or-some-field"
+import type { ProjectSwitcherLabels } from "@/registry/syncrobotic/ui/project-switcher"
+import type { ProjectMembersLabels } from "@/registry/syncrobotic/blocks/project-members"
+import type { PermissionMatrixLabels } from "@/registry/syncrobotic/blocks/permission-matrix"
+import type { WebhookDeliveriesLabels } from "@/registry/syncrobotic/blocks/webhook-deliveries"
+import type { OfflineLicenceLabels } from "@/registry/syncrobotic/blocks/offline-licence"
+import type { TenantAdminLabels } from "@/registry/syncrobotic/blocks/tenant-admin"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -172,6 +182,7 @@ it("fits every component's labels type", () => {
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
   fits<SidebarLabels>()(zh.sidebarProviderLabels)
   fits<TopBarShellLabels>()(zh.topBarShellLabels)
+  fits<ShellSearchLabels>()(zh.shellSearchLabels)
   fits<ActionRailShellLabels>()(zh.actionRailShellLabels)
   fits<NotFoundPageLabels>()(zh.notFoundPageLabels)
   fits<NoAccessPageLabels>()(zh.noAccessPageLabels)
@@ -209,5 +220,14 @@ it("fits every component's labels type", () => {
   fits<Required<SettingsPageLabels>>()(zh.settingsPageLabels)
   fits<Required<DeviceEnrolmentLabels>>()(zh.deviceEnrolmentLabels)
   fits<Required<DeviceDetailLabels>>()(zh.deviceDetailLabels)
+  fits<Required<ScopePickerLabels>>()(zh.scopePickerLabels)
+  fits<Required<QuotaFieldLabels>>()(zh.quotaFieldLabels)
+  fits<Required<AllOrSomeFieldLabels>>()(zh.allOrSomeFieldLabels)
+  fits<Required<ProjectSwitcherLabels>>()(zh.projectSwitcherLabels)
+  fits<Required<ProjectMembersLabels>>()(zh.projectMembersLabels)
+  fits<Required<PermissionMatrixLabels>>()(zh.permissionMatrixLabels)
+  fits<Required<WebhookDeliveriesLabels>>()(zh.webhookDeliveriesLabels)
+  fits<Required<OfflineLicenceLabels>>()(zh.offlineLicenceLabels)
+  fits<Required<TenantAdminLabels>>()(zh.tenantAdminLabels)
   expect(zh.locale).toBe("zh-TW")
 })

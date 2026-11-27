@@ -7,6 +7,9 @@ import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, Swatch, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
+import { separation } from "@/site/palette-check"
+import { Inline, textLink } from "@/site/prose"
+import { limeAmber, toneToStatus } from "@/site/status-mapping"
 import { color, contrast } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("color")
@@ -44,9 +47,13 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
     },
   },
   {
-    title: "Emphasis",
+    title: "Emphasis (brand: a product may swap these)",
     tokens: ["primary", "primary-foreground", "ring"],
-    use: { primary: "Primary action, selected", "primary-foreground": "Text on primary", ring: "Focus ring: the foreground colour, so focus never looks like a status" },
+    use: {
+      primary: "Primary action, selected. A fill or an edge, never text on a surface",
+      "primary-foreground": "Text on primary",
+      ring: "Focus ring: the foreground colour, so focus never looks like a status",
+    },
   },
   {
     title: "Status (pairs)",
@@ -127,7 +134,7 @@ export default function ColorPage() {
       <Section
         id="neutrals"
         title="Neutrals carry the interface"
-        lead="Most of every screen is these six. Primary is neutral too: white in dark mode, black in light mode."
+        lead="Most of every screen is these six. Primary is neutral too: white in dark mode, black in light mode, unless a product sets its brand."
       >
         <div className="grid grid-cols-2 overflow-hidden rounded-md border border-border sm:grid-cols-6">
           {neutrals.map((t) => (
@@ -200,6 +207,30 @@ export default function ColorPage() {
             text: "Every row coloured: the problem has to compete with three robots that are fine.",
           }}
         />
+      </Section>
+
+      <Section
+        id="healthy-is-grey"
+        title="Decision: healthy is grey"
+        lead="A calm state (online, active, approved) is its shape and word in grey; colour is only for warning, danger and the stop, and green only confirms what just happened. This holds in every product, whatever its brand."
+      >
+        <p className="max-w-3xl text-base">
+          <Inline
+            text={`Evidence: a six-tone scheme with lime for healthy and amber for degraded (the LocalMind Portal's \`status-tone.ts\`) puts the two at ΔE ${limeAmber.dot.normal.toFixed(1)} to normal eyes but ΔE ${limeAmber.dot.cvd.toFixed(1)} to red-green colour-blind eyes as dots, and ${limeAmber.text.cvd.toFixed(1)} as text: about one man in twelve cannot tell a healthy device from a degraded one. The Portal measured the same ΔE 1.5 and draws healthy as grey in its check-in plot. The kit's warning and danger stay ΔE ${separation(color("warning").light, color("danger").light).cvd.toFixed(1)} apart under the same test.`}
+          />
+        </p>
+        <TokenTable head={["Was", "Used for", "In the kit"]} rows={toneToStatus.map((r) => [r.tone, r.usedFor, r.kit].map((c) => <Inline key={c} text={c} />))} />
+        <p className="text-sm text-muted-foreground">
+          Decided for 0.57 with the Portal team: the Portal keeps its purple through the{" "}
+          <Link href="/docs/tokens#brand" className={textLink}>
+            brand layer
+          </Link>
+          , and its statuses follow this table. The{" "}
+          <Link href="/docs/migrating-from-local-components#status-dot" className={textLink}>
+            migration guide
+          </Link>{" "}
+          maps its StatusDot.
+        </p>
       </Section>
 
       <Section

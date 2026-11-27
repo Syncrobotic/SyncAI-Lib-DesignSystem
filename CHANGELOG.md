@@ -2,6 +2,28 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.57.0 · 2026-11-27
+
+Tenants and admin: grants, quotas, members and licences a product can wire to its API, a brand layer, and a way in for products that built their own components.
+
+### Added
+- **`scope-picker`** (beta): permission scopes grouped by resource, bounded by `allowedScopes` (the rest disabled with the reason); `allowAll` keeps "all, including ones added later" (`null`) apart from every box ticked.
+- **`quota-field`** (beta): Unlimited is a switch (`null`); 0 is a real limit; usage against the limit, with a warning when above it.
+- **`all-or-some-field`** (beta): "All, including future ones" (`null`) or only these; ticking every box never becomes all.
+- **`project-switcher`** (beta): the sidebar's current-project picker: search, recent first, View all and New project; a popover from 640 px, a bottom sheet below.
+- **Controlled blocks:** `project-members` (owner row, roles bounded by the viewer's permissions, ownership transfer to a joined member with step-up and a pending state), `permission-matrix` (read-only, one table per axis), `webhook-deliveries` (server-paged, filters, request and response, send again), `offline-licence` (issue, renew and revoke within the project's entitlement; a file or QR, and "downloading is not applying"), `tenant-admin` (device seats and licensed modules per project; deleted projects restorable until the server's date).
+- **Brand layer:** a product sets `--brand-primary`, `--brand-primary-foreground`, `--brand-ring`, `--brand-chart-1` (and `-dark`) on `:root`; unset, the kit renders exactly as before. `scripts/brand.mjs` checks a brand's contrast and refuses redefined semantic tokens; `lint:tokens` keeps components off `--brand-*` and brand colours off text. /docs/tokens#brand.
+- **Healthy is grey** (Colour foundation): the decision record, with the lime and amber ΔE 1.5 colour-blind evidence and a six-tone → `status-glyph` table.
+- **Migrating to the kit** (/docs/migrating-from-local-components): prop tables for a product's own PageHeader, MetricCard, Section, DetailField, EmptyState, ConfirmDialog, DateRangeField and StatusDot, the registry setup beside another registry, and the files an install would overwrite. `scripts/codemods/portal-to-kit.mjs` moves imports and simple props (dry run by default) and lists the rest by line.
+- **`npm run adoption -- <dir>`** lists a product's local look-alikes of kit items, with the item and the guide.
+- **/blocks:** Platform admin with Tenants and quotas. Icons: `Building2`, `FileKey`, `Webhook`. zh-TW labels for all of the above, and a test that every block's labels type has a zh-TW export.
+
+### Changed
+- **`settings-api-keys`:** scopes use ScopePicker (grouped, with a group checkbox); `ApiKeyScope` is `ScopeOption`; new `labels.scopePicker`. Props unchanged.
+- **`syncrobotic-theme`:** primary, ring and chart-1 read `--brand-*` first; the default values are unchanged.
+- **`agent-skill`:** what a brand may swap, and checklist line 10 names QuotaField, AllOrSomeField and ScopePicker.
+- **Docs site:** every page carries about 23 KB less: the sidebar's example links are anchors under their page, not full paths.
+
 ## 0.56.0 · 2026-11-27
 
 Device lifecycle: how old a report is, what a device claims against the record, what was ordered but is not yet in effect, and the two screens built from them.

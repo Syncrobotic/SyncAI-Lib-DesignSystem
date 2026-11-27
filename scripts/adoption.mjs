@@ -1,6 +1,7 @@
 // Adoption scanner: which @syncrobotic items, at which versions, a codebase has installed, and how far behind it is. It
 // reads each file's header (written by scripts/versions.mjs; `/* … */` in CSS) and lists the CHANGELOG.md lines that
-// name a behind item in between (its registry changelog when CHANGELOG.md does not).
+// name a behind item in between (its registry changelog when CHANGELOG.md does not). In a local directory it also lists
+// the product's own look-alikes of kit items (a PageHeader of its own), with the item and the migration guide.
 //
 //   node scripts/adoption.mjs [dirs…]        one table per directory (default: the current one)
 //   node scripts/adoption.mjs --github <org> every repo of a GitHub org, through the gh CLI (skipped without it)
@@ -203,7 +204,7 @@ export function report(found, registry, sections) {
 
 /**
  * Across repos: how many use each item, and how many of those are behind.
- * @param {(Report & { repo?: string })[]} repos
+ * @param {(Report & { repo?: string; lookalikes?: Lookalike[] })[]} repos
  */
 export function summarize(repos) {
   /** @type {Map<string, { name: string; repos: number; behind: number; latest: string | null; status: string }>} */
@@ -222,8 +223,77 @@ export function summarize(repos) {
     items: items.length,
     installs: repos.reduce((n, r) => n + r.items.length, 0),
     behind: repos.reduce((n, r) => n + r.counts.behind, 0),
+    lookalikes: repos.reduce((n, r) => n + (r.lookalikes?.length ?? 0), 0),
     byItem: items,
   }
+}
+
+/** Where to read how to move a look-alike to the kit item. */
+export const GUIDE = "https://design-system.syncrobotic.me/docs/migrating-from-local-components"
+
+/**
+ * A product's own components that do what a kit item does, by the names products give them (the LocalMind Portal's
+ * components/common among them): export names, file names, and the guide's section for each.
+ * @type {{ item: string; anchor: string; names: string[]; files: string[] }[]}
+ */
+export const LOOKALIKES = [
+  { item: "page-header", anchor: "page-header", names: ["PageHeader"], files: ["page-header"] },
+  { item: "metric-card", anchor: "metric-card", names: ["MetricCard", "StatCard", "KpiCard"], files: ["metric-card", "stat-card", "kpi-card"] },
+  { item: "section-header", anchor: "section-header", names: ["SectionHeader", "SubsectionHeader", "Section"], files: ["section-header"] },
+  { item: "description-list", anchor: "detail-field", names: ["DetailField", "InfoItem", "InfoRow"], files: ["detail-field", "info-row"] },
+  { item: "empty-state", anchor: "empty-state", names: ["EmptyState"], files: ["empty-state"] },
+  { item: "status-glyph", anchor: "status-dot", names: ["StatusDot", "StatusIndicator"], files: ["status-dot", "status-indicator"] },
+  { item: "alert-dialog", anchor: "confirm-dialog", names: ["ConfirmDialog", "DeleteConfirmDialog", "InlineConfirmDialog"], files: ["confirm-dialog"] },
+  { item: "date-selector", anchor: "date-range-field", names: ["DateRangeField"], files: ["date-range-field"] },
+]
+
+/** @typedef {{ file: string; name: string; item: string; guide: string }} Lookalike */
+
+/**
+ * The look-alikes one source file defines: each export named as one, or the file itself when its name is one and it
+ * exports none of the names. A kit file (with a header), a test and a story are never a look-alike.
+ * @param {string} text
+ * @param {string} file the path to report
+ * @returns {Lookalike[]}
+ */
+export function findLookalikes(text, file) {
+  if (parseHeader(text) || /\.(test|spec|stories)\.[cm]?[jt]sx?$/.test(file)) return []
+  const base = basename(file).replace(/\.[^.]+$/, "")
+  /** @type {Lookalike[]} */
+  const out = []
+  for (const l of LOOKALIKES) {
+    const guide = `${GUIDE}#${l.anchor}`
+    const exported = l.names.filter((n) => new RegExp(`export\\s+(?:default\\s+)?(?:function|const|class)\\s+${n}\\b|export\\s*\\{[^}]*\\b${n}\\b[^}]*\\}`).test(text))
+    for (const name of exported) out.push({ file, name, item: l.item, guide })
+    if (!exported.length && l.files.includes(base)) out.push({ file, name: base, item: l.item, guide })
+  }
+  return out
+}
+
+/**
+ * Every look-alike under `dir`, skipping dependencies and build output.
+ * @param {string} dir
+ */
+export function scanLookalikes(dir) {
+  /** @type {Lookalike[]} */
+  const found = []
+  /** @param {string} d */
+  const walk = (d) => {
+    let entries
+    try {
+      entries = readdirSync(d, { withFileTypes: true })
+    } catch {
+      return
+    }
+    for (const e of entries) {
+      const p = join(d, e.name)
+      if (e.isDirectory()) {
+        if (!SKIP.has(e.name)) walk(p)
+      } else if (e.isFile() && /\.[cm]?[jt]sx?$/.test(e.name)) found.push(...findLookalikes(readFileSync(p, "utf8"), relative(dir, p)))
+    }
+  }
+  walk(dir)
+  return found.sort((a, b) => a.file.localeCompare(b.file) || a.name.localeCompare(b.name))
 }
 
 // ---------- Reading codebases ----------
@@ -338,7 +408,17 @@ function table(rows) {
 const clip = (s, n = 180) => (s.length > n ? s.slice(0, n - 1) + "…" : s)
 
 /**
- * @param {(Report & { repo: string; source: string })[]} repos
+ * The look-alikes of one repo, as lines under its table.
+ * @param {Lookalike[]} found
+ */
+function lookalikeLines(found) {
+  if (!found.length) return []
+  const rows = [["File", "Defines", "Kit item", "Guide"], ...found.map((l) => [l.file, l.name, l.item, `#${l.guide.split("#")[1]}`])]
+  return ["", `  Look-alikes of kit items, to move (${GUIDE}):`, table(rows)]
+}
+
+/**
+ * @param {(Report & { repo: string; source: string; lookalikes?: Lookalike[] })[]} repos
  * @param {ReturnType<typeof summarize>} summary
  */
 export function formatText(repos, summary) {
@@ -347,7 +427,7 @@ export function formatText(repos, summary) {
   for (const r of repos) {
     out.push(`${r.repo}  (${r.source})`)
     if (!r.items.length) {
-      out.push("  No @syncrobotic items found.", "")
+      out.push("  No @syncrobotic items found.", ...lookalikeLines(r.lookalikes ?? []), "")
       continue
     }
     out.push(`  ${plural(r.counts.items, "item")}, ${r.counts.behind} behind, ${r.counts.beta} beta${r.counts.renamed ? `, ${r.counts.renamed} renamed` : ""}${r.counts.unknown ? `, ${r.counts.unknown} not in the registry` : ""}`, "")
@@ -380,10 +460,11 @@ export function formatText(repos, summary) {
         if (!i.changes.length) out.push("    (no changelog lines found)")
       }
     }
+    out.push(...lookalikeLines(r.lookalikes ?? []))
     out.push("")
   }
   out.push("Summary")
-  out.push(`  ${plural(summary.repos, "repo")} scanned, ${summary.reposUsingKit} using the kit; ${plural(summary.items, "distinct item")}, ${plural(summary.installs, "install")}, ${summary.behind} behind.`)
+  out.push(`  ${plural(summary.repos, "repo")} scanned, ${summary.reposUsingKit} using the kit; ${plural(summary.items, "distinct item")}, ${plural(summary.installs, "install")}, ${summary.behind} behind${summary.lookalikes ? `; ${plural(summary.lookalikes, "look-alike")} to move` : ""}.`)
   if (summary.byItem.length) {
     const rows = [["Item", "Repos", "Behind", "Latest", "Status"]]
     for (const u of summary.byItem) rows.push([u.name, String(u.repos), String(u.behind), u.latest ?? "—", u.status])
@@ -417,7 +498,8 @@ function parseArgs(argv) {
 const usage = `Usage: node scripts/adoption.mjs [dir …] [--github <org>] [--json]
 
 Reports the @syncrobotic items each codebase has installed (from the header line of every installed file), the
-latest version in this repo's registry.json, how far behind each is, and the CHANGELOG.md lines in between.
+latest version in this repo's registry.json, how far behind each is, and the CHANGELOG.md lines in between. In a
+local directory it also lists the product's own look-alikes of kit items (PageHeader, MetricCard, StatusDot …).
   dir             a local checkout to scan (default: the current directory); several make one table each
   --github <org>  also scan every repo of a GitHub organisation with the gh CLI (skipped if gh is missing or signed out)
   --json          print JSON instead of tables`
@@ -439,7 +521,7 @@ function main() {
   const registry = JSON.parse(readFileSync(join(ROOT, "registry.json"), "utf8"))
   const sections = parseChangelog(readFileSync(join(ROOT, "CHANGELOG.md"), "utf8"))
 
-  /** @type {{ repo: string; source: string; found: Found[] }[]} */
+  /** @type {{ repo: string; source: string; found: Found[]; lookalikes?: Lookalike[] }[]} */
   const sources = []
   for (const d of opts.dirs) {
     const abs = resolve(d)
@@ -449,11 +531,13 @@ function main() {
       console.error(`${d}: not a directory`)
       process.exit(2)
     }
-    sources.push({ repo: basename(abs), source: abs, found: scanDir(abs) })
+    // The kit's own checkout has its docs site's components, which are not look-alikes.
+    sources.push({ repo: basename(abs), source: abs, found: scanDir(abs), lookalikes: resolve(abs) === resolve(ROOT) ? [] : scanLookalikes(abs) })
   }
   for (const org of opts.orgs) sources.push(...(scanGithub(org) ?? []))
 
-  const repos = sources.map((s) => ({ repo: s.repo, source: s.source, ...report(s.found, registry, sections) }))
+  // Look-alikes are read from local directories only: GitHub's code search finds files that mention the kit.
+  const repos = sources.map((s) => ({ repo: s.repo, source: s.source, ...report(s.found, registry, sections), lookalikes: s.lookalikes ?? [] }))
   const summary = summarize(repos)
   if (opts.json) console.log(JSON.stringify({ repos, summary }, null, 2))
   else process.stdout.write(formatText(repos, summary))

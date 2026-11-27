@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.51.0",
+        "version": "0.57.0",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "Brand layer: --primary, --primary-foreground, --ring, --chart-1 and its ink read --brand-<token> (light) and --brand-<token>-dark when a product sets them on :root; unset, the kit's values, so nothing changes by default. High contrast keeps the ink."
+          },
           {
             "version": "0.51.0",
             "date": "2026-11-27",
@@ -466,8 +471,13 @@
         }
       ],
       "meta": {
-        "version": "0.56.0",
+        "version": "0.57.0",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "Labels for scope-picker, quota-field, all-or-some-field, project-switcher and the project-members, permission-matrix, webhook-deliveries, offline-licence and tenant-admin blocks; settingsApiKeysLabels gains scopePicker."
+          },
           {
             "version": "0.56.0",
             "date": "2026-11-27",
@@ -3971,6 +3981,99 @@
       }
     },
     {
+      "name": "scope-picker",
+      "type": "registry:ui",
+      "title": "Scope picker",
+      "description": "Permission scopes to grant, grouped by resource and bounded by what the viewer holds: a scope outside `allowedScopes` is listed, disabled, with the reason.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/format-number",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/code",
+        "@syncrobotic/radio-group"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/scope-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: scopes grouped by resource with a checkbox per group, bounded by `allowedScopes` (the rest disabled with the reason), and with `allowAll` a choice of \"all, including ones added later\" apart from ticking every box; `boundScopes`, `groupScopes`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "quota-field",
+      "type": "registry:ui",
+      "title": "Quota field",
+      "description": "A limit that may be unlimited: a switch for Unlimited (`null`) and a number for any limit, 0 included, so a cleared box never has to guess which was meant.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/format-number",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/number-field",
+        "@syncrobotic/switch"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/quota-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: Unlimited is a switch (`null`), any limit a NumberField (0 included, never read as unlimited), the last number kept across the switch, usage against the limit (`used`) and a warning when it is above it; `formatQuota`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "all-or-some-field",
+      "type": "registry:ui",
+      "title": "All or some field",
+      "description": "\"All, including future ones\" or \"only these\" with a checklist, for an entitlement such as licensed modules.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/radio-group"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/all-or-some-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: `null` is all including future ones, an array exactly these (empty is none, said so); ticking every box never becomes all; options and \"all\" disabled with a reason; the checklist survives a trip to all and back."
+          }
+        ]
+      }
+    },
+    {
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
@@ -4792,6 +4895,40 @@
             "version": "0.28.0",
             "date": "2026-11-21",
             "note": "First release, in shadcn/ui's composition (SidebarProvider, Sidebar, SidebarMenu, SidebarTrigger, useSidebar…): a 240 px column that collapses to a 72 px icon rail or off canvas, a sheet on phones, ⌘B / Ctrl+B with a cookie, CountBadges, quiet tags and 44 px rows."
+          }
+        ]
+      }
+    },
+    {
+      "name": "project-switcher",
+      "type": "registry:ui",
+      "title": "Project switcher",
+      "description": "The current project, and a searchable list to switch to another: recent first, then all of them or the server's matches, with New project at the end.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/command",
+        "@syncrobotic/popover",
+        "@syncrobotic/sheet",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/project-switcher.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: a trigger for SidebarHeader (mark only on the rail), a popover from 640 px and a bottom sheet below, recent first, local or server search (`onSearchChange`, `loading`), View all and New project."
           }
         ]
       }
@@ -11133,8 +11270,13 @@
         }
       ],
       "meta": {
-        "version": "0.56.0",
+        "version": "0.57.0",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "The design language says what a brand may swap (primary, ring, chart-1 through --brand-*) and never as text or status; checklist line 10 names QuotaField (null, never 0), AllOrSomeField and ScopePicker."
+          },
           {
             "version": "0.56.0",
             "date": "2026-11-27",
@@ -13160,24 +13302,23 @@
         "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/alert-dialog",
-        "@syncrobotic/button",
-        "@syncrobotic/card",
-        "@syncrobotic/field",
-        "@syncrobotic/input",
-        "@syncrobotic/code",
-        "@syncrobotic/code-block",
-        "@syncrobotic/empty-state",
-        "@syncrobotic/item",
-        "@syncrobotic/section-header",
         "@syncrobotic/use-step-up",
         "@syncrobotic/list-query",
         "@syncrobotic/status-eyebrow",
-        "@syncrobotic/checkbox",
-        "@syncrobotic/choice-field",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/code",
+        "@syncrobotic/code-block",
         "@syncrobotic/data-state",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/item",
         "@syncrobotic/pagination",
         "@syncrobotic/permission-gate",
+        "@syncrobotic/scope-picker",
+        "@syncrobotic/section-header",
         "@syncrobotic/select"
       ],
       "files": [
@@ -13187,10 +13328,15 @@
         }
       ],
       "meta": {
-        "version": "0.55.0",
+        "version": "0.57.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "Scopes are a ScopePicker: grouped by resource with a checkbox per group, out-of-bound ones disabled with the reason as before; `ApiKeyScope` is `ScopeOption` (adds `resource`); `labels.scopePicker` translates it. Props unchanged."
+          },
           {
             "version": "0.55.0",
             "date": "2026-11-27",
@@ -14421,6 +14567,236 @@
             "version": "0.56.0",
             "date": "2026-11-27",
             "note": "First release: DeviceDetailContent, the header, metric cards, reference beside running services, check-ins, licences with DesiredState and an overflow menu whose force removal asks a reason and runs through your step-up, and DeviceDetail, its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "project-members",
+      "type": "registry:block",
+      "title": "Project members",
+      "description": "A project's members: the owner's row, roles changed in place within the viewer's own permissions, and ownership handed to an existing member, who must accept.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/alert",
+        "@syncrobotic/avatar",
+        "@syncrobotic/button",
+        "@syncrobotic/data-state",
+        "@syncrobotic/dialog",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/project-members.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: ProjectMembersContent, the owner's role never offered in a picker, roles bounded by the viewer's permissions, a transfer to a joined member with the old owner's new role, step-up aware, a pending transfer to cancel; ProjectMembers, its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "permission-matrix",
+      "type": "registry:block",
+      "title": "Permission matrix",
+      "description": "Which role holds which permission, as a read-only reference: platform roles and project roles in two tables, never one grid.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/format-number",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/code",
+        "@syncrobotic/data-state",
+        "@syncrobotic/section-header",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/permission-matrix.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: PermissionMatrixContent, one table per axis, permission strings grouped by resource as rows, roles as columns, bundles from props, granted in ink (a reference, not a status); PermissionMatrix, its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "webhook-deliveries",
+      "type": "registry:block",
+      "title": "Webhook deliveries",
+      "description": "Every delivery of a project's webhooks, a page at a time: filtered by status, event and endpoint, each opened to its request and response, and sent again.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/code-block",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select",
+        "@syncrobotic/sheet",
+        "@syncrobotic/table",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/webhook-deliveries.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: WebhookDeliveriesContent, the server's page, `total` and per-status `counts`, filters back to page 1, a detail sheet with request and response, send again (step-up aware); only a failure coloured, retrying blue; its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "offline-licence",
+      "type": "registry:block",
+      "title": "Offline licence",
+      "description": "A device's module licences, signed here and carried to it: issue, renew and revoke, the signed file as a download or a QR code that says downloading is not applying.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/alert",
+        "@syncrobotic/all-or-some-field",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/code-block",
+        "@syncrobotic/data-state",
+        "@syncrobotic/desired-state",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/section-header",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/offline-licence.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: OfflineLicenceContent, modules bounded by the project's entitlement (AllOrSomeField), the signed file held until Done, download or your QR (`renderQr`), \"downloading is not applying\", an order as DesiredState; its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "tenant-admin",
+      "type": "registry:block",
+      "title": "Tenant admin",
+      "description": "Every project on the platform with its quotas, device seats and licensed modules, and deleted projects restorable until the server's deadline.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/use-list-query",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/all-or-some-field",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/data-state",
+        "@syncrobotic/dialog",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/input-group",
+        "@syncrobotic/item",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/quota-field",
+        "@syncrobotic/section-header",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/tenant-admin.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.57.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.57.0",
+            "date": "2026-11-27",
+            "note": "First release: TenantAdminContent, the server's page and search, device seats in a QuotaField (unlimited is not 0), licensed modules in an AllOrSomeField, deleted projects with the server's `restorableUntil` as given; its demo."
           }
         ]
       }

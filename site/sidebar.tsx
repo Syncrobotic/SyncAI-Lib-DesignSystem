@@ -151,7 +151,7 @@ export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scop
                     <FilterSections label={l.label} sections={l.sections} />
                   </React.Suspense>
                 ) : (
-                  <Sections label={l.label} sections={l.sections} />
+                  <Sections label={l.label} sections={l.sections.map((x) => (x.href.startsWith("#") ? { ...x, href: l.href + x.href } : x))} />
                 )
               )}
             </React.Fragment>

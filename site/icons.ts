@@ -18,6 +18,7 @@ import {
   Bot,
   BotOff,
   Box,
+  Building2,
   Bug,
   CalendarDays,
   Camera,
@@ -64,6 +65,7 @@ import {
   FileCode,
   FileImage,
   FileJson,
+  FileKey,
   FileSpreadsheet,
   FileText,
   FileVideo,
@@ -165,6 +167,7 @@ import {
   Volume2,
   VolumeX,
   Warehouse,
+  Webhook,
   Waypoints,
   Wifi,
   WifiOff,
@@ -190,6 +193,7 @@ export type IconGroup = { title: string; icons: IconEntry[] }
 // 1.68 or later), and the page and the allowlist must show the name a product imports.
 // The map is globalThis.Map because Map in this file is the Lucide icon.
 const importedAs = new globalThis.Map<LucideIcon, string>([
+  [Building2, "Building2"],
   [CircleAlert, "CircleAlert"],
   [FileAudio, "FileAudio"],
   [FileJson, "FileJson"],
@@ -427,6 +431,7 @@ export const iconGroups: IconGroup[] = [
       e(FileText, "A document"),
       e(FileSpreadsheet, "A spreadsheet"),
       e(FileJson, "A JSON file"),
+      e(FileKey, "A signed licence file, carried to a device"),
       e(FileCode, "A code file"),
       e(FileImage, "An image file"),
       e(ImageOff, "A picture that could not be loaded"),
@@ -448,6 +453,8 @@ export const iconGroups: IconGroup[] = [
       e(UserPlus, "Invite someone"),
       e(ShieldCheck, "Governance, permissions"),
       e(KeyRound, "API keys"),
+      e(Building2, "A project: a tenant's workspace on the platform"),
+      e(Webhook, "Webhooks: events sent to another system"),
       e(CreditCard, "A payment card, billing"),
       e(Fingerprint, "Passkey"),
       e(Mail, "Email"),

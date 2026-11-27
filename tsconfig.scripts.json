@@ -15,6 +15,6 @@
     "resolveJsonModule": true,
     "incremental": false
   },
-  "include": ["scripts/*.mjs", "scripts/*.cjs"],
+  "include": ["scripts/*.mjs", "scripts/*.cjs", "scripts/codemods/*.mjs"],
   "exclude": ["node_modules"]
 }

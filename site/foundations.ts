@@ -31,6 +31,7 @@ const start = [
   { href: "/docs/localisation", title: "Localisation" },
   { href: "/docs/tokens", title: "Design tokens" },
   { href: "/docs/upgrading", title: "Versions and upgrades" },
+  { href: "/docs/migrating-from-local-components", title: "Migrating to the kit" },
   { href: "/docs/ai", title: "For AI agents" },
 ]
 

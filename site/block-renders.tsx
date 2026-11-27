@@ -73,6 +73,11 @@ const UsersInvitations = dynamic(() => import("@/registry/syncrobotic/blocks/use
 const UsersAuditLog = dynamic(() => import("@/registry/syncrobotic/blocks/users-audit-log").then((m) => m.UsersAuditLog))
 const DeviceEnrolment = dynamic(() => import("@/registry/syncrobotic/blocks/device-enrolment").then((m) => m.DeviceEnrolment))
 const DeviceDetail = dynamic(() => import("@/registry/syncrobotic/blocks/device-detail").then((m) => m.DeviceDetail))
+const OfflineLicence = dynamic(() => import("@/registry/syncrobotic/blocks/offline-licence").then((m) => m.OfflineLicence))
+const ProjectMembers = dynamic(() => import("@/registry/syncrobotic/blocks/project-members").then((m) => m.ProjectMembers))
+const PermissionMatrix = dynamic(() => import("@/registry/syncrobotic/blocks/permission-matrix").then((m) => m.PermissionMatrix))
+const WebhookDeliveries = dynamic(() => import("@/registry/syncrobotic/blocks/webhook-deliveries").then((m) => m.WebhookDeliveries))
+const TenantAdmin = dynamic(() => import("@/registry/syncrobotic/blocks/tenant-admin").then((m) => m.TenantAdmin))
 const IncidentQueue = dynamic(() => import("@/registry/syncrobotic/blocks/incident-queue").then((m) => m.IncidentQueue))
 const IncidentDetail = dynamic(() => import("@/registry/syncrobotic/blocks/incident-detail").then((m) => m.IncidentDetail))
 const MaintenanceDue = dynamic(() => import("@/registry/syncrobotic/blocks/maintenance-due").then((m) => m.MaintenanceDue))
@@ -261,6 +266,11 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "users-audit-log": () => <UsersAuditLog />,
   "device-enrolment": () => <DeviceEnrolment />,
   "device-detail": () => <DeviceDetail />,
+  "offline-licence": () => <OfflineLicence />,
+  "project-members": () => <ProjectMembers />,
+  "permission-matrix": () => <PermissionMatrix />,
+  "webhook-deliveries": () => <WebhookDeliveries />,
+  "tenant-admin": () => <TenantAdmin />,
   "incident-queue": () => <IncidentQueue />,
   "incident-detail": () => <IncidentDetail />,
   "maintenance-due": () => <MaintenanceDue />,
