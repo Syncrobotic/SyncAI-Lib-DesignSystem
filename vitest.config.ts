@@ -26,7 +26,8 @@ function reactCompilerForTests(): Plugin {
         parserOpts: { plugins: ["jsx", "typescript"] },
         plugins: [[reactCompiler, { target: "19" }]],
       })
-      return out?.code ? { code: out.code, map: out.map } : undefined
+      // Babel 8 types its map's arrays as readonly, Vite's as mutable: hand Vite the map as JSON, which it also takes.
+      return out?.code ? { code: out.code, map: out.map && JSON.stringify(out.map) } : undefined
     },
   }
 }
