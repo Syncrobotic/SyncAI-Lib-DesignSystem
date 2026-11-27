@@ -1,4 +1,4 @@
-// @syncrobotic/settings-api-keys v0.55.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
+// @syncrobotic/settings-api-keys v0.57.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,8 +19,6 @@ import {
 } from "@/registry/syncrobotic/ui/alert-dialog"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
-import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
-import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { Code } from "@/registry/syncrobotic/ui/code"
 import { CodeBlock } from "@/registry/syncrobotic/ui/code-block"
 import { DataState, type DataStateError, type DataStateKind, type DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
@@ -30,6 +28,7 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/registry/syncrobotic/ui/item"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { PermissionGate } from "@/registry/syncrobotic/ui/permission-gate"
+import { ScopePicker, type ScopeOption, type ScopePickerLabels } from "@/registry/syncrobotic/ui/scope-picker"
 import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 
@@ -47,8 +46,8 @@ export type ApiKey = {
   scopes?: readonly string[]
 }
 
-/** A permission a key can be given: its string, and words for it. */
-export type ApiKeyScope = { value: string; label?: string; description?: string }
+/** A permission a key can be given: its string, and words for it. Grouped by the part before ":". */
+export type ApiKeyScope = ScopeOption
 
 export type NewApiKey = { name: string; scopes: string[]; expiresAt: string | null }
 
@@ -63,6 +62,7 @@ export type SettingsApiKeysLabels = {
   scopesHint: string
   /** Under a scope outside `allowedScopes`. */
   scopeAbove: string
+  scopePicker?: Partial<ScopePickerLabels>
   expiry: string
   days: (days: number) => string
   never: string
@@ -264,22 +264,16 @@ export function SettingsApiKeysContent({
             <Input autoFocus value={name} onChange={(e) => setName(e.target.value)} />
           </Field>
           {scopes.length > 0 && (
-            <FieldSet legend={l.scopes} hint={l.scopesHint}>
-              {scopes.map((s) => (
-                <ChoiceField
-                  key={s.value}
-                  label={s.label ?? <Code>{s.value}</Code>}
-                  description={allowed(s.value) ? s.description : l.scopeAbove}
-                  control={
-                    <Checkbox
-                      disabled={!allowed(s.value)}
-                      checked={picked.includes(s.value)}
-                      onCheckedChange={(v) => setPicked((p) => (v === true ? [...p, s.value] : p.filter((x) => x !== s.value)))}
-                    />
-                  }
-                />
-              ))}
-            </FieldSet>
+            <ScopePicker
+              legend={l.scopes}
+              hint={l.scopesHint}
+              scopes={scopes}
+              allowedScopes={allowedScopes}
+              value={picked}
+              onValueChange={(v) => setPicked(v ?? [])}
+              locale={locale}
+              labels={{ outside: l.scopeAbove, ...l.scopePicker }}
+            />
           )}
           <Field label={l.expiry} hint={expiry === "null" ? undefined : l.expiresOn(date.format(new Date(expiresAt(expiry)!)))}>
             <Select value={expiry} onValueChange={setExpiry}>
@@ -415,6 +409,7 @@ export const sampleKeys: ApiKey[] = [
 
 const sampleScopes: ApiKeyScope[] = [
   { value: "robots:read", label: "Read robots", description: "Where each robot is, its state and battery." },
+  { value: "missions:read", label: "Read missions", description: "Routes, schedules and results." },
   { value: "missions:write", label: "Start and stop missions", description: "Send robots on a route and call them back." },
   { value: "datasets:read", label: "Download datasets", description: "Recordings and their labels." },
   { value: "members:write", label: "Manage people", description: "Invite, remove and change roles." },
@@ -434,7 +429,7 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
     <SettingsApiKeysContent
       keys={{ items: keys, total: keys.length }}
       scopes={sampleScopes}
-      allowedScopes={["robots:read", "missions:write", "datasets:read"]}
+      allowedScopes={["robots:read", "missions:read", "missions:write", "datasets:read"]}
       defaultScopes={["robots:read"]}
       now={sampleNow}
       timeZone="Asia/Taipei"

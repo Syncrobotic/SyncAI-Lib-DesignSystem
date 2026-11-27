@@ -3,7 +3,7 @@
 // chart, a timeline, a dialog) is not a block: it is that component's patterns, shown on the component's page (`home`),
 // as ReUI shows charts on its Chart page. They keep their own install names and previews.
 
-// A group with no types yet (Platform admin, Robot control) is declared so new blocks have a place;
+// A group with no types yet (Robot control) is declared so new blocks have a place;
 // every surface hides a group until it holds a block.
 export const blockGroups = [
   "Shell and navigation",
@@ -22,7 +22,7 @@ export type BlockGroup = (typeof blockGroups)[number]
 export const blockGroupIntro: Record<BlockGroup, string> = {
   "Shell and navigation": "The frame around every page and the ways in: app shells, the top bar, the action rail, phone tabs, the notification bell and a landing hero.",
   "Identity and account": "Signing in and the signed-in person's settings: SSO, passkeys, 2FA, invitations, browser sessions and billing.",
-  "Tenancy and access": "Who can do what in a workspace, and what reaches it from outside: members, invitations, roles, the audit log, API keys and webhooks.",
+  "Tenancy and access": "Who can do what in a project, and what reaches it from outside: members and ownership, invitations, roles and the permission matrix, the audit log, API keys and webhook deliveries.",
   "Device lifecycle": "Enrolling, approving, licensing and retiring a managed device.",
   "Fleet operations": "Running a robot fleet day to day: the console overview, the map, the event log, incidents, maintenance and firmware rollouts.",
   "Platform admin": "Running the platform itself: tenants and quotas, every user, system health.",
@@ -356,8 +356,8 @@ export const blockTypes: BlockType[] = [
     slug: "users-access",
     title: "Users and access",
     group: "Tenancy and access",
-    description: "Who can do what: roles changed in place, invitations, removals with undo.",
-    use: ["The members page of any console."],
+    description: "Who can do what: roles changed in place, invitations, removals with undo, a project's owner and the handover, and which role holds which permission.",
+    use: ["The members page of any console.", "A project's members, with its one owner and the transfer of ownership: project-members.", "A read-only reference of every role's permissions, for admins and support: permission-matrix."],
     instead: [
       "Who changed what on one record, inside its page: Patterns › Activity and audit timelines › Audit history (timeline-audit).",
       "Robot and fleet events to filter by time and level: Fleet operations › Event log (event-log).",
@@ -367,6 +367,8 @@ export const blockTypes: BlockType[] = [
       "Nobody gives a role that holds more than they do: a role whose permissions the viewer lacks is not offered, and a person who holds one keeps it (`canAssign`).",
       "Removing someone can be undone for a few seconds.",
       "UsersRolesContent, UsersInvitationsContent and UsersAuditLogContent take one page and the server's `total`, the query out through `onQueryChange`, and a data state; the audit log is forbidden without `audit-logs:read`.",
+      "A project has one owner. The owner's role is never offered in a picker (`ownerRoleId`): only a transfer gives it, to someone who has joined, never an open invitation. The owner picks the role they keep, the transfer runs through your step-up, and nothing changes until the new owner accepts.",
+      "The permission matrix documents and decides nothing: one table per axis (platform roles, project roles), never one grid, because a permission on one axis grants nothing on the other. Bundles come from the server; granted is ink, not green.",
     ],
   },
   {
@@ -374,14 +376,15 @@ export const blockTypes: BlockType[] = [
     title: "API keys and webhooks",
     group: "Tenancy and access",
     description: "What other systems may do in a workspace and what it tells them: API keys with scopes and an expiry, webhook endpoints and their deliveries.",
-    use: ["A project's API keys page.", "A project's webhooks page, with each endpoint's recent deliveries."],
+    use: ["A project's API keys page.", "A project's webhooks page, with each endpoint's recent deliveries.", "Every delivery across endpoints, filtered and opened to its request and response: webhook-deliveries."],
     instead: ["A person's own settings: Identity and account › Settings."],
     rules: [
       "A secret (an API key, a signing secret) is shown once, with a copy button, and says it will not be shown again. It comes from the create or rotate callback and is dropped on Done: never put it in a query cache, a store or the URL.",
-      "A key holds only scopes its creator holds: the rest are listed, disabled, with the reason (`allowedScopes`).",
+      "A key holds only scopes its creator holds: a ScopePicker lists the rest, disabled, with the reason (`allowedScopes`).",
       "Every key has an expiry unless someone chooses Never; the expiry is sent as an ISO time, never a local wall-clock string.",
       "Creating, revoking and rotating are sensitive: run each callback through your step-up (`useStepUp().run`); a cancelled check leaves the form as it was.",
       "Only a failing endpoint or an expired key is coloured; active is grey.",
+      "The deliveries page filters on the server: status, event and endpoint go out with the query, back to page 1, and the counts come from the server. A failed delivery is red, one waiting to retry blue, a delivered one grey. Send again makes a new delivery; the old one stays as it was.",
     ],
   },
   {
@@ -392,6 +395,7 @@ export const blockTypes: BlockType[] = [
     use: [
       "A project's enrolment queue: machines that reached out on their own, each waiting for a person to decide.",
       "A device's page: its record, its last report, its check-ins, its licences and the rare actions that end its life.",
+      "Signing a module licence for an air-gapped device and carrying it there: offline-licence.",
     ],
     instead: [
       "Adding a robot by hand, in steps on site: Patterns › Wizard (wizard-commission).",
@@ -404,7 +408,22 @@ export const blockTypes: BlockType[] = [
       "Air-gapped is quiet, not faulty: no check-ins, no colour. Waiting for review is grey too; colour is for a stale report, a degraded service, an order overdue.",
       "Ordered is not in effect: a revocation shows as DesiredState until the device reports it, and the licence reads Revoking, never Revoked.",
       "Lifecycle actions live in the header's ⋯ menu, disabled with the reason when they cannot work. Force removal asks a reason and runs through your step-up; a cancelled check changes nothing.",
-      "DeviceEnrolmentContent and DeviceDetailContent take the server's `total` and `counts`, a data state, `can` and promise callbacks, and `labels`.",
+      "A signed licence leaves as a file or a QR code (`renderQr`, your encoder), and the page says downloading is not applying: until someone imports it on the device, the order stays pending. Modules outside the project's entitlement are disabled with the reason.",
+      "DeviceEnrolmentContent, DeviceDetailContent and OfflineLicenceContent take the server's `total` and `counts`, a data state, `can` and promise callbacks, and `labels`.",
+    ],
+  },
+  {
+    slug: "tenants",
+    title: "Tenants and quotas",
+    group: "Platform admin",
+    description: "Every project on the platform with what it may use: device seats, licensed modules, and the deleted ones still restorable.",
+    use: ["The platform admin's projects page: quotas set by staff, not by the project's own members."],
+    instead: ["A project's own settings and members: Tenancy and access."],
+    rules: [
+      "Unlimited is not 0, and all modules including future ones is not every box ticked: QuotaField and AllOrSomeField keep both apart, and the server stores null for each.",
+      "A quota below what is in use removes nothing: it refuses the next enrolment, and the row says so, in the one colour on the page.",
+      "A deleted project shows the server's `restorableUntil` as given, never a date worked out from when it was deleted.",
+      "TenantAdminContent takes the server's page, `total` and search, a data state, `can` and promise callbacks, and `labels`.",
     ],
   },
   {
@@ -539,6 +558,11 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "users-audit-log": { type: "users-access", fit: "screen" },
   "device-enrolment": { type: "devices", fit: "screen" },
   "device-detail": { type: "devices", fit: "screen" },
+  "offline-licence": { type: "devices", fit: "screen" },
+  "project-members": { type: "users-access", fit: "screen" },
+  "permission-matrix": { type: "users-access", fit: "screen" },
+  "webhook-deliveries": { type: "integrations", fit: "screen" },
+  "tenant-admin": { type: "tenants", fit: "screen" },
   "incident-queue": { type: "incidents", fit: "screen" },
   "incident-detail": { type: "incidents", fit: "screen" },
   "maintenance-due": { type: "maintenance", fit: "screen" },
