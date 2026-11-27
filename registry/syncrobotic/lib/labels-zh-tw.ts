@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.56.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.57.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese (Taiwan): one typed labels object per component that takes `labels`, with
 // numbers and units formatted as in the English defaults. Pass each to its component
 // (`<DataGrid labels={dataGridLabels} />`), with `locale="zh-TW"` where it formats numbers, days or times. It imports no
@@ -1382,6 +1382,54 @@ export const heartbeatStripLabels = {
   view: chartViewSwitchLabels,
 }
 
+// ---------- Grants, quotas and the project switcher ----------
+
+export const scopePickerLabels = {
+  all: "所有權限範圍，包含之後新增的",
+  allHint: "產品之後新增的權限範圍也會一併授予。",
+  allAbove: "你沒有全部的權限範圍，所以無法授予之後新增的。",
+  some: "只有這些權限範圍",
+  someHint: "固定不變：之後新增的權限範圍不會授予。",
+  outside: "不在你自己的權限內，所以你無法授予。",
+  group: (resource: string) => `${resource} 的所有權限範圍`,
+  selected: (_n: number, f: string) => `已選取 ${f} 個權限範圍`,
+  none: "沒有權限範圍：只能證明自己的身分。",
+}
+
+export const quotaFieldLabels = {
+  unlimited: "不限量",
+  unlimitedHint: "完全沒有上限。關閉後才能設定數字；0 代表不允許任何一個。",
+  limit: "上限",
+  usedOf: (used: string, limit: string) => `已使用 ${used} / ${limit}`,
+  usedUnlimited: (used: string) => `已使用 ${used}，沒有上限`,
+  zero: "0：不能再新增任何一個。",
+  over: (used: string, limit: string) => `已使用 ${used}，超過上限 ${limit}。不會移除任何項目，但下一個會被拒絕。`,
+  decrease: "減少",
+  increase: "增加",
+}
+
+export const allOrSomeFieldLabels = {
+  all: "全部，包含之後新增的",
+  allHint: "之後新增的項目也會包含在內。",
+  some: "只有這些",
+  someHint: "固定不變：之後新增的項目不會包含在內。",
+  none: "沒有選取任何項目：什麼都不包含。",
+}
+
+export const projectSwitcherLabels = {
+  title: "專案",
+  none: "選擇專案",
+  search: "搜尋專案",
+  recent: "最近使用",
+  results: "專案",
+  all: "所有專案",
+  current: "目前的專案",
+  empty: (q: string) => (q ? `沒有符合「${q}」的專案。` : "還沒有任何專案。"),
+  loading: "搜尋中…",
+  create: "新增專案",
+  viewAll: "查看所有專案",
+}
+
 // ---------- Blocks a product renders from its own data ----------
 
 export const fleetTableLabels = {
@@ -1535,6 +1583,7 @@ export const settingsApiKeysLabels = {
   emptyBody: "為每個讀取機器人資料或啟動任務的系統各建立一把金鑰，之後就能單獨撤銷。",
   failed: "沒有成功。沒有任何資料被變更，請再試一次。",
   errors: { FORBIDDEN_SCOPE: "其中有權限超過你自己的範圍，請取消勾選後再試一次。" } as Record<string, string>,
+  scopePicker: scopePickerLabels,
   data: dataStateLabels,
 }
 
@@ -1840,5 +1889,188 @@ export const deviceDetailLabels = {
   freshness: freshnessStampLabels,
   desired: desiredStateLabels,
   list: descriptionListLabels,
+  data: dataStateLabels,
+}
+
+// ---------- Tenancy, licences and platform admin ----------
+
+export const projectMembersLabels = {
+  count: (_total: number, n: string) => `這個專案有 ${n} 位成員。`,
+  table: "成員",
+  person: "成員",
+  role: "角色",
+  actions: "動作",
+  invited: "已邀請",
+  roleOf: (name: string) => `${name} 的角色`,
+  ownerHint: "只能透過移轉擁有權變更。",
+  self: "你無法變更自己的角色。",
+  locked: "對方的角色包含你沒有的權限，只有具備這些權限的人可以變更。",
+  denied: "你需要 members:write 權限，專案管理員可以授予。",
+  remove: "從專案移除",
+  removed: (name: string) => `已移除 ${name}`,
+  transfer: "移轉擁有權",
+  transferTitle: "移轉擁有權",
+  transferBody: "專案會有一位新的擁有者，對方必須已經是成員。在對方接受之前，什麼都不會改變。",
+  newOwner: "新的擁有者",
+  newOwnerHint: "只能選擇已加入的成員；尚未接受的邀請不能擁有專案。",
+  choose: "選擇成員",
+  formerRole: "移轉後你的角色",
+  formerRoleHint: "對方接受後你保留的角色。",
+  transferSummary: (name: string, role: string) => `${name} 接受後會成為擁有者，你則成為${role}。`,
+  transferConfirm: "移轉擁有權",
+  cancel: "取消",
+  noCandidates: "還沒有其他人加入。擁有權只能移轉給成員：請先邀請。",
+  deniedTransfer: "你需要 project:transfer-ownership 權限。",
+  pendingTitle: (name: string) => `正在等待 ${name} 接受擁有權`,
+  pendingBody: (until: string | null) => `在對方接受之前什麼都不會改變，你仍是擁有者${until ? `；這項移轉會在 ${until} 失效` : ""}。`,
+  cancelTransfer: "取消移轉",
+  empty: "還沒有成員",
+  emptyBody: "邀請在這個專案工作的人，他們會用自己的帳號登入。",
+  failed: "沒有成功",
+  failedBody: "沒有任何資料被變更，請再試一次。",
+  errors: {} as Record<string, string>,
+  dismiss: "關閉",
+  data: dataStateLabels,
+}
+
+export const permissionMatrixLabels = {
+  permission: "權限",
+  granted: "已授予",
+  notGranted: "未授予",
+  summary: (p: string, r: string) => `${p} 項權限、${r} 個角色`,
+  empty: "這個層級沒有權限。",
+  data: dataStateLabels,
+}
+
+export const webhookDeliveriesLabels = {
+  count: (_total: number, n: string) => `${n} 筆傳送紀錄`,
+  status: "狀態",
+  statuses: { all: "全部", failed: "失敗", pending: "重試中", succeeded: "已送達" },
+  event: "事件",
+  allEvents: "所有事件",
+  endpoint: "端點",
+  allEndpoints: "所有端點",
+  clear: "清除篩選",
+  table: "傳送紀錄",
+  when: "時間",
+  duration: "耗時",
+  noAnswer: "沒有回應",
+  attempt: (n: number) => `第 ${formatCount(n)} 次嘗試`,
+  nextRetry: (when: string) => `下次重試：${when}`,
+  detail: "傳送紀錄",
+  http: "HTTP 狀態碼",
+  request: "請求",
+  response: "回應",
+  noResponse: "端點沒有及時回應。",
+  copyRequest: "複製請求",
+  copyResponse: "複製回應",
+  redeliver: "重新傳送",
+  redeliverHint: "以新的傳送紀錄送出相同的內容；這一筆維持原樣。",
+  redelivered: "已重新傳送",
+  redeliveredBody: "你的端點回應後，會列為一筆新的傳送紀錄。",
+  close: "關閉",
+  denied: "你需要 webhooks:write 權限，專案管理員可以授予。",
+  empty: "還沒有傳送紀錄",
+  emptyBody: "每個送到你端點的事件都會列在這裡，並附上它的回應。",
+  noMatch: "沒有符合這些篩選條件的傳送紀錄",
+  noMatchBody: "請變更或清除篩選條件。",
+  failed: "沒有成功。沒有送出任何內容，請再試一次。",
+  errors: {} as Record<string, string>,
+  data: dataStateLabels,
+}
+
+export const offlineLicenceLabels = {
+  title: "授權",
+  description: "在這裡簽發授權，再帶到設備上：離線部署的設備從不回報，無法自己取得授權。",
+  issue: "簽發授權",
+  issueTitle: "新的授權",
+  modules: "模組",
+  modulesHint: "授權有效期間設備可以執行的模組。",
+  notEntitled: "這個專案沒有這個模組的授權。",
+  allNotEntitled: "這個專案只有部分模組的授權，所以授權無法涵蓋之後新增的模組。",
+  expiry: "到期",
+  days: (d: number) => (d % 365 === 0 ? `${d / 365} 年` : `${d} 天`),
+  never: "永不到期",
+  sign: "簽署授權",
+  cancel: "取消",
+  handoffTitle: (device: string) => `把這個檔案帶到 ${device}`,
+  handoffBody: "下載檔案，或讓設備的相機掃描 QR code，然後在設備上匯入。",
+  notApplied: "下載不等於已套用",
+  notAppliedBody: "在有人把這個檔案匯入設備之前，設備會維持目前執行的內容。這個頁面看不到匯入的那一刻。",
+  file: "檔案",
+  qr: "QR code",
+  download: "下載檔案",
+  copy: "複製授權",
+  done: "完成",
+  allModules: "所有模組，包含之後新增的",
+  issued: "簽發日期",
+  expires: "到期",
+  state: "狀態",
+  states: { active: "有效", expired: "已過期", revoked: "已撤銷" },
+  downloaded: "已下載",
+  notDownloaded: "尚未下載",
+  noExpiry: "永不到期",
+  renew: "續期…",
+  revoke: "撤銷…",
+  revokeTitle: "要撤銷這份授權嗎？",
+  revokeBody: (airGapped: boolean) =>
+    airGapped
+      ? "伺服器會立即停止承認它，但設備收不到這個通知：在撤銷檔案匯入設備、或授權到期之前，它會繼續執行這些模組。"
+      : "撤銷會隨設備的下一次回報送達。在設備回報確認之前，請當作這些模組仍在執行。",
+  revokeConfirm: "撤銷授權",
+  keep: "保留",
+  actionsColumn: "動作",
+  more: (modules: string) => `${modules} 授權的更多動作`,
+  empty: "還沒有授權",
+  emptyBody: "簽發一份授權來開啟設備的模組。",
+  denied: "你需要 devices:write 權限，專案管理員可以授予。",
+  failed: "沒有成功。沒有簽發任何授權，請再試一次。",
+  errors: {} as Record<string, string>,
+  field: allOrSomeFieldLabels,
+  desired: desiredStateLabels,
+  data: dataStateLabels,
+}
+
+export const tenantAdminLabels = {
+  count: (_total: number, n: string) => `平台上有 ${n} 個專案。`,
+  search: "搜尋專案",
+  searchPlaceholder: "名稱、代稱或擁有者",
+  table: "專案",
+  project: "專案",
+  devices: "設備",
+  modules: "授權模組",
+  actions: "動作",
+  seatsOf: (d: string, s: string) => `${d} / ${s} 個席位`,
+  seatsUnlimited: (d: string) => `${d} 台，席位不限量`,
+  over: (by: string) => `超出 ${by} 台`,
+  allModules: "全部，包含之後新增的",
+  noModules: "無",
+  moduleCount: (_n: number, f: string) => `${f} 個模組`,
+  editSeats: "變更設備席位…",
+  editModules: "變更授權模組…",
+  seatsTitle: (p: string) => `${p} 的設備席位`,
+  seatsBody: "專案同時可以擁有的設備數量。降低上限不會移除任何設備，只會擋下下一次註冊。",
+  seatsLegend: "設備席位",
+  seatsUnit: "台",
+  modulesTitle: (p: string) => `${p} 的授權模組`,
+  modulesBody: "專案可以放進設備授權的模組。",
+  modulesLegend: "授權模組",
+  save: "儲存",
+  cancel: "取消",
+  deleted: "已刪除的專案",
+  deletedBody: "在顯示的日期之前都可以還原，這個日期由伺服器決定；過了之後就會永久刪除。",
+  deletedBy: (date: string, who?: string) => (who ? `${who} 於 ${date} 刪除` : `於 ${date} 刪除`),
+  restorableUntil: (date: string) => `可還原至 ${date}`,
+  restore: "還原",
+  restoreName: (name: string) => `還原 ${name}`,
+  closed: "還原期限已過。",
+  denied: "你需要 projects:write 權限。",
+  empty: "還沒有專案",
+  emptyBody: "有人建立專案後就會列在這裡。",
+  noMatch: (q: string) => `沒有符合「${q}」的專案。`,
+  failed: "沒有成功。沒有任何資料被變更，請再試一次。",
+  errors: {} as Record<string, string>,
+  quota: quotaFieldLabels,
+  field: allOrSomeFieldLabels,
   data: dataStateLabels,
 }

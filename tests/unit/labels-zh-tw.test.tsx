@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs"
+import { readdirSync, readFileSync } from "node:fs"
 import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
@@ -29,6 +29,22 @@ describe("labels-zh-tw", () => {
       expect(labels, `${exportName(component)} for ${component}`).toBeTypeOf("object")
       for (const k of keys) expect(labels![k.name], `${component}.${k.name}`).toBeDefined()
     }
+  })
+
+  it("has an object for every block and shell part that takes labels, named for its labels type", () => {
+    const dirs = ["registry/syncrobotic/blocks", "registry/syncrobotic/shell"]
+    const wanted = dirs.flatMap((d) =>
+      readdirSync(d)
+        .filter((f) => f.endsWith(".tsx"))
+        .flatMap((f) => {
+          const src = readFileSync(`${d}/${f}`, "utf8")
+          // A labels prop written inline has no type to translate against: name it (XxxLabels) so the pack can follow.
+          expect(src, `${f}: a labels prop needs a named type`).not.toMatch(/\blabels\??:\s*\{/)
+          return [...src.matchAll(/\blabels\??:\s*(?:Partial<)?(\w+)Labels\b|Labelled<(\w+)Labels>/g)].map((m) => ({ file: f, type: m[1] ?? m[2] }))
+        }),
+    )
+    expect(wanted.length).toBeGreaterThan(15)
+    for (const { file, type } of wanted) expect(pack[`${type[0]!.toLowerCase()}${type.slice(1)}Labels`], `${type}Labels in ${file}`).toBeTypeOf("object")
   })
 
   it("writes Traditional Chinese with Taiwan terms, not Simplified or mainland ones", () => {

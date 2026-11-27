@@ -1,0 +1,17 @@
+/* After @import "./syncrobotic-theme.css": the Portal's purple.
+   Dark takes a lighter step, with ink on it: the light purple is
+   2.7:1 on the dark page. The dark chart accent sits darker than
+   the button, so it stays ΔE 15 from the graphite series. */
+:root {
+  --brand-primary: oklch(0.464 0.15 285);
+  --brand-primary-foreground: oklch(0.985 0 0);
+  --brand-ring: oklch(0.464 0.15 285);
+  --brand-chart-1: oklch(0.464 0.15 285);
+  --brand-chart-1-foreground: oklch(0.985 0 0);
+
+  --brand-primary-dark: oklch(0.72 0.13 285);
+  --brand-primary-foreground-dark: oklch(0.145 0 0);
+  --brand-ring-dark: oklch(0.72 0.13 285);
+  --brand-chart-1-dark: oklch(0.64 0.14 285);
+  --brand-chart-1-foreground-dark: oklch(0.145 0 0);
+}

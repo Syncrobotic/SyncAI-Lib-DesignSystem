@@ -1,0 +1,44 @@
+"use client";
+
+import { Inbox } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { ConfirmDialog } from "@/components/common/confirm-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
+import { MetricCard } from "@/components/ui/metric-card";
+import { PageHeader } from "@/components/ui/page-header";
+import { type PageHeaderAction } from "@/components/common/page-header";
+import { SectionHeader } from "@/components/ui/section-header";
+import { Badge } from "@/components/ui/badge";
+import { StatusGlyph as Dot } from "@/components/status-glyph";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/routing";
+
+export function DevicePage({ online, onAdd, busy }: { online: boolean; onAdd: () => void; busy: string }) {
+  const t = useTranslations("devices");
+  const action: PageHeaderAction = { label: t("add") };
+  return (
+    <div className="w-full space-y-6">
+      <PageHeader
+        title={t("title")}
+        badges={<Badge>Beta</Badge>}
+        back={{ href: "/projects", label: t("back") }}
+      />
+      <MetricCard label={t("online")} value={12} caption={t("of")} loading={false} />
+      <MetricCard label={t("pending")} value={3} href="/devices?state=pending" linkAs={Link} />
+      <section className="flex flex-col gap-3">
+        <SectionHeader title={t("fleet")} description={t("fleetHint")} actions={<Badge>{busy}</Badge>} />
+        <SectionHeader variant="surface" title={t("runtime")} />
+        <SectionHeader title={t("more")} actions={<Badge>1</Badge>} />
+        <Dot status="normal" />
+        <Dot status={online ? "normal" : "offline"} className="ml-2" />
+      </section>
+      <section className="flex flex-col gap-3 mt-6">
+        <SectionHeader title={t("empty")} />
+        <EmptyState title={t("none")} description={t("noneHint")} icon={Inbox} action={<Button asChild><Link href={"/devices/new"}>{t("add")}</Link></Button>} />
+        <EmptyState title={t("none")} description={t("noneHint")} action={<Button onClick={onAdd}>{"Add"}</Button>} />
+      </section>
+      <ConfirmDialog open={false} onOpenChange={() => {}} title={action.label} onConfirm={onAdd} />
+    </div>
+  );
+}

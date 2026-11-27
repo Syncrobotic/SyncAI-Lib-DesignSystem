@@ -5,6 +5,7 @@
 //   node scripts/tokens.mjs          CI: fails if public/tokens/*.json are out of date
 //   node scripts/tokens.mjs --write  regenerate them
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { unbrand } from "./brand.mjs"
 
 const WRITE = process.argv.includes("--write")
 const OUT = "public/tokens"
@@ -26,7 +27,7 @@ function block(selector) {
       break
     }
   }
-  return Object.fromEntries([...css.slice(start, end).matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]))
+  return Object.fromEntries([...css.slice(start, end).matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], unbrand(m[2].trim())]))
 }
 
 const light = block(":root")

@@ -100,6 +100,10 @@ export type StoryFile =
   | "evidence-panel"
   | "desired-state"
   | "heartbeat-strip"
+  | "scope-picker"
+  | "quota-field"
+  | "all-or-some-field"
+  | "project-switcher"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -874,6 +878,44 @@ const entries: Record<string, Entry> = {
       "When a filter or search caused it, the action clears it.",
       'Every empty place uses it at its host\'s size: `panel` (default) in a card, a section or a dialog; `size="inline"` in a table, list, toolbar or small panel; `variant="overlay"` over a map, point cloud, 3D model or camera. Never a hand-made icon and paragraph, a bare grey line or a boxed note.',
       "The panel's icon sits on IconTile; inline and overlay icons are bare. Never a tile of its own.",
+    ],
+  },
+  "scope-picker": {
+    group: "Inputs",
+    examples: { file: "scope-picker", prefix: "ScopePicker" },
+    rules: [
+      "Pass `allowedScopes` from the viewer's own permissions: nobody grants what they do not hold. The rest stay listed, disabled, with the reason, so people see what exists.",
+      "Scopes are permission strings, grouped by the part before \":\" (`resource` to override); `resourceLabels` names the groups.",
+      "`allowAll` only where the server stores \"all, including ones added later\" (null); never send every string as a stand-in for it.",
+      "Before you send, `boundScopes` drops anything out of bounds that came in with the value.",
+    ],
+  },
+  "quota-field": {
+    group: "Inputs",
+    examples: { file: "quota-field", prefix: "QuotaField" },
+    rules: [
+      "Unlimited is `null` and 0 is a limit of none: the switch says which, and an emptied box never becomes either.",
+      "Give `used` from the server so the limit reads against what is in use; a limit below it warns, and nothing is taken away.",
+      "Show a saved quota with `formatQuota`, so a list says Unlimited where the server says null.",
+    ],
+  },
+  "all-or-some-field": {
+    group: "Inputs",
+    examples: { file: "all-or-some-field", prefix: "AllOrSomeField" },
+    rules: [
+      "All is `null`, including what ships later; a list is exactly these. Ticking every box never becomes all.",
+      "An empty list is legal and says what it means; it is not an unfinished form.",
+      "When a limit above the viewer bounds the choice (the project's entitlement), disable \"all\" with `allDisabledReason` and each option outside it with its `reason`.",
+    ],
+  },
+  "project-switcher": {
+    group: "Navigation",
+    examples: { file: "project-switcher", prefix: "ProjectSwitcher" },
+    rules: [
+      "It goes in SidebarHeader, the sidebar's switcher slot; on the rail only the mark shows.",
+      "Switching goes through `onSelect`: navigate there in your router. Recent projects come from your server or storage, most recent first.",
+      "More projects than a page holds: pass `search` and `onSearchChange` and give the server's matches as `projects`; the list filters nothing itself then.",
+      "New project shows only with `onCreate`: leave it out for a viewer who may not create one.",
     ],
   },
   "evidence-panel": {
@@ -1997,6 +2039,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` `→`", "Move to the earlier or later stretch"],
     ["`Home` / `End`", "First or last stretch"],
   ],
+  "project-switcher": [
+    ["`Enter` / `Space`", "On the trigger, open the list with the search box focused"],
+    ["`↑` `↓`", "Move through recent, the projects, View all and New project"],
+    ["`Enter`", "Switch to the highlighted project, or run View all or New project"],
+    ["`Esc`", "Close and return focus to the trigger"],
+  ],
   "permission-gate": [
     ["`Tab`", "A disabled action stays a Tab stop and shows its reason while focused"],
     ["`Enter` / `Space`", "On a disabled action, shows the reason; the action does not run"],
@@ -2147,7 +2195,7 @@ const ordered = [
   ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer", "marker"],
   ...["status-glyph", "status-eyebrow", "freshness-stamp", "desired-state", "badge", "tier-badge", "meter", "metric-card"],
   ...["search-field", "filters", "filter-form", "chip-group", "facets"],
-  ...["input", "input-group", "number-field", "textarea", "label", "field", "form", "checkbox", "radio-group", "switch", "choice-field", "select"],
+  ...["input", "input-group", "number-field", "textarea", "label", "field", "form", "checkbox", "radio-group", "switch", "choice-field", "select", "quota-field", "all-or-some-field", "scope-picker"],
   ...["segmented-control", "toggle-group", "toggle", "slider", "autocomplete", "input-otp", "phone-input", "questionnaire"],
   ...["graph", "icon-tile", "avatar", "timeline", "trace", "evidence-panel"],
   ...["chart", "streaming-chart", "share-bar", "bar-list", "heartbeat-strip"],

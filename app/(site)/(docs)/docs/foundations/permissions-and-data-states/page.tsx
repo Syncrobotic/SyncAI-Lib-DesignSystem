@@ -75,6 +75,11 @@ const controlled = [
   ["settings-page", "SettingsPageContent"],
   ["device-enrolment", "DeviceEnrolmentContent"],
   ["device-detail", "DeviceDetailContent"],
+  ["offline-licence", "OfflineLicenceContent"],
+  ["project-members", "ProjectMembersContent"],
+  ["permission-matrix", "PermissionMatrixContent"],
+  ["webhook-deliveries", "WebhookDeliveriesContent"],
+  ["tenant-admin", "TenantAdminContent"],
   ["status-pages", "NotFoundPage, NoAccessPage, ErrorPage"],
 ] as const
 

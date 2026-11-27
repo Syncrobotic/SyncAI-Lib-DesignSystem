@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.51.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.57.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /* SYNCROBOTIC theme: tokens for shadcn/ui on Tailwind CSS v4.
    Install: in globals.css, @import this file after @import "tailwindcss", then delete the :root / .dark / @theme inline
    blocks shadcn init generated. Light is :root and the default; dark is class="dark" on <html> (offer ThemeToggle).
@@ -6,6 +6,10 @@
    Colour is for what is abnormal: states are grey, blue (--info) only marks a process someone is waiting on, solid red
    (--stop) is the emergency stop only, green confirms what just happened. Full rules: the Colour foundation
    (/docs/foundations/color). */
+
+/* Brand layer: a product swaps only primary, primary-foreground, ring and chart-1, by setting --brand-<token> (light)
+   and --brand-<token>-dark on :root after this file. Unset, each falls back to the kit's own value. High contrast keeps
+   the kit's ink. Contrast each brand value must reach: /docs/tokens#brand. Every other token is semantic and fixed. */
 
 /* ---------- Light ---------- */
 :root {
@@ -15,8 +19,8 @@
   --card-foreground: var(--foreground);
   --popover: #ffffff;
   --popover-foreground: var(--foreground);
-  --primary: #09090b;
-  --primary-foreground: #ffffff;
+  --primary: var(--brand-primary, #09090b);
+  --primary-foreground: var(--brand-primary-foreground, #ffffff);
   --secondary: #e6e6ea;
   --secondary-foreground: var(--foreground);
   --muted: #e6e6ea;
@@ -28,7 +32,7 @@
   /* The edge of anything you fill in or tick (field, checkbox, radio, switch off): 3:1 on the card, the page and a muted tile
      (WCAG 1.4.11), because on a card the edge is all that shows where the control is. Dividers stay --border. */
   --input: #80808a;
-  --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
+  --ring: var(--brand-ring, var(--foreground)); /* focus is not a status: the ink colour, never the in-progress blue */
   --disabled: #74747c; /* disabled text: 3:1 on the page, cards and a muted track, still clearly lighter than secondary text */
   /* Tracks and quiet shapes: the unfilled part of a slider, progress, meter or ring, a skeleton bone, an avatar with no
      picture, a resize grip, the blocks of an illustration. 1.5:1 on the card and the page, so the shape reads as a shape;
@@ -70,14 +74,14 @@
      5 baseline (a plan or earlier period, always dashed). Bars and stacks keep a 2 px card-coloured gap.
      In every mode slots 1–3, and 3 beside 4, differ by ΔE 15 or more, also under red-green colour blindness, and 1–3
      reach 3:1. Status hues are never a series. See the Data visualisation foundation. */
-  --chart-1: #5347a8;
+  --chart-1: var(--brand-chart-1, #5347a8);
   --chart-2: #3a3a3f;
   --chart-3: #67676c;
   --chart-4: #939499;
   --chart-5: var(--chart-3);
   /* Ink for numbers and words drawn on a chart colour (a value inside a bar, a filled legend chip): white or near-black,
      whichever reaches 4.5:1 on that colour in this mode. Pairs with --chart-N in every block below. */
-  --chart-1-foreground: #ffffff;
+  --chart-1-foreground: var(--brand-chart-1-foreground, #ffffff);
   --chart-2-foreground: #ffffff;
   --chart-3-foreground: #ffffff;
   --chart-4-foreground: #09090b;
@@ -131,8 +135,8 @@
   /* One step above the card: in the dark a shadow barely shows, so a menu or dialog over a card is told apart by its fill
      as well as its edge. */
   --popover: #1c1c21;
-  --primary: #fafafa;
-  --primary-foreground: #09090b;
+  --primary: var(--brand-primary-dark, #fafafa);
+  --primary-foreground: var(--brand-primary-foreground-dark, #09090b);
   --secondary: #25252b;
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
@@ -140,7 +144,7 @@
   --destructive: #f87583;
   --border: #2c2c32;
   --input: #72727a;
-  --ring: var(--foreground);
+  --ring: var(--brand-ring-dark, var(--foreground));
   --disabled: #80808a;
   --track: #3f3f46;
   --thumb: #ffffff;
@@ -160,12 +164,12 @@
   --stop-deep: #7f1d1d;
 
   /* The order of emphasis turns over: the strong graphite is the lightest grey, Other the darkest. */
-  --chart-1: #8986de;
+  --chart-1: var(--brand-chart-1-dark, #8986de);
   --chart-2: #edeef4;
   --chart-3: #babac0;
   --chart-4: #68686e;
   --chart-5: var(--chart-3);
-  --chart-1-foreground: #09090b;
+  --chart-1-foreground: var(--brand-chart-1-foreground-dark, #09090b);
   --chart-2-foreground: #09090b;
   --chart-3-foreground: #09090b;
   --chart-4-foreground: #ffffff;
