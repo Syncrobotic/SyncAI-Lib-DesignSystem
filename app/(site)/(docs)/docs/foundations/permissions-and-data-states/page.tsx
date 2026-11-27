@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Code, DocHeader, Pager, Section, TokenTable } from "@/site/doc"
 import { Stage } from "@/site/examples"
 import { metaFor, neighbours } from "@/site/foundations"
+import { blockHref } from "@/site/block-types"
 import { Inline, Rules, textLink } from "@/site/prose"
 
 export const metadata: Metadata = metaFor("permissions-and-data-states")
@@ -61,6 +62,19 @@ const states = [
   { state: "stale", when: "The data in hand is older than it should be: a refresh failed, or an update has not arrived.", how: "Keep the content; a notice above says how old it is, with Try again." },
   { state: "ready", when: "Fresh data.", how: "The content alone. Calm states stay grey." },
 ]
+
+const controlled = [
+  ["fleet-table", "FleetTableContent"],
+  ["users-roles", "UsersRolesContent"],
+  ["users-invitations", "UsersInvitationsContent"],
+  ["users-audit-log", "UsersAuditLogContent"],
+  ["settings-api-keys", "SettingsApiKeysContent"],
+  ["settings-webhooks", "SettingsWebhooksContent"],
+  ["settings-sessions", "SettingsSessionsContent"],
+  ["notification-center", "NotificationCenterContent"],
+  ["settings-page", "SettingsPageContent"],
+  ["status-pages", "NotFoundPage, NoAccessPage, ErrorPage"],
+] as const
 
 export default function PermissionsAndDataStatesPage() {
   return (
@@ -141,6 +155,22 @@ export default function PermissionsAndDataStatesPage() {
             [item("step-up-dialog"), "The check itself: a code or the password through your `verify()`."],
             [item("use-step-up"), "Holds the action on a step-up code and replays it after the check."],
           ].map(([a, b]) => [a, <Inline key="b" text={b as string} />])}
+        />
+      </Section>
+
+      <Section
+        id="controlled-blocks"
+        title="Blocks that take them"
+        lead="These blocks export a `…Content` that renders only from props: a page and its `total`, the query out through `onQueryChange`, a data state, `can`, callbacks that return promises, and `labels`."
+      >
+        <TokenTable
+          head={["Block", "Content"]}
+          rows={controlled.map(([name, content]) => [
+            <Link key="b" href={blockHref(name)} className={`${textLink} font-mono text-xs`}>
+              {name}
+            </Link>,
+            <Code key="c">{content}</Code>,
+          ])}
         />
       </Section>
 
