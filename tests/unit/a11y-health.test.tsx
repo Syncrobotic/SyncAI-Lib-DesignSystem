@@ -112,8 +112,8 @@ const tick = (ms = 10) =>
 describe("names without stray punctuation", () => {
   it("names the stop with its tag in one string, with no screen-reader-only separator", () => {
     render(<StopButton tag="All robots" onStop={() => {}} />)
-    const stop = screen.getByRole("button", { name: "Emergency stop, All robots" })
-    expect(stop.getAttribute("aria-label")).toBe("Emergency stop, All robots")
+    const stop = screen.getByRole("button", { name: "Emergency stop All robots" })
+    expect(stop.getAttribute("aria-label")).toBe("Emergency stop All robots")
     expect(stop.querySelector(".sr-only")).toBeNull()
   })
 

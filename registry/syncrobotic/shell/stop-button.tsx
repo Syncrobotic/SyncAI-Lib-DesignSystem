@@ -86,8 +86,8 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
   const Icon = icons[state]
   const pale = state === "idle"
   const disabled = state === "dead"
-  // Named in one string: a screen-reader-only ", " is positioned, so name computation reads it as "stop , 7F3A".
-  const name = tag ? [holdingAll ? l.holdAll : l[state], (holdingAll || !disabled) && tag].filter(Boolean).join(", ") : undefined
+  // Named in one string, the visible words in order with the space between them in the DOM (WCAG 2.5.3).
+  const name = tag ? [holdingAll ? l.holdAll : l[state], (holdingAll || !disabled) && tag].filter(Boolean).join(" ") : undefined
 
   return (
     <button
@@ -111,12 +111,14 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
       <span className={cn("relative flex items-center gap-2", holdingAll && "invisible")}>
         <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
         <span className="text-lg font-bold">{l[state]}</span>
+        {tag && !disabled && " "}
         {tag && !disabled && <Tag tag={tag} className={pale ? "ring-1 ring-danger ring-inset" : state === "bluetooth-sent" ? "ring-1 ring-white ring-inset" : "bg-stop-deep"} />}
       </span>
       {holdingAll && (
         <span className="absolute inset-0 flex items-center justify-center gap-2">
           <Square aria-hidden="true" className="size-5" strokeWidth={2} />
           <span className="text-lg font-bold">{l.holdAll}</span>
+          {tag && " "}
           {/* The hold fill passes under it: a deep-red tag would vanish there, so it takes a white outline. */}
           {tag && <Tag tag={tag} className="ring-1 ring-white ring-inset" />}
         </span>
