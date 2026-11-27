@@ -4,8 +4,8 @@ import { AppShell, sampleNav, sampleSearch } from "@/registry/syncrobotic/blocks
 import { AppShellMobileTabs } from "@/registry/syncrobotic/blocks/app-shell-mobile-tabs"
 import { Questionnaire } from "@/registry/syncrobotic/ui/questionnaire"
 
-// Items install as source and take their lists as props, so an empty list is a real input. Each of these used to throw
-// on the first element of an empty list (found by compiling the registry with noUncheckedIndexedAccess).
+// Items install as source and take their lists as props, so an empty list is a real input: none may throw on reading
+// the first element of an empty list (noUncheckedIndexedAccess finds these).
 describe("empty lists", () => {
   afterEach(cleanup)
 

@@ -1,4 +1,4 @@
-// @syncrobotic/chip-group v0.40.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
+// @syncrobotic/chip-group v0.51.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,9 +7,8 @@ import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 
 /**
- * Attributes spread on one chip's button or link: `data-*` hooks for tests and analytics, `title`, `aria-describedby`.
- * The group's own (`href`, the chosen state, `aria-current`, `aria-pressed`) win over them; `className` is added to the
- * chip's.
+ * Attributes for one chip's button or link (`data-*`, `title`, `aria-describedby`). The group's own (`href`, the chosen
+ * state, `aria-current`, `aria-pressed`) win; `className` is added.
  */
 export type ChipProps = Omit<React.HTMLAttributes<HTMLElement>, "children"> & {
   [data: `data-${string}`]: string | number | boolean | undefined
@@ -96,10 +95,8 @@ type ChipGroupMultiple = {
 export type ChipGroupProps = ChipGroupBase & (ChipGroupSingle | ChipGroupMultiple)
 
 /**
- * One choice among several, or any number with `type="multiple"`, as a row of chips with how many results each gives: a
- * facet, a level, a saved view. Long rows fold after `max` chips behind "N more"; chosen chips always stay visible.
- * Chips with `href` are links (the chosen one is marked with aria-current; with several chosen, each says "selected"),
- * so a filter can live in the URL and work without JavaScript.
+ * One choice (or several, `type="multiple"`) as a row of chips with their result counts: a facet, a level, a saved view.
+ * Past `max` chips fold behind "N more" (chosen ones stay). Chips with `href` are links, so a filter works without JS.
  */
 export function ChipGroup({
   items,

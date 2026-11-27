@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.40.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.51.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,19 +25,11 @@ import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { pad } from "@/registry/syncrobotic/lib/math"
 
 /*
-  A log viewer for robot and system logs (ROS /rosout, journald, a service's own lines): a virtual list that stays smooth
-  with 100,000 lines, follows the newest line until someone scrolls up, and keeps at most `maxLines` in a ring buffer.
-
-  Data comes in two ways. `lines` is an array prop: one that only grows (or a new array with more lines at the end)
-  appends, anything else replaces. For a stream, append outside React: `createLogBuffer()` (pass it as `buffer`, append
-  from a ROS callback) or the `ref` handle's `append`. Appends are batched (every 100 ms by default), so a topic at
-  1,000 lines a second renders ten times a second, not a thousand.
-
-  Accessibility: a grid, not role="log". A log region announces every line added to it, and a virtual list adds and
-  removes lines as it scrolls, so it would read the log aloud while someone scrolls. A grid names its size
-  (aria-rowcount) and each line's place in it (aria-rowindex) although only the lines in view exist, and gives the
-  keyboard one Tab stop with the arrow keys inside. New lines are announced on their own, at most every 5 s, and only
-  errors by default (`announce`).
+  `lines` that only grow append; anything else replaces. For a stream, append outside React through `createLogBuffer()`
+  (as `buffer`) or the ref's `append`; appends are batched every 100 ms, so 1,000 lines a second renders ten times.
+  A grid, not role="log": a log region announces every line added, and a virtual list adds lines as it scrolls, so it
+  would read aloud while someone scrolls. The grid names its size (aria-rowcount, aria-rowindex) and is one Tab stop; new
+  lines are announced at most every 5 s, errors only by default (`announce`).
 */
 
 // ---------- Lines and levels ----------
@@ -62,9 +54,8 @@ export type LogLine = {
 }
 
 /**
- * Each level by shape and word, the kit's status language: colour only on the glyph and the word, never on the row.
- * Debug and info are calm (grey), told apart by shape; warn is warning; error and fatal are danger, told apart by shape
- * (a circle, the critical octagon) and fatal's bold word.
+ * Each level by shape and word; colour only on the glyph and word, never the row. Debug and info are grey, warn is warning,
+ * error and fatal are danger, told apart by shape and fatal's bold word.
  */
 export const logLevel: Record<LogLevel, { icon: LucideIcon; text: string; rank: number }> = {
   debug: { icon: Bug, text: "text-muted-foreground", rank: 0 },
@@ -235,9 +226,8 @@ export type LogBuffer = {
 const zeroCounts = (): Record<LogLevel, number> => ({ debug: 0, info: 0, warn: 0, error: 0, fatal: 0 })
 
 /**
- * A ring buffer of log lines outside React. Keeps the newest `maxLines` (default 10,000) and drops the oldest; numbers
- * every line in order (its sequence number), so a line keeps its identity while older ones are dropped. Appends are
- * queued and committed at most every `flushMs` (default 100; 0 commits at once), then subscribers are told once.
+ * A ring buffer of log lines outside React: keeps the newest `maxLines` (10,000) and numbers every line, so a line keeps
+ * its identity as older ones drop. Appends commit at most every `flushMs` (100; 0 is at once), then subscribers hear once.
  */
 export function createLogBuffer(options: { maxLines?: number; flushMs?: number; lines?: readonly LogLine[] } = {}): LogBuffer {
   let cap = Math.max(1, Math.floor(options.maxLines ?? 10_000))
@@ -508,9 +498,8 @@ type Props = {
 }
 
 /**
- * Robot and system logs: a virtual list that stays smooth with 100,000 lines, filtered by level and source, searched with
- * the matches marked, following the newest line until someone scrolls up ("12 new · Jump to latest"). Each line opens to
- * show its whole message and fields; lines are copied one at a time or as a selection.
+ * Robot and system logs: a virtual list smooth at 100,000 lines, filtered by level and source, searched with matches
+ * marked, following the newest line until someone scrolls up. Each line opens to its whole message and fields.
  */
 export function LogViewer({
   lines,
@@ -972,11 +961,9 @@ function LogRows({
   /** Scrolled to the top when the rows first mount (the first line opened by `defaultExpanded`). */
   initialSeq: number | null
 }) {
-  // TanStack Virtual answers through methods on one virtualizer object that reads live scroll state, so the compiler must
-  // not cache this component's calls to it, as with data-grid's table. The compiler 1.0 already skips a component that
-  // calls useVirtualizer (a library it knows to be incompatible); "use no memo" says so here, so it stays skipped if that
-  // list changes. Everything that does not touch the virtualizer lives in LogViewer, which compiles.
-  // tests/unit/log-viewer.compiler.test.tsx runs both compiled.
+  // TanStack Virtual answers through methods on one live virtualizer object, so the compiler must not cache them (as with
+  // data-grid). Compiler 1.0 already skips useVirtualizer; "use no memo" keeps it so. Everything else lives in LogViewer,
+  // which compiles. tests/unit/log-viewer.compiler.test.tsx runs both compiled.
   "use no memo"
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const anchor = React.useRef<{ seq: number; offset: number } | null>(null)
@@ -993,7 +980,7 @@ function LogRows({
     rowPx.current = narrow ? Math.max(row, 60) : row
   }, [])
   // Both stay the same function until the lines change. TanStack Virtual rebuilds every line's measurement whenever its
-  // options change, which at 100,000 lines on each scroll frame was the whole cost of scrolling.
+  // options change, which at 100,000 lines on each scroll frame is the whole cost of scrolling.
   const getItemKey = React.useCallback((i: number) => seqs[i] ?? i, [seqs])
   const estimateSize = React.useCallback(() => rowPx.current, [])
   // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Virtual's useVirtualizer, kept out of the compiler on purpose.

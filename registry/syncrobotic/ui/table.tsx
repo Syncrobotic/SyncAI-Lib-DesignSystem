@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.50.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.51.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -33,9 +33,8 @@ export function useScrollEdges(ref: React.RefObject<HTMLElement | null>) {
 }
 
 /**
- * The cue that a box scrolls sideways: its content fades out at each end that still hides columns. A mask, so whatever
- * is behind shows through (a grey header row fades to the card, a white row to the card): no coloured smear over the
- * rows and nothing painted over the frame's edge. Put it on the scrolling box; draw the edge on a box around it.
+ * The cue that a box scrolls sideways: content fades at each end that hides columns. A mask, so the background shows
+ * through with no smear over the rows. Put it on the scrolling box; draw the edge on a box around it.
  */
 export function scrollFadeMask({ start, end }: { start: boolean; end: boolean }): React.CSSProperties | undefined {
   if (!start && !end) return undefined
@@ -44,10 +43,8 @@ export function scrollFadeMask({ start, end }: { start: boolean; end: boolean })
 }
 
 /**
- * Dense data for dashboards. Numbers are tabular by default; right-align numeric columns. Give phones their own layout
- * first (hide secondary columns below sm, stack them under the first cell); a table that still scrolls fades on the
- * side that hides columns. `bare` inside something that is already a surface (a card, a sheet, a panel): no edge of its
- * own, only the hairlines between rows, so edges never nest.
+ * Dense data for dashboards; numbers are tabular, right-align numeric columns. Give phones their own layout first; a table
+ * that still scrolls fades on the hidden side. `bare` inside a surface: only the hairlines between rows, so edges never nest.
  */
 export function Table({ className, bare, ...props }: React.ComponentProps<"table"> & { bare?: boolean }) {
   const scroller = React.useRef<HTMLDivElement>(null)
@@ -143,9 +140,8 @@ export function TableCell({ className, ...props }: React.ComponentProps<"td">) {
 }
 
 /**
- * The last cell of a row, holding its ⋯ menu (`DropdownMenuMoreTrigger` with the row's name) or one or two icon buttons:
- * as narrow as what it holds, at the row's end. On phones it gives its start padding to the cell before it and keeps
- * 8 px at the end, so the ⋯ lines up down the table on every width.
+ * The last cell, holding the row's ⋯ menu or one or two icon buttons, as narrow as its content. On phones it keeps 8 px at
+ * the end, so the ⋯ lines up down the table at every width.
  */
 export function TableActionsCell({ className, ...props }: React.ComponentProps<"td">) {
   return <td data-slot="table-actions-cell" className={cn("h-(--h-row) w-0 pr-2 pl-0 text-right align-middle whitespace-nowrap sm:px-4", className)} {...props} />

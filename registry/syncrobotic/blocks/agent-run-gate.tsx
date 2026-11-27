@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-gate v0.50.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
+// @syncrobotic/agent-run-gate v0.51.0 · update: npx shadcn add @syncrobotic/agent-run-gate --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,14 +18,10 @@ import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 import { Trace, TraceItem, type TraceStatus } from "@/registry/syncrobotic/ui/trace"
 
 /*
-  An agent run, step by step, that stops before a step that would move robots and waits for a person. The gate sits in
-  the run, under the step it holds: what it will change robot by robot, why, the facts it used, and when it expires.
-  Approve and the run goes on; Revise sends it back to the agent with a reason and the run keeps waiting; Deny skips the
-  held step and every step that depends on it, with the reason, and the steps that do not depend on it still run.
-
-  The run here is a script, so the block works without an agent: after a decision each step runs for STEP_MS and settles
-  to its `result`. Replace that with your run's events (set a step's status as they arrive). It is deterministic, and
-  under reduced motion the steps after a decision settle at once instead of one by one.
+  An agent run that stops before a step that would move robots and waits for a person: what it will change, why, and
+  when it expires. Approve continues; Revise sends it back with a reason; Deny skips that step and the steps that depend
+  on it. The run is a script so the block works without an agent: each step runs for STEP_MS and settles to its
+  `result`. Replace that with your run's events (set a step's status as they arrive).
 */
 
 /** One robot the held step would change: what it does now and what it will do after. */

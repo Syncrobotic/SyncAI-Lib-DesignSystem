@@ -1,15 +1,10 @@
-// @syncrobotic/data-grid v0.50.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.51.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
-// The React Compiler must leave this file alone, and "use no memo" above tells it so. TanStack Table 9 keeps one table,
-// row, column and header object for the table's whole life and answers through methods (row.getIsSelected(),
-// column.getIsSorted(), column.getIsResizing(), row.getIsExpanded()) that read its store. A compiled component caches
-// those calls against the object, which never changes, so the checkboxes, sort arrows, resize handles and details
-// would stop following the state. Left uncompiled, every part re-reads them each time it renders, and it renders
-// whenever useTable hands DataGrid a new table, which it does on every state change. DataGrid memoizes its context by
-// hand instead, so the parts skip renders that do not change the table or the grid's own props.
-// tests/unit/data-grid.compiler.test.tsx compiles this file with the compiler and checks that the grid still updates.
+// "use no memo": TanStack Table 9 keeps one table, row and column object for life and answers through methods that read
+// its store (row.getIsSelected()). The React Compiler would cache those calls against the unchanging object, so state
+// would stop showing. DataGrid memoizes its context by hand instead. tests/unit/data-grid.compiler.test.tsx guards it.
 
 import * as React from "react"
 import {
@@ -67,12 +62,9 @@ const gridFeatures = tableFeatures({
 export type DataGridFeatures = typeof gridFeatures
 
 /**
- * Everything a table needs for DataGrid: the features its parts call (sorting, pagination, selection, expanding, column
- * visibility, pinning, sizing and resizing) and the sort functions that a column's automatic sort picks from, which
- * Table 9 no longer bundles (text, mixed text and numbers, dates; numbers need none). Spread it into your table's
- * features and add the row models you want:
- * `tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel(), paginatedRowModel: createPaginatedRowModel() })`.
- * With sort functions of your own, keep these beside them: `sortFns: { ...dataGridFeatures.sortFns, byBattery }`.
+ * The features DataGrid's parts call, plus the text, mixed and date sort functions Table 9 does not bundle. Spread it into
+ * your features and add row models: `tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel() })`.
+ * With sort functions of your own: `sortFns: { ...dataGridFeatures.sortFns, byBattery }`.
  */
 export const dataGridFeatures = tableFeatures({
   ...gridFeatures,
@@ -169,15 +161,10 @@ const useGrid = () => {
 }
 
 /**
- * A data table on TanStack Table 9: sorting, pagination, selection, column visibility, pinning and resizing, expandable
- * rows, totals, a loading state, and virtual scrolling for thousands of rows. You build the table with useTable, with
- * dataGridFeatures among its features, and these parts draw it in the kit's style: rows 56 px (44 dense), numbers
- * tabular and right-aligned, selection on the accent fill. For a handful of static rows, Table is enough.
- *
- * Pass useTable data and columns that keep their identity between renders (module scope or useMemo): a new array on
- * every render recomputes the rows, TanStack auto-resets state, and the component renders again without end. Keep
- * useTable's default state selector, or one that selects every slice the grid shows: the grid redraws when the table
- * you pass changes, and a narrower selector leaves it showing old state.
+ * A data table on TanStack Table 9 (sorting, pagination, selection, pinning, resizing, expanding, virtual scrolling); build
+ * it with useTable and dataGridFeatures. For a handful of static rows, Table is enough. Keep `data` and `columns` stable
+ * between renders (a new array re-renders without end), and keep useTable's default state selector: a narrower one leaves
+ * the grid showing old state.
  */
 export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>({
   table,
@@ -236,9 +223,8 @@ function resizeBy(c: GridColumn, delta: number) {
 }
 
 /**
- * A column's right edge, to drag or to move with the keyboard: a focusable separator (Tab reaches it, ← and → move it
- * 16 px, Shift 64 px, Home and End to its limits, Enter or a double-click back to its first width). The line is 4 px;
- * the area that answers the pointer is 24 px, and 44 px (--h-md) on touch, centred on the edge.
+ * A column's right edge as a focusable separator: ← → move it 16 px (Shift 64), Home and End to its limits, Enter or a
+ * double-click resets it. The line is 4 px; the hit area 24 px, 44 px on touch.
  */
 function ResizeHandle({ column, handler, label: l }: { column: GridColumn; handler: (e: unknown) => void; label: DataGridLabels }) {
   const size = column.getSize()
@@ -294,9 +280,8 @@ function ResizeHandle({ column, handler, label: l }: { column: GridColumn; handl
 }
 
 /**
- * The scrolling box's fade (Table's scrollFadeMask), starting where the pinned columns end rather than at the frame's
- * edge: the pinned columns stay solid and the rows scrolling out from behind them fade in. The offsets are the
- * --fade-start and --fade-end variables, set only where pinning holds.
+ * Table's scroll fade, starting where the pinned columns end, so they stay solid and rows fade in from behind them. The
+ * offsets are --fade-start and --fade-end, set only where pinning holds.
  */
 function pinnedFadeMask({ start, end }: { start: boolean; end: boolean }): React.CSSProperties | undefined {
   if (!start && !end) return undefined
@@ -351,12 +336,9 @@ export function DataGridTable({
   // When the grid scrolls sideways its totals are usually off to the side, so they are written out in one row that stays
   // in view. Whether it scrolls depends on the space it is given (a card, a tablet, a phone), not on the screen's width.
   const overflows = edges.start || edges.end
-  // Table 9 pins to the logical start and end, so the offsets go on the inline start and end: the same as left and right
-  // in a left-to-right page, and mirrored in a right-to-left one.
-  //
-  // Pinning holds only where the grid is at least 448 px wide (@md on the frame). On a phone two pinned columns fill
-  // the screen and leave nothing to scroll, so there every column scrolls. The offset is a variable the classes read,
-  // since an inline style cannot ask the container's width.
+  // Pinning is to the logical start and end, so it mirrors in a right-to-left page. It holds only from 448 px of grid
+  // (@md): on a phone two pinned columns leave nothing to scroll. The offset is a variable because an inline style cannot
+  // read the container's width.
   const pinStyle = (c: GridColumn) => {
     const p = c.getIsPinned()
     if (!p) return undefined
@@ -736,10 +718,8 @@ function SubRow({ row, cols, render }: { row: GridRow; cols: number; render?: (r
 }
 
 /**
- * A checkbox column for row selection; the header box selects the page. `selectColumn<Robot>()` fits a table built on
- * dataGridFeatures; with features of your own, name them too: `selectColumn<Robot, typeof features>()`. A row that
- * enableRowSelection turns away gets a grey box that says why: give `reason` ("Offline robots cannot be selected"),
- * read by screen readers and shown on hover; say it on the page too, beside the grid.
+ * A selection checkbox column; the header box selects the page. With your own features: `selectColumn<Robot, typeof
+ * features>()`. A row enableRowSelection refuses gets a grey box; give `reason` (read out and shown on hover).
  */
 export function selectColumn<T extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures>({
   reason,

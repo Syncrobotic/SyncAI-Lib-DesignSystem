@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.50.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.51.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -69,14 +69,9 @@ const defaultLabels: GraphLabels = {
 export type GraphOrientation = "horizontal" | "vertical"
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Layout: a small layered (Sugiyama) layout, enough for up to about 60 nodes. Bigger graphs need a dedicated library
-// (elkjs, dagre) and panning; this one has neither on purpose.
-//   1. Cycles are broken (an edge that closes one is dropped, with a warning in development).
-//   2. Layers by longest path from the sources; a source is then pulled next to its first output.
-//   3. An edge spanning several layers gets a dummy point in each, so it is routed between boxes, never through one.
-//   4. Order in each layer: barycenter sweeps down and up, keeping the order with the fewest crossings.
-//   5. Position across the layers: each item moves toward the mean of its neighbours, keeping the order and the gaps
-//      (the closest such placement, solved exactly by pooling adjacent violators).
+// Layout: a small layered (Sugiyama) layout for up to about 60 nodes; bigger graphs need elkjs or dagre. Cycles are
+// broken; layers by longest path; dummy points route long edges between boxes; barycenter sweeps order each layer; then
+// each item moves toward its neighbours' mean, keeping order and gaps (solved exactly by pooling adjacent violators).
 // ---------------------------------------------------------------------------------------------------------------------
 
 /** Box sizes and gaps in px. 208 × 64 fits a name and one line of meta or status; 64 between columns leaves room for curves. */
@@ -93,7 +88,7 @@ export type GraphLayout = { nodes: GraphLayoutNode[]; edges: GraphLayoutEdge[]; 
 // carry their own `!` for the same reason.
 const nth = <T,>(list: readonly T[], i: number): T => list[i] as T
 
-// Declared here, not taken from @types/node: TypeScript 6 no longer loads every installed @types package, so a product
+// Declared here, not taken from @types/node: TypeScript 6 does not load every installed @types package, so a product
 // need not have Node's types for this item to compile. Bundlers still replace process.env.NODE_ENV in place.
 declare const process: { env: { NODE_ENV?: string } }
 
@@ -438,11 +433,9 @@ export type GraphProps = {
 const frame = "relative w-full rounded-md bg-card ring-1 ring-border"
 
 /**
- * A directed acyclic graph: lineage (a dataset, the label sets it was built from, their raw captures), a training run's
- * inputs and outputs, a mission's steps. Nodes are boxes laid out in columns, inputs to the left; edges are neutral lines
- * under them. Selecting a node (or pointing at it, or moving to it with the keys) draws its upstream and downstream path
- * in the ink colour and quiets the rest. One Tab stop; the arrow keys move along the edges. Every node's name says what
- * it comes from and what it goes to, and GraphList shows the same graph as text.
+ * A directed acyclic graph (lineage, a training run's inputs and outputs, a mission's steps), inputs to the left.
+ * Selecting or pointing at a node highlights its upstream and downstream path. One Tab stop; arrow keys follow edges.
+ * Offer GraphList beside it as the text view.
  */
 export function Graph({
   nodes,
@@ -780,9 +773,8 @@ function Viewport({ children }: { children: React.ReactNode }) {
 export type GraphListProps = Pick<GraphProps, "nodes" | "edges" | "label" | "empty" | "loading" | "linkAs" | "labels" | "className">
 
 /**
- * The same graph as text: every node in reading order (inputs before what they feed), with its state, meta, inputs and
- * outputs. Offer it beside every Graph (a Graph / List switch), as charts offer a table: for screen readers, for exact
- * names, and on a phone, where it reads without scrolling sideways.
+ * The same graph as text, in reading order, with each node's state, inputs and outputs. Offer it beside every Graph (a
+ * Graph / List switch), as charts offer a table.
  */
 export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet.", loading, linkAs: Link = "a", labels: given, className }: GraphListProps) {
   const labels = { ...defaultLabels, ...given, status: { ...defaultLabels.status, ...given?.status } }

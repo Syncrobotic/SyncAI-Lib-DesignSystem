@@ -1,4 +1,4 @@
-// @syncrobotic/theme-toggle v0.32.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
+// @syncrobotic/theme-toggle v0.51.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
 "use client"
 
 import { Monitor, Moon, Sun } from "lucide-react"
@@ -16,10 +16,9 @@ const swap = "absolute size-5 transition-[rotate,scale,opacity] duration-(--moti
 const notSystem = "group-data-[choice=system]:scale-60 group-data-[choice=system]:opacity-0"
 
 /**
- * Light, follow the system, or dark. `segmented` (the default): three icon segments, the current one inverted, each named
- * for screen readers and shown as a tooltip. `menu`: one icon button showing the choice, which opens the three as a menu
- * with their names, for a crowded top bar or a phone. Bring your own theme state (next-themes: `const { theme, setTheme } = useTheme()`). The stored
- * choice is only known in the browser, so pass `undefined` until mounted and nothing is shown as selected.
+ * Light, system or dark: `segmented` (default, three named icon segments) or `menu` (one icon button, for a crowded bar).
+ * Bring your own theme state (next-themes' `useTheme()`); pass `undefined` until mounted, since the choice is known only in
+ * the browser.
  */
 export function ThemeToggle({
   value,

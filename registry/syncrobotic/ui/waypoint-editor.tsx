@@ -1,4 +1,4 @@
-// @syncrobotic/waypoint-editor v0.40.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
+// @syncrobotic/waypoint-editor v0.51.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,9 +17,8 @@ import { toast } from "@/registry/syncrobotic/ui/toast"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /**
- * Where a waypoint is. `plan`: metres on a robot-map plan, from its top-left corner, x right and y down (robot-map's
- * coordinates). `geo`: latitude and longitude in degrees (WGS 84), for a geographic map; the editor lists, edits and
- * measures them, but draws only `plan` waypoints on its map.
+ * Where a waypoint is: `plan`, metres from a robot-map plan's top-left (x right, y down), or `geo`, WGS 84 degrees. Both
+ * are listed and edited; only `plan` is drawn on the map.
  */
 export type WaypointCoordinate = { kind: "plan"; x: number; y: number } | { kind: "geo"; lat: number; lon: number }
 
@@ -401,11 +400,8 @@ export type WaypointEditorProps = {
 }
 
 /**
- * A robot's route as an ordered list of waypoints, edited in a list and on robot-map together: each waypoint a name, a
- * place, an optional heading, an action on arrival and a dwell time. Reorder by the handle (drag or keys), add by clicking
- * the map or Add waypoint, delete with Undo, duplicate. A row and its point select each other. Problems (outside the map,
- * in a keep-out zone, too close, no name) show on the row and the point, and Save says why it is disabled. The summary
- * gives the distance and, with `speed`, the time. Narrow, the list comes first and the map is a tab.
+ * A robot's route as an ordered list of waypoints, edited in a list and on robot-map together: name, place, heading,
+ * action and dwell. Problems show on the row and the point, and Save says why it is disabled. Narrow, the map is a tab.
  */
 export function WaypointEditor({
   value,

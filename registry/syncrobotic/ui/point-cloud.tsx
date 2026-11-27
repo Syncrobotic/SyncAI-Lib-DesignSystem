@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.50.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.51.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -137,11 +137,7 @@ const RAMP_STOPS = 16
  */
 const RAMP_FLOOR = 20
 
-/**
- * How often, at most, the description with the point count and the extent changes while the view stays in one state. A
- * live cloud changes them with every scan, and a screen reader that follows the description would otherwise hear them
- * at the sensor's rate.
- */
+/** The most often the point-count description changes in one state, so a screen reader does not hear it at scan rate. */
 const SUMMARY_EVERY_MS = 5000
 
 /** The extent of the finite points (a decoded PointCloud2 often carries NaN for rays that hit nothing), or null for none. */
@@ -170,9 +166,8 @@ export function pointCloudBounds(points: Float32Array): PointCloudBounds | null 
 }
 
 /**
- * The camera at `yaw` and `pitch` that shows the whole of `bounds` in a view of `aspect` (width over height), with a
- * small margin: each corner of the box is kept inside the view, so a long, flat cloud fills the view instead of the
- * sphere around it. With no bounds it frames ten metres square round the origin.
+ * The camera at `yaw` and `pitch` that keeps every corner of `bounds` in view at `aspect`, so a long flat cloud fills the
+ * view. With no bounds it frames ten metres square round the origin.
  */
 export function fitPointCloudCamera(bounds: PointCloudBounds | null, aspect: number, yaw = DEFAULT_YAW, pitch = DEFAULT_PITCH): PointCloudCamera {
   const min = bounds?.min ?? [-5, -5, 0]
@@ -307,10 +302,8 @@ export function pointCloudRampPosition(value: number, range: [number, number] | 
 }
 
 /**
- * The vertex buffer: x, y, z and the ramp position of each finite point, interleaved, so one buffer and one draw call
- * carry the whole cloud. Points with a NaN or infinite coordinate are left out. When `into` is large enough the points are
- * packed into it instead of a new array, so a live cloud of the same size does not allocate megabytes on every scan; the
- * result is then a view of `into` and is overwritten by the next pack into it.
+ * The vertex buffer: x, y, z and ramp position per finite point, interleaved, for one draw call. With `into` large
+ * enough it packs into it (no megabytes per scan); the result is then a view of `into`, overwritten by the next pack.
  */
 export function packPointCloud(
   points: Float32Array,
@@ -457,9 +450,8 @@ function easeStandard(t: number) {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// The renderer: raw WebGL2, one interleaved vertex buffer for the points and one small one for the grid and the robot.
-// It lives outside React. The component hands it data in effects and events, and it draws only when asked: after new
-// data, a resize, a theme change or a move of the camera, never in a loop.
+// The renderer: raw WebGL2, outside React. It draws only when asked (new data, a resize, a theme or camera change),
+// never in a loop.
 // ---------------------------------------------------------------------------------------------------------------------
 
 type Rgba = [number, number, number, number]
@@ -857,10 +849,8 @@ class Renderer {
 }
 
 /**
- * The CSS colours the view is drawn with: the theme's tokens, or, under forced colours (Windows High Contrast), system
- * colours, because there the theme's tokens may all resolve to one colour and the points would vanish into the
- * background. Forced colours draw the points in CanvasText on Canvas, the grid in GrayText and the robot in Highlight, so
- * the cloud stays visible in any contrast theme, in one colour, as forced colours draw everything else.
+ * The CSS colours the view draws with: the theme's tokens, or under forced colours system colours (points CanvasText on
+ * Canvas, grid GrayText, robot Highlight), where the tokens may all resolve to one colour and the points would vanish.
  */
 export function pointCloudPaletteSources(colorBy: PointCloudColorBy, forced = false) {
   if (forced) return { background: "Canvas", grid: "GrayText", robot: "Highlight", ramp: Array<string>(RAMP_STOPS).fill("CanvasText") }
@@ -974,10 +964,9 @@ export type PointCloudProps = {
 }
 
 /**
- * A LiDAR or depth point cloud, drawn with WebGL2 (no 3D library): coloured by height or intensity on the accent's single-hue
- * ramp, over a recessive ground grid, with the robot at the origin and an axes gizmo in words. Drag to orbit, the wheel
- * (once focused, or with Ctrl) or a pinch to zoom, right-drag or two fingers to pan; arrows, + − and 0 on the keyboard. It
- * draws only when something changes, so half a million points stay smooth to turn.
+ * A LiDAR or depth point cloud in WebGL2 (no 3D library), coloured by height or intensity, with the robot at the origin.
+ * Orbit, zoom and pan by pointer, touch or keys. It draws only when something changes, so half a million points stay
+ * smooth.
  */
 export function PointCloud({
   label,

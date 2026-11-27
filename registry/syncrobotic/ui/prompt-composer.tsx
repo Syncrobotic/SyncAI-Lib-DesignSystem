@@ -1,4 +1,4 @@
-// @syncrobotic/prompt-composer v0.50.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
+// @syncrobotic/prompt-composer v0.51.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,20 +10,11 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { type FileRejection, matchesAccept } from "@/registry/syncrobotic/ui/file-upload"
 
 /*
-  Where someone writes to a model or an agent: a real <form> around a text box that grows with what is written, up to
-  `maxRows`, then scrolls. Enter sends and Shift+Enter starts a new line; Enter that ends an input method's composition
-  (Zhuyin, Cangjie, Pinyin, Japanese kana: isComposing, or keyCode 229 in Safari) only commits the characters, never
-  sends half a sentence.
-
-  While the answer streams, Send becomes Stop in the same place: one button that changes its icon and its name, so it
-  never moves under a finger and keeps focus. When Send cannot send it stays focusable and says why in words (empty,
-  over the limit, waiting for the answer) instead of greying out silently.
-
-  Files: an attach button, a paste or a drop adds them to a tray of Attachment chips above the text, checked against
-  `accept`, `maxSize` and `maxFiles` like FileUpload; what is refused is said by name. They go out with the text.
-
-  No fixed positioning: the composer sits where the page puts it. To keep it above the on-screen keyboard, end a flex
-  column that is 100dvh tall with it, under a message area that scrolls (see the docs page).
+  A <form> around a text box that grows up to `maxRows`. Enter sends, Shift+Enter adds a line; Enter that ends an input
+  method's composition (isComposing, or keyCode 229 in Safari) only commits it. Send becomes Stop in place, so it never
+  moves under a finger and keeps focus; when it cannot send it stays focusable and says why. Files go in a tray of
+  Attachment chips, checked like FileUpload. No fixed positioning: to stay above the on-screen keyboard, end a 100dvh
+  flex column with it (see the docs page).
 */
 
 export type PromptComposerLabels = {
@@ -76,9 +67,8 @@ export function isComposingEnter(e: Pick<KeyboardEvent, "isComposing" | "keyCode
 type Entry = { key: number; file: File }
 
 /**
- * A message box for a conversation with a model: grows with the text, Enter sends (never during an input method's
- * composition), Shift+Enter adds a line, files go in a tray of chips, and Send becomes Stop in place while the answer
- * streams. `onSubmit(text, files)`; return false from it to keep the draft.
+ * A message box for a model: grows with the text, Enter sends, Shift+Enter adds a line, files go in a tray, and Send
+ * becomes Stop while the answer streams. Return false from `onSubmit(text, files)` to keep the draft.
  */
 export function PromptComposer({
   onSubmit,

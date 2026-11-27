@@ -1,4 +1,4 @@
-// @syncrobotic/bar-list v0.40.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
+// @syncrobotic/bar-list v0.51.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
@@ -26,10 +26,9 @@ export const defaultBarListLabels: BarListLabels = {
 }
 
 /**
- * A short ranked list of counts ("items per class", "files per format"), drawn without a chart library. Each row is its
- * label and its value in words, with a bar under it in the accent (`--chart-1`) scaled to the largest value, so the
- * numbers are in the text and it needs no table view, as a sparkline does. One series: no status colours, no colour per
- * row. A `<ul>` with no surface of its own, so it sits in a card, a table cell or a sheet; rows with `href` are links.
+ * A short ranked list of counts ("items per class") without a chart library: each row's label and value in words with an
+ * accent bar scaled to the largest, so it needs no table view. One series, one colour. A bare `<ul>`; rows with `href`
+ * are links.
  */
 export function BarList({
   items,

@@ -139,9 +139,8 @@ const totalsColumns: Col[] = [
 // whose APIs every other set here contains.
 function useGrid(data: Robot[], cols: Col[], extra: Partial<TableOptions<Features, Robot>> = {}, set: Features = features) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  // Table 9 keeps its state in a store and useTable subscribes to it, so it hands back a new table object on every
-  // change. No selector: the grid redraws when that table changes, and the React Compiler can memoize around it, so
-  // Table 8's incompatible-library suppression is no longer needed here.
+  // Table 9 keeps its state in a store and useTable hands back a new table object on every change. No selector: the
+  // grid redraws when that table changes, and the React Compiler can memoize around it (no incompatible-library escape).
   return useTable({
     features: set,
     data,

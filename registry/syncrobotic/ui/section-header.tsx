@@ -1,4 +1,4 @@
-// @syncrobotic/section-header v0.48.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
+// @syncrobotic/section-header v0.51.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
@@ -11,10 +11,8 @@ const levels = {
 } as const
 
 /**
- * The heading of a section, at one of typography's two section levels: `page` (16 px bold) for a section of the page,
- * outside the cards, and `surface` (14 px medium) for a section inside a card, a sheet or a panel. The title can carry a
- * count, written in full (1,284, never 1.2K), and a line under it; actions sit at the right and go under the title when
- * the title needs the width. A data card (a chart, a figure) opens with CardDataHeader instead; a page opens with
+ * A section heading: `page` (16 px bold, outside cards) or `surface` (14 px medium, inside a card or sheet), with an
+ * optional full count (1,284, never 1.2K), a line and actions. A data card opens with CardDataHeader; a page with
  * PageHeader.
  */
 export function SectionHeader({

@@ -1,4 +1,4 @@
-// @syncrobotic/agent-tool-permissions v0.45.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
+// @syncrobotic/agent-tool-permissions v0.51.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
 "use client"
 
 import * as React from "react"
@@ -222,10 +222,9 @@ export type AgentToolPermissionsContentProps = {
 }
 
 /**
- * Which tools each AI agent may call: Auto (on its own), Ask (a person approves each call) or Blocked, one choice per
- * tool. Tools that move a robot are never Auto, and say why. Changes collect until Save; saving one that loosens a policy
- * asks the person to confirm with their password first. Under it, the call audit: what each agent called, with what,
- * and what happened, narrowed by agent. Without the sample frame, for a product's own shell.
+ * Which tools each AI agent may call: Auto, Ask (a person approves each call) or Blocked. Tools that move a robot are
+ * never Auto. Changes collect until Save, and loosening a policy asks for the password first. Under it, the call audit.
+ * Without the sample frame, for a product's own shell.
  */
 export function AgentToolPermissionsContent({
   agents = sampleToolAgents,

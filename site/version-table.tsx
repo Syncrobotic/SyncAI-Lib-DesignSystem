@@ -28,7 +28,7 @@ export function VersionTable({ rows }: { rows: VersionRow[] }) {
             <span className="text-xs text-muted-foreground">Utility, no page</span>
           </span>
         ),
-        // In a span inside the cell's box, as it was: mono inline in a sans line, a pixel taller than a mono line of its own.
+        // In a span inside the cell's box: mono inline in a sans line, a pixel taller than a mono line of its own.
         <span key="v">{version}</span>,
         change ? <Inline key="c" text={change} /> : "",
       ])}

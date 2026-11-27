@@ -4,8 +4,8 @@ const sizes = "(min-width: 1024px) 18rem, (min-width: 768px) 45vw, 100vw"
 /**
  * A block's picture on /blocks, as /docs/components shows a component's: taken from the block's preview by
  * scripts/thumbs.mjs (npm run thumbs -- --blocks), framed 16:10, light and dark, 400 and 800 px wide. One file per theme;
- * the browser fetches only the one that shows. It used to be the live preview in an iframe, a whole copy of the site per
- * card (17 on the page) running on the page's main thread. Decorative: the card's title and description name the link.
+ * the browser fetches only the one that shows. A static image, not a live iframe (a copy of the site per card), keeps the
+ * page's main thread free. Decorative: the card's title and description name the link.
  */
 export function BlockThumb({ name }: { name: string }) {
   const src = (theme: "light" | "dark") => ({

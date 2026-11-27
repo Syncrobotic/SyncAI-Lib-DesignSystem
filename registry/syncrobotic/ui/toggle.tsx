@@ -1,4 +1,4 @@
-// @syncrobotic/toggle v0.28.0 · update: npx shadcn add @syncrobotic/toggle --overwrite
+// @syncrobotic/toggle v0.51.0 · update: npx shadcn add @syncrobotic/toggle --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,8 +15,8 @@ export function Toggle({ className, size = "md", ...props }: React.ComponentProp
         "press hover:bg-accent",
         "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:ring-primary",
         "disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4",
-        // Disabled and on stays on, like a disabled checked switch: a grey fill instead of the inverted one, so it no longer
-        // looks like a toggle you can press.
+        // Disabled and on stays on, like a disabled checked switch: a grey fill instead of the inverted one, so it does not
+        // look like a toggle you can press.
         "disabled:data-[state=on]:bg-muted-foreground disabled:data-[state=on]:text-background disabled:data-[state=on]:ring-muted-foreground",
         size === "sm" ? "h-(--h-sm)" : "h-(--h-md)",
         className,

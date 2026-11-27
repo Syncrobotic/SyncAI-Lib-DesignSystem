@@ -1,4 +1,4 @@
-// @syncrobotic/breadcrumb v0.50.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.51.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -26,12 +26,8 @@ export function Breadcrumb({
     <nav aria-label={l.nav} data-slot="breadcrumb" className={cn("min-w-0", className)} {...props}>
       <ol className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
         {items.map((child, i) => (
-          // Nothing gives way while the row has room, whatever sets its width (a stretched header, or one as wide as its
-          // content). Short of room, the middle levels give way first: they shrink far faster than the others, and keep a
-          // few letters and their ellipsis (the name never goes under 3ch). The floor is on the name, not the item, so a
-          // short name (two characters) is never padded out to it. The first level, usually one short word, goes next, and
-          // never under a third of the row or its own width, whichever is less: its width is a third, which only sets that
-          // floor (flexbox's automatic minimum), while it starts from its content. The current page takes what is left.
+          // Nothing shrinks while the row has room. Short of room the middle levels give way first (never under 3ch of the name),
+          // then the first level, down to a third of the row or its own width, whichever is less. The current page takes the rest.
           <li
             key={i}
             className={cn(

@@ -1,12 +1,10 @@
 import { ArrowLeft } from "lucide-react"
 
 /**
- * On a preview opened in its own tab (not inside the docs' frame), a way back to the block's docs: a strip above the block,
- * not a button floating over it, so it never covers the block's own controls (the stop, a form's Cancel).
- *
- * Whether the page is framed is known only in the browser. The strip is in the server's HTML, and a script that runs as
- * the HTML is parsed, before the first paint, marks a framed page, which hides it: rendered after hydration instead, it
- * pushed the whole block down 44 px on every load.
+ * On a preview opened in its own tab (not in the docs' frame), a way back to the block's docs: a strip above the block,
+ * not a button over it, so it never covers the block's own controls (the stop, a form's Cancel). The strip is in the
+ * server's HTML and a script hides it on a framed page before the first paint: rendered after hydration, it would push
+ * the block down 44 px on every load.
  */
 export function PreviewBack({ href }: { href: string }) {
   return (

@@ -1,4 +1,4 @@
-// @syncrobotic/use-debounce v0.15.1 · update: npx shadcn add @syncrobotic/use-debounce --overwrite
+// @syncrobotic/use-debounce v0.51.0 · update: npx shadcn add @syncrobotic/use-debounce --overwrite
 "use client"
 
 import * as React from "react"

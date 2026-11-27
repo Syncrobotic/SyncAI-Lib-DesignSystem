@@ -1,4 +1,4 @@
-// @syncrobotic/card v0.48.0 · update: npx shadcn add @syncrobotic/card --overwrite
+// @syncrobotic/card v0.51.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -10,9 +10,8 @@ export function Card({ className, ...props }: React.ComponentProps<"div">) {
 const mediaAspects = { video: "aspect-video", "4/3": "aspect-4/3", square: "aspect-square", auto: "" } as const
 
 /**
- * A picture on a card: a cover across the top (first in the card, edge to edge, its top corners the card's own) or,
- * `inset`, inside the padding at the image radius (12, as ImageGrid's tiles). It keeps its `aspect` before the picture
- * loads, and an `<img>` or `<video>` in it fills it (object-cover). A stretched link on the card still covers it.
+ * A picture on a card: a cover across the top, or `inset` inside the padding. It keeps its `aspect` before the picture
+ * loads; an `<img>` or `<video>` in it fills it.
  */
 export function CardMedia({
   inset = false,
@@ -71,10 +70,8 @@ export function CardFooter({ className, ...props }: React.ComponentProps<"div">)
 }
 
 /**
- * The head of a card that shows data (a chart, a heatmap, a ring, a status strip), the same on every such card: the
- * title, then the figure and summary under it, then the controls (Chart / Table, a range, a legend). In a narrow card
- * (under 28rem: a phone, a dashboard column) the controls go under the summary; in a wide one they sit at the top right.
- * The card's own width decides, not the screen's.
+ * The head of a card that shows data: title, figure and summary, then controls (Chart / Table, a range, a legend). Under
+ * 28rem of card width the controls go under the summary; wider, they sit top right.
  */
 export function CardDataHeader({
   title,

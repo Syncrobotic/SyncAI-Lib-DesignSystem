@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.50.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.51.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -105,10 +105,8 @@ type Props = {
   /** Commands per second while held. Default 10. The robot should stop by itself when they stop arriving. */
   rateHz?: number
   /**
-   * Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is
-   * reliable. A mouse held perfectly still sends no events, so it trips this too ("input lost": press again).
-   * `false` turns it off: only when the robot runs its own watchdog on the command stream (it stops when commands stop
-   * arriving), which `rateHz` keeps fed while the stick is held.
+   * Stop when no pointer event arrives for this long, in ms; default 2000 (a held key is not timed). A mouse held still trips
+   * it too ("input lost": press again). `false` only when the robot runs its own watchdog on the command stream.
    */
   timeoutMs?: number | false
   /** The robot's measured speed in m/s, shown while driving ("Driving · 0.4 m/s"). */
@@ -122,12 +120,9 @@ type Props = {
 }
 
 /**
- * Manual driving for a mobile robot: a dead-man stick. The robot moves only while the operator holds it. Letting go,
- * a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and
- * call `onStop`. While held, commands go out at a fixed rate so the robot can run its own watchdog: if they stop
- * arriving (a frozen tab, a dropped link), the robot must stop by itself. This pad cannot do that for it.
- *
- * Not an emergency stop: put the kit's StopButton beside it.
+ * Manual driving: a dead-man stick, so the robot moves only while it is held. Letting go, lost focus, a hidden page or
+ * `timeoutMs` without pointer events send a zero command and call `onStop`. Commands go out at a fixed rate so the robot
+ * can run its own watchdog, which it must: this pad cannot reach a frozen tab. Not an emergency stop: add a StopButton.
  */
 export function TeleopPad({
   onCommand,

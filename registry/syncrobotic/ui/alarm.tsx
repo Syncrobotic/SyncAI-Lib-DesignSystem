@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.40.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.51.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,9 +10,8 @@ import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 
 /**
- * Alarms follow ISA-18.2 / IEC 62682: an alarm is an abnormal condition that needs an operator action.
- * Three priorities, each with its own shape, colour and words, so priority reads without colour vision.
- * An alarm stays until the condition clears AND someone acknowledges it. It never auto-dismisses and never blinks.
+ * ISA-18.2 / IEC 62682 priorities, each with its own shape, colour and word, so priority reads without colour vision.
+ * An alarm stays until the condition clears AND someone acknowledges it; it never auto-dismisses or blinks.
  */
 export type AlarmPriority = "critical" | "high" | "low"
 
@@ -121,11 +120,9 @@ type AlarmProps = Omit<AlarmData, "id"> & {
  */
 const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1").replace(/ \u00b7 /g, "\u00a0\u00b7 ")
 
-// Light row buttons, 44 px on touch (--h-sm). Beside Acknowledge the others are ghost (ring-transparent), so the one thing
-// every unacknowledged row asks for is the only box in it; alone in a row (Unshelve) a button keeps its quiet outline.
-// The cleared bar: a column of small pills (8 px tall, 4 px apart, each with round ends), masked from the bar's own fill.
-// `round` fits a whole number of them, so the last one is never cut square. A style, not a class: a url() in a class name
-// is not picked up by Tailwind's scanner.
+// Light row buttons, 44 px on touch (--h-sm). Beside Acknowledge the others are ghost, so it is the only box in the row.
+// The cleared bar: 8 px pills 4 px apart, masked from the bar's fill; `round` keeps the last one whole. A style, not a
+// class: Tailwind's scanner does not pick up a url() in a class name.
 const dashedPill: React.CSSProperties = {
   maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 12'%3E%3Crect width='4' height='8' rx='2'/%3E%3C/svg%3E")`,
   maskRepeat: "round",
@@ -135,17 +132,9 @@ const dashedPill: React.CSSProperties = {
 const rowButton = "press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-inset hover:bg-accent"
 
 /**
- * One alarm, as a row of aligned columns: priority glyph, time, priority word and title (source under it), then state
- * and actions. Colour is only on the glyph and the priority word; rows are never tinted.
- *
- * - Unacknowledged: bold title and a solid bar in the priority's colour, inset in its own gutter. Beside Acknowledge the
- *   state is not repeated in words (screen readers still hear it).
- * - Cleared, not acknowledged: still bold (it still needs someone), but the bar is dashed: the condition has gone.
- * - Acknowledged: regular weight, muted title, no bar, and when ("Acknowledged 13:42").
- * - Shelved: quiet like acknowledged, with "Shelved until 15:30" and the way back.
- *
- * Narrower than 576 px (its container, not the screen) the columns reflow: the time goes under the title, and the
- * state and buttons get a line of their own.
+ * One alarm as a row: priority glyph, time, priority word, title and source, state and actions. Colour only on the glyph
+ * and the word; rows are never tinted. Unacknowledged is bold with a solid bar (dashed once cleared); acknowledged and
+ * shelved are quiet and say when. Under 576 px of container the columns reflow.
  */
 export function Alarm({
   priority,
@@ -299,11 +288,9 @@ export const alarmEdge = (alarm?: AlarmData) => (alarm?.priority === "critical" 
 export const CRITICAL_REPEAT_MS = 10_000
 
 /**
- * The live part every alarm surface shares, so the phone's island and the dashboard's list behave the same: for an
- * alarm that newly enters the live list (raised, or back from shelving), buzz and sound by priority; keep sounding
- * while a critical alarm is unacknowledged; and say what arrived to screen readers. Shelved, suppressed and
- * out-of-service alarms are not live, so they stay silent. In a flood only the count is announced. Turn `feedback`
- * off on all but one surface per screen, so a phone that shows two does not buzz twice.
+ * The live part shared by every alarm surface: buzz and sound by priority for an alarm newly live, keep sounding while a
+ * critical one is unacknowledged, and announce arrivals (only the count in a flood). Shelved, suppressed and
+ * out-of-service alarms stay silent. Turn `feedback` off on all but one surface per screen, so a phone buzzes once.
  */
 export function useAlarmSignals(
   alarms: AlarmData[],
@@ -435,9 +422,8 @@ const groupSummary =
 const groupChevron = "size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90"
 
 /**
- * The alarm list: one panel with a header (title, counts, "Acknowledge all"), the live alarms as rows, then what is not
- * live but never hidden silently: shelved alarms in their own group, suppressed and out-of-service ones counted. New
- * critical alarms are announced assertively, others politely, so screen-reader users hear them without moving focus.
+ * The alarm list: a header with counts and "Acknowledge all", the live alarms, then shelved, suppressed and out-of-service
+ * ones grouped or counted, never hidden. New critical alarms are announced assertively, others politely.
  */
 export function AlarmList({
   alarms,

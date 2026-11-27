@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.28.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.51.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,9 +11,8 @@ import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 import { cn } from "@/lib/utils"
 
 /**
- * A short set of questions answered in order: a pre-shift checklist, a site survey, feedback after an incident.
- * Paged shows one question at a time with a progress bar; list shows them all on one form.
- * Required questions block Next and the last button (Send answers) with a message under the question, never a shake.
+ * A short set of questions answered in order (a pre-shift checklist, feedback). Paged shows one at a time; list shows all.
+ * A missing required answer blocks Next with a message under the question, never a shake.
  */
 export type QuestionOption = { value: string; label: React.ReactNode; description?: React.ReactNode }
 export type Question =

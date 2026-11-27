@@ -1,4 +1,4 @@
-// @syncrobotic/use-ros v0.27.0 · update: npx shadcn add @syncrobotic/use-ros --overwrite
+// @syncrobotic/use-ros v0.51.0 · update: npx shadcn add @syncrobotic/use-ros --overwrite
 "use client"
 
 import * as React from "react"
@@ -95,12 +95,9 @@ export function useRosTopic<T = unknown>(name: string, type: string, options: Us
 }
 
 /**
- * A function that publishes on a topic, the same function for as long as the topic, type and connection are. The topic is
- * advertised on the first publish and unadvertised after unmount. It returns false when the message was dropped.
- *
- * For `geometry_msgs/Twist` and `TwistStamped` (a robot's `cmd_vel`) it also sends a zero Twist when it unmounts, when the
- * page is hidden and when the connection drops, if the last command was not already a stop, and after the page hid or the
- * link dropped it ignores drive commands until the app publishes a stop (the operator lets go and presses again).
+ * A function that publishes on a topic, stable while the topic, type and connection are (advertised on first publish,
+ * unadvertised after unmount); false when the message was dropped. For `geometry_msgs/Twist` and `TwistStamped` it sends a
+ * zero Twist on unmount, a hidden page or a dropped link, then ignores drive commands until the app publishes a stop.
  * `stopMessage` gives another type a stop, or (`null`) turns this off.
  */
 export function useRosPublisher<T = unknown>(name: string, type: string, options?: RosPublisherOptions<T>): (message: T) => boolean {

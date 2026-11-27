@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-control v0.46.0 · update: npx shadcn add @syncrobotic/app-shell-control --overwrite
+// @syncrobotic/app-shell-control v0.51.0 · update: npx shadcn add @syncrobotic/app-shell-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -65,10 +65,9 @@ function SampleToday() {
 }
 
 /**
- * The phone app that controls one robot at a time: the dynamic island at the top (its name opens the robots to switch
- * to, its device status opens the connection and battery, its bell the notifications), the page, and the dock at the
- * bottom with the emergency stop always in thumb reach, then the tabs. Stopping turns the island's edge danger with a
- * notice that stays until the robot is released. The fleet console's phone layout is `app-shell-mobile-tabs` instead.
+ * The phone app that controls one robot: the dynamic island at the top, the page, and the dock with the emergency stop
+ * in thumb reach above the tabs. Stopping turns the island's edge danger until the robot is released. For the fleet
+ * console on a phone use `app-shell-mobile-tabs`.
  */
 export function AppShellControl({
   robots = sampleControlRobots,

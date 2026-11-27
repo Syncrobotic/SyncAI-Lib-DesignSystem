@@ -1,4 +1,4 @@
-// @syncrobotic/chart v0.40.0 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.51.0 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,11 +8,9 @@ import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /**
- * One entry per series, the one the reader should look at first. `color` is the slot in the palette, graphite and one
- * accent: 1 the accent (the series that matters), 2 and 3 graphite, 4 the light grey for "Other", 5 the baseline (an
- * earlier period or a plan). Keep the slot with the series: a filter that hides one series never repaints the others.
- * The order also sets the line style (`chartDash`): first solid, second dashed, third dotted. Three series and Other is
- * the limit; fold the rest into "Other" or split the chart into small multiples.
+ * One entry per series, most important first. `color` is the palette slot: 1 the accent, 2 and 3 graphite, 4 light
+ * grey for "Other", 5 a baseline. Keep the slot with the series, so hiding one never repaints the others. Order sets the
+ * line style (solid, dashed, dotted); three series and Other is the limit.
  */
 export type ChartConfig = Record<string, { label: string; color: 1 | 2 | 3 | 4 | 5; unit?: string }>
 
@@ -20,9 +18,8 @@ export type ChartConfig = Record<string, { label: string; color: 1 | 2 | 3 | 4 |
 export const chartDashes = [undefined, "6 4", "1.5 3.5"] as const
 
 /**
- * The line style of a series, from its place in the config: undefined (solid) for the first, then dashed, then dotted.
- * ChartContainer applies it to every Line and Area outline that does not set `strokeDasharray` itself, and the legend
- * and tooltip draw it, so two series are told apart without colour.
+ * A series' line style from its place in the config: solid, then dashed, then dotted. ChartContainer, the legend and the
+ * tooltip apply it, so series are told apart without colour.
  */
 export const chartDash = (config: ChartConfig, key: string): string | undefined => chartDashes[Object.keys(config).indexOf(key)]
 
@@ -63,10 +60,8 @@ function withSeriesStyles(chart: React.ReactElement, config: ChartConfig) {
 }
 
 /**
- * A number as charts write it: grouped (12,480), up to three decimals, in English so server and browser agree
- * (formatNumber), with a true minus sign (U+2212) for negatives, so "−6" lines up with "6" and is read as minus. Use it
- * for tick labels (`tickFormatter={chartNumber}`), tooltips and the table; a string that is not a number comes back as
- * it is. For another locale or a count's compact ticks, pass your own formatter built on formatNumber or formatCount.
+ * A number as charts write it: grouped, up to three decimals, in English so server and browser agree, with a true minus
+ * (U+2212). For ticks, tooltips and the table; a non-number comes back as it is.
  */
 export const chartNumber = (n: number | string) => {
   const v = typeof n === "number" ? n : Number(n)
@@ -76,10 +71,8 @@ export const chartNumber = (n: number | string) => {
 }
 
 /**
- * Sizes a Recharts chart to its box and maps each series to its palette slot as `var(--color-<key>)`, so marks write
- * `stroke="var(--color-speed)"`. Lines and area outlines get their line style by series order (see `chartDash`), and
- * grouped bars a 2 px gap. Axis text, grid and tooltip use the theme's text and line tokens, so the chart reads the same
- * in light and dark. Give it a height (class or style); the width follows the container.
+ * Sizes a Recharts chart to its box and maps each series to `var(--color-<key>)`, with line styles by order and a 2 px gap
+ * between grouped bars; text, grid and tooltip use the theme tokens. Give it a height; the width follows the container.
  */
 export function ChartContainer({
   config,
@@ -116,9 +109,8 @@ export function ChartContainer({
 }
 
 /**
- * Motion for marks. Recharts times its own animation in JavaScript and takes only named easings, so it cannot follow the
- * motion tokens; marks therefore draw without it, and the whole chart arrives with the fade pattern (ChartContainer's
- * animate-fade-in, --motion-base) when it mounts. Spread onto Line, Area and Bar: `<Line {...chartMotion} />`.
+ * Recharts times its animation in JavaScript with named easings only, so it cannot follow the motion tokens: marks draw
+ * without it and the chart fades in on mount. Spread onto Line, Area and Bar: `<Line {...chartMotion} />`.
  */
 export const chartMotion = { isAnimationActive: false } as const
 

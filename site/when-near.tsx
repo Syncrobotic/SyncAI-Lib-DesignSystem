@@ -41,10 +41,9 @@ export function useNear(ref: React.RefObject<HTMLElement | null>, enabled = true
 
 /**
  * Renders its children once they come within a screen of the viewport, and keeps them. Until then, and on the server, an
- * empty block at the example frame's minimum height. A page with a dozen live examples (maps, grids, charts) hydrated and
- * drew them all at once, seconds of main-thread work on a phone; now only the ones near the screen do. `placeholder`
- * replaces the empty block with one of the content's own size (the home page's live specimens), so nothing moves when it
- * arrives.
+ * empty block at the example frame's minimum height: a dozen live examples (maps, grids, charts) drawn at once cost
+ * seconds on a phone. `placeholder` replaces the empty block with one of the content's own size (the home page's live
+ * specimens), so nothing moves when it arrives.
  */
 export function WhenNear({ children, placeholder }: { children: React.ReactNode; placeholder?: React.ReactNode }) {
   const ref = React.useRef<HTMLDivElement>(null)

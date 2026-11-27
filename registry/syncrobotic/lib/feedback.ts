@@ -1,13 +1,10 @@
-// @syncrobotic/feedback v0.23.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
+// @syncrobotic/feedback v0.51.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
 
 /*
-  Touch and sound, as tokens. An operator wearing gloves, in wind or machine noise, cannot rely on the screen to know a
-  stop went out or a critical alarm came in, so the moments that matter for safety also buzz and, for alarms, sound.
-  Each moment has one fixed pattern, so the hand learns it the way the eye learns a colour.
-
-  Vibration works where the browser has the Vibration API (Android Chrome); iOS Safari has none, so touch is a bonus,
-  never the only signal. Sound plays only after the first touch on the page (browsers block it before), so an app that
-  relies on alarm sound should ask for one tap at sign-in.
+  Touch and sound, as tokens: an operator in gloves or machine noise cannot rely on the screen, so a stop sent or a
+  critical alarm also buzzes (and an alarm sounds), each with one fixed pattern. iOS Safari has no Vibration API, so touch
+  is never the only signal. Browsers block sound until the first touch: an app relying on alarm sound asks for one tap at
+  sign-in.
 */
 
 /** Vibration patterns in ms: on, off, on… */

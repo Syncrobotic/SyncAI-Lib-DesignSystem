@@ -1,16 +1,10 @@
-// Per-item versions. Components install as source, so each file carries a header naming its item and version;
-// a project (and the adoption scanner) can read what it has installed.
+// Per-item versions. Components install as source, so each file carries a header naming its item and version, which a
+// project (and the adoption scanner) reads. The version and one changelog line per version live in registry.json; the
+// lock (registry/versions.lock.json) records each version's content hash. An item at vX.Y.Z is in the kit tag vX.Y.Z
+// unless registry/kit-tags.json names another; a released version that is neither fails, so every header stays findable.
 //
 //   node scripts/versions.mjs          CI: fails if a file changed without a version bump, or headers/lock are stale
 //   node scripts/versions.mjs --write  after bumping meta.version in registry.json: write headers and the lock
-//
-// Rules: the version lives in registry.json (items[].meta.version), with one changelog line per version
-// (items[].meta.changelog). The lock (registry/versions.lock.json) records the content hash each version shipped with.
-//
-// Finding a version's source: an item at vX.Y.Z is in the kit tag vX.Y.Z, unless registry/kit-tags.json names
-// another tag for it ("slider@0.21.1": "v0.24.0", the first kit release that shipped it). A version that is neither
-// a kit release (a dated CHANGELOG section) nor in that map fails here once it is released, so every header stays
-// findable at a tag.
 import { createHash } from "node:crypto"
 import { existsSync, readFileSync, writeFileSync } from "node:fs"
 

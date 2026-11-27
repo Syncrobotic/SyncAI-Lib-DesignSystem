@@ -1,4 +1,4 @@
-// @syncrobotic/grounded-text v0.36.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
+// @syncrobotic/grounded-text v0.51.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,25 +13,11 @@ import {
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
-  Text whose words point at places on a picture, as a vision-language model answers: a caption where each object's name
-  matches a box, or reasoning where "8 zebras" is linked to 8 points. The picture is annotated-image; the text is beside it
-  from 42 rem of width (the container's, not the window's: a 720 px canvas has it beside), under it on a phone.
-
-  GroundedTextBody is the text alone, for a screen that already shows the picture in another panel: it reports the span
-  under the pointer or keyboard (`onActiveChange`) and the pin, and lights the spans of the mark the picture reports
-  (`activeMark`). `groundedImageProps` turns that into the picture's `highlighted`, `selectedId` and descriptions, so the
-  page wires one annotated-image to it. GroundedText is the two, wired the same way.
-
-  Pinning a span (a click, Enter or Space; never a hover or focus) brings its marks into view when they are scrolled out of
-  the picture's scrolling panel, without scrolling the span itself away; instantly under reduced motion.
-
-  Hover or focus a span and its marks are drawn highlighted (the selected ink, 3 px) while the rest fade; hover or focus a
-  mark and the spans that point at it are highlighted. A click or tap, Enter or Space pins one, so it stays after the
-  pointer leaves (touch has no hover); again, or Esc, lets it go.
-
-  Spans are role="button" on an inline span, not a native button: that one is laid out inline-block and cannot wrap across
-  lines, so a long span would break the paragraph on a phone. Each is named by its own words and described by where its
-  marks are ("8 points on the image"); each mark is described by the words that point at it ("In the text: 8 zebras").
+  Words that point at places on a picture (annotated-image), as a vision model answers: beside it from 42 rem of container
+  width, under it on a phone. Hover or focus highlights a span's marks or a mark's spans; a click, Enter or Space pins one
+  (touch has no hover), and pinning scrolls its marks into view. GroundedTextBody is the text alone, wired to a picture in
+  another panel with `groundedImageProps`. Spans are role="button" on an inline span, since a native button is
+  inline-block and cannot wrap across lines; each is described by where its marks are ("8 points on the image").
 */
 
 /** A run of the text, by character offsets (as `start_idx` / `end_idx` from a model): `text.slice(start, end)`. */
@@ -173,9 +159,8 @@ function reveal(picture: Element | null | undefined, ids: readonly string[], spa
 }
 
 /**
- * The props that link an annotated-image to GroundedTextBody when the two are in separate panels: the marks described by
- * the words that point at them, the ones to highlight, and a pinned mark as selected (a click on a mark pins it). Give the
- * picture's `onActiveChange` to the text's `activeMark`, and the text's `onActiveChange` here as `activeSpan`; share `pinned`.
+ * Props linking an annotated-image to GroundedTextBody in separate panels. Give the picture's `onActiveChange` to the
+ * text's `activeMark`, the text's `onActiveChange` here as `activeSpan`, and share `pinned`.
  */
 export function groundedImageProps({
   text,
@@ -404,9 +389,8 @@ type GroundedTextProps = {
 }
 
 /**
- * A picture and the text that points at it, linked both ways: a span highlights its marks, a mark its spans. For a
- * vision-language model's caption or reasoning, or any review screen that shows words beside an annotated picture.
- * The picture and GroundedTextBody, wired through `groundedImageProps`.
+ * A picture and the text that points at it, linked both ways: a span highlights its marks, a mark its spans. For a vision
+ * model's caption or reasoning beside an annotated picture.
  */
 export function GroundedText({
   text,

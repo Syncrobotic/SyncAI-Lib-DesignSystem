@@ -1,4 +1,4 @@
-// @syncrobotic/text-diff v0.16.2 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.51.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -11,9 +11,8 @@ const CJK = "\\u3040-\\u30ff\\u3400-\\u4dbf\\u4e00-\\u9fff\\uf900-\\ufaff\\uff01
 const WORD = new RegExp(`([${CJK}]|[^\\s${CJK}]+)(\\s*)`, "g")
 
 /**
- * Words, each with the spacing that follows it, so joining their `text` gives back the original for any input. Spacing
- * before the first word joins that word. A text of spacing alone is one token with an empty `word`: it is no word to
- * diff, but dropping it would lose the text.
+ * Words, each with the spacing after it, so joining their `text` gives back the input. Leading spacing joins the first
+ * word; spacing alone is one token with an empty `word`.
  */
 export function tokenize(text: string): { word: string; text: string }[] {
   const tokens = [...text.matchAll(WORD)].map((m) => ({ word: m[1] ?? "", text: m[0] }))
@@ -212,9 +211,8 @@ export type TextDiffProps = Omit<React.ComponentProps<"div">, "children"> & {
 }
 
 /**
- * Where two texts differ, word by word: a base model's caption against a fine-tuned one, a label before and after an
- * edit. Insertions are a grey block with an underline, removals are struck through; screen readers hear "added" and
- * "removed" around each change.
+ * Where two texts differ, word by word (a caption from two models, a label before and after an edit). Insertions are grey
+ * and underlined, removals struck through; screen readers hear "added" and "removed".
  */
 export function TextDiff({
   before,

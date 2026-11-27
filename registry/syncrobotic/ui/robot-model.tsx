@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.47.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.51.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,16 +35,14 @@ export type RobotModelJointInfo = {
 }
 
 /**
- * What the model is, as plain data: its name, the joints that move on their own (in URDF order) and every link.
- * `mimics` holds the joints that follow another one (`<mimic>` in the URDF, such as a gripper's second finger): they are
- * not counted, but they can be highlighted by name.
+ * The model as plain data: its name, the joints that move on their own (URDF order) and every link. `mimics` are joints
+ * that follow another (`<mimic>`): not counted, but they can be highlighted by name.
  */
 export type RobotModelInfo = { name: string; joints: RobotModelJointInfo[]; links: string[]; mimics?: RobotModelJointInfo[] }
 
 /**
- * A joint's value as ROS sends it: one number (radians, or metres for prismatic joints), or for a joint with several
- * degrees of freedom its components in URDF order: planar is [x, y, θ], floating is [x, y, z, roll, pitch, yaw], in
- * metres and radians. A single number for a planar or floating joint is its x.
+ * A joint's value as ROS sends it: one number (radians, or metres when prismatic), or the components in URDF order:
+ * planar [x, y, θ], floating [x, y, z, roll, pitch, yaw]. A single number for a planar or floating joint is its x.
  */
 export type RobotModelJointValue = number | readonly number[]
 
@@ -220,7 +218,7 @@ export type ParseUrdfOptions = {
   onMeshStart?: (path: string) => void
   /** A mesh finished, with an error in words when it failed. Not called once `signal` has aborted. */
   onMeshEnd?: (path: string, error?: string) => void
-  /** Aborted when the robot is no longer wanted: a mesh that arrives after it is freed instead of being added. */
+  /** Aborted when the robot is not wanted any more: a mesh that arrives after it is freed instead of being added. */
   signal?: AbortSignal
   labels?: Pick<RobotModelLabels, "invalidUrdf" | "missingPackage" | "unsupportedMesh">
 }
@@ -358,14 +356,9 @@ export function jointValueWords(value: RobotModelJointValue | undefined, type: R
 }
 
 /**
- * Sets each joint from `joints` (radians, metres) and returns the names the model does not have. Limits are not applied,
- * to any joint: the view shows what the robot reports, even a value past its limit, and a mimic joint follows its
- * driving joint's value unclamped too. A planar or floating joint takes its components as an array; a component left
- * out or not finite keeps its last value.
- *
- * Mimic joints follow the joint they mimic (urdf-loader moves them with it). When `joints` has a value for both, the
- * driving joint's wins, whatever order the record lists them in; a mimic joint's own value is used only when the joint
- * it follows has none.
+ * Sets each joint from `joints` and returns the names the model lacks. No limits are applied: the view shows what the
+ * robot reports. A component left out or not finite keeps its last value. Mimic joints follow their driver
+ * (urdf-loader); the driver's value wins, and a mimic's own is used only when the driver has none.
  */
 export function applyJointValues(robot: URDFRobot, joints: Record<string, RobotModelJointValue> | undefined): string[] {
   const unknown: string[] = []
@@ -537,9 +530,8 @@ export function viewForKey(key: string, shift: boolean, v: RobotModelView, frame
 }
 
 /**
- * The robot's x, y and z axes as seen from the camera: their direction on screen (x right, y down, length 1 when the axis
- * lies flat on the screen) and whether they point towards the viewer. With `up: "z"` the robot's frame is ROS's, turned
- * so z is the scene's vertical.
+ * The robot's axes as seen from the camera: direction on screen (x right, y down, length 1 when flat) and whether each
+ * points at the viewer. With `up: "z"` the frame is ROS's, turned so z is vertical.
  */
 export function axesOnScreen(v: Pick<RobotModelView, "yaw" | "pitch">, up: "z" | "y") {
   const { out, right, up: u } = basis(v)
@@ -589,9 +581,8 @@ function themeColor(el: Element, name: string, into: THREE.Color) {
 }
 
 /**
- * The theme's colours are set by a class or attribute on <html> (dark, high contrast), or on any element above the view
- * (a dark panel inside a light page). These are the elements whose attributes are watched: the view's ancestors only, not
- * the whole page, so a class changing elsewhere costs nothing.
+ * The elements whose attributes set the theme (dark, high contrast): the view's ancestors only, so a class changing
+ * elsewhere on the page costs nothing.
  */
 function themedAncestors(el: Element): Element[] {
   const out: Element[] = []
@@ -696,11 +687,9 @@ export type RobotModelProps = {
 }
 
 /**
- * A robot's pose in 3D, from its URDF and live joint values (ROS `sensor_msgs/JointState`), for monitoring: it shows the
- * robot and never moves it. Drag turns the view, right-drag moves it and the wheel zooms once the view has focus (or
- * with Ctrl); the keys do the same. Highlighted joints are drawn in a status colour and named in a callout. Loading,
- * error (with the failing file), empty, stale and no-WebGL states say so in words. Three.js draws only when the joints,
- * the camera, the size or the theme change.
+ * A robot's pose in 3D from its URDF and live joint values (`sensor_msgs/JointState`), for monitoring: it never moves the
+ * robot. Turn, move and zoom by pointer or keys; highlighted joints are named in a callout. Three.js draws only when the
+ * joints, camera, size or theme change.
  */
 export function RobotModel({
   urdf,
@@ -887,7 +876,7 @@ export function RobotModel({
       canvas.removeEventListener("webglcontextlost", lost)
       canvas.removeEventListener("webglcontextrestored", restored)
       clearTimeout(restoreTimer)
-      // The next renderer has a new context, so a loss reported by this one no longer applies.
+      // The next renderer has a new context, so a loss reported by this one does not apply to it.
       setContext("ok")
       cancelAnimationFrame(frame)
       if (stage.grid) disposeTree(stage.grid)
@@ -1045,7 +1034,6 @@ export function RobotModel({
     stageRef.current?.render()
   }, [jointsKey, version])
 
-  // The camera follows the view.
   React.useEffect(() => {
     const stage = stageRef.current
     if (!stage) return

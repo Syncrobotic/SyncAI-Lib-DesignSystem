@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.40.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.51.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,9 +9,8 @@ import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 
 /**
- * A way out of the page. `{ label, href }` is a link (through `linkAs`): it opens in a new tab and works before scripts
- * load, so use it for "Go to overview". `{ label, onClick }` is a button, for what acts in place (Try again). A plain
- * string is a button that calls `onPrimary` / `onSecondary`, as before.
+ * A way out of the page. `{ label, href }` is a link (through `linkAs`) that works before scripts load ("Go to overview");
+ * `{ label, onClick }` is a button that acts in place (Try again); a plain string is a button calling `onPrimary` / `onSecondary`.
  */
 export type StatusPageAction = string | { label: string; href: string; onClick?: () => void } | { label: string; onClick?: () => void; href?: undefined }
 
@@ -37,10 +36,8 @@ type PageProps = {
 const actionOf = (a: StatusPageAction, onClick?: () => void) => (typeof a === "string" ? { label: a, onClick } : a)
 
 /**
- * One layout for every page that is not the content: what happened, why, and the next step. Never a dead end.
- * Centred on both axes, like the empty state, so it balances in any frame: a full screen, or an app shell's content panel.
- * Icon tile, then the code, title and explanation as one block, then the actions: 16 px apart, 24 px before the actions.
- * `fill="screen"` is the page's <main>; `fill="parent"` is a <section> inside the frame's own <main>, never a second one.
+ * One layout for every page that is not the content (404, error, offline): what happened, why, and the next step, centred
+ * in any frame. `fill="screen"` is the page's <main>; `fill="parent"` is a <section> inside the frame's own <main>.
  */
 export function StatusPage({
   icon: Icon,

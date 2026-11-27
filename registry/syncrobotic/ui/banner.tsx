@@ -1,4 +1,4 @@
-// @syncrobotic/banner v0.32.0 · update: npx shadcn add @syncrobotic/banner --overwrite
+// @syncrobotic/banner v0.51.0 · update: npx shadcn add @syncrobotic/banner --overwrite
 "use client"
 
 import * as React from "react"
@@ -52,9 +52,8 @@ export type BannerProps = Omit<React.ComponentProps<"div">, "title"> & {
 }
 
 /**
- * A notice across the whole width of the page or the app, above everything else, about the app rather than one record:
- * a maintenance window, read-only mode, a trial ending, no connection. It stays while its condition holds.
- * role="status" (read politely) for neutral, info and warning; role="alert" only for danger.
+ * A page-wide notice about the app, not one record (maintenance, read-only, no connection); it stays while its condition
+ * holds. role="status" for neutral, info and warning; role="alert" only for danger.
  */
 export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismissLabel = "Dismiss", open = true, className, children, ...props }: BannerProps) {
   const { mounted, leaving, done } = usePresence(open)

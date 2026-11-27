@@ -1,9 +1,8 @@
-// The stories a pull request can change: those in a changed stories file, those in a stories file that imports a
-// changed registry file or anything that imports it, and, when the theme or cn changed, the first story of every file. Prints a Playwright --grep pattern for their tests, or nothing when there are none.
-// Run after build-storybook (it reads storybook-static/index.json):
+// The stories a pull request can change: those in a changed stories file or one that imports a changed registry file
+// (directly or not), and, when the theme or cn changed, the first story of every file. Prints a Playwright --grep
+// pattern, or nothing. Runs after build-storybook (it reads storybook-static/index.json). CI runs them twice into dev
+// (see ci.yml, stories-changed).
 //   node scripts/changed-stories.mjs origin/dev
-// CI runs these stories twice on a pull request into dev, the second time against the first one's pictures: a story
-// that does not draw the same picture twice (a thumb caught halfway, a clock that moved) fails there, not at stage.
 import { execFileSync } from "node:child_process"
 import { readFileSync, readdirSync } from "node:fs"
 

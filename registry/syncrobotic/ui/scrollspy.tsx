@@ -1,4 +1,4 @@
-// @syncrobotic/scrollspy v0.36.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.51.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,9 +6,8 @@ import { cn } from "@/lib/utils"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /**
- * Which of several sections is being read. A section counts once its top passes `offset` px below the
- * top of the scroll container (or the window); near the end of the page the last section wins, so a
- * short final section can still be reached.
+ * Which section is being read: the last whose top passed `offset` px below the container's (or window's) top. Near the
+ * end of the page the last section wins, so a short final one can be reached.
  */
 export function useScrollspy(ids: string[], { offset = 96, root }: { offset?: number; root?: React.RefObject<HTMLElement | null> } = {}) {
   const [active, setActive] = React.useState<string | undefined>(ids[0])

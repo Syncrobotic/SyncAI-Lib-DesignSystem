@@ -1,4 +1,4 @@
-// @syncrobotic/math v0.36.0 · update: npx shadcn add @syncrobotic/math --overwrite
+// @syncrobotic/math v0.51.0 · update: npx shadcn add @syncrobotic/math --overwrite
 /** `value` held between `min` and `max` (either may be left out). */
 export const clamp = (value: number, min = -Infinity, max = Infinity) => Math.min(max, Math.max(min, value))
 

@@ -16,7 +16,7 @@ export default tseslint.config(
     },
   },
   // The registry, with types: a promise is never dropped, nor handed to an event that ignores what it returns. A rejected
-  // passkey prompt (cancelled) once left a sign-in button waiting for good; a handler awaits inside and catches, and is
+  // passkey prompt (cancelled) would leave a sign-in button waiting for good; a handler awaits inside and catches, and is
   // passed as `() => void run()`.
   {
     files: ["registry/**/*.{ts,tsx}"],

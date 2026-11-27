@@ -28,7 +28,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.24, and the open items below are what is left of each theme. Checked 2026-11-21 (0.24.0).
+The milestones are themes, not version numbers, listed by number. The open items are what is left of each theme; what shipped when is in [CHANGELOG.md](CHANGELOG.md).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`

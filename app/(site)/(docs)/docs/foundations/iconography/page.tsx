@@ -84,7 +84,7 @@ export default function IconographyPage() {
 
       <Section id="sizes" title="Sizes">
         {/* Columns start together and each icon sits on one baseline in a 24 px box, so the labels line up under icons of
-            three sizes (the columns used to end together and their labels did not). */}
+            three sizes. */}
         <Specimen className="flex flex-wrap items-start gap-8">
           {[
             { cls: "size-4", px: 16, use: "Inside 36 px controls, menus, inline" },
