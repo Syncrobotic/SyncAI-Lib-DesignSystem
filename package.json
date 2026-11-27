@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.50.0",
+  "version": "0.50.1",
   "private": true,
   "description": "A robotics UI kit for React: emergency stop, teleoperation, robot map, camera feed, LiDAR point cloud, URDF robot model and alarms, with design tokens and ready-made screens, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.1",
-    "@babel/core": "^7.29.13",
+    "@babel/core": "^8.1.3",
     "@eslint/compat": "^2.1.1",
     "@hookform/resolvers": "^7.0.9",
     "@playwright/test": "^1.49.1",
@@ -149,6 +149,9 @@
   "overrides": {
     "eslint-plugin-jsx-a11y": {
       "eslint": "$eslint"
+    },
+    "@storybook/react-vite": {
+      "@joshwooding/vite-plugin-react-docgen-typescript": "^0.9.1"
     }
   }
 }
