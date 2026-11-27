@@ -8,7 +8,7 @@ import { groups, items } from "./catalog"
 const code = (names: string[]) => names.map((n) => `\`${n}\``).join(", ")
 
 export function readmeCounts() {
-  const components = items.filter((i) => i.group !== "Hooks & libraries").length
+  const components = items.filter((i) => i.group !== "Hooks and libraries").length
   const blocks = blockTypes.filter((t) => !t.home).reduce((n, t) => n + blockListOfType(t.slug).length, 0)
   const patterns = blockTypes.filter((t) => t.home).reduce((n, t) => n + blockListOfType(t.slug).length, 0)
   return { components, blocks, patterns }

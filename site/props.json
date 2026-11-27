@@ -3043,8 +3043,32 @@
        "type": "string",
        "default": "\"Search pages, robots and actions\"",
        "description": "Read after the name: what can be searched."
+      },
+      {
+       "name": "move",
+       "type": "string",
+       "default": "\"to move\"",
+       "description": "The footer's hints, each after its keys: \"↑↓ to move\", \"↵ to open\", \"Esc to close\"."
+      },
+      {
+       "name": "open",
+       "type": "string",
+       "default": "\"to open\"",
+       "description": ""
+      },
+      {
+       "name": "close",
+       "type": "string",
+       "default": "\"to close\"",
+       "description": ""
       }
      ]
+    },
+    {
+     "name": "hints",
+     "type": "boolean",
+     "default": "true",
+     "description": "The footer with the keys it answers to; `false` leaves it out. Never shown where the pointer is touch."
     }
    ],
    "inherits": [

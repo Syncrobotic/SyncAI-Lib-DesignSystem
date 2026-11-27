@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 import { AppShell, sampleNav, sampleSearch } from "@/registry/syncrobotic/blocks/app-shell"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/registry/syncrobotic/ui/command"
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/registry/syncrobotic/ui/command"
 
 describe("AppShell search", () => {
   afterEach(cleanup)
@@ -53,5 +53,31 @@ describe("Command", () => {
     fireEvent.change(screen.getByPlaceholderText("Find"), { target: { value: "7F3A" } })
     expect(screen.getByText("Patrol dog 7F3A")).toBeTruthy()
     expect(document.querySelector("[data-slot=command-separator]")).toBeNull()
+  })
+})
+
+describe("CommandDialog key hints", () => {
+  afterEach(cleanup)
+
+  it("shows the keys it answers to, hidden from screen readers and from touch, in its labels' words", () => {
+    render(
+      <CommandDialog open labels={{ move: "移動", open: "開啟", close: "關閉" }}>
+        <CommandInput />
+      </CommandDialog>,
+    )
+    const hints = document.querySelector<HTMLElement>("[data-slot=command-hints]")!
+    expect(hints.getAttribute("aria-hidden")).toBe("true")
+    expect(hints.className).toMatch(/\bpointer-coarse:hidden\b/)
+    expect(hints.textContent).toBe("↑↓移動↵開啟Esc關閉")
+    expect(hints.querySelectorAll("[data-slot=kbd]")).toHaveLength(4)
+  })
+
+  it("leaves them out with hints={false}", () => {
+    render(
+      <CommandDialog open hints={false}>
+        <CommandInput />
+      </CommandDialog>,
+    )
+    expect(document.querySelector("[data-slot=command-hints]")).toBeNull()
   })
 })

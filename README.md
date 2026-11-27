@@ -57,7 +57,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **128 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **63 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **63 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -65,21 +65,23 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 <!-- catalog:components -->
 | Group | Components |
 | --- | --- |
-| Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
-| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `questionnaire` |
+| Actions | `button`, `copy-button`, `button-group`, `theme-toggle` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `segmented-control`, `toggle-group`, `toggle`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `questionnaire` |
+| Date and time | `calendar`, `date-selector`, `time-picker` |
 | Robotics | `stop-button`, `slide-to-release`, `dock`, `island`, `tray`, `teleop-pad`, `robot-map`, `geo-map`, `waypoint-editor`, `camera-feed`, `camera-wall`, `point-cloud`, `robot-model`, `attitude`, `joint-state`, `diagnostics`, `viewport-overlay` |
-| Lists & tables | `table`, `responsive-table`, `data-grid`, `list`, `item`, `description-list`, `tree`, `sortable`, `log-viewer` |
-| Status & values | `status-glyph`, `status-eyebrow`, `badge`, `tier-badge`, `meter`, `metric-card` |
-| Search & filters | `search-field`, `filters`, `filter-form`, `chip-group`, `facets` |
-| Data display | `code-block`, `avatar`, `text-diff`, `graph`, `icon-tile`, `kbd`, `code`, `timeline`, `marker` |
-| AI | `streaming-text`, `message`, `message-actions`, `prompt-composer`, `message-scroller`, `trace`, `markdown`, `citations` |
+| Lists and tables | `table`, `responsive-table`, `data-grid`, `list`, `item`, `description-list`, `tree`, `sortable`, `log-viewer`, `marker` |
+| Status and values | `status-glyph`, `status-eyebrow`, `badge`, `tier-badge`, `meter`, `metric-card` |
+| Search and filters | `search-field`, `filters`, `filter-form`, `chip-group`, `facets` |
+| Data display | `graph`, `icon-tile`, `avatar`, `timeline`, `trace` |
+| Code and text | `kbd`, `code`, `code-block`, `markdown`, `text-diff` |
+| AI | `streaming-text`, `message`, `message-actions`, `prompt-composer`, `message-scroller`, `citations`, `grounded-text` |
 | Charts | `chart`, `streaming-chart`, `share-bar`, `bar-list` |
-| Media & files | `restricted-preview`, `thumbnail`, `image-grid`, `annotated-image`, `grounded-text`, `media-player`, `file-upload`, `attachment`, `file-type` |
+| Media and files | `restricted-preview`, `thumbnail`, `image-grid`, `annotated-image`, `media-player`, `file-upload`, `attachment`, `file-type` |
 | Feedback | `skeleton`, `spinner`, `progress`, `banner`, `alert`, `alarm`, `toast`, `empty-state`, `route-progress` |
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `collapsible`, `sidebar`, `load-more`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
 | Layout | `card`, `separator`, `scroll-area`, `page-header`, `section-header`, `resizable` |
-| Hooks & libraries | `ros`, `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-ros`, `use-hotkeys`, `format-number`, `clock-time`, `feedback`, `use-now`, `use-reduced-motion` |
+| Hooks and libraries | `ros`, `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-ros`, `use-hotkeys`, `format-number`, `clock-time`, `feedback`, `use-now`, `use-reduced-motion` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
 <!-- /catalog:components -->
 
@@ -91,18 +93,18 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 <!-- catalog:blocks -->
 | Group | Type | Blocks |
 | --- | --- | --- |
-| Application | App shell | `app-shell`, `top-bar-shell`, `action-rail-shell`, `app-shell-mobile-tabs`, `app-shell-control` |
-| Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
-| Application | Data table | `fleet-table` |
-| Application | Data visualisation | `sparkline-robot-list`, `sparkline-table`, `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout`, `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity`, `heatmap-week-hours`, `heatmap-zones` |
-| Application | Card | `robot-status-card`, `card-site`, `card-mission` |
-| Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
-| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
-| Application | Notifications | `notification-center` |
-| Application | Form | `record-form` |
-| Application | Empty and error states | `status-pages` |
-| Application | Landing | `marketing-hero` |
-| Application | Wizard | `wizard-commission`, `wizard-import` |
+| Applications | App shell | `app-shell`, `top-bar-shell`, `action-rail-shell`, `app-shell-mobile-tabs`, `app-shell-control` |
+| Applications | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
+| Applications | Data table | `fleet-table` |
+| Applications | Small charts | `sparkline-robot-list`, `sparkline-table`, `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout`, `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity`, `heatmap-week-hours`, `heatmap-zones` |
+| Applications | Card | `robot-status-card`, `card-site`, `card-mission` |
+| Applications | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
+| Applications | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
+| Applications | Notifications | `notification-center` |
+| Applications | Form | `record-form` |
+| Applications | Wizard | `wizard-commission`, `wizard-import` |
+| Applications | Empty, loading and error states | `status-pages` |
+| Applications | Landing | `marketing-hero` |
 | Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
 | Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
 | Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
