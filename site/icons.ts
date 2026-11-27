@@ -133,6 +133,7 @@ import {
   Search,
   SearchX,
   Send,
+  Server,
   Settings,
   Share2,
   ShieldCheck,
@@ -254,6 +255,7 @@ export const iconGroups: IconGroup[] = [
     title: "Hardware and sensors",
     icons: [
       e(Cpu, "The robot's computer"),
+      e(Server, "A device: an on-prem machine a project manages"),
       e(Camera, "A camera, a snapshot"),
       e(Video, "Live video"),
       e(VideoOff, "No live picture: the camera is offline, or there is none"),

@@ -41,7 +41,7 @@
   },
   "labels-zh-tw": {
     "version": "0.56.0",
-    "hash": "effaa8322216f63a"
+    "hash": "728659e01f1853fb"
   },
   "ros": {
     "version": "0.53.0",
@@ -628,8 +628,8 @@
     "hash": "dae4b84a4c99ce13"
   },
   "fleet-table": {
-    "version": "0.55.0",
-    "hash": "1489b03d62fd0f48"
+    "version": "0.56.0",
+    "hash": "d7185f09be2b03cf"
   },
   "robot-status-card": {
     "version": "0.53.0",
@@ -898,6 +898,14 @@
   "users-audit-log": {
     "version": "0.55.0",
     "hash": "3f4d53b5dc724d97"
+  },
+  "device-enrolment": {
+    "version": "0.56.0",
+    "hash": "78ed50e89be58357"
+  },
+  "device-detail": {
+    "version": "0.56.0",
+    "hash": "aeaf6bf2fd8d660b"
   },
   "incident-queue": {
     "version": "0.53.0",

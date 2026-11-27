@@ -85,6 +85,8 @@ import type { SettingsWebhooksLabels } from "@/registry/syncrobotic/blocks/setti
 import type { SettingsSessionsLabels } from "@/registry/syncrobotic/blocks/settings-sessions"
 import type { NotificationCenterLabels } from "@/registry/syncrobotic/blocks/notification-center"
 import type { SettingsPageLabels } from "@/registry/syncrobotic/blocks/settings-page"
+import type { DeviceEnrolmentLabels } from "@/registry/syncrobotic/blocks/device-enrolment"
+import type { DeviceDetailLabels } from "@/registry/syncrobotic/blocks/device-detail"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -205,5 +207,7 @@ it("fits every component's labels type", () => {
   fits<Required<SettingsSessionsLabels>>()(zh.settingsSessionsLabels)
   fits<Required<NotificationCenterLabels>>()(zh.notificationCenterLabels)
   fits<Required<SettingsPageLabels>>()(zh.settingsPageLabels)
+  fits<Required<DeviceEnrolmentLabels>>()(zh.deviceEnrolmentLabels)
+  fits<Required<DeviceDetailLabels>>()(zh.deviceDetailLabels)
   expect(zh.locale).toBe("zh-TW")
 })

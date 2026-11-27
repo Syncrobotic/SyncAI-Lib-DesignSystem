@@ -471,7 +471,7 @@
           {
             "version": "0.56.0",
             "date": "2026-11-27",
-            "note": "`freshnessStampLabels`, `evidencePanelLabels`, `desiredStateLabels`, `heartbeatStripLabels` and `descriptionListLabels` (未設定, 尚未回報, 設備自行回報, 已下達，尚未生效, 簽到)."
+            "note": "`freshnessStampLabels`, `evidencePanelLabels`, `desiredStateLabels`, `heartbeatStripLabels` and `descriptionListLabels` (未設定, 尚未回報, 設備自行回報, 已下達，尚未生效, 簽到). `deviceEnrolmentLabels` and `deviceDetailLabels` (設備註冊, 等待審核, 核准前先命名, 強制移除)."
           },
           {
             "version": "0.55.0",
@@ -9411,10 +9411,15 @@
         }
       ],
       "meta": {
-        "version": "0.55.0",
+        "version": "0.56.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "The demo's rows open again: FleetTable passes a no-op onOpen when none is given, so a row is a button."
+          },
           {
             "version": "0.55.0",
             "date": "2026-11-27",
@@ -14302,6 +14307,110 @@
             "version": "0.9.0",
             "date": "2026-11-17",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "device-enrolment",
+      "type": "registry:block",
+      "title": "Device enrolment",
+      "description": "The queue of machines that enrolled themselves and the review of one: its claims beside the record, a name you give it, then approve or reject.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/use-now",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/alert",
+        "@syncrobotic/button",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/dialog",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/evidence-panel",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/page-header",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/device-enrolment.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.56.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: DeviceEnrolmentContent, a queue of pending and awaiting-claim machines with counts from the server, the connected and air-gapped routes, a review with EvidencePanel, naming, approve and reject (cooldown from props), and DeviceEnrolment, its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "device-detail",
+      "type": "registry:block",
+      "title": "Device",
+      "description": "One device: what the server knows first, then what the device claims with how old it is, check-ins full width, licences with ordered beside in effect, and lifecycle actions in a menu.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/use-now",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/desired-state",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/freshness-stamp",
+        "@syncrobotic/heartbeat-strip",
+        "@syncrobotic/input",
+        "@syncrobotic/metric-card",
+        "@syncrobotic/page-header",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/section-header",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/device-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.56.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: DeviceDetailContent, the header, metric cards, reference beside running services, check-ins, licences with DesiredState and an overflow menu whose force removal asks a reason and runs through your step-up, and DeviceDetail, its demo."
           }
         ]
       }
