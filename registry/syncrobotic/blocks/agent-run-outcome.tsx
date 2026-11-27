@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-outcome v0.49.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
+// @syncrobotic/agent-run-outcome v0.51.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,14 +26,10 @@ import { ResponsiveTable, type ResponsiveTableColumn } from "@/registry/syncrobo
 import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 /*
-  What a run did to the fleet, robot by robot, once it has ended. Four results, each a shape and a word: succeeded,
-  failed (with the reason the robot gave), skipped (with why), and not verified: the command was sent but no
-  confirmation came back, so nobody knows yet whether the robot moved. That one is never counted as a success.
-
-  Retry failed sends the command again to the failed robots only, and says how many. It moves robots, so it asks first
-  and names them: the person who presses it approves those robots, no others. A robot that is not verified is
-  left out: the command may have arrived, and sending it twice could move it twice. The retry here is a script; replace
-  `retry` with your API's (it resolves to each robot's new result).
+  What an ended run did to the fleet, robot by robot: succeeded, failed, skipped, or not verified (sent, never confirmed;
+  never counted as a success). Retry failed asks first and names the failed robots it will move; a robot that is not
+  verified is left out, since sending twice could move it twice. Replace the sample `retry` with your API's (it resolves
+  to each robot's new result).
 */
 
 export type AgentRunResult = "succeeded" | "failed" | "skipped" | "unverified" | "retrying"

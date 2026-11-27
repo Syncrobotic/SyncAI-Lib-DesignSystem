@@ -1,4 +1,4 @@
-// @syncrobotic/meter v0.40.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.51.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
@@ -46,9 +46,8 @@ export const defaultMeterLabels: MeterLabels = {
 }
 
 /**
- * A level within a known range: battery, storage, signal. Neutral while normal; it turns warning below `low` and danger
- * below `critical` (or above `high` / `critical` when `higherIsWorse`), so colour appears only when something is wrong,
- * and the value is always written beside it. role="meter", unlike Progress, which is for work that is under way.
+ * A level within a known range: battery, storage, signal. Neutral while normal; warning below `low`, danger below
+ * `critical` (above, with `higherIsWorse`); the value is always written. role="meter"; work under way is a Progress.
  */
 export function Meter({
   value,

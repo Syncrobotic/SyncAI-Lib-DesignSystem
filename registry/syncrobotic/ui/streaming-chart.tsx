@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.50.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.51.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,9 +23,8 @@ import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduce
 import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 
 /**
- * One entry per series, the one the reader should look at first, as `chart`'s ChartConfig: `color` is the palette slot
- * (1 the accent, 2 and 3 graphite, 4 the light grey for Other, 5 a baseline) and the order sets the line style, solid,
- * dashed, dotted. Three series and Other at most, all in one unit: two measures on different scales are two charts.
+ * One entry per series, as `chart`'s ChartConfig: `color` is the palette slot and order sets the line style. Three series
+ * and Other at most, all in one unit: two measures on different scales are two charts.
  */
 export type StreamingChartConfig = Record<
   string,
@@ -148,9 +147,8 @@ export const defaultStreamingChartLabels: StreamingChartLabels = {
 // ---------- The ring buffer ----------
 
 /**
- * A fixed-size ring of timestamped readings for one series: pushing past `capacity` overwrites the oldest, so memory stays
- * flat however long the stream runs, and nothing is allocated per sample. Times only move forward: a reading older than
- * the newest (a late or reordered message) is dropped.
+ * A fixed-size ring of timestamped readings for one series: past `capacity` it overwrites the oldest, so memory stays flat
+ * and nothing is allocated per sample. A reading older than the newest is dropped.
  */
 export class StreamBuffer {
   readonly capacity: number
@@ -295,9 +293,8 @@ export type StreamingChartRow = { time: number; values: Record<string, number | 
 const now = () => (typeof performance !== "undefined" ? performance.now() : Date.now())
 
 /**
- * Everything that happens per sample and per frame, kept out of React: React renders the frame of the chart once, and the
- * engine pushes readings into ring buffers, draws the canvas on requestAnimationFrame, and writes the legend's values, the
- * crosshair and the screen-reader text straight into their elements. A push never renders.
+ * Everything per sample and per frame, outside React: the engine fills the ring buffers, draws the canvas on
+ * requestAnimationFrame, and writes the legend, crosshair and screen-reader text into their elements. A push never renders.
  */
 class StreamingEngine {
   series: Series[] = []
@@ -1096,10 +1093,9 @@ const DEFAULT_WINDOWS = [30_000, 120_000, 600_000]
 const NO_LIMITS: readonly StreamingChartLimit[] = []
 
 /**
- * A live line chart for telemetry arriving many times a second: speed, motor current, temperature, battery voltage. The
- * time axis keeps a fixed window ending now; Pause freezes the view while readings keep buffering, the arrow keys move a
- * paused view through the buffer, and Resume or Jump to live returns to the edge. Drawn on a canvas from ring buffers the
- * chart owns, on requestAnimationFrame, only while it is on screen and the tab is visible: a reading never renders React.
+ * A live line chart for telemetry arriving many times a second, over a fixed window ending now. Pause freezes the view
+ * while readings keep buffering; arrows move a paused view, Jump to live returns. Drawn on a canvas only while on screen
+ * and the tab is visible: a reading never renders React.
  */
 export function StreamingChart({
   config,

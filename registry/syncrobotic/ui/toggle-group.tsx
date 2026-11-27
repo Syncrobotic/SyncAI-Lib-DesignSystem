@@ -16,11 +16,9 @@ const Ctx = React.createContext<{ variant: Variant; size: Size; joined: boolean;
 })
 
 /**
- * A set of toggles: one on at a time (`type="single"`, a view or a time range) or any mix (`type="multiple"`, layers,
- * channels). On is inverted, like a selected segment. Joined into one strip by default; `joined={false}` spaces them.
- * SegmentedControl is the single-choice form on a muted track; use it for switching views of the same data.
- * Joined outline items share their edges; two that are on side by side keep a 1 px line between them, so they read as
- * two choices, not one wide block. Ghost items have no edge to share, so they are never joined and keep their corners.
+ * A set of toggles: one on (`type="single"`) or any mix (`type="multiple"`). On is inverted. Joined by default
+ * (`joined={false}` spaces them); two adjacent on items keep a 1 px line so they read as two. For switching views of the
+ * same data use SegmentedControl.
  */
 export function ToggleGroup({
   className,

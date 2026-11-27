@@ -1,4 +1,4 @@
-// @syncrobotic/item v0.35.0 · update: npx shadcn add @syncrobotic/item --overwrite
+// @syncrobotic/item v0.51.0 · update: npx shadcn add @syncrobotic/item --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -6,9 +6,8 @@ import { cn } from "@/lib/utils"
 import { iconTileVariants } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
- * A row of content: media, a title with a line below, and actions at the end. People, files, services, settings links.
- * General purpose; for robot rows with a live status use the shell's List. A row is a link only through `asChild`,
- * and only a link draws the hover fill, so a static row never looks clickable.
+ * A row of content: media, a title and a line, actions at the end (people, files, settings links). For robot rows with a
+ * live status use the shell's List. Only a link (`asChild`) draws the hover fill, so a static row never looks clickable.
  */
 export const itemVariants = cva(
   "group/item flex w-full items-center gap-3 rounded-sm text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard) [a&]:press [a&]:hover:bg-accent",

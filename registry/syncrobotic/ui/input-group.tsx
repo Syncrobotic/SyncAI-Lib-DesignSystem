@@ -1,14 +1,12 @@
-// @syncrobotic/input-group v0.50.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.51.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * An input with things inside its edge: an icon, a unit, a clear or reveal button. A unit (InputGroupUnit) follows the
- * value it belongs to, "120 m", not the far edge of the field.
- * The group draws the field (edge, focus ring, error); the Input inside it draws nothing, so addons of any width fit
- * without guessing padding. Put the Input (or a Field's child) inside, with addons before or after it.
+ * An input with an icon, a unit or a button inside its edge. The group draws the field (edge, focus ring, error) and the
+ * Input inside draws nothing, so addons of any width fit. A unit follows its value ("120 m"), not the far edge.
  */
 export function InputGroup({
   className,
@@ -51,8 +49,8 @@ export function InputGroup({
         // The focus ring belongs to the whole group, not the bare text box inside it.
         "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring",
         "has-[[aria-invalid=true]]:ring-2 has-[[aria-invalid=true]]:ring-danger",
-        // Disabled reads as a muted surface, not a faded one, so its text keeps enough contrast to be read; its edge steps back
-        // to --border, so in the dark too it no longer looks like a field you can fill in.
+        // Disabled is a muted surface, not a faded one, so its text stays readable; its edge steps back to --border, so in the
+        // dark it does not look like a field you can fill in.
         "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted has-[input:disabled]:text-muted-foreground has-[input:disabled]:ring-border",
         // Text sits 8 px from an addon, 12 px from a bare edge.
         "[&_[data-slot=input-group-addon]+[data-slot=input]]:pl-2 [&_[data-slot=input]:has(+[data-slot=input-group-addon])]:pr-2",

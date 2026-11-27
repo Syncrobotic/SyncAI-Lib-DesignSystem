@@ -6,12 +6,9 @@ import { HoverCard as HoverCardPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * A preview of what a link leads to, shown while the pointer rests on it or the link has keyboard focus. Preview only:
- * touch screens never show it, and screen readers are not told it is there, so everything in it is also on the page the
- * link opens, and nothing in it is a control.
- *
- * It waits 500 ms before opening, so moving the pointer across a table of robot IDs does not flash a card under each one,
- * and 300 ms before closing, so the pointer can cross the gap onto the card to read it.
+ * A preview of where a link leads, on hover or keyboard focus. Touch never shows it and screen readers are not told, so
+ * everything in it must also be on the linked page, and nothing in it is a control. Opens after 500 ms (no flashing across
+ * a table of links) and closes after 300 ms (time to cross onto the card).
  */
 export function HoverCard({ openDelay = 500, closeDelay = 300, ...props }: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
   return <HoverCardPrimitive.Root openDelay={openDelay} closeDelay={closeDelay} {...props} />

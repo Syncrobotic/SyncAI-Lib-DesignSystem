@@ -2,13 +2,9 @@
 import { pad } from "@/registry/syncrobotic/lib/math"
 
 /**
- * A time of day, 24-hour with seconds: "14:02:31". With `locale`, in that locale's digits and separators; without, the
- * same for every browser and the server. With `timeZone` (an IANA name, "Europe/Berlin"), in that zone; without, in the
- * time zone of whatever runs it.
- *
- * The server and the browser rarely share a time zone (a server in UTC, an operator in Taipei), so a time written during
- * the server's render and again while the page hydrates comes out different. Format a time read from the clock or from a
- * message only once the component is in the browser (in state an effect, a timer or a message set), or pass `timeZone`.
+ * A time of day, 24-hour with seconds: "14:02:31", in `locale`'s digits if given and in `timeZone` (IANA) if given, else
+ * in the runtime's zone. The server and the browser rarely share a zone, so format a time from the clock or a message
+ * only once in the browser (in state an effect, timer or message set), or pass `timeZone`.
  */
 export function formatClockTime(date: Date, locale?: string, timeZone?: string) {
   if (locale || timeZone) return date.toLocaleTimeString(locale || "en", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone })

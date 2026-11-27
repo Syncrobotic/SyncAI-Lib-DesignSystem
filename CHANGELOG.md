@@ -4,9 +4,12 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## 0.51.0 · 2026-11-27
 
-Eighteen items leave beta: their APIs only change in a major release from here.
+Eighteen items leave beta, and the docs and comments say what they need to in fewer words.
 
 ### Changed
+- **Concise docs and comments:** in 129 items, the comments say what the code needs said and the code is unchanged (checked: every file prints the same with comments removed). Component JSDoc is 1–4 lines, no comment block runs past 8 lines, and history moves to this changelog. The reasons that matter stay: WCAG, measured numbers and library workarounds.
+- **Descriptions and notes:** registry descriptions are one sentence under 200 characters, and changelog notes are under 300.
+- **Docs and checks:** the docs' longest paragraphs become lists. CONTRIBUTING has a Comments and docs section, and `lint:registry` and `lint:rules` check it.
 - **Stable:** these items now change their API only in a major release.
   - **Overlays:** `dialog`, `alert-dialog`, `popover`, `tooltip`, `hover-card`, `context-menu`.
   - **Inputs:** `textarea`, `switch`, `toggle-group`, `button-group`, `input-otp`, `calendar`.

@@ -4,9 +4,8 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * Buttons, a field or a menu trigger joined into one strip that reads as a single control: a split button, a stepper,
- * prev / next, a search with its scope. Only the outer corners stay round and neighbours share one edge. For one choice
- * among several use SegmentedControl or ToggleGroup, which hold a selection; a ButtonGroup holds none.
+ * Buttons, a field or a menu trigger joined into one strip (a split button, prev / next, a search with its scope). It holds
+ * no selection: for one choice among several use SegmentedControl or ToggleGroup.
  */
 export function ButtonGroup({ className, orientation = "horizontal", ...props }: React.ComponentProps<"div"> & { orientation?: "horizontal" | "vertical" }) {
   return (

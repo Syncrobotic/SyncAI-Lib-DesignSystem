@@ -1,4 +1,4 @@
-// @syncrobotic/markdown v0.41.0 · update: npx shadcn add @syncrobotic/markdown --overwrite
+// @syncrobotic/markdown v0.51.0 · update: npx shadcn add @syncrobotic/markdown --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,28 +9,11 @@ import { CodeBlock, type CodeBlockLabels } from "@/registry/syncrobotic/ui/code-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /*
-  A model's answer written in Markdown, rendered as the kit's own elements: a safe subset, parsed here with no
-  dependency, and never as HTML.
-
-  What it reads: ATX headings (#), paragraphs, *emphasis*, **strong**, ~~strikethrough~~, `inline code`, fenced code
-  (``` or ~~~, with the language), bullet and numbered lists with nesting, links ([text](url), <url> and bare http(s)
-  URLs), blockquotes, GFM pipe tables, horizontal rules (---) and line breaks. Not read: raw HTML (it shows as the text
-  it is), setext headings, indented code, reference links, footnotes and task lists.
-
-  Safety: there is no dangerouslySetInnerHTML anywhere, so a <script> in the text is the eight characters on the screen.
-  A link is a link only to http(s) or mailto (the URL parser decides, so "java\tscript:" is caught); anything else, a
-  relative path included, is its words without a link. Pictures are not loaded: an image is a link to it with its alt
-  text, unless its origin is in `imageOrigins`.
-
-  Streaming: pass the text as it grows with `streaming` on. Blocks that are finished are parsed once and kept; only the
-  last block is parsed again on each update, and only the blocks that changed re-render. While streaming, what is still
-  forming does not flash: an unclosed ** or ` already styles the words after it, a link shows its words until its URL is
-  complete, a table waits for its header line, and a line that is only a marker so far (#, -, 1., >) waits for its
-  words. An unclosed code fence is code so far.
-
-  Accessibility: real elements (headings, lists, tables, blockquote, code). Headings start at `headingLevel` (h3, under a
-  page's h1 and a section's h2) and never skip a level, whatever the model wrote. It never speaks on its own: for a
-  streamed answer, StreamingText's `format="markdown"` renders it and reads the words, never the syntax, in sentences.
+  A model's Markdown as the kit's own elements: a safe subset parsed here, never as HTML (no dangerouslySetInnerHTML).
+  Links only to http(s) or mailto, decided by the URL parser ("java\tscript:" is caught); images only from `imageOrigins`,
+  else a link. Not read: raw HTML, setext headings, indented code, reference links, footnotes, task lists. While
+  `streaming`, finished blocks are parsed once and half-formed syntax does not flash. Headings start at `headingLevel` and
+  never skip a level. It never speaks: StreamingText's `format="markdown"` reads the words.
 */
 
 export type MarkdownLabels = {
@@ -787,7 +770,7 @@ export function parseInline(text: string, options: Partial<InlineOptions> = {}):
         const stack = stacks[d.char]!
         while (d.count > 0 && stack.length) {
           const o = stack[stack.length - 1]!
-          // Openers of another character between the two can no longer match: they stay text.
+          // Openers of another character between the two cannot match any more: they stay text.
           for (const c of ["*", "_", "~"]) {
             if (c === d.char) continue
             const s = stacks[c]!

@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.35.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.51.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -88,7 +88,7 @@ export function NavigationMenuContent({ className, ...props }: React.ComponentPr
       className={cn(
         "top-0 left-0 w-full p-2 md:absolute md:w-auto",
         // Moving between triggers, the new panel's links are drawn at once while the shared panel resizes around them.
-        // Radix drops the old panel's links in the same frame, so fading the new ones in from 0 emptied the panel for a
+        // Radix drops the old panel's links in the same frame, so fading the new ones in from 0 would empty the panel for a
         // moment between the two. The panel itself still appears and disappears.
         "data-[motion^=to-]:animate-disappear",
         // Without the shared viewport each panel is its own popover, over the page at every width.

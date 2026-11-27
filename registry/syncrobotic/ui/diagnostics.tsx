@@ -1,4 +1,4 @@
-// @syncrobotic/diagnostics v0.40.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
+// @syncrobotic/diagnostics v0.51.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
 "use client"
 
 import * as React from "react"
@@ -135,9 +135,8 @@ export const defaultDiagnosticsLabels: DiagnosticsLabels = {
 // --- The model: pure, exported for tests and for apps that summarise elsewhere (a fleet table's health column) ---------
 
 /**
- * How bad a level is, for the roll-up and the summary's order. Stale outranks a warning: no news could be hiding anything.
- * Unlike the ROS aggregator, which turns a partly stale group into ERROR, a group with a stale child reads Stale: an
- * update that stopped is not a fault, and saying Error would send someone to fix the wrong thing.
+ * How bad a level is, for the roll-up and the order. Stale outranks a warning: no news could hide anything. Unlike the ROS
+ * aggregator, a group with a stale child reads Stale, not Error: a stopped update is not a fault.
  */
 export const diagnosticRank: Record<DiagnosticLevel, number> = { ok: 0, warn: 1, stale: 2, error: 3 }
 
@@ -266,9 +265,8 @@ const ANNOUNCE_GAP_MS = 5000
 const PLAIN_NUMBER = /^([-+−]?)(0|[1-9]\d*)(?:\.(\d+))?(\s*[^\d\s.,][^\d]*)?$/
 
 /**
- * A status value as people read it: a plain number (with an optional unit) is grouped and written in `locale`
- * ("1204553 ticks" → "1,204,553 ticks" in English, "1.204.553 ticks" in German), keeping its decimals and its sign.
- * Anything else (a version, an ID, a flag, a sentence) is shown exactly as the robot sent it.
+ * A status value as people read it: a number (with an optional unit) is grouped in `locale`, keeping its decimals and
+ * sign; anything else (a version, an ID, a sentence) is shown exactly as sent.
  */
 export function formatDiagnosticValue(value: string, locale = "en"): string {
   const m = PLAIN_NUMBER.exec(value.trim())
@@ -325,11 +323,9 @@ export type DiagnosticsProps = {
 type Expansion = { opened: string[]; closed: string[] }
 
 /**
- * A robot's hardware and software health as `diagnostic_msgs/DiagnosticArray` reports it, the way rqt_robot_monitor and
- * the diagnostic aggregator show it: the worst level and the counts first, worst on top; then a tree by the names' "/"
- * paths, each group showing the worst level under it. Each status is a glyph and a word (colour only on the two, rows never
- * tinted) with its message, and opens to its hardware ID and values. A status with no update for `staleAfterMs` reads
- * Stale, with how long ago it arrived. "Problems" narrows the tree to what is not OK; search narrows it by name.
+ * Robot hardware and software health from `diagnostic_msgs/DiagnosticArray`, as rqt_robot_monitor shows it: worst level
+ * and counts first, then a tree by "/" path with each group's worst level. A status not updated for `staleAfterMs` reads
+ * Stale. "Problems" and search narrow the tree.
  */
 export function Diagnostics({
   statuses,

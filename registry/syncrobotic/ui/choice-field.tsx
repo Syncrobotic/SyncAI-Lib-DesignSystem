@@ -1,4 +1,4 @@
-// @syncrobotic/choice-field v0.15.1 · update: npx shadcn add @syncrobotic/choice-field --overwrite
+// @syncrobotic/choice-field v0.51.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -64,9 +64,8 @@ export function FieldSet({
 }
 
 /**
- * One choice as a whole tappable row, at least 44 px: the control, its label and an optional description, and an optional
- * detail at the end (a count). Checkboxes and radios sit at the start; a switch, which acts at once, sits at the end.
- * The row is a label, so a tap anywhere on it toggles the control.
+ * One choice as a whole tappable row, at least 44 px: the control, its label, an optional description and detail. The row
+ * is a label, so a tap anywhere toggles it; a switch sits at the end, checkboxes and radios at the start.
  */
 export function ChoiceField({
   label,

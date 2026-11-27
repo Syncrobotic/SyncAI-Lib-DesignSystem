@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.49.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.51.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -127,9 +127,8 @@ const TITLE_MIN_REM = 10
 const px = (v: string) => parseFloat(v) || 0
 
 /**
- * A column's head row: --h-row tall with a hairline under it, the same in every column, so the hairlines of the side
- * columns and `main` run on in one line. The side columns draw theirs; put this first in `main` to give it the same row
- * (it reaches the edges of main's card).
+ * A column's head row: --h-row tall with a hairline, so the hairlines of every column run on in one line. The side
+ * columns draw theirs; put this first in `main` to give it the same row.
  */
 export function ActionRailColumnHeader({ title, id, children, className }: { title: string; id?: string; children?: React.ReactNode; className?: string }) {
   return (
@@ -150,16 +149,9 @@ export function ActionRailColumnHeader({ title, id, children, className }: { tit
 }
 
 /**
- * A page that leads to one next step. The content sits on the left; the right column holds only that step: its title, one
- * line of what it does, one large primary button (--h-lg) and a few small related actions. On wide screens (1024 px and
- * up) the rail is a panel that stays in view as the content scrolls; on phones it becomes a bar fixed to the bottom with
- * the primary action, above the safe area, and the page is padded by the bar's measured height so nothing hides under it.
- * Panels follow the app shell: 8 px apart and from the edge, 16 px inside. ← and Esc go back up a level (`onBack`).
- *
- * As a workspace (`leading`, `panel`) it fills the screen from 1024 px with no page column: a column left of `main` from
- * 1280 px (a run history), the fields for the next step right of it with the rail pinned at their bottom, each column
- * scrolling on its own under a head row of the same height. The top bar never wraps: `headerItems` that do not fit fold
- * into a ⋯ menu, last first.
+ * A page that leads to one next step: content on the left, and a rail with that step's title, one line, a large primary
+ * button and a few small actions. From 1024 px the rail stays in view; on phones it is a bar fixed to the bottom. With
+ * `leading` or `panel` it is a full-screen workspace whose columns scroll on their own. ← and Esc call `onBack`.
  */
 export function ActionRailShell({
   title,

@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.50.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.51.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,9 +7,8 @@ import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 
 /**
- * Where someone is in a fixed sequence of steps (commissioning a robot, an import wizard).
- * Steps are numbered from 1. Done steps show a check, the current one is filled, an error step a cross.
- * The current step is the neutral primary, never blue: blue means a machine is working, not a person.
+ * Where someone is in a fixed sequence of steps, numbered from 1: done steps a check, the current one filled, an error a
+ * cross. The current step is neutral, never blue: blue means a machine is working, not a person.
  */
 type StepState = "done" | "current" | "upcoming" | "error"
 

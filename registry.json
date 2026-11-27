@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -186,8 +191,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -250,7 +260,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.36.0",
@@ -273,8 +283,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -301,8 +316,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -347,8 +367,13 @@
         }
       ],
       "meta": {
-        "version": "0.46.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.46.0",
             "date": "2026-11-26",
@@ -440,8 +465,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -637,7 +667,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.36.0",
@@ -692,8 +722,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -937,8 +972,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -979,8 +1019,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -1087,8 +1132,13 @@
         }
       ],
       "meta": {
-        "version": "0.46.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.46.0",
             "date": "2026-11-26",
@@ -1359,8 +1409,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -1448,8 +1503,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -1527,8 +1587,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -1567,8 +1632,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -1624,9 +1694,14 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "status": "beta",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -1706,8 +1781,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -1767,8 +1847,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -1913,8 +1998,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.8.1",
             "date": "2026-11-21",
@@ -1974,8 +2064,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -2185,8 +2280,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.15.1",
             "date": "2026-11-21",
@@ -2311,8 +2411,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -2367,8 +2472,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -2419,8 +2529,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -2449,8 +2564,13 @@
         }
       ],
       "meta": {
-        "version": "0.48.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -2499,8 +2619,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -2629,8 +2754,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2661,8 +2791,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.2",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.16.2",
             "date": "2026-11-21",
@@ -2700,8 +2835,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -2768,8 +2908,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -2813,8 +2958,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -2856,8 +3006,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -2909,8 +3064,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3019,8 +3179,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -3091,8 +3256,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3127,8 +3297,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -3209,8 +3384,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.45.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.45.0",
             "date": "2026-11-26",
@@ -3249,8 +3429,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3313,8 +3498,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -3377,8 +3567,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3415,8 +3610,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3497,8 +3697,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3551,8 +3756,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -3611,8 +3821,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -3672,7 +3887,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.32.0",
@@ -3703,8 +3918,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -3767,8 +3987,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.1",
             "date": "2026-11-27",
@@ -3834,8 +4059,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -3907,8 +4137,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -4002,8 +4237,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -4145,8 +4385,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -4264,7 +4509,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.32.0",
@@ -4302,7 +4547,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.32.0",
@@ -4354,8 +4599,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -4446,7 +4696,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.49.0",
@@ -4492,8 +4742,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -4583,8 +4838,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4669,8 +4929,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -4716,8 +4981,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4780,7 +5050,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.9.0",
@@ -4809,8 +5079,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -4858,7 +5133,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.17.3",
@@ -4894,8 +5169,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -4947,8 +5227,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.48.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.48.0",
             "date": "2026-11-26",
@@ -4986,8 +5271,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5038,8 +5328,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5102,8 +5397,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5139,8 +5439,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5193,8 +5498,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -5234,8 +5544,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.33.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.33.0",
             "date": "2026-11-24",
@@ -5267,8 +5582,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.33.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.33.0",
             "date": "2026-11-24",
@@ -5322,8 +5642,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -5361,8 +5686,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5405,8 +5735,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -5485,8 +5820,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -5553,8 +5893,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -5607,8 +5952,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5661,8 +6011,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5710,8 +6065,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -5783,8 +6143,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.47.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -5844,8 +6209,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -5867,8 +6237,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -5908,8 +6283,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -6003,8 +6383,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -6040,8 +6425,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6081,8 +6471,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6127,8 +6522,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -6180,8 +6580,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -6301,8 +6706,13 @@
         }
       ],
       "meta": {
-        "version": "0.42.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.42.0",
             "date": "2026-11-26",
@@ -6376,7 +6786,7 @@
           {
             "version": "0.51.0",
             "date": "2026-11-27",
-            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here."
+            "note": "Stable: its API is a standard one the kit styles, unchanged for ten releases, with unit tests. It changes only in a major release from here. Comments trimmed to what they need to say; the code is unchanged."
           },
           {
             "version": "0.32.0",
@@ -6603,8 +7013,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -6724,8 +7139,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -6782,8 +7202,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -6824,8 +7249,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -6857,8 +7287,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -6890,8 +7325,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -6933,8 +7373,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -6969,8 +7414,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7023,8 +7473,13 @@
         }
       ],
       "meta": {
-        "version": "0.42.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.42.0",
             "date": "2026-11-26",
@@ -7067,8 +7522,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7114,8 +7574,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7193,8 +7658,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -7260,8 +7730,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -7317,8 +7792,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -7373,8 +7853,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7437,8 +7922,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -7498,8 +7988,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -7696,8 +8191,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -7918,8 +8418,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -8035,8 +8540,13 @@
         }
       ],
       "meta": {
-        "version": "0.38.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.38.0",
             "date": "2026-11-25",
@@ -8100,8 +8610,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -8791,8 +9306,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -8920,8 +9440,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -9096,8 +9621,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -9174,8 +9704,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -10499,8 +11034,13 @@
         }
       ],
       "meta": {
-        "version": "0.46.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.46.0",
             "date": "2026-11-26",
@@ -10853,8 +11393,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -11024,8 +11569,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -11132,8 +11682,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11187,8 +11742,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -11281,8 +11841,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -11478,8 +12043,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -12499,8 +13069,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -12544,8 +13119,13 @@
         }
       ],
       "meta": {
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -12597,8 +13177,13 @@
         }
       ],
       "meta": {
-        "version": "0.49.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.49.0",
             "date": "2026-11-26",
@@ -12644,8 +13229,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -12676,8 +13266,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
@@ -12723,8 +13318,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.0",
+        "version": "0.51.0",
         "changelog": [
+          {
+            "version": "0.51.0",
+            "date": "2026-11-27",
+            "note": "Comments trimmed to what they need to say; the code is unchanged."
+          },
           {
             "version": "0.45.0",
             "date": "2026-11-26",

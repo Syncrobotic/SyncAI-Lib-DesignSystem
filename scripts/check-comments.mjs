@@ -6,8 +6,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
-// registry/ joins once its comments are trimmed (it needs version bumps): add "registry" here.
-const ROOTS = ["scripts", "site", "app", "stories"]
+const ROOTS = ["registry", "scripts", "site", "app", "stories"]
 const MAX_LINES = 8
 const HISTORY = /\b((?<!\b(?:is|are|be|been|being|gets?) )used to|previously|was changed|no longer|before \d+\.\d+|since \d+\.\d+|the \d+\.\d+ audit)\b/i
 

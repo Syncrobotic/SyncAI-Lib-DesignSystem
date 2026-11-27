@@ -7,9 +7,8 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * One region behind one trigger: "More filters", "How to use this", a long note. Not a section, so the trigger needs no
- * heading; for a set of sections with headings use Accordion, which it matches (the chevron, the focus ring, the motion).
- * Closed by default (`defaultOpen`, or `open` and `onOpenChange`).
+ * One region behind one trigger ("More filters", a long note); it needs no heading. For sections with headings use
+ * Accordion, which it matches. Closed by default.
  */
 export function Collapsible(props: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
   return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />
@@ -34,9 +33,8 @@ export function CollapsibleTrigger({ className, children, ...props }: React.Comp
 }
 
 /**
- * The region. It opens and closes in height at --motion-base (instant under reduced motion), and only once Radix has
- * measured it: content open in the server's HTML shows at once, without growing on first paint. Closed, it leaves the
- * page; `forceMount` keeps it mounted for a show and hide of your own, as in Radix.
+ * The region. It animates its height only once Radix has measured it, so content open in the server's HTML does not grow
+ * on first paint. Closed, it unmounts unless `forceMount`.
  */
 export function CollapsibleContent({ className, children, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
   return (

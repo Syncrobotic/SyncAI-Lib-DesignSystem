@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.32.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.51.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,9 +7,8 @@ import { CircleCheck, CircleAlert, Info, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * A short, transient message about something the user just did, or a minor event.
- * Same timings as the island's notices: 4 s, 8 s when it offers an action (undo), failures until dismissed.
- * Never an alarm: anything that needs an operator to act goes to the alarm list.
+ * A short, transient message about something the user just did. 4 s, 8 s with an action (undo), failures until
+ * dismissed. Never an alarm: anything an operator must act on goes to the alarm list.
  */
 export type ToastTone = "neutral" | "success" | "danger"
 
@@ -104,10 +103,8 @@ export function ToastViewport({ className, ...props }: React.ComponentProps<type
 }
 
 /**
- * Escape while focus is inside an open native <dialog> belongs to the dialog. An open toast listens for Escape on the
- * whole document and took it, so the toast closed and the dialog stayed open. Here the toast keeps out of it: it stays,
- * and the dialog is asked to close as if it had the key itself (a `cancel` event it can refuse, then close), as the
- * tooltip does. Escape with focus in the toast, or outside any dialog, still dismisses the toast.
+ * Escape with focus inside an open native <dialog> belongs to the dialog: the toast stays, and the dialog gets a `cancel`
+ * event (which it can refuse) as if it had the key, as in tooltip. Elsewhere Escape still dismisses the toast.
  */
 function escapeToDialog(e: KeyboardEvent) {
   const dialog = (document.activeElement as HTMLElement | null)?.closest("dialog[open]") as HTMLDialogElement | null
@@ -187,11 +184,8 @@ export function ToastClose({ className, label = "Dismiss", ...props }: React.Com
 }
 
 // ---------- The stack ----------
-// The Toaster stacks its toasts the way sonner does. Collapsed, the newest is in front at full size and two more peek
-// out above it, each a little narrower; the rest wait hidden behind them. Hovering, focusing or touching the stack
-// spreads the three into a list. A toast arrives from the screen's edge and the others move back to make room; one
-// that leaves fades while the ones behind move forward. Every move is a transition on transform, so a toast arriving
-// or leaving in the middle of another move carries on from where it is instead of jumping.
+// Stacked as sonner does: the newest in front, two more peeking above, narrower; hover, focus or touch spreads them.
+// Every move is a transform transition, so a toast arriving mid-move carries on from where it is instead of jumping.
 
 /** Toasts on screen at once; the rest are kept, hidden, until one in front goes. */
 export const VISIBLE_TOASTS = 3
@@ -318,9 +312,8 @@ function StackedToast({
 }
 
 /**
- * Mount once near the root. Renders every toast() call as a stack: the newest in front, three at most on screen; hover,
- * focus or touch spreads them out. Timers pause while the pointer or focus is on the stack and while the window is in
- * the background. `label` names the region for screen readers. A second Toaster draws nothing while the first is mounted.
+ * Mount once near the root; it renders every toast() call as a stack (three at most on screen). Timers pause while pointer
+ * or focus is on it and while the window is in the background. A second Toaster draws nothing.
  */
 export function Toaster({ label = "Notifications ({hotkey})", dismissLabel = "Dismiss" }: { label?: string; dismissLabel?: string }) {
   const list = useToasts()

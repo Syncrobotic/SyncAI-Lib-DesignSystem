@@ -8,9 +8,8 @@ import { cn } from "@/lib/utils"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /**
- * The menu a right-click (or a long press on touch, or Shift+F10 / the Menu key on the focused area) opens where the
- * pointer is. It looks and moves exactly like DropdownMenu. It is a shortcut, never the only way: every action in it is
- * also on a visible control (a ⋯ button, a toolbar, the detail page), because nobody can see that a context menu exists.
+ * The menu a right-click, long press, Shift+F10 or the Menu key opens; it looks like DropdownMenu. A shortcut only: every
+ * action in it must also be on a visible control, since nobody can see a context menu exists.
  */
 export const ContextMenu = MenuPrimitive.Root
 /** The area that opens the menu. Use `asChild` on the row or card it belongs to; it should be focusable for Shift+F10. */

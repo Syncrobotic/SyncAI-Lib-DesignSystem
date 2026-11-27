@@ -1,11 +1,10 @@
-// @syncrobotic/page-header v0.40.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.51.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * The block a page opens with: where you are (a breadcrumb above), what the page is (one h1 and a line), its state (one
- * InlineStatus beside the title), facts about it (meta pills), and its actions on the right. No label above the title:
- * the breadcrumb says where, the title says what.
+ * The block a page opens with: a breadcrumb, one h1 and a line, one InlineStatus, meta pills and actions on the right.
+ * No label above the title: the breadcrumb says where, the title says what.
  */
 export function PageHeader({
   title,
@@ -77,9 +76,8 @@ export function PageHeader({
 }
 
 /**
- * One fact about the page, as a quiet tag: "128 datasets", "Updated 2 h ago", "Owner: Data team". With `href` the fact
- * leads somewhere ("2 compliance items open" to the compliance tab): the pill becomes a link, underlined like every link.
- * A state is not a fact: it goes in PageHeader's `status` as an InlineStatus, not in a pill.
+ * One fact about the page as a quiet tag ("128 datasets"); with `href` it is a link. A state is not a fact: it goes in
+ * PageHeader's `status`.
  */
 export function MetaPill({
   icon,

@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.46.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.51.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -316,9 +316,8 @@ type IslandAlarmProps = {
 }
 
 /**
- * The control app's alarm surface: the island shows the most urgent unacknowledged alarm, above any notice.
- * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, so a persistent fault (stopped) keeps its edge when only a low alarm shows.
- * Renders nothing when every alarm is acknowledged.
+ * The island's alarm surface: the most urgent unacknowledged alarm (same data as AlarmList), or nothing. Pair it with
+ * `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, so a stopped robot keeps its edge when only a low alarm shows.
  */
 export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback = true }: IslandAlarmProps) {
   const l = { ...defaultAlarmLabels, more: (n: number) => `+${n}`, moreAlarms: "more unacknowledged", ...labels }

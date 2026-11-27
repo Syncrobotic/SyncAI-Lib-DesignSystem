@@ -1,4 +1,4 @@
-// @syncrobotic/avatar v0.35.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
+// @syncrobotic/avatar v0.51.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,9 +14,8 @@ const sizes = {
 } as const
 
 /**
- * A person, or a thing that acts like one: a robot, a site, a team. People are round; things are square (`shape="square"`),
- * so a list that mixes them tells who from what before reading a name. Sizes: sm 24, md 32 (default), lg 40, xl 48;
- * the initials and any badge scale with it.
+ * A person (round), or a thing that acts like one (`shape="square"`: a robot, a site, a team), so a mixed list tells who
+ * from what. Sizes sm 24, md 32 (default), lg 40, xl 48.
  */
 export function Avatar({
   className,
@@ -62,9 +61,8 @@ export function AvatarFallback({ className, ...props }: React.ComponentProps<typ
 }
 
 /**
- * A mark on the avatar's lower right: a `status` (the same shapes and colours as every status in the kit, so only
- * warning and danger are coloured), or a small count or icon as children. Ringed in the page colour so it reads on top.
- * Say the status in words nearby or in the avatar's label; the mark alone is not enough.
+ * A mark on the avatar's lower right: a `status` (kit status shapes; only warning and danger coloured) or a small count or
+ * icon. Say the status in words too; the mark alone is not enough.
  */
 export function AvatarBadge({ status, className, children, ...props }: React.ComponentProps<"span"> & { status?: Status }) {
   return (
@@ -83,10 +81,9 @@ export function AvatarBadge({ status, className, children, ...props }: React.Com
 }
 
 /**
- * A row of avatars. With `max`, the ones past it fold into a "+N" avatar; give `label` (who they are, in words) so a
- * screen reader hears everyone, not just the faces shown. Round avatars (people) are ringed 2 px in the page colour (on a
- * card, pass `*:data-[slot=avatar]:ring-card`) and overlap the next by 4 px, so the stack reads as separate faces. Square
- * ones (things) sit side by side 4 px apart instead: a square's initials reach its edges, and an overlap would cut them.
+ * A row of avatars; past `max` they fold into "+N" (give `label` so screen readers hear everyone). Round ones overlap by
+ * 4 px with a 2 px page-colour ring (on a card: `*:data-[slot=avatar]:ring-card`); square ones sit 4 px apart, since an
+ * overlap would cut their initials.
  */
 export function AvatarGroup({
   max,

@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.50.1 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.51.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,11 +13,9 @@ import { isMac, parseCombo, useHotkeys } from "@/registry/syncrobotic/hooks/use-
 /** The cookie that keeps the sidebar open or collapsed between visits ("true" or "false"). Read it on the server and pass it as `defaultOpen`. */
 export const SIDEBAR_COOKIE_NAME = "sidebar_state"
 /**
- * The cookie that keeps the open column's width (px), "sidebar_state_width". Read both on the server for a first paint
- * that is already right; by name, as a server component cannot import values from this client module:
- *   const c = await cookies()
- *   const open = c.get("sidebar_state")?.value      // "true" | "false" | undefined → defaultOpen (AppShell: sidebarOpen)
- *   const width = Number(c.get("sidebar_state_width")?.value) || undefined  // → defaultWidth (AppShell: sidebarWidth)
+ * The cookie keeping the open column's width (px). Read it on the server by name (a server component cannot import from
+ * this client module) for a right first paint:
+ *   const width = Number((await cookies()).get("sidebar_state_width")?.value) || undefined  // → defaultWidth
  */
 export const SIDEBAR_WIDTH_COOKIE_NAME = `${SIDEBAR_COOKIE_NAME}_width`
 
@@ -477,11 +475,9 @@ export function SidebarTrigger({ show = "always", className, onClick, ...props }
 }
 
 /**
- * The handle beside the sidebar, a window splitter: drag it to make the column wider or narrower (200 to 320 px; under
- * 140 it folds to the rail, and dragged out of the rail it opens), click it to collapse or expand. A short pill in the
- * middle of the edge, quiet until hover, focus or a drag; beside a floating sidebar it sits in the 8 px gap, over nothing,
- * and beside a column it straddles the hairline. From the keyboard it is a Tab stop: ← and → resize by 16 px, Enter
- * collapses or expands, as does ⌘B / Ctrl+B anywhere. Put it last inside Sidebar. Absent on phones (the sheet).
+ * The window-splitter handle beside the sidebar: drag between 200 and 320 px (under 140 folds to the rail), click to
+ * collapse or expand. A Tab stop: ← → resize by 16 px, Enter toggles, as ⌘B / Ctrl+B does anywhere. Put it last inside
+ * Sidebar; absent on phones.
  */
 export function SidebarRail({ className, ...props }: React.ComponentProps<"div">) {
   const { isMobile, open, setOpen, toggleSidebar, labels, shortcut, keyshortcuts, width, setWidth, resizing, setResizing } = useSidebar()
@@ -707,11 +703,8 @@ function registerFadeProperties() {
 }
 
 /**
- * The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). When the
- * links are taller than the column, each end that still hides some fades out (a mask, so the sidebar's own surface shows
- * through), and while there is more below, a small chevron sits at the list's foot, between the list and what is under it
- * rather than over the last link; a tap on it scrolls a page down. The fades and the chevron ease in and out with the
- * scroll, and at the bottom of the list there is neither.
+ * The scrolling middle, a navigation landmark ("Main"; rename with aria-label). An end that hides links fades (a mask),
+ * and while there is more below a chevron at the foot scrolls a page down.
  */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
   const { labels, state, isMobile } = useSidebar()
@@ -881,9 +874,8 @@ export function SidebarMenuButton({ asChild = false, isActive = false, size = "m
 }
 
 /**
- * A count on a link: unacknowledged alarms, unread events. A CountBadge at the end of the row (danger tint, or neutral);
- * on the rail, a dot on the icon's corner instead. Put it inside the SidebarMenuButton, so the count is part of the link's
- * name ("Alarms 2").
+ * A count on a link (unacknowledged alarms, unread events): a CountBadge at the row's end, a dot on the rail. Put it
+ * inside SidebarMenuButton so the count is part of the link's name ("Alarms 2").
  */
 export function SidebarMenuBadge({ count, max, tone = "danger", className }: { count: number; max?: number; tone?: "danger" | "neutral"; className?: string }) {
   if (count <= 0) return null

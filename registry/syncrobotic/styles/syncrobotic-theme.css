@@ -1,32 +1,11 @@
-/* @syncrobotic/syncrobotic-theme v0.35.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
-/*
- * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
- * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
- *
- * Usage:
- *   1. In globals.css, add @import "../styles/syncrobotic-theme.css"; after @import "tailwindcss";
- *   2. Delete the :root / .dark / @theme inline blocks that shadcn init generated (this file replaces them)
- *   3. Light is :root and the default; dark is class="dark" on <html>. Offer ThemeToggle (light, match system, dark); with
- *      no stored choice the app's default, light, applies.
- *      Teleoperation and intercom screens put class="dark" on their root so they stay dark whatever the setting.
- *
- * Colour rules:
- *   - Colour is for what is abnormal. A thing's state (patrolling, docked, charging, offline) is shape + neutral text even
- *     while it is busy; warning, danger and stop carry colour.
- *   - Blue (--info) only marks a bounded process someone is waiting on: a run with a start and an end (a mission in
- *     progress, a rollout stage, an upload, a command being sent). Never a state, never focus. The bar or cell of the
- *     running work is blue; the state word stays grey.
- *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart.
- *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text.
- *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle).
- *   - --primary is neutral high contrast (black in light, white in dark).
- *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey.
- *   - Selected controls (segmented control, toggle) are inverted; a switch that is on uses --primary. --muted is the quiet fill
- *     (table headers, segment tracks, tiles, disabled fills) and the current page in navigation, with weight; --accent is hover,
- *     one step darker, so hovering another page never looks like the current one.
- *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop.
- *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red.
- */
+/* @syncrobotic/syncrobotic-theme v0.51.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* SYNCROBOTIC theme: tokens for shadcn/ui on Tailwind CSS v4.
+   Install: in globals.css, @import this file after @import "tailwindcss", then delete the :root / .dark / @theme inline
+   blocks shadcn init generated. Light is :root and the default; dark is class="dark" on <html> (offer ThemeToggle).
+   Teleoperation and intercom screens put class="dark" on their root so they stay dark whatever the setting.
+   Colour is for what is abnormal: states are grey, blue (--info) only marks a process someone is waiting on, solid red
+   (--stop) is the emergency stop only, green confirms what just happened. Full rules: the Colour foundation
+   (/docs/foundations/color). */
 
 /* ---------- Light ---------- */
 :root {
@@ -86,22 +65,11 @@
   --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
-  /*
-   * Chart series: graphite and one accent. A chart has one series the reader should look at, in the accent: the
-   * SYNCROBOTIC brand indigo (#5347a8 in light; the other modes keep its hue), off the status hues. Every other series is
-   * graphite, and series are told apart by line style as well as colour: the first solid, the second dashed (6 4), the
-   * third dotted (1.5 3.5). Bars and stacks use the grey steps with a 2 px gap in the card colour between them.
-   *   1 accent: the series that matters (this week, this robot, the one the title names)
-   *   2 graphite strong, 3 graphite mid: the other series, in that order
-   *   4 Other: light grey for what is folded together. A fourth series or more never gets a colour: fold it into Other or
-   *     split the chart into small multiples. Other is below 3:1 on purpose (it recedes); it is always labelled, in the
-   *     legend and the table, and set off from its neighbour by the 2 px gap.
-   *   5 baseline: an earlier period, a plan or a target, always dashed. The graphite mid, by name.
-   * Checked in every mode below against its card (dataviz palette check): any two of slots 1–3, and 3 beside 4, differ
-   * by ΔE 15 or more to normal vision and under red-green colour blindness, and slots 1–3 are 3:1 or more. Charts still
-   * ship a legend and, with axes, a table view, so no series is told apart by colour alone. Blue, green, amber and red
-   * stay for status, never a series.
-   */
+  /* Chart series: 1 the brand indigo accent, for the one series that matters; 2 and 3 graphite (solid, dashed 6 4, dotted
+     1.5 3.5); 4 Other, below 3:1 on purpose and always labelled (a fourth series folds into Other or small multiples);
+     5 baseline (a plan or earlier period, always dashed). Bars and stacks keep a 2 px card-coloured gap.
+     In every mode slots 1–3, and 3 beside 4, differ by ΔE 15 or more, also under red-green colour blindness, and 1–3
+     reach 3:1. Status hues are never a series. See the Data visualisation foundation. */
   --chart-1: #5347a8;
   --chart-2: #3a3a3f;
   --chart-3: #67676c;
@@ -204,7 +172,7 @@
   --chart-5-foreground: var(--chart-3-foreground);
 
   /* Lighter strokes over a black halo. Predicted is the high-contrast indigo rather than the chart indigo, since on a photo the stroke meets
-     the pixels around it as well as its halo, and the chart indigo fell to 2.3:1 on mid-dark indoor pictures (4.6 now). */
+     the pixels around it as well as its halo: the chart indigo reaches 2.3:1 on mid-dark indoor pictures, this one 4.6. */
   --annotate-predicted: #b5b4ff;
   --annotate-truth: var(--chart-2);
   --annotate-previous: var(--muted-foreground);
@@ -427,17 +395,9 @@
 }
 
 @theme {
-  /*
-   * Radius scale: 2xs 4, xs 8, sm 12, md 16, lg 20, xl 24, full. All multiples of 4, sharing the spacing base,
-   * so nested corners are always concentric: outer radius = inner radius + padding.
-   *   rounded-xs = 8   tags, small parts flush inside a container
-   *   rounded-sm = 12  buttons, inputs, icon tiles
-   *   rounded-md = 16  cards, parts inside a tray
-   *   rounded-lg = 20  floating notices, dialogs
-   *   rounded-xl = 24  trays (dynamic island, dock), bottom sheets
-   * Note: shadcn's default button and input use rounded-md and its card uses rounded-xl.
-   * When adding them to this registry, move them to the steps above (button rounded-sm, card rounded-md).
-   */
+  /* Radius: multiples of 4, so nested corners stay concentric (outer = inner + padding).
+     xs 8 tags · sm 12 buttons, inputs, icon tiles · md 16 cards · lg 20 notices, dialogs · xl 24 trays, bottom sheets.
+     shadcn's defaults (button rounded-md, card rounded-xl) move to sm and md here. */
   --radius-2xs: 0.25rem; /* 4: controls 24 px and smaller (checkbox, kbd, a handle in a tight row), so they keep a square shape */
   --radius-xs: 0.5rem;
   --radius-sm: 0.75rem;
@@ -616,7 +576,7 @@
 }
 
 /* The browser draws native parts (scrollbars, date and time pickers, autofill) for the theme it is told, so it is told:
-   light by default, dark inside .dark. Without it a dark page got light scrollbars and a light-blue autofill box. */
+   light by default, dark inside .dark. Without it a dark page gets light scrollbars and a light-blue autofill box. */
 @layer base {
   :root {
     color-scheme: light;
@@ -626,11 +586,9 @@
   }
 }
 
-/* A field the browser filled in (a saved address, a remembered search) looks like any filled field. The browser's own
-   light-blue fill is set with !important and cannot be replaced as a background; a long transition delays it for good,
-   so the field keeps its own background, transparent inside a group (Search field, Input group) as on a card. Painting
-   over it instead would cover the edge of the group around the field. Blue here would mean a process being waited on.
-   The text keeps the theme's colour. !important outranks the transition utilities a field may carry. */
+/* An autofilled field looks like any filled field (blue would mean a process being waited on). The browser's fill is
+   !important and cannot be overridden, so a long transition delays it for good; painting over it would cover the edge of
+   an input group. !important here outranks the transition utilities a field may carry. */
 @layer base {
   input:-webkit-autofill,
   input:autofill,
