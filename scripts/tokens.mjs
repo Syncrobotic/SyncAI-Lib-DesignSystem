@@ -1,14 +1,9 @@
-// Exports the theme as W3C Design Tokens (DTCG format) for Figma, Tokens Studio, Style Dictionary and native apps.
-// The CSS theme stays the source; this file is generated from it.
+// Exports the theme as W3C Design Tokens (DTCG) for Figma, Tokens Studio, Style Dictionary and native apps; the CSS
+// theme stays the source. Served at /tokens/…: core.tokens.json (the same in every mode), color.{light,dark}.tokens.json
+// (same names, so tools treat them as modes), and color.{light,dark}-hc.tokens.json under data-contrast="more".
 //
 //   node scripts/tokens.mjs          CI: fails if public/tokens/*.json are out of date
 //   node scripts/tokens.mjs --write  regenerate them
-//
-// Output (served by the docs site at /tokens/…):
-//   core.tokens.json        radius, spacing, heights, type, motion: the same in every mode
-//   color.light.tokens.json colour, shadow: light mode
-//   color.dark.tokens.json  colour, shadow: dark mode (same names, so tools treat the files as modes)
-//   color.light-hc.tokens.json, color.dark-hc.tokens.json  the same under data-contrast="more"
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 
 const WRITE = process.argv.includes("--write")

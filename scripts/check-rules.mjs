@@ -1,26 +1,9 @@
-// Fails CI on the design rules the 0.17 audit found broken by hand. Each one is a rule from the foundations that a
-// reviewer missed more than once; a check is cheaper than a second audit.
-//
-//  1. Focus is never removed. `outline-none` needs a visible replacement on the same element: an outline, ring, border,
-//     underline or shadow under a focus or highlight state (focus-visible:, focus:, focus-within:, data-[highlighted]:,
-//     aria-selected:, data-[selected=true]:), or a wrapper that draws it (has-focus-visible:, has-[…focus-visible…]:), or
-//     a `focus-ring:` comment within three lines above saying where focus shows instead. A background change alone is
-//     not a replacement: bg-accent on the card is 1.2:1, so the keyboard position cannot be found by it.
-//  2. In Tailwind 4, `outline-none` cancels `focus-visible:outline-2` on the same element (both set outline-style), so
-//     the ring never draws. Drop `outline-none` there: :focus-visible already keeps mouse clicks ring-free.
-//  3. A battery warns below 15 % and never turns danger: no other threshold, no `critical` on a battery Meter.
-//  4. Every chart with axes has a table view: a block that draws one (ChartContainer: line, area, bar) offers ChartTable or
-//     a Table. Sparklines, rings and status strips write their numbers in words instead (see the Data visualisation foundation).
-//  5. A graph has a text view in the same way: a block that draws one (Graph) offers GraphList.
-//  6. So does a map: a block that draws one (RobotMap, GeoMap) offers its list (RobotMapList, GeoMapList).
-//  7. A registry component keeps the timers it starts: `setTimeout(` with its handle thrown away cannot be cleared on
-//     unmount, and fires on a page that is gone (it failed a test run after every test had passed). Store it (`const t =`,
-//     `ref.current =`) and clear it in the effect's cleanup. A delay awaited as a stand-in for a request
-//     (`await new Promise((r) => setTimeout(r, 600))`) is an exception: a real request cannot be cancelled either. So is a
-//     timer meant to outlive the component (releasing a WebGL context once the canvas is gone), with a `timer-ok:`
-//     comment within three lines above saying why.
-//
-// Field-edge contrast (--input 3:1) is a number, so it is a unit test: tests/unit/rules.test.ts.
+// Fails CI on the design rules listed in CONTRIBUTING.md ("Rules the lints enforce", lint:rules): 1 focus never removed,
+// 2 no `outline-none` beside `focus-visible:outline-*` (Tailwind 4 cancels the ring), 3 a battery warns below 15 % and
+// never turns danger, 4–6 a chart block with axes, a graph block and a map block each have a text view, 7 a registry
+// timer keeps its handle so it can be cleared on unmount. A fill alone is not a focus style: bg-accent on the card is 1.2:1.
+// Escapes, within three lines above: `focus-ring:` (where focus shows instead), `timer-ok:` (why the timer outlives the
+// component). Field-edge contrast (--input 3:1) is a number, so it is a unit test: tests/unit/rules.test.ts.
 //
 //   node scripts/check-rules.mjs [dirs…]   default: registry site app stories
 import { readFileSync, readdirSync, statSync } from "node:fs"

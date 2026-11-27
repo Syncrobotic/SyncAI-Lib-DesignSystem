@@ -4,7 +4,7 @@ import { highlight } from "./highlight"
 import { storySource } from "./story-source"
 
 // Code a reader has to open to see (a block's Code tab, an example's Code sheet, a component's Source sheet) is not in
-// the page: highlighted, a chart page's hidden listings were 900 KB of the payload every visit downloaded and hydrated.
+// the page: highlighted, a chart page's hidden listings would be 900 KB of payload every visit hydrates.
 // Each listing is a static JSON file instead (app/code/**, prerendered at build time), fetched when its panel opens
 // (site/lazy-code.tsx). The page carries only its address and its line count, so the panel keeps its height while it loads.
 

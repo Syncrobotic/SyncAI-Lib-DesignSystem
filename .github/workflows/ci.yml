@@ -1,6 +1,6 @@
 name: ci
 # Runs on pull requests only: a merge into dev, stage or main lands a tree these checks already passed, so pushes are not
-# re-checked (they were half of all runs). Run everything by hand on any branch: Actions → ci → Run workflow.
+# re-checked. Run everything by hand on any branch: Actions → ci → Run workflow.
 on:
   pull_request:
   workflow_dispatch:
@@ -43,7 +43,7 @@ jobs:
       - run: npm run lint:tokens
       # Every registry item declares exactly what its files import, and hook users are client components
       - run: npm run lint:registry
-      # Focus is never removed, a battery warns below 15 %, every chart block has a table view
+      # Focus is never removed, a battery warns below 15 %, every chart block has a table view; comments are short, no history
       - run: npm run lint:rules
       # Every number goes through format-number: no toLocaleString (it follows the runtime locale), no second Intl cache
       - run: npm run lint:numbers
@@ -84,7 +84,7 @@ jobs:
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
   # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA), split over four runners.
   # They gate promotion into stage, where a release is assembled, and manual runs. Main receives stage's tree unchanged,
-  # so checking it again found nothing new; PRs into dev and main get the fast checks (and, into dev, stories-changed).
+  # so it is not checked again; PRs into dev and main get the fast checks (and, into dev, stories-changed).
   # They run in Playwright's own image (same Ubuntu, browser and fonts preinstalled): installing them took 20 s to 4.5 min.
   stories:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.base_ref == 'stage')
@@ -168,8 +168,7 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      # Next.js keeps what it compiled in .next/cache: a later build of mostly the same tree reuses it. Keyed on the lockfile
-      # and the sources, falling back to the newest cache for the same lockfile.
+      # .next/cache, as in check
       - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: .next/cache
@@ -184,8 +183,6 @@ jobs:
           npm run check:wrap
           npm run check:a11y
 
-  # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
-  # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
   # The Accessibility tab's measured roles and Tab stops (site/a11y.json) match the components as they render now.
   # Only when something that can change them changed: components, stories, the data or its scripts.
   a11y-data:
@@ -221,8 +218,7 @@ jobs:
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.run == 'true'
         run: npm ci
-      # Next.js keeps what it compiled in .next/cache: a later build of mostly the same tree reuses it. Keyed on the lockfile
-      # and the sources, falling back to the newest cache for the same lockfile.
+      # .next/cache, as in check
       - if: steps.changed.outputs.run == 'true'
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
@@ -241,6 +237,8 @@ jobs:
         if: failure() && steps.changed.outputs.run == 'true'
         with: { name: a11y-measured, path: a11y-measured.json }
 
+  # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
+  # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
   registry-e2e:
     if: github.event_name != 'pull_request' || github.base_ref != 'main'
     runs-on: ubuntu-latest

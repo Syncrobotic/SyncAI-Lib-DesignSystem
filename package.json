@@ -67,7 +67,7 @@
     "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:numbers && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run lint:html-size && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
-    "lint:rules": "node scripts/check-rules.mjs",
+    "lint:rules": "node scripts/check-rules.mjs && node scripts/check-comments.mjs",
     "lint:props": "node scripts/props.mjs",
     "lint:numbers": "node scripts/check-numbers.mjs",
     "props": "node scripts/props.mjs --write",

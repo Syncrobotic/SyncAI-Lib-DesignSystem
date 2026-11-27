@@ -1,28 +1,19 @@
 // A size budget for the docs site's prerendered pages, run after `npm run build` (npm run lint:html-size).
-//
-// A page's HTML carries its markup and its React payload (the self.__next_f chunks), and every byte of the payload is
-// parsed and hydrated on the visitor's main thread. 0.35's chart page was 2.2 MB, most of it code listings behind tabs
-// nobody had opened; those are fetched on open now (site/code-data.ts). This keeps a page from growing back unnoticed.
-//
-// The payload repeats the server-rendered tree, so a long list pays for its markup twice. In 0.38 the last eight pages
-// left their ceilings that way: code listings carry eight colour classes, not a style on every word (ROS 423 KB to 309,
-// Next.js 516 to 373); repeated utilities written once as a class (the icon tiles, 507 to 376); a component's Patterns
-// drawn as each block nears the screen (chart 740 to 391); a token table is one table that CSS lays out for a phone, its rows without classes (Colour 431 KB to
-// 310 KB); a long list a page draws from data is a client component given the strings, so the payload carries those and
-// not the elements (Upgrading 896 to 296, the Components cards 561 to 321); and a catalog few readers open is static JSON
-// fetched after the page shows (Localisation's labels, 1,978 to 302).
+// A page's HTML carries its React payload (self.__next_f), parsed and hydrated on the visitor's main thread, and the
+// payload repeats the server-rendered tree, so a long list pays twice. Ways to stay under: code listings fetched on open
+// (site/code-data.ts) and coloured by class, utilities written once as a class, sections drawn as they near the screen,
+// long data lists as a client component given strings, a rarely opened catalog as static JSON fetched after load.
 //
 //   npm run build && npm run lint:html-size        fails when a page is over the limit, and lists the largest pages
 import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
-/** The limit in KB. After 0.38 the median page is about 210 KB and the largest 392 KB (the chart page). */
+/** The limit in KB. The median page is about 210 KB and the largest 392 KB (the chart page). */
 const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 
 /**
- * Pages allowed over the limit for what they show, each with its reason. Since 0.38 there are none: adding one is a
- * decision, with its reason here.
+ * Pages allowed over the limit, each with its reason (none today: adding one is a decision).
  * @type {Record<string, { kb: number, why: string }>}
  */
 const ceilings = {

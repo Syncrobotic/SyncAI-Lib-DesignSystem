@@ -1,15 +1,9 @@
-// Fails CI on a number written outside the kit's one number path (@syncrobotic/format-number). The 0.40 audit found five
-// ways of writing numbers in the registry, and two of them broke the rule:
-//
-//  1. `.toLocaleString(` follows the runtime's locale when it is given none (or `undefined`): the server writes "1,234.5",
-//     a browser set to German "1.234,5", and React finds the two renders differ. With a locale it still skips the
-//     kit's fallback for a tag Intl cannot read, and a count written this way is not rounded like every other count.
-//     Use `formatCount(n, { locale })` for a count and `formatNumber(n, { locale, ...options })` for any other number.
-//  2. `new Intl.NumberFormat(` outside format-number builds a second formatter cache and a second locale rule. Use
-//     `formatNumber` (any Intl.NumberFormat option goes through it) or `numberFormat(locale, options)` for the formatter.
-//
-// Dates and times are not numbers here: toLocaleDateString and toLocaleTimeString are clock-time's business.
-// A line that is a comment is skipped. A file that truly needs either goes in ALLOW with its reason.
+// Fails CI on a number written outside the kit's one number path (@syncrobotic/format-number):
+//  1. `.toLocaleString(` follows the runtime's locale when given none, so the server's "1,234.5" and a German browser's
+//     "1.234,5" differ at hydration; with a locale it still skips the kit's fallback and count rounding.
+//     Use `formatCount(n, { locale })` for a count, `formatNumber(n, { locale, ...options })` for any other number.
+//  2. `new Intl.NumberFormat(` builds a second formatter cache and locale rule: use `formatNumber` or `numberFormat`.
+// Dates and times are clock-time's business. Comment lines are skipped; a file that truly needs either goes in ALLOW.
 //
 //   node scripts/check-numbers.mjs [dirs…]   default: registry/syncrobotic
 import { readFileSync, readdirSync, statSync } from "node:fs"

@@ -134,8 +134,8 @@ export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scop
                   here === l.href ? "bg-muted font-medium text-foreground hover:bg-muted" : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                {/* The current page's grey is the link's own background, so the inset focus ring draws over it. It stays put; it
-                    used to slide as a layer of its own, which swept down the scrolling column on every switch. */}
+                {/* The current page's grey is the link's own background, so the inset focus ring draws over it. It does not
+                    slide: a sliding layer would sweep down the scrolling column on every switch. */}
                 <span className="min-w-0 truncate">{l.label}</span>
                 {/* Over half the items are beta, so the mark stays quiet: small grey words, no outline, there to find
                     rather than to catch the eye. The component page states it again beside its version. */}

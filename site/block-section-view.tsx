@@ -32,13 +32,10 @@ export type BlockSectionData = {
 const chip = "inline-flex min-h-(--h-sm) items-center rounded-xs bg-muted px-2 font-mono text-xs"
 
 /**
- * One block as the docs show it: title and tools on one row, the description, the install command, what it is built from,
- * then the preview with its code.
- *
- * `near`: everything but the title and the description is drawn once the section comes within a screen of the viewport
- * (site/when-near.tsx), as the examples are; until then, and in the HTML, a box of about its height stands in. A chart's
- * Patterns hold some twenty blocks, each with three copy buttons, an install listing and a preview card: drawn in the
- * page they were 450 KB of its HTML.
+ * One block as the docs show it: title and tools, the description, the install command, what it is built from, then the
+ * preview with its code. `near`: all but the title and description is drawn once within a screen of the viewport
+ * (site/when-near.tsx); until then a box of about its height stands in. A chart's twenty Patterns blocks drawn in the
+ * page would add 450 KB of HTML.
  */
 export function BlockSectionView({ block: b, heading: H = "h3", install, near: lazy = false }: { block: BlockSectionData; heading?: "h3" | "h4"; install: React.ReactNode; near?: boolean }) {
   const ref = React.useRef<HTMLElement>(null)

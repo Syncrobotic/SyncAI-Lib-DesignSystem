@@ -4,7 +4,7 @@ name: visual-baseline
 # Actions → visual-baseline → Run workflow → branch.
 # The stories are shot on four runners and the two sets of thumbnails on two more, all at once; one last job gathers
 # what each wrote and commits it on top of the branch as it is then, so a merge into the branch meanwhile is kept, not
-# a reason to fail (it took 19 minutes on one runner, and a merge during them lost the run).
+# a reason to fail (on one runner it takes 19 minutes).
 on:
   workflow_dispatch:
 

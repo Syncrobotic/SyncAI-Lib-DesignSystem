@@ -4,16 +4,12 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * At the top of the page the header is part of it: full width, no line. Once the page scrolls, the bar gathers into a
- * floating panel whose edges line up with the content column, 8 px down, in the card surface with a hairline: the same panel
- * as the app shell's top bar. Only colour, edge and a transform change, so nothing below moves (--motion-base).
- * On phones and tablets (below 1024 px, where the areas move into the drawer) the page is text on a 16 px edge, so the bar's two lines meet it one at a time. At the top the bar is
- * invisible and 12 px wider on each side, which puts the icons (12 px inside their 44 px buttons) on the 16 px edge, in
- * line with the headline. On scroll it gathers: the panel's edges come in to the content column's 16 px, like every
- * floating bar, and the icons with them to 28. One state change, one movement (--motion-base).
- * On a desktop the logo and the theme icon stand in from the bar's padding by --start-inset and --end-inset, equal by
- * default: the floating panel's two ends are then equally far from its edges, and at the top both line up with the
- * content column.
+ * At the top the header is part of the page: full width, no line. On scroll it gathers into a floating panel 8 px down,
+ * its edges on the content column, in the card surface with a hairline (as the app shell's top bar). Only colour, edge
+ * and a transform change, so nothing below moves (--motion-base).
+ * Below 1024 px the bar at the top is invisible and 12 px wider each side, so the icons (12 px inside their 44 px
+ * buttons) sit on the 16 px text edge; gathered, its edges come in to 16 px and the icons to 28. On a desktop the logo
+ * and theme icon stand in by --start-inset and --end-inset, equal by default, so both ends line up with the column.
  */
 export function HeaderFrame({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = React.useState(false)

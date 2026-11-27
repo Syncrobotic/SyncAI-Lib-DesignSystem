@@ -2,7 +2,8 @@
 // every npm import must be in `dependencies`, every @/registry import must be a registryDependency
 // (directly or through one), every direct registryDependency must be imported by one of the item's files (a dependency
 // nothing imports only installs files the product never uses), every npm dependency must name a version range, and files
-// that use React hooks or handlers must start with "use client".
+// that use React hooks or handlers must start with "use client". Also the text limits in CONTRIBUTING.md ("Comments and
+// docs"): a description of at most 200 characters, a changelog note of at most 300 (notes after NOTE_LIMIT_AFTER).
 import { readFileSync } from "node:fs"
 
 /** @type {import("./types.js").Registry} */
@@ -13,6 +14,16 @@ const BUILTIN = new Set(["react", "react-dom"])
 const pkg = JSON.parse(readFileSync("package.json", "utf8"))
 /** @param {string} v */
 const minor = (v) => v.split(".").slice(0, 2).join(".")
+/** @type {(a: string, b: string) => boolean} a is a newer x.y.z than b */
+const newer = (a, b) => {
+  const [x, y] = [a, b].map((v) => v.split(".").map(Number))
+  const i = x.findIndex((n, k) => n !== y[k])
+  return i >= 0 && x[i] > y[i]
+}
+const MAX_DESCRIPTION = 200
+const MAX_NOTE = 300
+// Notes up to here are released history, kept as written.
+const NOTE_LIMIT_AFTER = "0.50.1"
 
 /**
  * @param {string} name
@@ -85,6 +96,13 @@ for (const item of registry.items) {
   // Status: "beta" (the API may still change in a minor release) or "stable"; absent means stable. Blocks and patterns
   // are templates you copy and edit, so they carry none. A new item starts in beta: one first released in the current
   // minor must say so explicitly, so nothing is stable by omission.
+  const description = item.description ?? ""
+  if (description.length > MAX_DESCRIPTION)
+    fail(item.name, `description is ${description.length} characters (max ${MAX_DESCRIPTION}): say what it is and when to use it; details go to the docs`)
+  for (const { version, note } of item.meta?.changelog ?? [])
+    if (newer(version, NOTE_LIMIT_AFTER) && note.length > MAX_NOTE)
+      fail(item.name, `changelog note for ${version} is ${note.length} characters (max ${MAX_NOTE}): what changed and why; the rest goes to CHANGELOG.md or the docs`)
+
   const status = item.meta?.status
   if (status !== undefined && !["beta", "stable"].includes(status)) fail(item.name, `meta.status must be "beta" or "stable", not "${status}"`)
   if (status !== undefined && item.type === "registry:block") fail(item.name, `blocks carry no meta.status`)

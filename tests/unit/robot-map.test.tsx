@@ -807,7 +807,7 @@ describe("editing", () => {
     key("Enter")
     key("ArrowDown")
     reached()
-    // The carried waypoint is gone: the banner no longer says the keys carry something.
+    // The carried waypoint is gone: the banner does not say the keys carry something.
     expect(banner()).toContain("Click to add a waypoint")
     tap(handleAt(0), px(40, 10))
     key("Escape")

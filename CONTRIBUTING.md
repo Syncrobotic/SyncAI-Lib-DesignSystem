@@ -16,8 +16,8 @@ npm run storybook        # http://localhost:6006; the toolbar switches dark and 
 
 ```bash
 npm run lint:tokens      # any value outside the tokens, in the registry, the docs site and the stories
-npm run lint:registry    # an item's dependencies drifting from its imports; a file with hooks missing "use client"
-npm run lint:rules       # focus never removed, battery thresholds, a chart with axes without its table view
+npm run lint:registry    # dependencies drifting from imports; "use client"; description and note lengths
+npm run lint:rules       # focus never removed, battery thresholds, a chart's table view; comment length and history
 npm run lint:numbers     # a number written with toLocaleString or its own Intl.NumberFormat instead of format-number
 npm run lint:motion      # durations and easing outside the motion tokens, buttons without press feedback
 npm run lint:versions    # an item changed without a version bump and changelog line
@@ -56,10 +56,18 @@ Not a check, a report: `npm run adoption -- <dir …>` (or `--github <org>`, wit
 - Loops only while waiting: the Spinner, the skeleton's breath and the caret (no `animate-pulse`, `ping` or `bounce`).
 - Icons are 16, 20 or 24 px (`size-4`, `size-5`, `size-6`) with a 2 px stroke; an icon beside a label is 8 px from it (`gap-2`), except inside a 24 px Badge.
 - A registry file that uses hooks or handlers starts with `"use client"` (`lint:registry`).
-- `lint:rules`: `outline-none` only with a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); a battery warns below 15 % and has no `critical`; a chart block with axes has a table view.
+- `lint:rules`: `outline-none` only with a visible focus in its place (or a `// focus-ring:` comment saying where focus shows), and never beside `focus-visible:outline-*` (Tailwind 4 cancels the ring); a battery warns below 15 % and has no `critical`; a chart block with axes has a table view, a graph block a `GraphList`, a map block its list; a registry timer keeps its handle and is cleared on unmount (or a `// timer-ok:` comment says why it outlives the component).
 - No native number input; use `NumberField`.
 - Numbers go through `@syncrobotic/format-number`: `formatCount` for a count, `formatNumber` for any other number, both English when no locale is given (`lint:numbers` bans `.toLocaleString(` and a second `Intl.NumberFormat` in the registry).
 - Icons only from the icon set (`site/icons.ts`, browsable at `/icons`), one meaning per icon. A new icon is a new entry there, with its meaning.
+
+### Comments and docs
+
+- A comment says why, not what: the code already says what it does.
+- No history in source comments ("used to", "before 0.40", "the audit found"): that goes in `CHANGELOG.md`. Keep the rule, drop the story. An upstream fact ("rosbridge before 0.11") takes a `history-ok:` marker.
+- A comment block is at most 8 lines. Longer is a docs page; point to it.
+- A `registry.json` description is at most 200 characters; a `meta.changelog` note at most 300 (what changed and why).
+- `lint:rules` checks the comments (`scripts/check-comments.mjs`, in `scripts/`, `site/`, `app/` and `stories/`); `lint:registry` checks the lengths.
 
 ## Visual baselines
 

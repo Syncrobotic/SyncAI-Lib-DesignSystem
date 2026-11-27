@@ -1,14 +1,11 @@
 import type { RosSocket, RosSocketConstructor, RosTwist } from "@/registry/syncrobotic/lib/ros"
 
 /*
-  A rosbridge server in the browser, for the docs and the stories: no network, no ROS. It plays one mobile robot with an
-  arm in a small warehouse and answers the rosbridge v2 JSON protocol the way rosbridge_server does:
-  - /map (nav_msgs/OccupancyGrid, once per subscribe, `data` as numbers like rosbridge sends int8[]);
-  - /amcl_pose (PoseWithCovarianceStamped) while the robot moves, /scan (LaserScan, ray-cast against the map) at 5 Hz;
-  - /joint_states (JointState) at 10 Hz, a slow wave unless `still`;
-  - /cmd_vel (Twist) drives the robot, and like a real base it stops 500 ms after the last command;
-  - /dock (std_srvs/Trigger) answers after 400 ms; /rosapi/get_time answers after 15 ms, for the heartbeat.
-  `drop()` cuts every link and refuses connections for a while, to show the reconnect and the stop on a dropped link.
+  A rosbridge server in the browser (no network, no ROS): one mobile robot with an arm in a small warehouse, speaking the
+  rosbridge v2 JSON protocol as rosbridge_server does. /map (OccupancyGrid, once per subscribe, `data` as numbers);
+  /amcl_pose while moving and /scan (ray-cast against the map) at 5 Hz; /joint_states at 10 Hz, a slow wave unless
+  `still`; /cmd_vel drives it, stopping 500 ms after the last command; /dock answers after 400 ms, /rosapi/get_time after
+  15 ms. `drop()` cuts every link and refuses connections for a while, to show the reconnect.
 */
 
 const RES = 0.1
