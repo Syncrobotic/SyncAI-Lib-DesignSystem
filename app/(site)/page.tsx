@@ -42,7 +42,7 @@ const jsonLd = {
   ],
 }
 
-const componentCount = items.filter((i) => i.group !== "Hooks & libraries").length
+const componentCount = items.filter((i) => i.group !== "Hooks and libraries").length
 // Blocks are compositions; one component's ready-made variants (charts, timelines…) count as its patterns instead.
 const isPattern = (name: string) => !!getBlockType(placement[name].type)?.home
 const blockCount = Object.keys(placement).filter((n) => !isPattern(n)).length

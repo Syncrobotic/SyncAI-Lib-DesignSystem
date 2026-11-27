@@ -175,12 +175,13 @@ import {
 import { ChargingDock, DiamondAlert, EStopPressed, MobileRobot, RobotArm, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 
 /**
- * The icon set: every Lucide icon the kit uses, each with the one thing it means. The import list above is also the
- * allowlist: `npm run lint:tokens` rejects a Lucide import that is not in it, so a new icon, or a second icon for a
- * meaning that already has one, is a deliberate change to this file. Drives /icons.
+ * The icon set: every Lucide icon the kit uses, and the few it draws itself (`from`), each with the one thing it means,
+ * grouped by meaning. The Lucide import list above is also the allowlist: `npm run lint:tokens` rejects a Lucide import
+ * that is not in it, so a new icon, or a second icon for a meaning that already has one, is a deliberate change to this
+ * file. Drives /icons.
  */
-export type IconEntry = { name: string; Icon: LucideIcon; means: string }
-export type IconGroup = { title: string; icons: IconEntry[]; /** Where the group imports from, when not lucide-react. */ from?: string }
+export type IconEntry = { name: string; Icon: LucideIcon; means: string; /** Where it imports from, when not lucide-react. */ from?: string }
+export type IconGroup = { title: string; icons: IconEntry[] }
 
 // lucide-react 1.x renamed these icons and keeps the old names as aliases of the same component, so their displayName is
 // the new name. The kit imports them by the old names, which work on every lucide-react from 0.x on (the new ones need
@@ -202,30 +203,23 @@ const importedAs = new globalThis.Map<LucideIcon, string>([
 /** The name the kit imports an icon by. */
 export const iconName = (Icon: LucideIcon) => importedAs.get(Icon) ?? Icon.displayName ?? ""
 const e = (Icon: LucideIcon, means: string): IconEntry => ({ name: iconName(Icon), Icon, means })
+/** The kit's own drawings: Lucide has none of these, so they are drawn to its grid and stroke and install on their own. */
+export const kitIconsFrom = "@/registry/syncrobotic/ui/robot-icons"
+const k = (Icon: LucideIcon, means: string): IconEntry => ({ ...e(Icon, means), from: kitIconsFrom })
 
 export const iconGroups: IconGroup[] = [
-  {
-    // Lucide has none of these; drawn to its grid and stroke (registry/syncrobotic/ui/robot-icons.tsx).
-    title: "Drawn for the kit",
-    from: "@/registry/syncrobotic/ui/robot-icons",
-    icons: [
-      e(RobotArm, "A robot arm, a cobot"),
-      e(MobileRobot, "A mobile robot (AMR)"),
-      e(ChargingDock, "The dock: where a robot charges; send it there"),
-      e(EStopPressed, "A physical emergency stop was pressed on the machine"),
-      e(SafetyZone, "A safety zone: no entry or reduced speed"),
-      e(DiamondAlert, "A low-priority alarm: its own shape beside the critical octagon and the high triangle"),
-    ],
-  },
   {
     title: "Robots and sites",
     icons: [
       e(Bot, "A robot, or the fleet"),
+      k(RobotArm, "A robot arm, a cobot"),
+      k(MobileRobot, "A mobile robot (AMR)"),
       e(Forklift, "A forklift robot (AGV)"),
       e(Package, "A payload"),
       e(Battery, "Battery level"),
       e(BatteryLow, "Battery low"),
       e(BatteryCharging, "Charging"),
+      k(ChargingDock, "The dock: where a robot charges; send it there"),
       e(BotOff, "Powered off"),
       e(Warehouse, "A site"),
       e(Hand, "A person took over on site"),
@@ -251,6 +245,7 @@ export const iconGroups: IconGroup[] = [
       e(Waypoints, "Waypoints: a mission's stops"),
       e(RouteOff, "No route to the goal"),
       e(TrafficCone, "Blocked by an obstacle"),
+      k(SafetyZone, "A safety zone: no entry or reduced speed"),
       e(Flag, "A mission finished"),
     ],
   },
@@ -284,6 +279,7 @@ export const iconGroups: IconGroup[] = [
     title: "Stop and release",
     icons: [
       e(Square, "Stop: the emergency stop's face, and only there"),
+      k(EStopPressed, "A physical emergency stop was pressed on the machine"),
       e(ChevronsUp, "Hold to stop every robot"),
       e(ChevronsRight, "Slide to release"),
     ],
@@ -293,16 +289,16 @@ export const iconGroups: IconGroup[] = [
     icons: [
       e(OctagonAlert, "Critical alarm, stopped by a fault"),
       e(TriangleAlert, "Warning"),
+      k(DiamondAlert, "A low-priority alarm: its own shape beside the critical octagon and the high triangle"),
       e(CircleAlert, "Failed, or a field is wrong"),
       e(CircleCheck, "Done"),
       e(CircleDashed, "Not enough samples to judge: no verdict yet"),
-      e(CircleStop, "Stop a generated answer, or one stopped by someone before it finished (never the emergency stop)"),
       e(Info, "Information"),
       e(Bug, "Debug output: a developer's log line"),
       e(Circle, "A step not started"),
       e(Bell, "Alarms and notifications"),
       e(Siren, "The site siren is sounding"),
-      e(CheckCheck, "Acknowledge all"),
+      e(SearchX, "Nothing matches"),
       e(Sparkles, "Made or proposed by an AI agent"),
     ],
   },
@@ -316,6 +312,7 @@ export const iconGroups: IconGroup[] = [
       e(Trash2, "Delete"),
       e(X, "Close, remove; inside a status disc (a stepper step), failed"),
       e(Check, "Selected, confirmed; inside a status disc (a stepper step), done"),
+      e(CheckCheck, "Acknowledge all"),
       e(Copy, "Copy"),
       e(CopyPlus, "Duplicate: a copy added beside the original"),
       e(Save, "Save"),
@@ -324,6 +321,7 @@ export const iconGroups: IconGroup[] = [
       e(ImagePlus, "Add a photo"),
       e(Paperclip, "Attach"),
       e(Send, "Send"),
+      e(CircleStop, "Stop a generated answer, or one stopped by someone before it finished (never the emergency stop)"),
       e(ThumbsUp, "A good answer: feedback on what a model wrote"),
       e(ThumbsDown, "A bad answer: feedback on what a model wrote"),
       e(Share2, "Share"),
@@ -332,8 +330,8 @@ export const iconGroups: IconGroup[] = [
       e(Undo2, "Undo, roll back; a column back to its first width"),
       e(ChevronsLeftRight, "Widen a column"),
       e(ChevronsRightLeft, "Narrow a column"),
+      e(GripVertical, "Drag to reorder"),
       e(Search, "Search"),
-      e(SearchX, "Nothing matches"),
       e(SlidersHorizontal, "Filters"),
       e(ZoomIn, "Zoom in"),
       e(ZoomOut, "Zoom out"),
@@ -363,7 +361,6 @@ export const iconGroups: IconGroup[] = [
       e(ArrowRight, "Go to a page"),
       e(ExternalLink, "Opens another site"),
       e(PanelRight, "Open the side panel"),
-      e(GripVertical, "Drag to reorder"),
       e(Keyboard, "Keyboard shortcuts"),
       e(BookOpen, "Documentation"),
     ],
@@ -383,8 +380,11 @@ export const iconGroups: IconGroup[] = [
   {
     title: "Views and layout",
     icons: [
+      e(Monitor, "Follow the system, a desktop"),
       e(Tablet, "A tablet"),
       e(Smartphone, "A phone"),
+      e(Sun, "Light theme"),
+      e(Moon, "Dark theme"),
       e(LayoutGrid, "Overview, a grid of cards"),
       e(LayoutList, "List view"),
       e(Rows3, "Rows"),
@@ -415,6 +415,8 @@ export const iconGroups: IconGroup[] = [
       e(Database, "A data catalog"),
       e(ScrollText, "Releases, a log"),
       e(History, "History, earlier versions"),
+      e(Clock, "A time"),
+      e(CalendarDays, "A date"),
       e(ListChecks, "Tasks, a checklist"),
       e(FolderOpen, "A folder"),
       e(File, "A file"),
@@ -448,19 +450,14 @@ export const iconGroups: IconGroup[] = [
       e(MessageSquare, "Text message"),
     ],
   },
-  {
-    title: "Time and appearance",
-    icons: [
-      e(Clock, "A time"),
-      e(CalendarDays, "A date"),
-      e(Sun, "Light theme"),
-      e(Moon, "Dark theme"),
-      e(Monitor, "Follow the system, a desktop"),
-    ],
-  },
 ]
 
 export const iconCount = iconGroups.reduce((n, g) => n + g.icons.length, 0)
+/** How many of them the kit draws itself (robot-icons). */
+export const kitIconCount = iconGroups.reduce((n, g) => n + g.icons.filter((i) => i.from).length, 0)
+
+/** Old category addresses and the category that holds most of what they held, so a shared link still narrows the grid. */
+export const iconCategoryAliases: Record<string, string> = { "drawn-for-the-kit": "robots-and-sites", "time-and-appearance": "views-and-layout" }
 
 /** A group's address on /icons (?category=robots-and-sites): its title in lower case, words joined by hyphens. */
 export const categorySlug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")

@@ -1232,7 +1232,7 @@ export const overviews: Record<string, Overview> = {
   },
   chart: {
     use: ["Trends over time, comparisons between a few series."],
-    instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`)."],
+    instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`).", "A sparkline in a row, a status strip, a ring or a heatmap, with no chart library: the `/blocks/data-visualisation` blocks."],
     notes: ["Spread `chartMotion` onto marks; do not set Recharts animation timing."],
   },
   "streaming-chart": {
