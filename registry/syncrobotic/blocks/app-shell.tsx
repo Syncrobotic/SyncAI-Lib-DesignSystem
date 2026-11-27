@@ -371,7 +371,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+      <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-0">
         <DropdownMenuLabel className="flex flex-col">
           <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
           {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}

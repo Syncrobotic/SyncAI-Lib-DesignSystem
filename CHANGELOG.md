@@ -16,7 +16,7 @@ The sidebar in balance in both its states, with a fold that moves between them, 
   - **As a rail:** the account is a 44 px square with 12 px corners like the links', 12 px from the bottom as from either side, so the avatar is 20 px in from three edges. The mark stays centred in its row, level with the page's title across the gap.
   - **Open:** the corners are concentric with the sidebar's 16 (16 = 8 + 8), and the foot is 56 px, as the head.
   - **Both states:** the mark, the icons and the avatar stay on one centre line through the fold, and the height, corners and padding move with it.
-  - **Account menu from the rail:** pressing the avatar opens the sidebar, then the menu once the column has stopped moving, above the button as when open. Without motion it opens at once; if the fold is reversed midway it stays shut.
+  - **Account menu from the rail:** pressing the avatar opens the sidebar, then the menu once the column has stopped moving, above the button as when open, and exactly as wide as the button at any sidebar width (it had a 224 px minimum, wider than a 200 px column's button). Without motion it opens at once; if the fold is reversed midway it stays shut.
   - **Before:** in 0.48.0 the account button's fill touched the sidebar's bottom edge.
 - **`list-detail` 0.49.0:** the list's filter is filled, not outlined. It sits in the list's own bar, and an outline there would be an edge inside an edge.
 
