@@ -249,7 +249,7 @@ function itemDoc(item, sf) {
     }
     if (st === first) break
   }
-  while (blocks.length && first && !/\n[ \t]*\n/.test(src.slice(blocks.at(-1).end, first.getStart(sf)))) blocks.pop()
+  while (blocks.length && first && !/\n[ \t]*\n/.test(src.slice(blocks.at(-1)?.end ?? 0, first.getStart(sf)))) blocks.pop()
   const header = blocks.find((b) => !src.startsWith("// @syncrobotic/", b.pos))
   if (header) {
     const raw = src.slice(header.pos, header.end).replace(/^\/\*\*?|\*\/$/g, "")
