@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { afterAll, describe, expect, it } from "vitest"
-import { RENAMED, changesBetween, compareVersions, describeDistance, distance, formatText, parseChangelog, parseHeader, report, scanDir, statusOf, summarize } from "../../scripts/adoption.mjs"
+import { GUIDE, LOOKALIKES, RENAMED, changesBetween, compareVersions, describeDistance, distance, findLookalikes, formatText, parseChangelog, parseHeader, report, scanDir, scanLookalikes, statusOf, summarize } from "../../scripts/adoption.mjs"
 
 const changelog = parseChangelog(`# Changelog
 
@@ -134,5 +134,41 @@ describe("adoption scanner", () => {
     writeFileSync(join(dir, "node_modules/pkg/tree.tsx"), "// @syncrobotic/tree v0.1.0\n")
     writeFileSync(join(dir, ".next/tree.js"), "// @syncrobotic/tree v0.1.0\n")
     expect(scanDir(dir)).toEqual([{ name: "tree", version: "0.17.0", file: join("components", "ui", "tree.tsx") }])
+  })
+
+  it("finds a product's own look-alikes of kit items, by export and by file name", () => {
+    expect(findLookalikes("export function PageHeader() {}\nexport function Section() {}\n", "src/common/page-header.tsx")).toEqual([
+      { file: "src/common/page-header.tsx", name: "PageHeader", item: "page-header", guide: `${GUIDE}#page-header` },
+      { file: "src/common/page-header.tsx", name: "Section", item: "section-header", guide: `${GUIDE}#section-header` },
+    ])
+    expect(findLookalikes("const Dot = () => null\nexport { Dot as StatusDot }\n", "src/x.tsx").map((l) => l.item)).toEqual(["status-glyph"])
+    // Named for one, exporting under another name: the file is still listed.
+    expect(findLookalikes("export const Stat = () => null\n", "src/metric-card.tsx")).toMatchObject([{ name: "metric-card", item: "metric-card" }])
+    // A kit file, a test and a story are not look-alikes; nor is a name that only contains one.
+    expect(findLookalikes("// @syncrobotic/page-header v0.53.0 · update: …\nexport function PageHeader() {}\n", "components/ui/page-header.tsx")).toEqual([])
+    expect(findLookalikes("export function PageHeader() {}\n", "src/page-header.test.tsx")).toEqual([])
+    expect(findLookalikes("export function PageHeaderSkeleton() {}\nexport const Sections = 1\n", "src/x.tsx")).toEqual([])
+  })
+
+  it("points every look-alike at a kit item the registry has", () => {
+    const names = new Set((JSON.parse(readFileSync("registry.json", "utf8")) as { items: { name: string }[] }).items.map((i) => i.name))
+    for (const l of LOOKALIKES) expect(names.has(l.item), l.item).toBe(true)
+  })
+
+  it("scans a directory for look-alikes and lists them under the repo, with the guide", () => {
+    mkdirSync(join(dir, "src/common"), { recursive: true })
+    writeFileSync(join(dir, "src/common/metric-card.tsx"), "export function MetricCard() {}\n")
+    writeFileSync(join(dir, "src/common/status.tsx"), "export const StatusDot = () => null\n")
+    writeFileSync(join(dir, "node_modules/pkg/empty-state.tsx"), "export function EmptyState() {}\n")
+    const found = scanLookalikes(dir)
+    expect(found.map((l) => [l.file, l.name, l.item])).toEqual([
+      [join("src", "common", "metric-card.tsx"), "MetricCard", "metric-card"],
+      [join("src", "common", "status.tsx"), "StatusDot", "status-glyph"],
+    ])
+    const r = { ...report([], registry, changelog), repo: "app", source: ".", lookalikes: found }
+    const text = formatText([r], summarize([r]))
+    expect(text).toContain(`Look-alikes of kit items, to move (${GUIDE}):`)
+    expect(text).toMatch(/src.common.status\.tsx\s+StatusDot\s+status-glyph\s+#status-dot/)
+    expect(text).toContain("2 look-alikes to move")
   })
 })

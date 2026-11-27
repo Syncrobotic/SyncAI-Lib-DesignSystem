@@ -66,6 +66,7 @@ import type { IslandAlarm, IslandLabels, IslandNotificationsLabels, IslandRobots
 import type { StopButtonLabels } from "@/registry/syncrobotic/shell/stop-button"
 import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
 import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
+import type { ShellSearchLabels } from "@/registry/syncrobotic/blocks/app-shell"
 import type { ActionRailShellLabels } from "@/registry/syncrobotic/blocks/action-rail-shell"
 import type { ErrorPageLabels, LoadingPageLabels, NoAccessPageLabels, NotFoundPageLabels, OfflinePageLabels } from "@/registry/syncrobotic/blocks/status-pages"
 import type { DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
@@ -172,6 +173,7 @@ it("fits every component's labels type", () => {
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
   fits<SidebarLabels>()(zh.sidebarProviderLabels)
   fits<TopBarShellLabels>()(zh.topBarShellLabels)
+  fits<ShellSearchLabels>()(zh.shellSearchLabels)
   fits<ActionRailShellLabels>()(zh.actionRailShellLabels)
   fits<NotFoundPageLabels>()(zh.notFoundPageLabels)
   fits<NoAccessPageLabels>()(zh.noAccessPageLabels)
