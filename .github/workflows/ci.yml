@@ -122,7 +122,8 @@ jobs:
   stories-changed:
     if: github.event_name == 'pull_request' && github.base_ref == 'dev'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # A change to every item picks every story, two passes of about 13 minutes each.
+    timeout-minutes: 35
     container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     steps:
