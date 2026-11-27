@@ -320,8 +320,13 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
         {/* 40 px (44 on touch), 8 px corners: the avatar keeps the rail's centre line and the mark's left edge (pl-2), and
-            the chevron lines up with the counts on the links above (pr-3). As a rail it is as wide as the links' buttons. */}
-        <SidebarMenuButton size="lg" tooltip={user.name} className="h-10 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)">
+            the chevron lines up with the counts on the links above (pr-3). As a rail it is a 40 px square on the centre
+            line, the avatar 4 px in on every side. */}
+        <SidebarMenuButton
+          size="lg"
+          tooltip={user.name}
+          className="h-10 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md) group-data-[collapsible=icon]/sidebar:size-10 group-data-[collapsible=icon]/sidebar:self-center group-data-[collapsible=icon]/sidebar:px-1"
+        >
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
