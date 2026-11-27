@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Battery, Bell, Bot, CalendarDays, CircleAlert, Info, Lock, MapPinOff, Radar, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bell, Bot, CalendarDays, CircleAlert, Cpu, Info, Lock, MapPinOff, Radar, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -940,6 +940,21 @@ export const DescriptionListWithStatus: S = {
   ),
 }
 
+/** Device details as a detail page shows them: a caveat under a value, ids in monospace with a copy button, an icon, and a value that is not set. */
+export const DescriptionListDetails: S = {
+  render: () => (
+    <DescriptionList
+      columns={2}
+      items={[
+        { label: "Device", value: "lm-hsinchu-01", icon: Cpu },
+        { label: "Instance ID", value: "7f3a9c21-5e0b-4d1f-8a6c-2b9e4d7f1c03", mono: true, copy: true },
+        { label: "Software version", value: "2.4.1", mono: true, hint: "As the device last reported it." },
+        { label: "Expected hardware", value: null, hint: "Nobody registered its hardware before it joined." },
+      ]}
+    />
+  ),
+}
+
 export const StatusGlyphTones: S = {
   render: () => (
     <ul className="flex flex-col gap-2 text-sm">
@@ -956,6 +971,23 @@ export const StatusGlyphTones: S = {
           <StatusGlyph status={t} /> {l}
         </li>
       ))}
+    </ul>
+  ),
+}
+
+/** `none`, a dashed circle in grey: nothing to report, and correctly so. Never a fault, so never coloured. */
+export const StatusGlyphNone: S = {
+  render: () => (
+    <ul className="flex flex-col gap-2 text-sm">
+      <li className="flex items-center gap-2">
+        <StatusGlyph status="none" /> Does not report (air-gapped)
+      </li>
+      <li className="flex items-center gap-2">
+        <StatusGlyph status="none" /> Not reported yet
+      </li>
+      <li className="flex items-center gap-2">
+        <StatusGlyph status="offline" /> Offline: reported, then stopped
+      </li>
     </ul>
   ),
 }

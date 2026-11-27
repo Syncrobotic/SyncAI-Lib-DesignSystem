@@ -240,7 +240,7 @@ function Gallery({ groups, total, placeholder, markKit = false, aliases, categor
                   aria-haspopup="dialog"
                   aria-pressed={open && picked?.name === i.name}
                   data-icon={i.name}
-                  aria-label={`${i.means ? `${i.name}: ${i.means}` : i.name}${i.from === "lucide-react" ? "" : " (drawn for the kit, not in Lucide)"}`}
+                  aria-label={`${i.name}${i.from === "lucide-react" ? "" : " Kit"}${i.means ? `: ${i.means}` : ""}${i.from === "lucide-react" ? "" : " (drawn for the kit, not in Lucide)"}`}
                   onClick={() => pick(i)}
                   className="press group icon-tile"
                 >
@@ -262,6 +262,8 @@ function Gallery({ groups, total, placeholder, markKit = false, aliases, categor
                     ))}
                   </span>
                   {/* An icon the kit draws itself says so on its tile: it installs from robot-icons, not lucide-react. */}
+                  {/* The space keeps "RobotArm Kit" two words, as the tile's name reads it (WCAG 2.5.3). */}
+                  {i.from !== "lucide-react" && " "}
                   {i.from !== "lucide-react" && (
                     <span aria-hidden className="absolute top-1.5 left-1.5 rounded-xs px-1 text-xs leading-4 text-muted-foreground ring-1 ring-border">
                       Kit

@@ -368,6 +368,32 @@
       }
     },
     {
+      "name": "relative-time",
+      "type": "registry:lib",
+      "title": "Relative time",
+      "description": "How long ago (or how far ahead) a moment is, and the moment itself, through Intl in any locale: for timestamps a server sends.",
+      "registryDependencies": [
+        "@syncrobotic/format-number"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/relative-time.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.56.0",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: `formatRelative` (\"3 minutes ago\", \"3 分鐘前\"; `minUnit`, `future: \"clamp\"` for a fast clock), `formatAbsolute` (24-hour, `precision`, `timeZone`), `formatDuration`, `relativeParts` for your own message keys, `toTime` and `refreshInterval`."
+          }
+        ]
+      }
+    },
+    {
       "name": "input-modality",
       "type": "registry:lib",
       "title": "Input modality",
@@ -440,8 +466,13 @@
         }
       ],
       "meta": {
-        "version": "0.55.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "`freshnessStampLabels`, `evidencePanelLabels`, `desiredStateLabels`, `heartbeatStripLabels` and `descriptionListLabels` (未設定, 尚未回報, 設備自行回報, 已下達，尚未生效, 簽到). `deviceEnrolmentLabels` and `deviceDetailLabels` (設備註冊, 等待審核, 核准前先命名, 強制移除)."
+          },
           {
             "version": "0.55.0",
             "date": "2026-11-27",
@@ -965,7 +996,7 @@
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
-      "description": "Status as a shape, coloured only when abnormal: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
+      "description": "Status as a shape, coloured only when abnormal: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline and dashed circle not applicable (both grey).",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -976,8 +1007,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "Adds `status=\"none\"`, a grey dashed circle for a correct absence (not applicable, not started: an air-gapped device that never checks in), never a fault; `GlyphStatus` and `glyphText`. `Status` and `statusText` are unchanged."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3148,7 +3184,8 @@
       "description": "Label and value pairs about one thing, plain or as tiles.",
       "dependencies": [],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/copy-button"
       ],
       "files": [
         {
@@ -3157,8 +3194,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "Items take `hint` (a caveat under the value), `mono`, `copy` (a copy button) and `icon`; an empty value (null, undefined, \"\") is a dash read as \"Not set\" (`labels.notSet`). Existing lists render as before."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3800,6 +3842,130 @@
             "version": "0.55.0",
             "date": "2026-11-27",
             "note": "First release: `can` and `permission` (all, or any) or `allowed`, never a role's name; modes `hidden`, `disabled` (aria-disabled, focusable, the reason in a tooltip, on a tap and to screen readers), `read-only` and `forbidden`. `permissionsFrom` and `isAllowed`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "freshness-stamp",
+      "type": "registry:ui",
+      "title": "Freshness stamp",
+      "description": "How old a device's last report is, beside the values it qualifies: live, lagging, stale, never reported, or not applicable (air-gapped).",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-now",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/freshness-stamp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.56.0",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: `freshnessOf(lastAt, thresholds, { now, airGapped, offline })` (air-gapped before never, the server's verdict before thresholds, a future report is live); the age in words, the exact time in a tooltip and for screen readers; colour only when lagging or stale."
+          }
+        ]
+      }
+    },
+    {
+      "name": "evidence-panel",
+      "type": "registry:ui",
+      "title": "Evidence panel",
+      "description": "Claims a device made about itself, framed and labelled by their source, beside the value on record, each marked as matching, not matching or missing.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/copy-button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/evidence-panel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.56.0",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: rows of `reported` beside `expected` (strings or sets), `compareEvidence` (match, mismatch, missing, unchecked), a dashed frame headed by the source and \"Unverified\", a summary of what differs, copy for a value to check elsewhere."
+          }
+        ]
+      }
+    },
+    {
+      "name": "desired-state",
+      "type": "registry:ui",
+      "title": "Desired state",
+      "description": "An order that is not yet in effect: what was ordered beside what the device last reported (revoking is not revoked), with when it takes effect.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-now",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/freshness-stamp"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/desired-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.56.0",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: phases pending, overdue, blocked (no check-in can carry it) and in effect from `desiredPhaseOf`; \"takes effect at the device's next check-in\", the reported side as believed, the last check-in's freshness; colour only when overdue or blocked."
+          }
+        ]
+      }
+    },
+    {
+      "name": "heartbeat-strip",
+      "type": "registry:ui",
+      "title": "Heartbeat strip",
+      "description": "A device's check-ins over a window, one cell per stretch: grey where it reported, an outline where it was silent, colour only for a reported problem.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/format-number",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/heartbeat-strip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.56.0",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: buckets from the server (beats, expected, a problem), gaps as dashed outlines and in words, partial stretches half height, numbered events on the time axis, a window switch (1 h, 24 h, 7 d), a legend and a table view."
           }
         ]
       }
@@ -5281,8 +5447,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "An item disabled with `aria-disabled` (a PermissionGate keeping it focusable for its reason) looks disabled too."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -5378,8 +5549,13 @@
       ],
       "meta": {
         "status": "stable",
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "An item disabled with `aria-disabled` looks disabled, as in the dropdown menu."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9245,10 +9421,15 @@
         }
       ],
       "meta": {
-        "version": "0.55.0",
+        "version": "0.56.0",
         "status": "beta",
         "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "The demo's rows open again: FleetTable passes a no-op onOpen when none is given, so a row is a button."
+          },
           {
             "version": "0.55.0",
             "date": "2026-11-27",
@@ -10952,8 +11133,13 @@
         }
       ],
       "meta": {
-        "version": "0.55.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "Device snapshots in the design language: a FreshnessStamp beside reported values (grey for never and air-gapped), DesiredState for an order waiting on a check-in, EvidencePanel for a device's own claims, HeartbeatStrip; checklist line 15 says it."
+          },
           {
             "version": "0.55.0",
             "date": "2026-11-27",
@@ -14131,6 +14317,110 @@
             "version": "0.9.0",
             "date": "2026-11-17",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "device-enrolment",
+      "type": "registry:block",
+      "title": "Device enrolment",
+      "description": "The queue of machines that enrolled themselves and the review of one: its claims beside the record, a name you give it, then approve or reject.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/use-now",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/alert",
+        "@syncrobotic/button",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/dialog",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/evidence-panel",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/page-header",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/device-enrolment.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.56.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: DeviceEnrolmentContent, a queue of pending and awaiting-claim machines with counts from the server, the connected and air-gapped routes, a review with EvidencePanel, naming, approve and reject (cooldown from props), and DeviceEnrolment, its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "device-detail",
+      "type": "registry:block",
+      "title": "Device",
+      "description": "One device: what the server knows first, then what the device claims with how old it is, check-ins full width, licences with ordered beside in effect, and lifecycle actions in a menu.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/use-now",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/desired-state",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/freshness-stamp",
+        "@syncrobotic/heartbeat-strip",
+        "@syncrobotic/input",
+        "@syncrobotic/metric-card",
+        "@syncrobotic/page-header",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/section-header",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/device-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.56.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "First release: DeviceDetailContent, the header, metric cards, reference beside running services, check-ins, licences with DesiredState and an overflow menu whose force removal asks a reason and runs through your step-up, and DeviceDetail, its demo."
           }
         ]
       }

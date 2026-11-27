@@ -3,7 +3,7 @@
 // chart, a timeline, a dialog) is not a block: it is that component's patterns, shown on the component's page (`home`),
 // as ReUI shows charts on its Chart page. They keep their own install names and previews.
 
-// A group with no types yet (Device lifecycle, Platform admin, Robot control) is declared so new blocks have a place;
+// A group with no types yet (Platform admin, Robot control) is declared so new blocks have a place;
 // every surface hides a group until it holds a block.
 export const blockGroups = [
   "Shell and navigation",
@@ -385,6 +385,29 @@ export const blockTypes: BlockType[] = [
     ],
   },
   {
+    slug: "devices",
+    title: "Devices",
+    group: "Device lifecycle",
+    description: "On-prem machines a project manages: the queue of those that enrolled themselves, and one device from what the server knows to what it claims.",
+    use: [
+      "A project's enrolment queue: machines that reached out on their own, each waiting for a person to decide.",
+      "A device's page: its record, its last report, its check-ins, its licences and the rare actions that end its life.",
+    ],
+    instead: [
+      "Adding a robot by hand, in steps on site: Patterns › Wizard (wizard-commission).",
+      "Many devices compared by the same fields: Patterns › Data table (fleet-table).",
+    ],
+    rules: [
+      "A machine reached out; a person only decides. What it says about itself sits in an EvidencePanel, beside what the record expects, never as fact.",
+      "Name it before approving: the fleet shows the name a person chose, not the one the machine gave itself. Reject says what follows (silence, and the cooldown the server sends).",
+      "What the server knows comes first, then what the device claims. Every reported value carries its FreshnessStamp; a value it did not send is Not reported, never 0.",
+      "Air-gapped is quiet, not faulty: no check-ins, no colour. Waiting for review is grey too; colour is for a stale report, a degraded service, an order overdue.",
+      "Ordered is not in effect: a revocation shows as DesiredState until the device reports it, and the licence reads Revoking, never Revoked.",
+      "Lifecycle actions live in the header's ⋯ menu, disabled with the reason when they cannot work. Force removal asks a reason and runs through your step-up; a cancelled check changes nothing.",
+      "DeviceEnrolmentContent and DeviceDetailContent take the server's `total` and `counts`, a data state, `can` and promise callbacks, and `labels`.",
+    ],
+  },
+  {
     slug: "incidents",
     title: "Incidents",
     group: "Fleet operations",
@@ -514,6 +537,8 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "users-roles": { type: "users-access", fit: "screen" },
   "users-invitations": { type: "users-access", fit: "screen" },
   "users-audit-log": { type: "users-access", fit: "screen" },
+  "device-enrolment": { type: "devices", fit: "screen" },
+  "device-detail": { type: "devices", fit: "screen" },
   "incident-queue": { type: "incidents", fit: "screen" },
   "incident-detail": { type: "incidents", fit: "screen" },
   "maintenance-due": { type: "maintenance", fit: "screen" },

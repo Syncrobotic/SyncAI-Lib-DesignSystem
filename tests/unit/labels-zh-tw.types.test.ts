@@ -71,6 +71,11 @@ import type { ErrorPageLabels, LoadingPageLabels, NoAccessPageLabels, NotFoundPa
 import type { DataStateLabels } from "@/registry/syncrobotic/ui/data-state"
 import type { PermissionGateLabels } from "@/registry/syncrobotic/ui/permission-gate"
 import type { StepUpDialogLabels } from "@/registry/syncrobotic/ui/step-up-dialog"
+import type { DescriptionListLabels } from "@/registry/syncrobotic/ui/description-list"
+import type { FreshnessStampLabels } from "@/registry/syncrobotic/ui/freshness-stamp"
+import type { EvidencePanelLabels } from "@/registry/syncrobotic/ui/evidence-panel"
+import type { DesiredStateLabels } from "@/registry/syncrobotic/ui/desired-state"
+import type { HeartbeatStripLabels } from "@/registry/syncrobotic/ui/heartbeat-strip"
 import type { FleetTableLabels } from "@/registry/syncrobotic/blocks/fleet-table"
 import type { UsersRolesLabels } from "@/registry/syncrobotic/blocks/users-roles"
 import type { UsersInvitationsLabels } from "@/registry/syncrobotic/blocks/users-invitations"
@@ -80,6 +85,8 @@ import type { SettingsWebhooksLabels } from "@/registry/syncrobotic/blocks/setti
 import type { SettingsSessionsLabels } from "@/registry/syncrobotic/blocks/settings-sessions"
 import type { NotificationCenterLabels } from "@/registry/syncrobotic/blocks/notification-center"
 import type { SettingsPageLabels } from "@/registry/syncrobotic/blocks/settings-page"
+import type { DeviceEnrolmentLabels } from "@/registry/syncrobotic/blocks/device-enrolment"
+import type { DeviceDetailLabels } from "@/registry/syncrobotic/blocks/device-detail"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -186,6 +193,11 @@ it("fits every component's labels type", () => {
   fits<DataStateLabels>()(zh.dataStateLabels)
   fits<PermissionGateLabels>()(zh.permissionGateLabels)
   fits<StepUpDialogLabels>()(zh.stepUpDialogLabels)
+  fits<DescriptionListLabels>()(zh.descriptionListLabels)
+  fits<FreshnessStampLabels>()(zh.freshnessStampLabels)
+  fits<EvidencePanelLabels>()(zh.evidencePanelLabels)
+  fits<DesiredStateLabels>()(zh.desiredStateLabels)
+  fits<HeartbeatStripLabels>()(zh.heartbeatStripLabels)
   fits<Required<FleetTableLabels>>()(zh.fleetTableLabels)
   fits<Required<UsersRolesLabels>>()(zh.usersRolesLabels)
   fits<Required<UsersInvitationsLabels>>()(zh.usersInvitationsLabels)
@@ -195,5 +207,7 @@ it("fits every component's labels type", () => {
   fits<Required<SettingsSessionsLabels>>()(zh.settingsSessionsLabels)
   fits<Required<NotificationCenterLabels>>()(zh.notificationCenterLabels)
   fits<Required<SettingsPageLabels>>()(zh.settingsPageLabels)
+  fits<Required<DeviceEnrolmentLabels>>()(zh.deviceEnrolmentLabels)
+  fits<Required<DeviceDetailLabels>>()(zh.deviceDetailLabels)
   expect(zh.locale).toBe("zh-TW")
 })
