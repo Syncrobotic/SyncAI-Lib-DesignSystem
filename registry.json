@@ -3727,8 +3727,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.50.0",
+        "version": "0.50.1",
         "changelog": [
+          {
+            "version": "0.50.1",
+            "date": "2026-11-27",
+            "note": "A stored rail or width is in place from the first paint: a script after the column sets it from the cookie as the HTML is parsed, and the column's width follows its attributes. A static page no longer jumps on load."
+          },
           {
             "version": "0.50.0",
             "date": "2026-11-27",
