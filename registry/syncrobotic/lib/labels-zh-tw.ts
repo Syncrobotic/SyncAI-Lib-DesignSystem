@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.55.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.56.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese (Taiwan): one typed labels object per component that takes `labels`, with
 // numbers and units formatted as in the English defaults. Pass each to its component
 // (`<DataGrid labels={dataGridLabels} />`), with `locale="zh-TW"` where it formats numbers, days or times. It imports no
@@ -1309,6 +1309,77 @@ export const stepUpDialogLabels = {
     RATE_LIMITED: "嘗試次數太多。請等一分鐘後再試一次。",
   } as Record<string, string>,
   failed: "驗證失敗，請再試一次。",
+}
+
+// ---------- Devices: freshness, claims, orders and check-ins ----------
+
+export const descriptionListLabels = {
+  notSet: "未設定",
+  copy: (label: string) => `複製${label}`,
+  copyButton: copyButtonLabels,
+}
+
+export const freshnessStampLabels = {
+  live: (ago: string) => `${ago}回報`,
+  lagging: (ago: string) => `最後回報：${ago}`,
+  stale: (ago: string) => `資料已過時：最後回報 ${ago}`,
+  never: "尚未回報",
+  notApplicable: "不回報（離線部署）",
+  at: (absolute: string) => `最後回報時間：${absolute}`,
+  separator: "。",
+}
+
+export const evidencePanelLabels = {
+  source: "設備自行回報",
+  unverified: "未經驗證：這是設備自己送來的描述，沒有經過任何檢查。請審慎判斷，不要當成事實。",
+  field: "欄位",
+  reported: "設備宣稱",
+  expected: "登記紀錄",
+  verdict: "比對",
+  match: "相符",
+  mismatch: "不相符",
+  missing: "未回報",
+  unchecked: "沒有可比對的紀錄",
+  notReported: "未回報",
+  noRecord: "沒有紀錄",
+  summary: (mismatches: number, missing: number) =>
+    [mismatches && `${formatCount(mismatches)} 項與紀錄不相符`, missing && `${formatCount(missing)} 項未回報`].filter(Boolean).join("，") || "所有有紀錄的值都相符",
+  copy: (field: string) => `複製${field}`,
+}
+
+export const desiredStateLabels = {
+  pending: "已下達，尚未生效",
+  overdue: "尚未生效，已超過預期時間",
+  blocked: "目前無法生效",
+  inEffect: "已生效",
+  pendingBody: "會在設備下一次回報時生效。在設備回報之前，請當作先前的狀態仍然有效。",
+  pendingAirGappedBody: "要在設備上套用簽署好的檔案後才會生效；離線部署的設備不會回報確認。",
+  overdueBody: "設備還沒有確認。請當作先前的狀態仍然有效，並檢查設備能否連到伺服器。",
+  blockedBody: "這項變更要搭著回報送達，但目前沒有任何回報進來。在那之前，設備上仍是先前的狀態。",
+  inEffectBody: "設備已回報這項變更。",
+  ordered: "已下達",
+  believed: "設備上推定的狀態",
+  lastCheckIn: "最後回報",
+  since: (ago: string, absolute: string) => `${ago}（${absolute}）`,
+  freshness: freshnessStampLabels,
+}
+
+export const heartbeatStripLabels = {
+  strip: "心跳，每格一個時段",
+  full: "有回報",
+  partial: "部分漏失",
+  silent: "沒有心跳",
+  warning: "效能下降",
+  danger: "故障",
+  beats: (beats: string, expected: string, full: boolean) => (full ? `收到 ${beats} 次心跳` : `${expected} 次中收到 ${beats} 次`),
+  summary: (beats: string, expected: string, gaps: number, silent: string, full: boolean) =>
+    (full ? `收到 ${beats} 次心跳` : `${expected} 次中收到 ${beats} 次心跳`) + (gaps ? `，${formatCount(gaps)} 段中斷（共 ${silent}沒有心跳）` : "，沒有中斷"),
+  window: "時間範圍",
+  time: "時間",
+  checkIns: "心跳",
+  state: "狀態",
+  events: "事件",
+  view: chartViewSwitchLabels,
 }
 
 // ---------- Blocks a product renders from its own data ----------
