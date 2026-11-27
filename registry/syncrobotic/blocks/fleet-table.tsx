@@ -400,7 +400,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
       onFilterChange={setFilter}
       counts={counts}
       searchDelay={0}
-      onOpen={onOpen}
+      onOpen={onOpen ?? (() => {})}
       onShowOnMap={() => {}}
       onRename={() => {}}
       onRemove={async (r) => setList((all) => all.filter((x) => x.id !== r.id))}
