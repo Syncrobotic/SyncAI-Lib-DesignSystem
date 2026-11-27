@@ -67,6 +67,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 
 ## Live data
 - Live telemetry never freezes silently. Every component showing a robot's live data goes stale by default when nothing new arrives: camera feed 2 s, streaming chart 2 s, joint state and robot model 1 s, attitude 1 s, gauge 3 s, point cloud 3 s, diagnostics 5 s. Stale dims the data and says Stale (or Stalled, or No new data) with the last update's time. Pass the message's stamp (`updatedAt`, `receivedAt`) so an old message re-sent still reads stale and a still robot that keeps publishing reads live. `staleAfterMs={null}` turns it off, only for data that is not live (a saved map, a recording, a URDF on show).
+- A device's report is a snapshot from its last check-in, not a live reading. A `FreshnessStamp` sits beside the values it qualifies, on the server's liveness thresholds: colour only when lagging or stale; never reported and air-gapped are grey (`StatusGlyph` `none`), not faults. An order waiting for a check-in is a `DesiredState` ("revoking", never "revoked"; the device's side is believed). What a device says about itself is an `EvidencePanel` beside the record, never a fact. Check-ins over time are a `HeartbeatStrip`.
 
 ## Alarms
 - Three priorities, each a shape, colour and word. An alarm stays until it clears and is acknowledged. Shelving is for a set time and never for critical; suppressed and out-of-service alarms are counted, not hidden. Over 10 in 10 minutes is a flood: name it, keep critical and high in view.

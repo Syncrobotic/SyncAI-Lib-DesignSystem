@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.53.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.56.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -97,7 +97,7 @@ export function DropdownMenuContent({ className, sideOffset = 4, onKeyDown, onPo
 // It shows only in keyboard use (data-nav on the content), so an item under the pointer keeps the calm fill. Radix moves
 // focus to the item on hover too, so the browser's own focus outline is off; this ring replaces it.
 const item =
-  "relative flex h-(--h-md) cursor-pointer select-none items-center gap-2 rounded-sm px-3 text-sm outline-none transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent group-data-[nav=key]/menu:focus:outline-solid group-data-[nav=key]/menu:focus:outline-2 group-data-[nav=key]/menu:focus:-outline-offset-2 group-data-[nav=key]/menu:focus:outline-ring data-[disabled]:pointer-events-none data-[disabled]:text-disabled [&_svg]:size-4 [&_svg]:shrink-0"
+  "relative flex h-(--h-md) cursor-pointer select-none items-center gap-2 rounded-sm px-3 text-sm outline-none transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent group-data-[nav=key]/menu:focus:outline-solid group-data-[nav=key]/menu:focus:outline-2 group-data-[nav=key]/menu:focus:-outline-offset-2 group-data-[nav=key]/menu:focus:outline-ring data-[disabled]:pointer-events-none data-[disabled]:text-disabled aria-disabled:text-disabled [&_svg]:size-4 [&_svg]:shrink-0"
 
 /** `destructive` items use danger text; keep them last, after a separator. */
 export function DropdownMenuItem({ className, destructive, ...props }: React.ComponentProps<typeof MenuPrimitive.Item> & { destructive?: boolean }) {

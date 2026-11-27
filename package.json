@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.55.0",
+  "version": "0.56.0",
   "private": true,
   "description": "A robotics UI kit for React: emergency stop, teleoperation, robot map, camera feed, LiDAR point cloud, URDF robot model and alarms, with design tokens and ready-made screens, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [

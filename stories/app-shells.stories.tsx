@@ -14,9 +14,12 @@ import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from 
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
 import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
 import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
+import { DeviceEnrolment, DeviceEnrolmentContent, deviceNav, sampleEnrolmentRequests } from "@/registry/syncrobotic/blocks/device-enrolment"
+import { DeviceDetail, DeviceDetailContent, sampleDevice, sampleDeviceLicences } from "@/registry/syncrobotic/blocks/device-detail"
+import { permissionsFrom } from "@/registry/syncrobotic/ui/permission-gate"
 import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { TopBarShell } from "@/registry/syncrobotic/blocks/top-bar-shell"
-import { sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { ActionRailWorkspaceDemo } from "./action-rail-workspace-demo"
 
@@ -55,6 +58,45 @@ export const GovernanceTodoReadOnly: S = { render: () => <GovernanceTodo readOnl
 export const SettingsScreen: S = { render: () => <SettingsPage /> }
 export const RecordFormScreen: S = { render: () => <RecordForm /> }
 export const UsersRolesScreen: S = { render: () => <UsersRoles /> }
+export const DeviceEnrolmentScreen: S = { render: () => <DeviceEnrolment /> }
+// A viewer who may read the queue but not decide: Approve and Reject stay, disabled, with the permission they need.
+export const DeviceEnrolmentReadOnly: S = {
+  render: () => (
+    <AppShell product="Device console" nav={deviceNav} current="#enrolment" title="Devices" user={sampleUser}>
+      <DeviceEnrolmentContent
+        headingLevel={2}
+        requests={{ items: sampleEnrolmentRequests, total: sampleEnrolmentRequests.length }}
+        counts={{ all: 4, pending: 3, "awaiting-claim": 1 }}
+        defaultSelectedId="r2"
+        rejectCooldownMs={7 * 86_400_000}
+        now={Date.parse("2026-11-21T14:00:00Z")}
+        timeZone="Asia/Taipei"
+        can={permissionsFrom(["devices:read"])}
+        onApprove={async () => {}}
+        onReject={async () => {}}
+      />
+    </AppShell>
+  ),
+}
+export const DeviceDetailScreen: S = { render: () => <DeviceDetail /> }
+// Air-gapped: no check-ins, no report, no colour; the licence is signed here and carried to it.
+export const DeviceDetailAirGapped: S = {
+  render: () => (
+    <AppShell product="Device console" nav={deviceNav} current="#devices" title="Devices" user={sampleUser}>
+      <DeviceDetailContent
+        headingLevel={2}
+        device={{ ...sampleDevice, name: "Hsinchu lab 4", connectivity: "air-gapped", source: "Added by hand from its machine code", lastSeenAt: null }}
+        thresholds={{ laggingAfterMs: 2 * 60_000, staleAfterMs: 10 * 60_000 }}
+        licences={sampleDeviceLicences.slice(0, 1)}
+        now={Date.parse("2026-11-21T14:00:00Z")}
+        timeZone="Asia/Taipei"
+        onIssueLicence={() => {}}
+        onRevoke={async () => {}}
+        onRemove={async () => {}}
+      />
+    </AppShell>
+  ),
+}
 export const SignInScreen: S = { render: () => <SignIn /> }
 export const NotFoundScreen: S = { render: () => <NotFoundPage /> }
 export const NoAccessScreen: S = { render: () => <NoAccessPage permission="audit-logs:read" /> }

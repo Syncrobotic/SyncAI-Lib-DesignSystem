@@ -358,9 +358,11 @@
     "live": false
   },
   "description-list": {
-    "roles": [],
-    "tabStops": 0,
-    "live": false
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": true
   },
   "text-diff": {
     "roles": [
@@ -447,6 +449,57 @@
       "textbox"
     ],
     "tabStops": 2,
+    "live": false
+  },
+  "freshness-stamp": {
+    "roles": [
+      "img"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "evidence-panel": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "heading",
+      "list",
+      "listitem",
+      "region",
+      "row",
+      "rowgroup",
+      "rowheader",
+      "table"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "desired-state": {
+    "roles": [
+      "button",
+      "heading",
+      "region"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "heartbeat-strip": {
+    "roles": [
+      "cell",
+      "columnheader",
+      "group",
+      "img",
+      "list",
+      "listitem",
+      "radio",
+      "radiogroup",
+      "region",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 3,
     "live": false
   },
   "table": {

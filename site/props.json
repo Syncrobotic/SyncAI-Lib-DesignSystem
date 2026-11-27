@@ -3977,7 +3977,7 @@
    "props": [
     {
      "name": "items",
-     "type": "Item[]",
+     "type": "DescriptionListItem[]",
      "required": true,
      "description": ""
     },
@@ -3992,6 +3992,213 @@
      "type": "\"plain\" | \"tiles\" | \"bare\"",
      "default": "\"plain\"",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DescriptionListLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "notSet",
+       "type": "string",
+       "default": "\"Not set\"",
+       "description": "Read for a value that is not set; the eye sees a dash."
+      },
+      {
+       "name": "copy",
+       "type": "(label: string) => string",
+       "default": "(label) => `Copy ${label}`",
+       "description": "The copy button's name, from the item's label when it is text."
+      },
+      {
+       "name": "copyButton",
+       "type": "Partial<CopyButtonLabels>",
+       "default": "{}",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "desired-state": [
+  {
+   "name": "DesiredState",
+   "props": [
+    {
+     "name": "inEffect",
+     "type": "boolean",
+     "description": "The device has reported the desired state."
+    },
+    {
+     "name": "blocked",
+     "type": "boolean",
+     "description": "Why the order cannot arrive, when the product knows (Portal refuses this device's check-ins)."
+    },
+    {
+     "name": "orderedAt",
+     "type": "DateInput | null",
+     "description": ""
+    },
+    {
+     "name": "overdueAfterMs",
+     "type": "number",
+     "description": "Past this long since `orderedAt`, a wait is overdue."
+    },
+    {
+     "name": "lastCheckInAt",
+     "type": "DateInput | null",
+     "description": ""
+    },
+    {
+     "name": "thresholds",
+     "type": "{ laggingAfterMs: number; staleAfterMs?: number }",
+     "description": ""
+    },
+    {
+     "name": "offline",
+     "type": "boolean",
+     "description": "The server's liveness verdict, as freshnessOf takes it."
+    },
+    {
+     "name": "airGapped",
+     "type": "boolean",
+     "description": "It never checks in: the order is applied by hand, so a silent device is not blocking it."
+    },
+    {
+     "name": "desired",
+     "type": "ReactNode",
+     "required": true,
+     "description": "What was ordered, in words (\"Revoked: every module off\")."
+    },
+    {
+     "name": "reported",
+     "type": "ReactNode",
+     "required": true,
+     "description": "What the device last reported (\"Running 4 modules\"), shown as believed, never as fact."
+    },
+    {
+     "name": "blockedReason",
+     "type": "ReactNode",
+     "description": "The reason it cannot arrive, in place of `blockedBody` (\"Check-ins are refused while the device is suspended.\")."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "timeZone",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DesiredStateLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "pending",
+       "type": "string",
+       "default": "\"Ordered, not yet in effect\"",
+       "description": "The heading per phase."
+      },
+      {
+       "name": "overdue",
+       "type": "string",
+       "default": "\"Not in effect yet, later than expected\"",
+       "description": ""
+      },
+      {
+       "name": "blocked",
+       "type": "string",
+       "default": "\"Cannot take effect yet\"",
+       "description": ""
+      },
+      {
+       "name": "inEffect",
+       "type": "string",
+       "default": "\"In effect\"",
+       "description": ""
+      },
+      {
+       "name": "pendingBody",
+       "type": "string",
+       "default": "\"It takes effect at the device's next check-in. Until the device reports it back, treat the earlier state as still in place.\"",
+       "description": "What happens next, per phase."
+      },
+      {
+       "name": "pendingAirGappedBody",
+       "type": "string",
+       "default": "\"It takes effect once the signed file is applied on the device; an air-gapped device does not check in to confirm it.\"",
+       "description": ""
+      },
+      {
+       "name": "overdueBody",
+       "type": "string",
+       "default": "\"The device has not confirmed it yet. Treat the earlier state as still in place, and check that the device is reaching the server.\"",
+       "description": ""
+      },
+      {
+       "name": "blockedBody",
+       "type": "string",
+       "default": "\"It travels on a check-in, and none is arriving. Until one does, the earlier state stays in place on the device.\"",
+       "description": ""
+      },
+      {
+       "name": "inEffectBody",
+       "type": "string",
+       "default": "\"The device has reported it.\"",
+       "description": ""
+      },
+      {
+       "name": "ordered",
+       "type": "string",
+       "default": "\"Ordered\"",
+       "description": "Row names."
+      },
+      {
+       "name": "believed",
+       "type": "string",
+       "default": "\"Believed on the device\"",
+       "description": ""
+      },
+      {
+       "name": "lastCheckIn",
+       "type": "string",
+       "default": "\"Last check-in\"",
+       "description": ""
+      },
+      {
+       "name": "since",
+       "type": "(ago: string, absolute: string) => string",
+       "default": "(ago, absolute) => `${ago} (${absolute})`",
+       "description": "When it was ordered: relative, then exact."
+      },
+      {
+       "name": "freshness",
+       "type": "Partial<FreshnessStampLabels>",
+       "default": "{}",
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "headingAs",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The heading's level: h3 by default, h2 right under the page's h1, h4 under an h3."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Actions that end the wait some other way: cancel the order, or close it out by force."
     }
    ],
    "inherits": []
@@ -4562,6 +4769,122 @@
    "inherits": [
     "<div> (except title)"
    ]
+  }
+ ],
+ "evidence-panel": [
+  {
+   "name": "EvidencePanel",
+   "props": [
+    {
+     "name": "rows",
+     "type": "EvidenceRow[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "meta",
+     "type": "ReactNode",
+     "description": "Where and when it came from, under the heading (\"From 203.0.113.7 · first seen Nov 27, 2026, 14:02\")."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<EvidencePanelLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "source",
+       "type": "string",
+       "default": "\"Reported by the device\"",
+       "description": "The panel's heading: who said this."
+      },
+      {
+       "name": "unverified",
+       "type": "string",
+       "default": "\"Unverified: the device sent this about itself, and nothing has checked it. Weigh it; do not treat it as fact.\"",
+       "description": "Under it: that nothing has checked it."
+      },
+      {
+       "name": "field",
+       "type": "string",
+       "default": "\"Field\"",
+       "description": ""
+      },
+      {
+       "name": "reported",
+       "type": "string",
+       "default": "\"Device says\"",
+       "description": ""
+      },
+      {
+       "name": "expected",
+       "type": "string",
+       "default": "\"On record\"",
+       "description": ""
+      },
+      {
+       "name": "verdict",
+       "type": "string",
+       "default": "\"Check\"",
+       "description": ""
+      },
+      {
+       "name": "match",
+       "type": "string",
+       "default": "\"Matches\"",
+       "description": ""
+      },
+      {
+       "name": "mismatch",
+       "type": "string",
+       "default": "\"Does not match\"",
+       "description": ""
+      },
+      {
+       "name": "missing",
+       "type": "string",
+       "default": "\"Not reported\"",
+       "description": ""
+      },
+      {
+       "name": "unchecked",
+       "type": "string",
+       "default": "\"Nothing to compare\"",
+       "description": "No value on record to compare with."
+      },
+      {
+       "name": "notReported",
+       "type": "string",
+       "default": "\"Not reported\"",
+       "description": "A value the device did not send."
+      },
+      {
+       "name": "noRecord",
+       "type": "string",
+       "default": "\"No record\"",
+       "description": "A value the record does not hold."
+      },
+      {
+       "name": "summary",
+       "type": "(mismatches: number, missing: number) => string",
+       "default": "(mismatches, missing) => [mismatches && `${mismatches} ${mismatches === 1 ? \"value does\" : \"values do\"} not match the record`, missing && `${missing} not reported`].filter(Boolean).join(\", \") || \"Every value on record matches\"",
+       "description": "The count of rows that differ, above the rows."
+      },
+      {
+       "name": "copy",
+       "type": "(field: string) => string",
+       "default": "(field) => `Copy ${field}`",
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "headingAs",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The heading's level: h3 by default, h2 right under the page's h1, h4 under an h3."
+    }
+   ],
+   "inherits": []
   }
  ],
  "facets": [
@@ -5262,6 +5585,118 @@
      "name": "locale",
      "type": "string",
      "description": "Formats the views' counts (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "freshness-stamp": [
+  {
+   "name": "FreshnessStamp",
+   "props": [
+    {
+     "name": "lastAt",
+     "type": "DateInput | null",
+     "required": true,
+     "description": "When the last report arrived; null or undefined when none has."
+    },
+    {
+     "name": "thresholds",
+     "type": "{ laggingAfterMs: number; staleAfterMs?: number }",
+     "required": true,
+     "description": "The server's liveness thresholds, never a number of the interface's own."
+    },
+    {
+     "name": "airGapped",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "offline",
+     "type": "boolean",
+     "description": "The server's verdict, when it sends one (`liveness === \"offline\"`)."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "ms since the epoch. Pass one `useNow` from the page to keep a list of stamps in step; otherwise it reads the clock."
+    },
+    {
+     "name": "hideWhenLive",
+     "type": "boolean",
+     "default": "false",
+     "description": "Nothing while live: a mark on every healthy panel teaches people to stop reading marks."
+    },
+    {
+     "name": "variant",
+     "type": "\"text\" | \"icon\"",
+     "default": "\"text\"",
+     "description": "\"icon\" shows the glyph alone, the words in its tooltip and name: for a value that already sits beside a stamp."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "timeZone",
+     "type": "string",
+     "description": "IANA zone for the exact time; the browser's when omitted."
+    },
+    {
+     "name": "refreshMs",
+     "type": "number",
+     "default": "30_000",
+     "description": "How often it reads the clock when no `now` is given. Ages are said to the minute, so 30 s is enough."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FreshnessStampLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "live",
+       "type": "(ago: string) => string",
+       "default": "(ago) => `Reported ${ago}`",
+       "description": "`ago` is the relative time, \"3 minutes ago\"."
+      },
+      {
+       "name": "lagging",
+       "type": "(ago: string) => string",
+       "default": "(ago) => `Last report ${ago}`",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "(ago: string) => string",
+       "default": "(ago) => `Out of date: last report ${ago}`",
+       "description": ""
+      },
+      {
+       "name": "never",
+       "type": "string",
+       "default": "\"Not reported yet\"",
+       "description": ""
+      },
+      {
+       "name": "notApplicable",
+       "type": "string",
+       "default": "\"Does not report (air-gapped)\"",
+       "description": ""
+      },
+      {
+       "name": "at",
+       "type": "(absolute: string) => string",
+       "default": "(absolute) => `Last report at ${absolute}`",
+       "description": "The exact moment, in the tooltip and for screen readers."
+      },
+      {
+       "name": "separator",
+       "type": "string",
+       "default": "\". \"",
+       "description": "Between the age and the exact moment when both are read: \". \" in English, \"。\" in Chinese."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -6328,6 +6763,164 @@
      "name": "imageLabels",
      "type": "Partial<AnnotatedImageLabels>",
      "description": "annotated-image's words (`annotatedImageLabels` in labels-zh-tw)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "heartbeat-strip": [
+  {
+   "name": "HeartbeatStrip",
+   "props": [
+    {
+     "name": "buckets",
+     "type": "HeartbeatBucket[]",
+     "required": true,
+     "description": "The window's stretches, oldest first, as the server aggregated them."
+    },
+    {
+     "name": "bucketMs",
+     "type": "number",
+     "required": true,
+     "description": "Each stretch's length."
+    },
+    {
+     "name": "events",
+     "type": "HeartbeatEvent[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "windows",
+     "type": "{ value: string; label: string; }[]",
+     "description": "The windows to offer (`[{ value: \"24h\", label: \"24 h\" }]`); the product fetches the buckets for the one chosen."
+    },
+    {
+     "name": "window",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onWindowChange",
+     "type": "(value: string) => void",
+     "description": ""
+    },
+    {
+     "name": "view",
+     "type": "\"table\" | \"chart\"",
+     "description": "\"chart\" or \"table\"; uncontrolled from `defaultView` when omitted."
+    },
+    {
+     "name": "defaultView",
+     "type": "\"table\" | \"chart\"",
+     "default": "\"chart\"",
+     "description": ""
+    },
+    {
+     "name": "onViewChange",
+     "type": "(view: \"chart\" | \"table\") => void",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "timeZone",
+     "type": "string",
+     "description": "IANA zone for times; the browser's when omitted."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<HeartbeatStripLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "strip",
+       "type": "string",
+       "default": "\"Check-ins, one cell per stretch\"",
+       "description": "Names the strip of cells."
+      },
+      {
+       "name": "full",
+       "type": "string",
+       "default": "\"Checked in\"",
+       "description": ""
+      },
+      {
+       "name": "partial",
+       "type": "string",
+       "default": "\"Some missed\"",
+       "description": ""
+      },
+      {
+       "name": "silent",
+       "type": "string",
+       "default": "\"No check-ins\"",
+       "description": ""
+      },
+      {
+       "name": "warning",
+       "type": "string",
+       "default": "\"Degraded\"",
+       "description": ""
+      },
+      {
+       "name": "danger",
+       "type": "string",
+       "default": "\"Failing\"",
+       "description": ""
+      },
+      {
+       "name": "beats",
+       "type": "(beats: string, expected: string, full: boolean) => string",
+       "default": "(beats, expected, full) => (full ? `${beats} check-ins` : `${beats} of ${expected} check-ins`)",
+       "description": "A stretch's count: \"57 of 60 check-ins\", or \"60 check-ins\" once full."
+      },
+      {
+       "name": "summary",
+       "type": "(beats: string, expected: string, gaps: number, silent: string, full: boolean) => string",
+       "default": "(beats, expected, gaps, silent, full) => (full ? `${beats} check-ins` : `${beats} of ${expected} check-ins`) + (gaps ? `, ${gaps} ${gaps === 1 ? \"gap\" : \"gaps\"} (${silent} silent)` : \", no gaps\")",
+       "description": "The whole window in words, beside the strip; `full` when it got every check-in expected (or more: clocks jitter)."
+      },
+      {
+       "name": "window",
+       "type": "string",
+       "default": "\"Time window\"",
+       "description": "Names the window switch."
+      },
+      {
+       "name": "time",
+       "type": "string",
+       "default": "\"Time\"",
+       "description": ""
+      },
+      {
+       "name": "checkIns",
+       "type": "string",
+       "default": "\"Check-ins\"",
+       "description": ""
+      },
+      {
+       "name": "state",
+       "type": "string",
+       "default": "\"State\"",
+       "description": ""
+      },
+      {
+       "name": "events",
+       "type": "string",
+       "default": "\"Events\"",
+       "description": ""
+      },
+      {
+       "name": "view",
+       "type": "Partial<ChartViewSwitchLabels>",
+       "default": "{}",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -12692,9 +13285,9 @@
    "props": [
     {
      "name": "status",
-     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "type": "Status | \"none\"",
      "default": "\"offline\"",
-     "description": "active (busy), normal, warning, danger or offline (the default)."
+     "description": "active (busy), normal, warning, danger, offline (the default) or none (not applicable, not started)."
     }
    ],
    "inherits": []

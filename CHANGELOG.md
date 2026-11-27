@@ -2,6 +2,30 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.56.0 · 2026-11-27
+
+Device lifecycle: how old a report is, what a device claims against the record, what was ordered but is not yet in effect, and the two screens built from them.
+
+### Added
+- **`device-enrolment`** (beta, controlled): the queue of machines that enrolled themselves (pending, awaiting claim), counts and pages from the server, the connected and air-gapped routes in, and a review: the machine's claims in an evidence panel beside the record, a name, approve, and reject from a second face that states the cooldown. Approve is disabled with its reason without `devices:write` or with no seat left.
+- **`device-detail`** (beta, controlled): what the server knows first, then what the device claims, each reported value with its freshness; reference beside running services, check-ins full width, licences with a pending revocation shown as Revoking, not Revoked, and lifecycle actions in the ⋯ menu, disabled with their reason. Force removal asks for a reason and works with `useStepUp`. Air-gapped devices are quiet, not faulty.
+- **`relative-time`** (beta): `formatRelative`, `formatAbsolute`, `formatDuration` and `relativeParts` through Intl, zh-TW included; a future timestamp can be clamped to "now".
+- **`freshness-stamp`** (beta): `freshnessOf(lastAt, thresholds, { now, airGapped, offline })` → live, lagging, stale, never or not applicable. Never and air-gapped are quiet; colour only when lagging or stale; the exact time in a tooltip and for screen readers.
+- **`evidence-panel`** (beta): a device's own claims, framed as unverified, beside the record, each marked match, mismatch or missing (`compareEvidence`; lists compare as sets).
+- **`desired-state`** (beta): ordered against believed on the device, `desiredPhaseOf` → pending, overdue, blocked or in effect, with "takes effect at the device's next check-in"; colour only when overdue or blocked.
+- **`heartbeat-strip`** (beta): check-ins over a window from server buckets: gaps as dashed outlines and in words, partial stretches at half height, numbered events, a window switch, a legend and a table view.
+- **/blocks:** a Devices type in Device lifecycle. Icon set: `Hourglass`, `Server`.
+
+### Changed
+- **`status-glyph`:** `status="none"`, a grey dashed circle for a correct absence (not applicable, not started).
+- **`description-list`:** items take `hint`, `mono`, `copy` and `icon`; an empty value is a dash read as "Not set".
+- **`labels-zh-tw`:** labels for all of the above. **`agent-skill`:** rules for device snapshots.
+
+### Fixed
+- **`dropdown-menu`, `context-menu`:** an item disabled with `aria-disabled` (a permission gate keeping it focusable for its reason) looks disabled.
+- **`fleet-table`:** the demo's rows open again.
+- **/icons:** a kit-drawn icon's tile names what it shows ("RobotArm Kit"), so voice control can reach it.
+
 ## 0.55.0 · 2026-11-27
 
 Blocks a product can wire to its API, the foundations they need, and blocks grouped by product area.
