@@ -3,6 +3,7 @@ import { join } from "node:path"
 import { blocks } from "./blocks"
 import { blockHref, blockTypes, typeHref } from "./block-types"
 import { items, readSource } from "./catalog"
+import { choosing } from "./choosing"
 import { foundations } from "./foundations"
 import { iconGroups } from "./icons"
 import { overviews } from "./overview"
@@ -30,6 +31,8 @@ export function buildSearchIndex(): SearchEntry[] {
     if (!readdirSync(dir).includes("page.tsx")) continue
     for (const s of sections(f.slug)) out.push({ group: "Foundations", title: s.title, href: `/docs/foundations/${f.slug}#${s.id}`, hint: f.title })
   }
+
+  for (const c of choosing) out.push({ group: "Pages", title: c.title, href: `/docs/choosing/${c.slug}`, hint: c.lead, text: `which one ${c.choices.map((x) => x.item).join(" ")}` })
 
   for (const i of items) {
     const o = overviews[i.name]

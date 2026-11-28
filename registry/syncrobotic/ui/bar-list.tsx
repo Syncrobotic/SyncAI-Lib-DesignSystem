@@ -1,4 +1,4 @@
-// @syncrobotic/bar-list v0.53.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
+// @syncrobotic/bar-list v0.58.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"

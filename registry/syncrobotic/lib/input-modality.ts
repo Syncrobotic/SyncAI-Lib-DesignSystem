@@ -1,4 +1,4 @@
-// @syncrobotic/input-modality v0.53.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
+// @syncrobotic/input-modality v0.58.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
 /*
   Whether the last input on the page was a key or a pointer, from one pair of document listeners for the whole page:
   menus, lists and trees ring their row only in keyboard use. The listeners capture, attached on the first

@@ -65,9 +65,32 @@ export default function UpgradingPage() {
         <Inline text={"To compare an installed file with its source, check out the kit tag that shipped it: an item at `v0.24.0` is in the tag `v0.24.0`. Some older items carry a version no kit release was called, such as `slider` `v0.21.1`; `/r/kit-tags.json` maps each of those to its tag (`\"slider@0.21.1\": \"v0.24.0\"`)."} />
       </p>
 
+      <H2 id="cadence">Release cadence</H2>
+      <p className="max-w-3xl text-base">
+        <Inline text="At most one minor release a week, so a product team reads one changelog per sprint week rather than one a day; a patch (fixes only, no API change) ships when it is needed. Breaking changes wait for the next minor and ship together in it, each with its migration line, and that release gets a migration guide. A stable item is deprecated in one release and changed in a later one, never in the same." />
+      </p>
+
       <H2 id="status">Beta and stable</H2>
       <p className="max-w-3xl text-base">
-        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. A stable item changes its API only in a major release. Every item starts in beta. It becomes stable when a product has used it, or its API is a standard one the kit only styles (a Radix primitive, a native element, a small hook or function), and in both cases when its API has not changed for ten releases and it has unit tests and measured accessibility data. Unmarked items are stable. Blocks and patterns carry a status too: a stable block keeps its props and its structure until a major release." />
+        <Inline text="Stable promises that its API (props, exports, `data-slot` names, the tokens it reads) breaks only in a release whose changelog says Breaking, with a migration line, and only after an earlier release marked the old way Deprecated and kept it working. Fixes and additions come in any release. Beta means the API may still change in any minor release: read its changelog before you upgrade. Every item starts in beta; unmarked items are stable." />
+      </p>
+      <p className="max-w-3xl pt-3 text-base">
+        <Inline text="An item can become stable when it meets every criterion below. `npm run stability` checks them and lists the candidates; a release promotes them with a `Stable:` changelog line, and when in doubt an item stays beta." />
+      </p>
+      <TokenTable
+        head={["Criterion", "Evidence"]}
+        rows={[
+          ["Settled", "Shipped in each of the last ten releases, and no Breaking entry in them names it"],
+          ["Tested", "A unit test exercises it; a block's test renders its `Content` export from props"],
+          ["Measured", "A component's roles and Tab stops are in the accessibility data"],
+          ["Documented", "Its page says when to use it and what to use instead; a block's type does"],
+          ["Dependencies", "Every item it installs is stable"],
+          ["Controlled", "Blocks only: it renders from props, with no sample data inside"],
+          ["Proven", "Robot and AI parts only: a product has installed it. Other items need no product"],
+        ]}
+      />
+      <p className="max-w-3xl pt-3 text-base">
+        <Inline text="`lint:registry` fails when a stable item loses its tests, its accessibility data, its docs or a stable dependency, or breaks without a Deprecated release first. Restore what it lost, or demote it to beta in a release that says so." />
       </p>
       <p id="wiring" className="max-w-3xl scroll-mt-20 pt-3 text-base">
         <Inline text="A block also says how it is wired. Demo data: it renders built-in sample data, and a screen its own app shell; install it as a starting point and wire your data in. Controlled: it renders only from its props and callbacks, with no sample data or app shell inside, so it takes your data as it is." />

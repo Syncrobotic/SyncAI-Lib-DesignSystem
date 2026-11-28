@@ -2,6 +2,7 @@ import { blockListOfType as blocksOfType } from "./block-list"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
+import { choosing } from "./choosing"
 import { iconCategories, iconCount } from "./icons"
 
 // The site's areas, as ReUI and shadcn name them: Docs, Components, Blocks. The header links to each; the sidebar shows only the area you are in.
@@ -19,7 +20,7 @@ export const scopes: Scope[] = [
     key: "docs",
     label: "Docs",
     href: "/docs",
-    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/migrating-from-local-components", "/docs/ai"],
+    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/migrating-from-local-components", "/docs/ai", "/docs/choosing", "/docs/accessibility"],
     groups: [
       {
         title: "Getting started",
@@ -33,6 +34,8 @@ export const scopes: Scope[] = [
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
           { href: "/docs/upgrading", label: "Versions and upgrades" },
+          { href: "/docs/accessibility/manual-testing", label: "Manual accessibility testing" },
+          { href: "/docs/accessibility/conformance", label: "Accessibility conformance" },
           { href: "/docs/migrating-from-local-components", label: "Migrating to the kit" },
           { href: "/docs/ai", label: "For AI agents" },
         ],
@@ -41,6 +44,7 @@ export const scopes: Scope[] = [
         title: "Foundations",
         links: foundations.map((f) => ({ href: `/docs/foundations/${f.slug}`, label: f.title })),
       },
+      { title: "Choosing", links: choosing.map((c) => ({ href: `/docs/choosing/${c.slug}`, label: c.nav })) },
     ],
   },
   {
@@ -119,3 +123,28 @@ export const scopes: Scope[] = [
 
 /** Header links: the three areas plus installation. */
 export const headerLinks = scopes.map(({ key, label, href, match }) => ({ key, label, href, match }))
+
+/** An area as its sidebar and the drawer draw it: its pages, without their sections. */
+export type AreaNav = { key: string; label: string; groups: NavGroup[] }
+export type PageSections = { label: string; href: string; sections: NonNullable<NavLink["sections"]> }
+
+const strip = (s: Scope): AreaNav => ({
+  key: s.key,
+  label: s.label,
+  groups: s.groups.map((g) => ({ title: g.title, links: g.links.map(({ sections: _, ...l }) => l) })),
+})
+
+// The pages of an area are shared by all of them (the area's sidebar layout); a page's sections come with that page
+// alone. Every page carrying every area's sections was most of its payload (tests/unit/sidebar-payload.test.ts).
+export const areaNav = (key: string): AreaNav => strip(scopes.find((s) => s.key === key)!)
+
+/** Every area's pages, for the drawer's tabs (/nav.json). */
+export const allAreaNav = () => scopes.map(strip)
+
+/** The sections under one page's link, when it has more than one. */
+export function pageSections(href: string): PageSections | null {
+  for (const s of scopes)
+    for (const g of s.groups)
+      for (const l of g.links) if (l.href === href && l.sections && l.sections.length > 1) return { label: l.label, href: l.href, sections: l.sections }
+  return null
+}

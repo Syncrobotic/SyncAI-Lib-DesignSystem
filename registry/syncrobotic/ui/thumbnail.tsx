@@ -1,4 +1,4 @@
-// @syncrobotic/thumbnail v0.53.0 · update: npx shadcn add @syncrobotic/thumbnail --overwrite
+// @syncrobotic/thumbnail v0.58.0 · update: npx shadcn add @syncrobotic/thumbnail --overwrite
 "use client"
 
 import * as React from "react"

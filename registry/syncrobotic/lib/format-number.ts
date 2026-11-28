@@ -1,4 +1,4 @@
-// @syncrobotic/format-number v0.53.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
+// @syncrobotic/format-number v0.58.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
 /**
  * The kit's one number path: formatCount (135,287, or compact 135K only where space is short), formatNumber for other
  * numbers and resolveLocale, in English by default so server and browser match. The locale changes in one place. Never

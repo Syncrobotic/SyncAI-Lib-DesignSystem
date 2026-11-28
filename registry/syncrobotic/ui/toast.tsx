@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.53.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.58.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"

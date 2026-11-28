@@ -1,4 +1,5 @@
 import {
+  Activity,
   ArrowDown,
   ArrowDownToLine,
   ArrowDownRight,
@@ -303,6 +304,7 @@ export const iconGroups: IconGroup[] = [
       e(Info, "Information"),
       e(Bug, "Debug output: a developer's log line"),
       e(Circle, "A step not started"),
+      e(Activity, "System health: the platform's own workers, queues and scheduled jobs"),
       e(Bell, "Alarms and notifications"),
       e(Siren, "The site siren is sounding"),
       e(SearchX, "Nothing matches"),

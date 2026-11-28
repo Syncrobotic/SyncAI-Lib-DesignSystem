@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 139 React components, 70 blocks and 18 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 139 React components, 71 blocks and 18 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 For robot apps it has what general UI kits leave out: an emergency stop, a fail-safe teleoperation pad, a robot map with ROS occupancy grids, laser scans and mission editing, a live camera feed, a LiDAR point cloud viewer, a URDF robot model, joint states and an alarm system. See [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics).
 
@@ -57,7 +57,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms, data visualisation, and permissions and data states, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **139 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **70 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access with project ownership and the permission matrix, webhook deliveries, device enrolment, detail and offline licences, tenants and quotas, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **71 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access with project ownership and the permission matrix, webhook deliveries, device enrolment, detail and offline licences, tenants and quotas, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -106,6 +106,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Fleet operations | Maintenance | `maintenance-due`, `maintenance-work-order` |
 | Fleet operations | Firmware rollout | `rollout-overview`, `rollout-plan` |
 | Platform admin | Tenants and quotas | `tenant-admin` |
+| Platform admin | System health | `platform-health` |
 | Data and AI | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
 | Data and AI | AI agents | `agent-runs`, `agent-trace`, `agent-approval`, `agent-chat`, `agent-run-gate`, `agent-run-outcome`, `agent-tool-permissions` |
 | Patterns | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
@@ -132,11 +133,13 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 
 The rules are not a style guide that drifts: checks enforce them. On every pull request: tokens, registry, rules, numbers, motion, versions, DTCG, types, tests, build. Before a release (pull requests into `stage`): axe and screenshots of every story.
 
-- **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
+- **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes. The [conformance report](https://design-system.syncrobotic.me/docs/accessibility/conformance) states each WCAG 2.2 A and AA criterion with its evidence, and the [manual test matrix](https://design-system.syncrobotic.me/docs/accessibility/manual-testing) records screen-reader passes on the stable components.
 - **Visual regression.** Before a release, every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
 - **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A local check (`npm run check:radius`) walks the foundation, component and block pages for nested corners that break the radius rule.
 - **Installs for real.** On a pull request that touches the registry, every item is installed into a fresh Next.js app, type-checked and built.
 - **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://design-system.syncrobotic.me/docs/upgrading) lists them.
+- **Stable by evidence.** An item is stable when the checks say so (`npm run stability`): no Breaking in the last ten releases, tests, a11y data, when-to-use docs and stable dependencies. A stable item breaks only after a release marks the old way Deprecated. At most one minor release a week.
+- **Which one when.** [Choosing pages](https://design-system.syncrobotic.me/docs/choosing/messages) settle the common choices (Banner, Alert, Toast, Alarm or Dialog; Table or DataGrid; Select or SegmentedControl; Dialog, Sheet or Popover) with the questions to ask in order.
 - **Adoption you can measure.** `npm run adoption -- ../your-app` reads the version header of every installed file and lists each item, its version, the latest, how many minors behind it is and the changelog lines in between; `--github <org>` scans every repo of an organisation through the `gh` CLI, `--json` prints it for other tools.
 
 ## For AI agents

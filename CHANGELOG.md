@@ -2,6 +2,24 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.58.0 · 2026-11-28
+
+What is safe to depend on, which one to choose, a lighter site, platform health, and the accessibility evidence a buyer asks for.
+
+### Changed
+- **Stable, defined by evidence:** an item can be stable when it shipped in each of the last ten releases with no Breaking entry naming it, has unit tests that exercise it (a block: its `Content` rendered from props), a11y data (components), use and instead docs, stable dependencies, controlled wiring (blocks), and, for robot and AI parts only, a product that installed it. `npm run stability` lists candidates; `lint:registry` fails when a stable item loses its tests, a11y data, docs or a stable dependency, or breaks without a Deprecated release first. /docs/upgrading#status.
+- **The stable promise:** a stable item breaks only in a release that says Breaking, with a migration line, after an earlier release marked the old way Deprecated and kept it working.
+- **Release cadence:** at most one minor release a week; patches (fixes only) when needed; breaking changes grouped into one minor with a migration guide. /docs/upgrading#cadence.
+- **35 items stable:** `format-number`, `input-modality`, `use-hotkeys`, `code-block`, `code`, `text-diff`, `number-field`, `tier-badge`, `banner`, `toast`, `responsive-table`, `chart`, `share-bar`, `bar-list`, `tree`, `icon-tile`, `page-header`, `section-header`, `restricted-preview`, `thumbnail`, `media-player`, `filters`, `facets`, `autocomplete`, `phone-input`, `date-selector`, `time-picker`, `log-viewer`, `sortable`, `resizable`, `file-upload`, `stepper`, `scrollspy`, `questionnaire`, `marker`. Robot and AI parts, `data-grid`, `sidebar`, `form` and the blocks stay beta.
+- **Docs site:** each page carries only its own area's sidebar and its own sections; the drawer fetches other areas from `/nav.json`. /icons 374 → 299 KB, a component page 252 → 190 KB, /docs 187 → 110 KB. `lint:html-size` fails a page that carries other pages' example links.
+- **Decisions where they are read:** the docs home lists the decisions that shape a product (healthy is grey, the brand layer, stable by evidence, which one when); llms.txt, every Markdown twin, the README and `agent-skill` state the stable promise and link the Choosing pages.
+
+### Added
+- **Choosing pages** (/docs/choosing): which one when, with the questions to ask in order, a side-by-side table and one line each: Banner, Alert, Toast, Alarm or Dialog; DescriptionList, Item, Table or DataGrid; Select, Autocomplete, SegmentedControl or RadioGroup; Dialog, Sheet, Popover or Tooltip. Linked from each member's page.
+- **`platform-health`** (beta, controlled, Platform admin › System health): workers with heartbeat freshness, job queues (depth, oldest job, failed), scheduled jobs (last run and result, next run, the server's overdue verdict), email delivery and the database (storage, replica lag, partitions). Each section has its own data state; retrying failed jobs and pausing a queue sit behind a permission. Healthy is grey, against the server's thresholds. Icon set: `Activity`.
+- **Accessibility evidence:** /docs/accessibility/manual-testing, a manual screen-reader and keyboard matrix for every stable component (keyboard, NVDA with Firefox and Chrome, JAWS, VoiceOver on macOS and iOS, TalkBack), with tasks derived from each component's measured roles, Tab stops, live regions and keys; results are recorded in `site/a11y-manual.json` (none yet: every cell is Not tested). /docs/accessibility/conformance, an Accessibility Conformance Report in VPAT 2.5 INT style for the 55 WCAG 2.2 A and AA criteria, filled only from repository evidence (7 Supports, 1 Partially supports, 15 Not applicable, 32 Not evaluated pending a manual pass), with a Markdown twin.
+- Unit tests for the stable items that had none.
+
 ## 0.57.0 · 2026-11-27
 
 Tenants and admin: grants, quotas, members and licences a product can wire to its API, a brand layer, and a way in for products that built their own components.

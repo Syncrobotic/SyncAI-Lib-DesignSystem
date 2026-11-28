@@ -341,8 +341,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -369,7 +374,7 @@
             "note": "First release: formatCount(n, { compact, locale }) for the number formatting rule. Issue #386."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -410,8 +415,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -428,7 +438,7 @@
             "note": "New: shared by the components that each carried their own copy."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -471,8 +481,13 @@
         }
       ],
       "meta": {
-        "version": "0.57.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Labels for the platform-health block (`platformHealthLabels`), heartbeat wording for its FreshnessStamps included."
+          },
           {
             "version": "0.57.0",
             "date": "2026-11-27",
@@ -986,9 +1001,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -2043,9 +2063,14 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
-        "status": "beta",
+        "version": "0.58.0",
+        "status": "stable",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -2211,8 +2236,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -2259,7 +2289,7 @@
             "note": "First release."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -2952,9 +2982,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3251,9 +3286,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3438,9 +3478,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3680,8 +3725,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3743,7 +3793,7 @@
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -4184,9 +4234,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -4235,8 +4290,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -4278,7 +4338,7 @@
             "note": "First release."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -4763,9 +4823,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -5904,8 +5969,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -5942,7 +6012,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -6016,9 +6086,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6230,8 +6305,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6273,7 +6353,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -6292,9 +6372,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6404,8 +6489,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6457,7 +6547,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -6477,9 +6567,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6589,8 +6684,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6617,7 +6717,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -6639,9 +6739,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -6856,9 +6961,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -7465,9 +7575,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -7575,9 +7690,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -7793,8 +7913,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -7856,7 +7981,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -7929,8 +8054,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -7987,7 +8117,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8089,8 +8219,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8152,7 +8287,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8175,8 +8310,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8233,7 +8373,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8397,9 +8537,14 @@
         }
       ],
       "meta": {
-        "status": "beta",
-        "version": "0.53.0",
+        "status": "stable",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8708,8 +8853,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8751,7 +8901,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8772,8 +8922,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8805,7 +8960,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8826,8 +8981,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -8859,7 +9019,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -8977,8 +9137,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9035,7 +9200,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -9121,8 +9286,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9164,7 +9334,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -9261,8 +9431,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9309,7 +9484,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -9424,8 +9599,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "Stable: shipped ten releases with no breaking change, with unit tests, measured accessibility (components) and use/instead docs. Its API now changes only after a release deprecates what goes, with a migration line."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9452,7 +9632,7 @@
             "note": "New."
           }
         ],
-        "status": "beta"
+        "status": "stable"
       }
     },
     {
@@ -11270,8 +11450,13 @@
         }
       ],
       "meta": {
-        "version": "0.57.0",
+        "version": "0.58.0",
         "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "The workflow says to prefer stable items and to follow a component's Which one link (/docs/choosing) when two could do the job."
+          },
           {
             "version": "0.57.0",
             "date": "2026-11-27",
@@ -14797,6 +14982,54 @@
             "version": "0.57.0",
             "date": "2026-11-27",
             "note": "First release: TenantAdminContent, the server's page and search, device seats in a QuotaField (unlimited is not 0), licensed modules in an AllOrSomeField, deleted projects with the server's `restorableUntil` as given; its demo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "platform-health",
+      "type": "registry:block",
+      "title": "Platform health",
+      "description": "The platform's own health: workers and heartbeats, job queues, scheduled jobs, email delivery and the database, with retry and pause for a queue.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-now",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/relative-time",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/data-state",
+        "@syncrobotic/description-list",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/freshness-stamp",
+        "@syncrobotic/metric-card",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/section-header",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/platform-health.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.58.0",
+        "status": "beta",
+        "wiring": "controlled",
+        "changelog": [
+          {
+            "version": "0.58.0",
+            "date": "2026-11-28",
+            "note": "First release: PlatformHealthContent, workers with FreshnessStamp heartbeats, job queues, scheduled jobs, email delivery and the database, a data state per section, retry failed jobs and pause a queue behind a permission; its demo."
           }
         ]
       }

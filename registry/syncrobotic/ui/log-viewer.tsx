@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.53.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.58.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"

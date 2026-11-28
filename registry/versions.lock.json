@@ -24,7 +24,7 @@
     "hash": "96645745229d223a"
   },
   "format-number": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "8b25e00a64349b04"
   },
   "relative-time": {
@@ -32,7 +32,7 @@
     "hash": "872909cca23a9302"
   },
   "input-modality": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "20baa66af8c899a6"
   },
   "theme-change": {
@@ -40,8 +40,8 @@
     "hash": "c73671ae05fd9bf5"
   },
   "labels-zh-tw": {
-    "version": "0.57.0",
-    "hash": "7f33884947012b76"
+    "version": "0.58.0",
+    "hash": "91225eb0a3377384"
   },
   "ros": {
     "version": "0.53.0",
@@ -84,7 +84,7 @@
     "hash": "6d354fb04d6f68a8"
   },
   "use-hotkeys": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "518b4ab519b39c5d"
   },
   "status-glyph": {
@@ -152,7 +152,7 @@
     "hash": "1c677a21509fd0e4"
   },
   "code-block": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "dc60ff977dc67ea2"
   },
   "input": {
@@ -164,7 +164,7 @@
     "hash": "6593f2dc07f55d8b"
   },
   "number-field": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "0d58eca5482760d8"
   },
   "textarea": {
@@ -212,7 +212,7 @@
     "hash": "1ea8421037a3ff45"
   },
   "tier-badge": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "2e707f6238a54d93"
   },
   "card": {
@@ -236,7 +236,7 @@
     "hash": "6417af4ad9009462"
   },
   "text-diff": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "a20ea37f50c47833"
   },
   "meter": {
@@ -248,7 +248,7 @@
     "hash": "c44a8b24d2513eac"
   },
   "banner": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "9051eff89bb4e863"
   },
   "alert": {
@@ -260,7 +260,7 @@
     "hash": "01822e48f91f45fa"
   },
   "toast": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "494d419c7491fd21"
   },
   "empty-state": {
@@ -308,11 +308,11 @@
     "hash": "0b6df2809cbdd573"
   },
   "responsive-table": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "bbb8abe7786554f9"
   },
   "chart": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "2791942b4fab3f9c"
   },
   "streaming-chart": {
@@ -344,7 +344,7 @@
     "hash": "315e3b40cb5072ed"
   },
   "tree": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "81055179f34496fb"
   },
   "sidebar": {
@@ -412,7 +412,7 @@
     "hash": "b1096f8b47a715f2"
   },
   "icon-tile": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "2a97930139a906f3"
   },
   "kbd": {
@@ -420,7 +420,7 @@
     "hash": "d9c4fffd1fe28eaa"
   },
   "code": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "ae5a8bcde45d2261"
   },
   "robot-icons": {
@@ -440,11 +440,11 @@
     "hash": "becba31ecc39a068"
   },
   "page-header": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "c8b35f8c77701d2e"
   },
   "section-header": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "5cde94a525e1cd7d"
   },
   "chip-group": {
@@ -452,11 +452,11 @@
     "hash": "a90771635e037f79"
   },
   "share-bar": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "1c0eb25bc3493e04"
   },
   "bar-list": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "79764944b203125b"
   },
   "load-more": {
@@ -464,11 +464,11 @@
     "hash": "2251864b2e20eecf"
   },
   "restricted-preview": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "40373998d359696a"
   },
   "thumbnail": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "3e594b68f6b910b2"
   },
   "image-grid": {
@@ -484,7 +484,7 @@
     "hash": "76914787bcd7cd9e"
   },
   "media-player": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "f827e2a630ebd557"
   },
   "camera-feed": {
@@ -520,11 +520,11 @@
     "hash": "5f40f14b4adc6aa7"
   },
   "filters": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "a160f1445893ab76"
   },
   "facets": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "5f054c155bc6eae3"
   },
   "search-field": {
@@ -540,7 +540,7 @@
     "hash": "13b9dac3aaf3d020"
   },
   "autocomplete": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "538e0912e3372f7b"
   },
   "input-otp": {
@@ -548,7 +548,7 @@
     "hash": "2b9ad892e54bebd5"
   },
   "phone-input": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "6e47163742f9cc15"
   },
   "calendar": {
@@ -556,11 +556,11 @@
     "hash": "24b315dec54fab37"
   },
   "date-selector": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "d2f0bade9f096c20"
   },
   "time-picker": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "8e2867e3cd37e1de"
   },
   "data-grid": {
@@ -568,7 +568,7 @@
     "hash": "32cce9faef530914"
   },
   "log-viewer": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "3dfaa41fdac6f0ce"
   },
   "streaming-text": {
@@ -592,15 +592,15 @@
     "hash": "ee85173205ead1cd"
   },
   "sortable": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "fd32e4b730d1e882"
   },
   "resizable": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "c03d83afa211cd36"
   },
   "file-upload": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "71f16cff197cad57"
   },
   "attachment": {
@@ -612,7 +612,7 @@
     "hash": "19b5309d15bdf03c"
   },
   "stepper": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "ae635348e22f2aaf"
   },
   "timeline": {
@@ -620,7 +620,7 @@
     "hash": "392b142e96407298"
   },
   "scrollspy": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "f2a472282c794420"
   },
   "navigation-menu": {
@@ -628,7 +628,7 @@
     "hash": "31a4a29f11be99cf"
   },
   "questionnaire": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "5699de1004b657fe"
   },
   "trace": {
@@ -636,7 +636,7 @@
     "hash": "b82407b9287c4d25"
   },
   "marker": {
-    "version": "0.53.0",
+    "version": "0.58.0",
     "hash": "55eed902ebf06d00"
   },
   "stats-cards": {
@@ -720,8 +720,8 @@
     "hash": "ed2f295992f73b9a"
   },
   "agent-skill": {
-    "version": "0.57.0",
-    "hash": "a255d5f94874cfb2"
+    "version": "0.58.0",
+    "hash": "8c46a6dfe6b87942"
   },
   "line-chart-telemetry": {
     "version": "0.53.0",
@@ -942,6 +942,10 @@
   "tenant-admin": {
     "version": "0.57.0",
     "hash": "766c6d15c9d3d1d3"
+  },
+  "platform-health": {
+    "version": "0.58.0",
+    "hash": "fae8ba6902158c19"
   },
   "incident-queue": {
     "version": "0.53.0",

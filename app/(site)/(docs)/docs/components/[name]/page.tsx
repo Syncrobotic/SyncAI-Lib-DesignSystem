@@ -13,6 +13,7 @@ import { Dot, H2, Rules, Unbroken, textLink } from "@/site/prose"
 import { storyListing, storyUrl } from "@/site/code-data"
 import { LazyCode } from "@/site/lazy-code"
 import { overviews } from "@/site/overview"
+import { choosingFor } from "@/site/choosing"
 import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
 import { getBlockType, patternsOf } from "@/site/block-types"
@@ -163,6 +164,14 @@ export default async function ComponentPage({ params }: Props) {
           </div>
         </section>
       )}
+      {choosingFor(item.name).map((c) => (
+        <p key={c.slug} className="pt-4 text-sm text-muted-foreground">
+          Which one:{" "}
+          <a href={`/docs/choosing/${c.slug}`} className={`font-medium ${textLink}`}>
+            {c.title}
+          </a>
+        </p>
+      ))}
 
       {rest.length > 0 && (
         <>

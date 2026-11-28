@@ -1,4 +1,4 @@
-// @syncrobotic/section-header v0.53.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
+// @syncrobotic/section-header v0.58.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
