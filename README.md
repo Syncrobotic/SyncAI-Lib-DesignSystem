@@ -138,6 +138,8 @@ The rules are not a style guide that drifts: checks enforce them. On every pull 
 - **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A local check (`npm run check:radius`) walks the foundation, component and block pages for nested corners that break the radius rule.
 - **Installs for real.** On a pull request that touches the registry, every item is installed into a fresh Next.js app, type-checked and built.
 - **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://design-system.syncrobotic.me/docs/upgrading) lists them.
+- **Stable by evidence.** An item is stable when the checks say so (`npm run stability`): no Breaking in the last ten releases, tests, a11y data, when-to-use docs and stable dependencies. A stable item breaks only after a release marks the old way Deprecated. At most one minor release a week.
+- **Which one when.** [Choosing pages](https://design-system.syncrobotic.me/docs/choosing/messages) settle the common choices (Banner, Alert, Toast, Alarm or Dialog; Table or DataGrid; Select or SegmentedControl; Dialog, Sheet or Popover) with the questions to ask in order.
 - **Adoption you can measure.** `npm run adoption -- ../your-app` reads the version header of every installed file and lists each item, its version, the latest, how many minors behind it is and the changelog lines in between; `--github <org>` scans every repo of an organisation through the `gh` CLI, `--json` prints it for other tools.
 
 ## For AI agents

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { pageMeta } from "@/site/config"
 import { DocHeader, Section, Pager } from "@/site/doc"
 import { FoundationGrid } from "@/site/foundation-previews"
@@ -33,6 +34,23 @@ export default function FoundationsPage() {
             </div>
           ))}
         </div>
+      </Section>
+      <Section id="decisions" title="Decisions that shape your product" lead="Settled once here, so a team does not argue them again.">
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {[
+            { href: "/docs/foundations/color#healthy-is-grey", k: "Healthy is grey", d: "Colour, with a shape and a word, marks only what is wrong." },
+            { href: "/docs/tokens#brand", k: "Brand layer", d: "A product may swap primary, ring and the first chart colour; status and surfaces stay fixed." },
+            { href: "/docs/upgrading#status", k: "Stable by evidence", d: "Stable items break only after a Deprecated release; at most one minor release a week." },
+            { href: "/docs/choosing/messages", k: "Which one when", d: "The common choices (message, record, option, overlay) answered with the questions to ask in order." },
+          ].map((x) => (
+            <li key={x.k}>
+              <Link href={x.href} className="press flex h-full flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border hover:bg-accent">
+                <span className="text-sm font-medium">{x.k}</span>
+                <span className="text-sm text-muted-foreground">{x.d}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </Section>
       <Pager {...startNeighbours("/docs")} />
     </article>

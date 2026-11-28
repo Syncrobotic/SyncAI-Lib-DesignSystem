@@ -1,3 +1,4 @@
+import { choosing, choosingFor } from "./choosing"
 import registry from "../registry.json"
 import { propsOf } from "./props-data"
 import { blockFlags, blockGroups, blockHref, blockTypes, getBlockType, placement, wiringText } from "./block-types"
@@ -53,7 +54,7 @@ export function componentMarkdown(name: string) {
     "",
     `- Group: ${item.group}`,
     `- Version: ${meta?.version ?? "unversioned"}`,
-    `- Status: ${meta?.status === "beta" ? "beta (the API may still change in a minor release)" : "stable"}`,
+    `- Status: ${meta?.status === "beta" ? "beta (the API may still change in a minor release)" : "stable (breaks only after a release marks the old way Deprecated, with a migration line)"}`,
     `- Install: \`${install(name)}\``,
     ...(deps.length ? [`- Also installs: ${deps.join(", ")}`] : []),
     `- Page: ${url(`/docs/components/${name}`)}`,
@@ -63,6 +64,7 @@ export function componentMarkdown(name: string) {
     out.push("", "## When to use", "", list(o.use))
     if (o.instead?.length) out.push("", "## When not to use", "", list(o.instead))
     if (o.notes?.length) out.push("", "## Agent notes", "", list(o.notes))
+    for (const c of choosingFor(name)) out.push("", `Which one: [${c.title}](${url(`/docs/choosing/${c.slug}`)}). ${c.rule}`)
   }
   if (item.rules?.length) out.push("", "## Rules", "", list(item.rules))
   if (item.keyboard?.length) out.push("", "## Keyboard", "", "| Keys | Action |", "| --- | --- |", ...item.keyboard.map(([k, a]) => `| ${k} | ${a} |`))
@@ -185,6 +187,10 @@ const intro = [
   "",
   "Every page below also answers as plain markdown at its URL plus `.md`: what the item is, when to use it, when not to (and what to use instead), rules, keyboard, agent notes, install command and version.",
   "",
+  "Status: a stable item breaks only in a release that says Breaking, after an earlier release marked the old way Deprecated; a beta item may change in any minor. Prefer stable items. At most one minor release a week. Policy: " + url("/docs/upgrading#status") + ".",
+  "",
+  "Which one when: when two items could do the job, the Choosing pages decide (listed below under Choosing).",
+  "",
   "Agents: install the workflow and the rules as a skill with `npx shadcn add @syncrobotic/agent-skill` (it lands in `.claude/skills/syncrobotic-ui/`).",
   "",
   `MCP: the same content as tools (search, get_item, get_install_command, get_design_language, get_checklist) at ${url("/mcp")} (Streamable HTTP). Claude Code: \`claude mcp add --transport http syncrobotic ${url("/mcp")}\`.`,
@@ -194,6 +200,7 @@ export function llmsTxt() {
   const out = [...intro, "", "## Foundations", "", "Each foundation's `.md` twin carries the whole design language.", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
   out.push(
+    ...choosing.map((c) => `- Choosing: [${c.title}](${url(`/docs/choosing/${c.slug}`)}): ${c.rule}`),
     `- [Icon set](${url("/icons")}): the ${iconCount} icons the kit uses, one meaning each: ${iconCount - kitIconCount} from Lucide and ${kitIconCount} drawn for the kit (robot-icons: \`${install("robot-icons")}\`). Full list in llms-full.txt.`,
   )
   // Blocks by group and type, the way the site lists them; a component's patterns follow that component.
