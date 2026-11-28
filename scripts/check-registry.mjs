@@ -8,6 +8,7 @@
 // an item's doc must open with it, word for word.
 import { readFileSync } from "node:fs"
 import ts from "typescript"
+import { evaluate } from "./stability.mjs"
 
 /** @type {import("./types.js").Registry} */
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
@@ -290,6 +291,10 @@ if (differs.length) {
   console.error(`${differs.length} of ${documented} item docs do not open with the item's registry.json description, word for word`)
   bad += differs.length
 }
+
+// A stable item keeps the evidence it was promoted on (scripts/stability.mjs, /docs/upgrading#status).
+for (const r of evaluate(registry))
+  for (const f of r.hardFailures) fail(r.name, `is stable but fails "${f}": restore it, or demote the item to beta in a release that says so`)
 
 if (bad) {
   console.error(`\n${bad} registry problem(s)`)

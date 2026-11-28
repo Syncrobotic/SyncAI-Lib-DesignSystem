@@ -86,6 +86,7 @@
     "lint:html-size": "node scripts/check-html-size.mjs",
     "lint:thumbs": "node scripts/thumbs.mjs --check && vitest run tests/unit/block-thumbs.test.ts",
     "adoption": "node scripts/adoption.mjs",
+    "stability": "node scripts/stability.mjs",
     "readme": "WRITE_README=1 vitest run tests/unit/readme.test.ts"
   },
   "dependencies": {

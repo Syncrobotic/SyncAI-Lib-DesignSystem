@@ -1,4 +1,4 @@
-// @syncrobotic/code-block v0.53.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
+// @syncrobotic/code-block v0.58.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
 "use client"
 
 import * as React from "react"

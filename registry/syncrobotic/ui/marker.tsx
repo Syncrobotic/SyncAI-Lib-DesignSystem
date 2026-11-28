@@ -1,4 +1,4 @@
-// @syncrobotic/marker v0.53.0 · update: npx shadcn add @syncrobotic/marker --overwrite
+// @syncrobotic/marker v0.58.0 · update: npx shadcn add @syncrobotic/marker --overwrite
 import * as React from "react"
 import { type Status, StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"

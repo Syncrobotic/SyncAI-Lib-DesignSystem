@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.53.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.58.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"

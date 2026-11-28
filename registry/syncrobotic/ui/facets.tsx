@@ -1,4 +1,4 @@
-// @syncrobotic/facets v0.53.0 · update: npx shadcn add @syncrobotic/facets --overwrite
+// @syncrobotic/facets v0.58.0 · update: npx shadcn add @syncrobotic/facets --overwrite
 "use client"
 
 import * as React from "react"

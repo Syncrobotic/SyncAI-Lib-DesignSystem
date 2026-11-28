@@ -1,4 +1,4 @@
-// @syncrobotic/tier-badge v0.53.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
+// @syncrobotic/tier-badge v0.58.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 
 /** A dataset's licence tier: T0 may enter product releases, T1–T3 restrict what you may do with it. */

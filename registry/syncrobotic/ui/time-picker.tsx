@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.53.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.58.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"

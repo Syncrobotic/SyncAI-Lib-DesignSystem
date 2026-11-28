@@ -1,4 +1,4 @@
-// @syncrobotic/text-diff v0.53.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.58.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { plural } from "@/registry/syncrobotic/lib/format-number"

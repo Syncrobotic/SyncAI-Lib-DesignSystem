@@ -1,4 +1,4 @@
-// @syncrobotic/use-hotkeys v0.53.0 · update: npx shadcn add @syncrobotic/use-hotkeys --overwrite
+// @syncrobotic/use-hotkeys v0.58.0 · update: npx shadcn add @syncrobotic/use-hotkeys --overwrite
 "use client"
 
 import * as React from "react"

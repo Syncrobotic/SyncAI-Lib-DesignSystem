@@ -898,7 +898,7 @@ export const overviews: Record<string, Overview> = {
   },
   "description-list": {
     use: ["A robot's site, firmware and last contact.", "A dataset's owner, size and date.", "A device's instance ID (mono, copy), version and the caveat on where it came from (hint)."],
-    instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`.", "What a device claims about itself beside the record: `evidence-panel`."],
+    instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`.", "What a device claims about itself beside the record: `evidence-panel`.", "Several things to open, each with its own fields: `item`."],
   },
   breadcrumb: {
     use: ["Pages two or more levels deep: a dataset inside a catalog, a robot inside a site."],
@@ -1023,7 +1023,7 @@ export const overviews: Record<string, Overview> = {
   },
   select: {
     use: ["Six or more options, or options with long names.", "A compact choice in a table row or a toolbar."],
-    instead: ["Two to five options worth seeing at once: `radio-group`.", "A long list the user needs to search: `autocomplete`."],
+    instead: ["Two to five options worth seeing at once: `radio-group`.", "A long list the user needs to search: `autocomplete`.", "Two to four options that switch a view: `segmented-control`."],
     notes: ["Inside a Field the trigger is labelled and described automatically; outside one, give the trigger an aria-label."],
   },
   slider: {
@@ -1185,7 +1185,7 @@ export const overviews: Record<string, Overview> = {
   },
   table: {
     use: ["Fleet lists, event logs, user lists on wide screens."],
-    instead: ["The same rows on desks and on phones: `responsive-table`, a table that becomes a grouped list.", "Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
+    instead: ["The same rows on desks and on phones: `responsive-table`, a table that becomes a grouped list.", "Phones, or records with one main line: `list`.", "A trend over time: `chart`.", "Rows people sort, filter, select or hide columns of: `data-grid`."],
     notes: ["Sortable column: pass `sort` and `onSort` to TableHead; do not build your own header button."],
   },
   "responsive-table": {
@@ -1233,7 +1233,7 @@ export const overviews: Record<string, Overview> = {
   },
   alert: {
     use: ["A form that cannot be saved, a robot that is offline, a setting that has a consequence."],
-    instead: ["Something a person must act on now: `alarm`.", "Feedback that goes away by itself: `toast`."],
+    instead: ["Something a person must act on now: `alarm`.", "Feedback that goes away by itself: `toast`.", "A condition of the whole app: `banner`.", "A decision the task waits on: `dialog`."],
     notes: ["An alert stays while its condition holds; it has no close button."],
   },
   banner: {
@@ -1254,7 +1254,7 @@ export const overviews: Record<string, Overview> = {
   },
   toast: {
     use: ["Saved, copied, mission started, with Undo where possible."],
-    instead: ["Anything that needs a person to act: `alarm`, never a toast.", "A state of the page: `alert`."],
+    instead: ["Anything that needs a person to act: `alarm`, never a toast.", "A state of the page: `alert`.", "A condition of the whole app: `banner`."],
     notes: [
       "Only feedback on the user's own action. Anything needing action is an Alarm.",
       "A second Toaster (a block that brings its own) draws nothing while the first is mounted.",
@@ -1309,7 +1309,7 @@ export const overviews: Record<string, Overview> = {
   },
   dialog: {
     use: ["Rename, a short form, a choice with two or three outcomes."],
-    instead: ["Confirming something that cannot be undone: `alert-dialog`.", "Longer content, or on phones: `sheet`."],
+    instead: ["Confirming something that cannot be undone: `alert-dialog`.", "Longer content, or on phones: `sheet`.", "A few facts or one small control tied to a button: `popover`."],
     notes: ["Short decisions only; on phones or for long content use Sheet.", "Always a DialogTitle; DialogDescription when there is anything to explain."],
   },
   "alert-dialog": {
@@ -1319,7 +1319,7 @@ export const overviews: Record<string, Overview> = {
   },
   sheet: {
     use: ["Filters, a record's details next to a list, longer forms on phones."],
-    instead: ["A short decision on desktop: `dialog`."],
+    instead: ["A short decision on desktop: `dialog`.", "A few facts or one small control tied to a trigger: `popover`."],
   },
   popover: {
     use: ["A date picker, a short form, an explanation with a link."],
@@ -1459,6 +1459,30 @@ export const overviews: Record<string, Overview> = {
   "use-long-press": {
     use: ["Hold-to-confirm actions, like stop all."],
     instead: ["A plain click: `button`."],
+  },
+  cn: {
+    use: ["Every component's `className`: a product's classes passed in override the kit's for the same property."],
+    instead: ["A class that depends on a variant: `cva` (class-variance-authority), with `cn` around its result."],
+  },
+  math: {
+    use: ["Holding a dragged or typed value in its range: `clamp`.", "A clock's digits: `pad`.", "A glide drawn frame by frame in JavaScript: `easeStandard`."],
+    instead: ["A number shown to people: `format-number`.", "A movement CSS can draw: the motion tokens (`--ease-standard`)."],
+  },
+  "use-presence": {
+    use: ["An alarm that fades out of a list when cleared.", "A save bar that leaves after Save."],
+    instead: ["Something that should simply hide at once: render it conditionally.", "An overlay: `dialog`, `sheet` and `popover` animate their own exit."],
+  },
+  "input-modality": {
+    use: ["A custom list, menu or tree that rings the active row only when someone moves through it with keys: `getLastInput()`."],
+    instead: ["A ring on a focused control: CSS `:focus-visible` already tells keys from pointers."],
+  },
+  "theme-change": {
+    use: ["A canvas or WebGL view (a point cloud, a streaming chart) that reads token colours once and must read them again when the theme changes."],
+    instead: ["Anything drawn with CSS or SVG classes: the tokens follow the theme by themselves."],
+  },
+  "labels-zh-tw": {
+    use: ["A product in Traditional Chinese: pass each component its `…Labels` export as `labels`."],
+    instead: ["Another language: write your own labels object of the same type, with the zh-TW one as the checklist."],
   },
   "use-debounce": {
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],

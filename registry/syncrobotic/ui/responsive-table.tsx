@@ -1,4 +1,4 @@
-// @syncrobotic/responsive-table v0.53.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
+// @syncrobotic/responsive-table v0.58.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
 "use client"
 
 import * as React from "react"
