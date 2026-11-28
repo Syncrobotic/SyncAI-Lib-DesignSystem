@@ -133,7 +133,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 
 The rules are not a style guide that drifts: checks enforce them. On every pull request: tokens, registry, rules, numbers, motion, versions, DTCG, types, tests, build. Before a release (pull requests into `stage`): axe and screenshots of every story.
 
-- **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
+- **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes. The [conformance report](https://design-system.syncrobotic.me/docs/accessibility/conformance) states each WCAG 2.2 A and AA criterion with its evidence, and the [manual test matrix](https://design-system.syncrobotic.me/docs/accessibility/manual-testing) records screen-reader passes on the stable components.
 - **Visual regression.** Before a release, every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
 - **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A local check (`npm run check:radius`) walks the foundation, component and block pages for nested corners that break the radius rule.
 - **Installs for real.** On a pull request that touches the registry, every item is installed into a fresh Next.js app, type-checked and built.
