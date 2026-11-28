@@ -121,3 +121,28 @@ export const scopes: Scope[] = [
 
 /** Header links: the three areas plus installation. */
 export const headerLinks = scopes.map(({ key, label, href, match }) => ({ key, label, href, match }))
+
+/** An area as its sidebar and the drawer draw it: its pages, without their sections. */
+export type AreaNav = { key: string; label: string; groups: NavGroup[] }
+export type PageSections = { label: string; href: string; sections: NonNullable<NavLink["sections"]> }
+
+const strip = (s: Scope): AreaNav => ({
+  key: s.key,
+  label: s.label,
+  groups: s.groups.map((g) => ({ title: g.title, links: g.links.map(({ sections: _, ...l }) => l) })),
+})
+
+// The pages of an area are shared by all of them (the area's sidebar layout); a page's sections come with that page
+// alone. Every page carrying every area's sections was most of its payload (tests/unit/sidebar-payload.test.ts).
+export const areaNav = (key: string): AreaNav => strip(scopes.find((s) => s.key === key)!)
+
+/** Every area's pages, for the drawer's tabs (/nav.json). */
+export const allAreaNav = () => scopes.map(strip)
+
+/** The sections under one page's link, when it has more than one. */
+export function pageSections(href: string): PageSections | null {
+  for (const s of scopes)
+    for (const g of s.groups)
+      for (const l of g.links) if (l.href === href && l.sections && l.sections.length > 1) return { label: l.label, href: l.href, sections: l.sections }
+  return null
+}

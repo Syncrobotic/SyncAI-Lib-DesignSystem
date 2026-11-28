@@ -5,14 +5,14 @@ import { HeaderNav } from "./header-nav"
 import { Logo } from "./logo"
 import { NavDrawer } from "./nav-drawer"
 import { SiteSearch } from "./site-search"
-import { headerLinks, scopes } from "./scopes"
+import { headerLinks } from "./scopes"
 import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader() {
   return (
     <HeaderFrame>
       {/* Left, where its drawer opens from: the button and the panel move the same way. */}
-      <NavDrawer scopes={scopes} />
+      <NavDrawer scopes={headerLinks} />
       <Link href="/" className="inline-flex min-h-(--h-md) items-center rounded-sm lg:ml-(--start-inset)">
         <Logo />
       </Link>

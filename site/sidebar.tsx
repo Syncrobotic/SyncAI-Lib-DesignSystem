@@ -2,11 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname, useSearchParams, useSelectedLayoutSegment } from "next/navigation"
 import { componentBase } from "@/site/component-tabs"
 import { cn } from "@/lib/utils"
 import { inScope } from "./scope-match"
-import type { NavLink, Scope } from "./scopes"
+import { rememberArea } from "./nav-data"
+import type { AreaNav, NavLink, PageSections, Scope } from "./scopes"
 
 export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   Math.max(
@@ -19,7 +20,7 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
  * its pages under the tabs without leaving the page you are on; the list is the tab panel. Its baseline is the drawer
  * header's edge, drawn once the list has scrolled under it (`edge`). Arrow keys, Home and End move between tabs.
  */
-export function AreaTabs({ scopes, area, onArea, panel, edge }: { scopes: Scope[]; area: string; onArea: (key: string) => void; panel: string; edge: boolean }) {
+export function AreaTabs({ scopes, area, onArea, panel, edge }: { scopes: Pick<Scope, "key" | "label">[]; area: string; onArea: (key: string) => void; panel: string; edge: boolean }) {
   const tabs = React.useRef<HTMLDivElement>(null)
   const move = (e: React.KeyboardEvent) => {
     const i = scopes.findIndex((s) => s.key === area)
@@ -65,15 +66,21 @@ export function AreaTabs({ scopes, area, onArea, panel, edge }: { scopes: Scope[
   )
 }
 
-/** The groups of the area you are in; in the drawer (`switcher`), of the area its tabs have chosen (`area`). */
-export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scopes: Scope[]; switcher?: boolean; path?: string; area?: string }) {
+/**
+ * The groups of an area: in the sidebar, of the page's own (its area's sidebar layout passes it, and the page its
+ * `sections`); in the drawer (`switcher`), of the area its tabs have chosen.
+ */
+export function Sidebar({ area: active, switcher = false, path: frozen, sections }: { area: AreaNav; switcher?: boolean; path?: string; sections?: React.ReactNode }) {
   // The drawer passes the page it was opened on, so its list holds still while it closes on the way to another page.
   const current = usePathname()
   const path = frozen ?? current
   // A component page's tabs belong to its one link.
   const here = componentBase(path)
-  const active = scopes.find((s) => s.key === area) ?? scopes[scopeFor(scopes, path)]
   const nav = React.useRef<HTMLElement>(null)
+  // The drawer opens on this area without asking for it.
+  React.useEffect(() => {
+    if (!switcher) rememberArea(active)
+  }, [active, switcher])
   // The link you clicked, and where it was in its column. The previous page's examples close above it, which would pull
   // it up; before the next paint the column scrolls back by that much, so the link stays under the pointer. Browsers
   // with scroll anchoring already do this; Safari does not.
@@ -105,7 +112,7 @@ export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scop
     // A group's first page starts the column with its group's name, never with the name cut off above it.
     if (i > 0 && rows[i - 1].heading && rows[i].top - rows[i - 1].top < 40) i -= 1
     box.scrollTop = Math.max(0, (i >= 0 ? rows[i].top : centred) - 12)
-  }, [path, area])
+  }, [path, active.key])
   return (
     <nav
       ref={nav}
@@ -141,19 +148,9 @@ export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scop
                     rather than to catch the eye. The component page states it again beside its version. */}
                 {l.beta && <span className="ml-auto shrink-0 pl-2 text-xs text-muted-foreground">Beta</span>}
               </Link>
-              {/* The open page's examples, under its link. They appear and go at once: a height animation here moves every
-                  link below (and, closing above, the column itself) for a third of a second on each switch. */}
-              {!switcher && here === l.href && l.sections && l.sections.length > 1 && (
-                // A list of filters (?category=…) marks the one in the address. Reading the address needs a Suspense
-                // boundary on a prerendered page; until it is read, the list shows with nothing marked.
-                l.sections.some((x) => x.href.includes("?")) ? (
-                  <React.Suspense fallback={<Sections label={l.label} sections={l.sections} filter />}>
-                    <FilterSections label={l.label} sections={l.sections} />
-                  </React.Suspense>
-                ) : (
-                  <Sections label={l.label} sections={l.sections.map((x) => (x.href.startsWith("#") ? { ...x, href: l.href + x.href } : x))} />
-                )
-              )}
+              {/* The open page's examples, under its link; its page sends them. They appear and go at once: a height
+                  animation here moves every link below (and, closing above, the column itself) for a third of a second. */}
+              {!switcher && here === l.href && sections}
             </React.Fragment>
           ))}
         </div>
@@ -162,7 +159,25 @@ export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scop
   )
 }
 
+/** An area's own sidebar, unless the page is in an area nested under its address (`segment`: Components under /docs). */
+export function UnlessNested({ segment, own, children }: { segment: string; own: React.ReactNode; children: React.ReactNode }) {
+  return useSelectedLayoutSegment() === segment ? children : own
+}
+
 type Section = NonNullable<NavLink["sections"]>[number]
+
+/** A page's sections under its link: anchors on the page (`#…`), or filters of it (`?category=…`). */
+export function SidebarSections({ label, href, sections }: PageSections) {
+  // A list of filters marks the one in the address. Reading the address needs a Suspense boundary on a prerendered page;
+  // until it is read, the list shows with nothing marked.
+  return sections.some((x) => x.href.includes("?")) ? (
+    <React.Suspense fallback={<Sections label={label} sections={sections} filter />}>
+      <FilterSections label={label} sections={sections} />
+    </React.Suspense>
+  ) : (
+    <Sections label={label} sections={sections.map((x) => (x.href.startsWith("#") ? { ...x, href: href + x.href } : x))} />
+  )
+}
 
 /** The open page's sections under its link: examples to jump to, or, on /icons, categories to filter by. */
 // A filter keeps the page where it is (scroll={false}); an example link is a jump to its anchor, so it scrolls as usual.

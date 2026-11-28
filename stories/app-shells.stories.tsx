@@ -21,6 +21,7 @@ import { ProjectMembers } from "@/registry/syncrobotic/blocks/project-members"
 import { PermissionMatrix } from "@/registry/syncrobotic/blocks/permission-matrix"
 import { WebhookDeliveries } from "@/registry/syncrobotic/blocks/webhook-deliveries"
 import { TenantAdmin } from "@/registry/syncrobotic/blocks/tenant-admin"
+import { PlatformHealth } from "@/registry/syncrobotic/blocks/platform-health"
 import { permissionsFrom } from "@/registry/syncrobotic/ui/permission-gate"
 import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { TopBarShell } from "@/registry/syncrobotic/blocks/top-bar-shell"
@@ -107,6 +108,7 @@ export const ProjectMembersScreen: S = { render: () => <ProjectMembers /> }
 export const PermissionMatrixScreen: S = { render: () => <PermissionMatrix /> }
 export const WebhookDeliveriesScreen: S = { render: () => <WebhookDeliveries /> }
 export const TenantAdminScreen: S = { render: () => <TenantAdmin /> }
+export const PlatformHealthScreen: S = { render: () => <PlatformHealth /> }
 export const SignInScreen: S = { render: () => <SignIn /> }
 export const NotFoundScreen: S = { render: () => <NotFoundPage /> }
 export const NoAccessScreen: S = { render: () => <NoAccessPage permission="audit-logs:read" /> }

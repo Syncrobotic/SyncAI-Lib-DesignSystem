@@ -80,6 +80,7 @@ const controlled = [
   ["permission-matrix", "PermissionMatrixContent"],
   ["webhook-deliveries", "WebhookDeliveriesContent"],
   ["tenant-admin", "TenantAdminContent"],
+  ["platform-health", "PlatformHealthContent"],
   ["status-pages", "NotFoundPage, NoAccessPage, ErrorPage"],
 ] as const
 
