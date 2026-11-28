@@ -97,6 +97,7 @@ import type { PermissionMatrixLabels } from "@/registry/syncrobotic/blocks/permi
 import type { WebhookDeliveriesLabels } from "@/registry/syncrobotic/blocks/webhook-deliveries"
 import type { OfflineLicenceLabels } from "@/registry/syncrobotic/blocks/offline-licence"
 import type { TenantAdminLabels } from "@/registry/syncrobotic/blocks/tenant-admin"
+import type { PlatformHealthLabels } from "@/registry/syncrobotic/blocks/platform-health"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -229,5 +230,6 @@ it("fits every component's labels type", () => {
   fits<Required<WebhookDeliveriesLabels>>()(zh.webhookDeliveriesLabels)
   fits<Required<OfflineLicenceLabels>>()(zh.offlineLicenceLabels)
   fits<Required<TenantAdminLabels>>()(zh.tenantAdminLabels)
+  fits<Required<PlatformHealthLabels>>()(zh.platformHealthLabels)
   expect(zh.locale).toBe("zh-TW")
 })

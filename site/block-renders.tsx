@@ -78,6 +78,7 @@ const ProjectMembers = dynamic(() => import("@/registry/syncrobotic/blocks/proje
 const PermissionMatrix = dynamic(() => import("@/registry/syncrobotic/blocks/permission-matrix").then((m) => m.PermissionMatrix))
 const WebhookDeliveries = dynamic(() => import("@/registry/syncrobotic/blocks/webhook-deliveries").then((m) => m.WebhookDeliveries))
 const TenantAdmin = dynamic(() => import("@/registry/syncrobotic/blocks/tenant-admin").then((m) => m.TenantAdmin))
+const PlatformHealth = dynamic(() => import("@/registry/syncrobotic/blocks/platform-health").then((m) => m.PlatformHealth))
 const IncidentQueue = dynamic(() => import("@/registry/syncrobotic/blocks/incident-queue").then((m) => m.IncidentQueue))
 const IncidentDetail = dynamic(() => import("@/registry/syncrobotic/blocks/incident-detail").then((m) => m.IncidentDetail))
 const MaintenanceDue = dynamic(() => import("@/registry/syncrobotic/blocks/maintenance-due").then((m) => m.MaintenanceDue))
@@ -271,6 +272,7 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "permission-matrix": () => <PermissionMatrix />,
   "webhook-deliveries": () => <WebhookDeliveries />,
   "tenant-admin": () => <TenantAdmin />,
+  "platform-health": () => <PlatformHealth />,
   "incident-queue": () => <IncidentQueue />,
   "incident-detail": () => <IncidentDetail />,
   "maintenance-due": () => <MaintenanceDue />,
