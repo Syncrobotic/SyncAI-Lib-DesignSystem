@@ -1,4 +1,5 @@
 import { pageMeta } from "./config"
+import { choosing } from "./choosing"
 
 // The design language, page by page. Drives the sidebar, the overview, the home page and the sitemap.
 export const foundations = [
@@ -51,7 +52,7 @@ export function neighbours(slug: FoundationSlug) {
     trail: [{ name: "Docs", path: "/docs" }, { name: f.title, path }],
     description: f.lead,
     prev: i === 0 ? start[start.length - 1] : link(foundations[i - 1]),
-    next: i === foundations.length - 1 ? { href: "/docs/components", title: "Components" } : link(foundations[i + 1]),
+    next: i === foundations.length - 1 ? { href: `/docs/choosing/${choosing[0].slug}`, title: choosing[0].title } : link(foundations[i + 1]),
   }
 }
 

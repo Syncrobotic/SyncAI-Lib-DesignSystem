@@ -2,6 +2,7 @@ import { blockListOfType as blocksOfType } from "./block-list"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
+import { choosing } from "./choosing"
 import { iconCategories, iconCount } from "./icons"
 
 // The site's areas, as ReUI and shadcn name them: Docs, Components, Blocks. The header links to each; the sidebar shows only the area you are in.
@@ -19,7 +20,7 @@ export const scopes: Scope[] = [
     key: "docs",
     label: "Docs",
     href: "/docs",
-    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/migrating-from-local-components", "/docs/ai"],
+    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/migrating-from-local-components", "/docs/ai", "/docs/choosing"],
     groups: [
       {
         title: "Getting started",
@@ -41,6 +42,7 @@ export const scopes: Scope[] = [
         title: "Foundations",
         links: foundations.map((f) => ({ href: `/docs/foundations/${f.slug}`, label: f.title })),
       },
+      { title: "Choosing", links: choosing.map((c) => ({ href: `/docs/choosing/${c.slug}`, label: c.nav })) },
     ],
   },
   {

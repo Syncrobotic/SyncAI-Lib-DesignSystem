@@ -3,6 +3,7 @@ import { items } from "@/site/catalog"
 import { site } from "@/site/config"
 import { blocksOfType } from "@/site/blocks"
 import { blockTypes } from "@/site/block-types"
+import { choosing } from "@/site/choosing"
 import { foundations } from "@/site/foundations"
 import { hasA11y, hasProps } from "@/site/component-tabs-data"
 
@@ -22,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/docs/migrating-from-local-components", priority: 0.6 },
     { path: "/docs", priority: 0.9 },
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
+    ...choosing.map((c) => ({ path: `/docs/choosing/${c.slug}`, priority: 0.7 })),
     { path: "/docs/components", priority: 0.9 },
     { path: "/icons", priority: 0.7 },
     { path: "/brand", priority: 0.6 },
