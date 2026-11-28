@@ -13,6 +13,7 @@ const reg = JSON.parse(fs.readFileSync('registry.json', 'utf8'));
 const docs = fs.readdirSync('app/(site)/(docs)/docs', { withFileTypes: true }).filter((d) => d.isDirectory() && d.name !== 'components' && d.name !== 'foundations');
 const pages = ['/', '/blocks', '/docs', '/docs/components', ...docs.map((d) => '/docs/' + d.name),
   ...fs.readdirSync('app/(site)/(docs)/docs/foundations').map((s) => '/docs/foundations/' + s),
+  ...fs.readdirSync('app/(site)/(docs)/docs/accessibility').map((s) => '/docs/accessibility/' + s),
   ...reg.items.filter((i) => ['registry:ui', 'registry:component'].includes(i.type) && !i.name.includes('theme')).map((i) => '/docs/components/' + i.name),
   ...reg.items.filter((i) => i.type === 'registry:block').map((i) => '/preview/' + i.name)];
 // WCAG 2.2 AA, as the foundations' accessibility page promises.

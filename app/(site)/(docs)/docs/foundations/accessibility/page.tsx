@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { ContrastDemo } from "@/site/contrast-demo"
 import { DensityDemo } from "@/site/density-demo"
 import { Code, DocHeader, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
+import { textLink } from "@/site/prose"
 import { contrast, level, type Mode } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("accessibility")
@@ -165,6 +167,25 @@ export default function AccessibilityPage() {
               <span>{x.split("`").map((part, i) => (i % 2 ? <Code key={i}>{part}</Code> : part))}</span>
             </li>
           ))}
+        </ul>
+      </Section>
+
+      <Section
+        id="evidence"
+        title="Evidence"
+        lead="What is checked automatically, and what still needs a person with a screen reader: the WCAG 2.2 conformance report and the manual test matrix for every stable component."
+      >
+        <ul className="flex flex-col gap-2 text-sm">
+          <li>
+            <Link href="/docs/accessibility/conformance" className={textLink}>
+              Accessibility conformance report
+            </Link>
+          </li>
+          <li>
+            <Link href="/docs/accessibility/manual-testing" className={textLink}>
+              Manual accessibility testing
+            </Link>
+          </li>
         </ul>
       </Section>
 

@@ -7,6 +7,7 @@ const config: NextConfig = {
       { source: "/docs/components/:name.md", destination: "/md/components/:name" },
       { source: "/blocks/:name.md", destination: "/md/blocks/:name" },
       { source: "/docs/foundations/:slug.md", destination: "/md/foundations/:slug" },
+      { source: "/docs/accessibility/conformance.md", destination: "/md/accessibility/conformance" },
     ]
   },
   // /mcp reads item sources, stories and the agent skill at request time; ship them with that function.
