@@ -6,8 +6,14 @@ import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { site } from "./config"
-import type { Scope } from "./scopes"
+import { areaOf, loadNav, navVersion, subscribeNav } from "./nav-data"
+import type { AreaNav, Scope } from "./scopes"
 import { AreaTabs, Sidebar, scopeFor } from "./sidebar"
+
+type Area = Pick<Scope, "key" | "label" | "href" | "match">
+
+// Below this width the header shows the drawer's button, so the areas are worth asking for once the page is idle.
+const narrow = "(max-width: 1023.98px)"
 import { quietNextPage } from "./page-transition"
 import { Logo } from "./logo"
 
@@ -16,7 +22,7 @@ import { Logo } from "./logo"
  * holds the four areas and the pages of the one you are in, opens with its list scrolled to the page you are on, and
  * closes when you go somewhere. On every page, the home page included. Focus starts on Close, which is always in view.
  */
-export function NavDrawer({ scopes }: { scopes: Scope[] }) {
+export function NavDrawer({ scopes }: { scopes: Area[] }) {
   const [open, setOpen] = React.useState(false)
   const path = usePathname()
   const [last, setLast] = React.useState(path)
@@ -37,9 +43,22 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
       setShown(path)
       setArea(scopes[scopeFor(scopes, path)].key)
       setScrolled(false)
+      void loadNav()
     }
     setOpen(next)
   }
+  // The chosen area's pages: the page's own from its sidebar, the others from /nav.json. Until they arrive (or if they
+  // cannot), the area's front page, so the drawer always leads somewhere.
+  React.useSyncExternalStore(subscribeNav, navVersion, () => 0)
+  const tab = scopes.find((s) => s.key === area) ?? scopes[0]
+  const shownArea: AreaNav = areaOf(area) ?? { key: tab.key, label: tab.label, groups: [{ title: tab.label, links: [{ href: tab.href, label: tab.label }] }] }
+  React.useEffect(() => {
+    if (!window.matchMedia(narrow).matches) return
+    const idle = window.requestIdleCallback ?? ((f: () => void) => window.setTimeout(f, 1))
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout
+    const id = idle(() => void loadNav())
+    return () => cancel(id)
+  }, [])
   const chooseArea = (key: string) => {
     if (key === area) return
     // A new list starts at its top; the page's own area opens again at its current page (Sidebar centres it).
@@ -76,6 +95,8 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
     <Sheet open={open} onOpenChange={change}>
       <SheetTrigger
         aria-label="Open navigation"
+        onPointerDown={() => void loadNav()}
+        onFocus={() => void loadNav()}
         className="press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
       >
         <Menu aria-hidden="true" className="size-5" />
@@ -120,7 +141,7 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
         >
           {/* Keyed by area: a new list arrives with the kit's appear movement (a fade under reduced motion). */}
           <div key={area} className="animate-appear">
-            <Sidebar scopes={scopes} switcher path={shown} area={area} />
+            <Sidebar area={shownArea} switcher path={shown} />
           </div>
           {/* On phones the header has no room for GitHub; it closes the drawer's list instead. */}
           <div className="shrink-0 border-t border-border pt-4 sm:hidden">

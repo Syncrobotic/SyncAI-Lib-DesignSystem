@@ -9,7 +9,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
-/** The limit in KB. The median page is about 210 KB and the largest 392 KB (the chart page). */
+/** The limit in KB. The median page is about 150 KB and the largest about 300 KB (the chart page). */
 const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 
 /**
@@ -45,6 +45,16 @@ if (stale.length) {
 if (over.length) {
   console.error(`\n${over.length} page(s) over budget:\n${over.map(row).join("\n")}`)
   console.error("\nMove what is hidden until opened (a tab, a sheet) out of the page, as site/lazy-code.tsx does for code.")
+  process.exit(1)
+}
+// The sidebar sends a page its own sections only (app/(site)/(docs)/@sidebar): every component's examples in every page
+// was about 1,150 example links each, a fifth of /icons. A page's own are under 60, twice over (HTML and payload).
+const EXAMPLE_LINKS = 200
+const crowded = pages
+  .map((p) => ({ page: p.slice(ROOT.length).replace(/\.html$/, ""), n: (readFileSync(p, "utf8").match(/#example-/g) ?? []).length }))
+  .filter((p) => p.n > EXAMPLE_LINKS)
+if (crowded.length) {
+  console.error(`\nPages carrying other pages' example links (over ${EXAMPLE_LINKS}; send them with their own page):\n${crowded.map((p) => `  ${p.n}  ${p.page}`).join("\n")}`)
   process.exit(1)
 }
 // One h1 per block preview: the page adds its sr-only title only for a block without its own (ownHeading in site/blocks.tsx).
